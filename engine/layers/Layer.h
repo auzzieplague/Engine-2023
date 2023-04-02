@@ -1,12 +1,9 @@
-
-#ifndef COMPONENTLAYOUT_LAYER_H
-#define COMPONENTLAYOUT_LAYER_H
-
+#pragma once
 
 #include "../Object.h"
 #include "../Scene.h"
 
-class Layer: Object {
+class Layer: public Object {
 public:
     // overrides
     bool initialised = false;
@@ -32,5 +29,3 @@ public:
 
 };
 
-
-#endif //COMPONENTLAYOUT_LAYER_H

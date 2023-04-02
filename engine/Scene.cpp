@@ -3,3 +3,10 @@
 //
 
 #include "Scene.h"
+
+void Scene::addComponent(Component * component) {
+    // todo: add spawn queue for threading
+    this->componentList.push_back(component);
+
+    Debug::show("component added");
+}

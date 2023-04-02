@@ -1,9 +1,7 @@
-#ifndef COMPONENTLAYOUT_BASE_H
-#define COMPONENTLAYOUT_BASE_H
+#pragma once
 #include <vector>
 #include <string>
 #include <iostream>
+#include <cassert>
+#include "Debug.h"
 
-
-
-#endif //COMPONENTLAYOUT_BASE_H

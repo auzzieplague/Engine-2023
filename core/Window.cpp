@@ -4,8 +4,7 @@ GLFWwindow *Window::currentWindow = nullptr;
 
 GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::string &title) {
     // init libs and window
-    if (!glfwInit())
-        return NULL;
+    if (!glfwInit()) return nullptr;
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -13,7 +12,6 @@ GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::stri
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     GLFWwindow *window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
-
 
     glfwMakeContextCurrent(window);
 
@@ -36,7 +34,6 @@ GLFWwindow *Window::getWindow() {
         setupWindow(1200, 720, "default window");
         if (!this->initialised) {
             throw std::runtime_error("the window could not be initialised");
-            exit(1);
         }
     }
     return this->glRef;

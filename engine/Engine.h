@@ -1,33 +1,36 @@
-#ifndef COMPONENTLAYOUT_ENGINE_H
-#define COMPONENTLAYOUT_ENGINE_H
+#pragma once
 
-#include "../core/Window.h"
 #include "Object.h"
 #include "Scene.h"
-#include "layers/Layer.h"
+#include "layers/GraphicsLayer.h"
+#include "../core/Core.h"
 
-class Engine: Object {
-  Scene *currentScene{};
-  Scene *nextScene{};
-  std::vector<Layer*> layers;
+class Engine : public Object {
+    Scene *currentScene{};
+    Scene *nextScene{}; // for preloading
+    std::vector<Layer *> layers;
 
-  Window* window{};
+    Window *window{};
 
-  static Engine *instance;
+    static Engine *instance;
 
 public:
-    explicit Engine( uint32_t width = 1600, uint32_t height = 800,  const std::string& title = "Onion", Scene * scene = nullptr);
+    explicit Engine(uint32_t width = 1600, uint32_t height = 800, const std::string &title = "Onion",
+                    Scene *scene = nullptr);
 
-    static Engine* getInstance()
-    {
+    static Engine *getInstance() {
+        if (!instance) {
+            instance = new Engine();
+        }
         return instance;
     }
 
+    void attachLayer(Layer* layer); // initialises layer
+
+    void addComponent(Component *component);
+
     void start();               // kick-start engine
-    void loopLayers() const;          // main loop
+    void loopLayers() const;    // main loop
     void stop() const;          // cleanup
 
 };
-
-
-#endif //COMPONENTLAYOUT_ENGINE_H

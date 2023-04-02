@@ -1,16 +1,8 @@
-//
-// Created by auzzi on 24/03/2023.
-//
-
-#ifndef COMPONENTLAYOUT_COLLISIONMESH_H
-#define COMPONENTLAYOUT_COLLISIONMESH_H
-
+#pragma once
 
 #include "Mesh.h"
 
-class CollisionMesh : Mesh {
+class CollisionMesh : public Mesh {
 
 };
 
-
-#endif //COMPONENTLAYOUT_COLLISIONMESH_H

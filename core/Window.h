@@ -1,5 +1,4 @@
-#ifndef COMPONENTLAYOUT_WINDOW_H
-#define COMPONENTLAYOUT_WINDOW_H
+#pragma once
 
 #include "Base.h"
 #include "../vendor/includes/glad/glad.h"
@@ -25,4 +24,3 @@ public:
 
 };
 
-#endif //COMPONENTLAYOUT_WINDOW_H

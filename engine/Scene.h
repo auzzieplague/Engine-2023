@@ -1,21 +1,13 @@
-//
-// Created by auzzi on 24/03/2023.
-//
-
-#ifndef COMPONENTLAYOUT_SCENE_H
-#define COMPONENTLAYOUT_SCENE_H
-
+#pragma once
 
 #include "Object.h"
-#include "components/Component.h"
+#include "components/Components.h"
 
-class Scene: Object {
-    std::vector<Component*> entities;
-    std::vector<Component*> lights;
-    std::vector<Component*> terrains;
-    std::vector<Component*> geometry;
-    Component *octree;
+class Scene: public Object {
+    /// at a high level we just want to add components to the scene graph
+    std::vector<Component*> componentList;
+
+public:
+    void addComponent (Component *);
 };
 
-
-#endif //COMPONENTLAYOUT_SCENE_H
