@@ -1,8 +1,12 @@
 #pragma once
+
 #include "../../core/Window.h"
 #include "Layer.h"
-#include "graphics/GraphicsLayerOpenGL.h"
+//#include "graphics/api/GraphicsAPI.h"
 #include "../components/Components.h"
+#include "../components/Geometry.h"
+#include "graphics/api/RenderingConfig.h"
+#include "graphics/GraphicsFlag.h"
 
 /**
  * When instantiating this class we pass through a framework, which in turn sets up the function pointers
@@ -10,43 +14,19 @@
  */
 class GraphicsLayer : public Layer {
 private:
-    void initFunctionPointers();
-    static void method_default();
-    static void (*render_test)();
-    static void (*render_method)();
-    static void (*load_shader_method)();
-    static unsigned int (*create_mesh_method)(Mesh *);
-    static unsigned int (*load_mesh_method)(std::string);
-    static unsigned int (*create_material_method)();
-
-    unsigned int testMeshVAO;
+    GraphicsAPI *api;
 
 public:
-    enum framework { OPENGL, DIRECTX };
-    GraphicsLayer(int framework);
+    ///testing
+    unsigned int testMeshVAO{};
+    Mesh *testMesh{};
+    RenderingConfig meshConfig;
 
-    // virtual function runners
-    void draw() { render_method(); };
-    void test() { render_test(); };
+    unsigned int flag(GraphicsFlag graphicsFlag);
 
-    virtual void onAttach(Scene*) {
-        load_shader_method();
-        //returns the voa
-        testMeshVAO = create_mesh_method(new Mesh());
-    };
+    explicit GraphicsLayer(GraphicsAPI *api);
 
-    virtual void onDetach(Scene*) {}
-    virtual void beforeUpdate(Scene*) {}
-    virtual void update(Scene*) {}
-    virtual void afterUpdate(Scene*) {}
-    // expects that gui platform is checked through scene and rendered accordingly in derived class
-    virtual void appendToGui(Scene*) {}
-    virtual void beforeRender(Scene*) {}
+    void onAttach(Scene *) override;
 
-    virtual void render(Scene*) {
-        render_method();
-    }
-
-    virtual void afterRender(Scene*) {}
-    virtual void processInput(Scene*) {}
+    void render(Scene *) override;
 };

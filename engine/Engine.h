@@ -3,7 +3,6 @@
 #include "Object.h"
 #include "Scene.h"
 #include "layers/GraphicsLayer.h"
-#include "../core/Core.h"
 
 class Engine : public Object {
     Scene *currentScene{};

@@ -1,0 +1,20 @@
+#onion engine refactor
+
+Current branch is attempting to abstract the graphics api our of the engine,
+starting with API_OpenGL i'M attempting to abstract all functionality to the GraphicsLayer
+because each API directX, openGL ... have different flags and properties i've added a getFlag method
+and some disable() enable() methods in the rendering pipeline. 
+
+I won't know how well this system will work until I implement direct X and others.
+
+The intention is to keep this branch minimalistic so that it can be used to hash out fundamental concepts without
+the overhead of the rest of the onion engine.
+
+Once the graphics api is extracted sufficiently, 
+I want to begin collision just using collision meshes
+
+rendering  textures , lighting, animations, reflections water, skybox, etc ... we have achieved in the onion engine
+however the collision engine is where everything falls apart. 
+
+#collision
+Collision should be the primary focus for this version of the engine.

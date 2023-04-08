@@ -2,6 +2,7 @@
 #include <iostream>
 #include "../engine/Engine.h"
 #include "../engine/layers/WindowLayer.h"
+#include "../engine/layers/graphics/api/API_OpenGL.h"
 
 int main() {
 
@@ -9,12 +10,14 @@ auto * component = new CollisionMesh();
 Engine *engine = Engine::getInstance();
 engine->addComponent(component);
 
-auto * window = new WindowLayer();
+//define graphics api to be injected into window and graphics classes
+GraphicsAPI *opengl =   new API_OpenGL();
+
+auto * window = new WindowLayer(opengl);
 engine->attachLayer(window);
-
-
-auto * gl = new GraphicsLayer(GraphicsLayer::OPENGL);
+auto * gl = new GraphicsLayer(opengl);
 engine->attachLayer(gl);
+
 
 //gl->test();
 //    auto *test = new Engine();

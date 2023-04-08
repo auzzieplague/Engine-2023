@@ -1,11 +1,12 @@
 #include "Window.h"
+#include "../engine/layers/graphics/api/GraphicsAPI.h"
 
 GLFWwindow *Window::currentWindow = nullptr;
+GraphicsAPI *Window::api;
 
 GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::string &title) {
     // init libs and window
     if (!glfwInit()) return nullptr;
-
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
@@ -24,7 +25,7 @@ GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::stri
     Window::currentWindow = window;
     this->initialised = true;
 
-    glfwSetFramebufferSizeCallback(glRef, Window::framebuffer_size_callback);
+    glfwSetFramebufferSizeCallback(glRef, Window::framebufferSizeCallback);
 
     return window;
 }
@@ -39,11 +40,11 @@ GLFWwindow *Window::getWindow() {
     return this->glRef;
 }
 
-void Window::framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    glViewport(0, 0, width, height);
+void Window::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
+    api->framebufferSizeCallback(window, width, height);
+}
 
-    // if virtual function has been assigned, give it a call
-//    if (onWindowUpdate) {
-//        onWindowUpdate(window, width, height);
-//    }
+Window::Window(GraphicsAPI *graphicsAPI, uint32_t width, uint32_t height, const std::string &title) {
+    api = graphicsAPI;
+    this->setupWindow(width, height, title);
 }
