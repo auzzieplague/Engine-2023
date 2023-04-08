@@ -2,7 +2,8 @@
 #include "graphics/api/GraphicsAPI.h"
 
 
-GraphicsLayer::GraphicsLayer(GraphicsAPI *api) {
+
+void GraphicsLayer::setApi(GraphicsAPI *api) {
     this->api = api;
     Mesh::setApi(api);
 }

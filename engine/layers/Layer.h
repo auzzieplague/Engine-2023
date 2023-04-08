@@ -5,6 +5,12 @@
 
 class Layer: public Object {
 public:
+    GraphicsAPI *api;
+
+    virtual void setApi(GraphicsAPI *api) {
+        this->api = api;
+    }
+
     // overrides
     bool initialised = false;
     virtual uint32_t getType() { return 0; };

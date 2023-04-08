@@ -14,3 +14,7 @@
 
 /// our own includes
 #include "Debug.h"
+
+// type definitions
+typedef unsigned int uint;
+typedef unsigned char uchar;

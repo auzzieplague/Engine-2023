@@ -1,14 +1,14 @@
 #pragma once
 
 #include "WindowLayer.h"
+//
+//WindowLayer::WindowLayer(GraphicsAPI *api) {
+//    this->api = api;
+//}
 
-WindowLayer::WindowLayer(GraphicsAPI *api) {
-    this->api = api;
-}
-
-void WindowLayer::onAttach(Scene *){
+void WindowLayer::onAttach(Scene * scene){
     Debug::show("Spawning Window");
-    this->window = new Window(api,1280, 720, "Window Layer");
+    scene->currentWindow = new Window(api,1280, 720, "Window Layer");
 }
 
 void WindowLayer::onDetach(Scene *) {
@@ -19,11 +19,11 @@ void WindowLayer::processInput(Scene *scene) {
     //todo move to api
     glfwPollEvents();
 
-    if (glfwGetKey(window->glRef, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window->glRef, true);
+    if (glfwGetKey(scene->currentWindow->glRef, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetWindowShouldClose(scene->currentWindow->glRef, true);
     }
 }
 
 void WindowLayer::afterRender(Scene *scene) {
-    glfwSwapBuffers(window->glRef);
+    glfwSwapBuffers(scene->currentWindow->glRef);
 }

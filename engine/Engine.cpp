@@ -1,6 +1,3 @@
-//
-// Created by auzzi on 24/03/2023.
-//
 
 #include "Engine.h"
 
@@ -69,7 +66,27 @@ void Engine::addComponent(Component *component) {
 }
 
 void Engine::attachLayer(Layer *layer) {
+    //assign graphics api into layer
+    layer->setApi(this->graphicsAPI);
+
+    //run attach hook
     layer->onAttach(this->currentScene);
+
+
     // todo layer ordering
     this->layers.push_back(layer);
+}
+
+Engine *Engine::getInstance() {
+    {
+        if (!instance) {
+            instance = new Engine();
+            instance->graphicsAPI = new API_OpenGL();
+        }
+        return instance;
+    }
+}
+
+void Engine::setGraphicsApi(GraphicsAPI *api) {
+    Engine::graphicsAPI = api;
 }

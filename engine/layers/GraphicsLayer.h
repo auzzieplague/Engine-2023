@@ -13,8 +13,6 @@
  * for OPENGL or other framework options
  */
 class GraphicsLayer : public Layer {
-private:
-    GraphicsAPI *api;
 
 public:
     ///testing
@@ -22,9 +20,8 @@ public:
     Mesh *testMesh{};
     RenderingConfig meshConfig;
 
+    void setApi(GraphicsAPI *api) override;
     unsigned int flag(GraphicsFlag graphicsFlag);
-
-    explicit GraphicsLayer(GraphicsAPI *api);
 
     void onAttach(Scene *) override;
 
