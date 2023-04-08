@@ -4,6 +4,7 @@
 //unsigned int API_OpenGL::shaderProgram;
 
 void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
+    currentRenderingConfig = &config;
     glClearColor(config.clearColour.x, config.clearColour.y, config.clearColour.z, config.clearColour.w);
     glClear(config.clearFlags);
 
@@ -141,3 +142,6 @@ unsigned int API_OpenGL::getFlag(GraphicsFlag flag) {
     }
 }
 
+void API_OpenGL::shaderSetMat4(const std::string &name, const glm::mat4 &mat) const {
+    glUniformMatrix4fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
+}

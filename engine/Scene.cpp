@@ -10,3 +10,7 @@ void Scene::addComponent(Component * component) {
 
     Debug::show("component added");
 }
+
+Scene::Scene() {
+    currentCamera = new Camera();
+}

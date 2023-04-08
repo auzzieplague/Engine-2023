@@ -1,20 +1,24 @@
+
+#cmake settings notes
+* set CMake options to: -G Ninja
+* set build options: -j 50
+
+#prerequisites
+- directX https://github.com/microsoft/DirectXTK
+- open the sln and build for debug/release 86/64 as required
+- include DirectXTK.lib file in vendor libs folder - currently libs/debug/DirectXTK.lib
+
+
+#agnostic graphics api
+- i've started with API_OpenGL with the intention to allow for directX
+- setupWindow will need moving to the APIs as window context is different
+- no DirectX api methods have been implemented yet
+
 #onion engine refactor
-
-Current branch is attempting to abstract the graphics api our of the engine,
-starting with API_OpenGL i'M attempting to abstract all functionality to the GraphicsLayer
-because each API directX, openGL ... have different flags and properties i've added a getFlag method
-and some disable() enable() methods in the rendering pipeline. 
-
-I won't know how well this system will work until I implement direct X and others.
-
-The intention is to keep this branch minimalistic so that it can be used to hash out fundamental concepts without
-the overhead of the rest of the onion engine.
-
-Once the graphics api is extracted sufficiently, 
-I want to begin collision just using collision meshes
-
-rendering  textures , lighting, animations, reflections water, skybox, etc ... we have achieved in the onion engine
-however the collision engine is where everything falls apart. 
+Previous iterations of this engine fall over when attempting collision detection,
+we have demos of lighting, texture, animation, lua scripting, sound, and more
+in this iteration the intention is to focus on collision and framework.
 
 #collision
-Collision should be the primary focus for this version of the engine.
+we might attempt to bolt in a third party collision framework, previous attempts failed 
+however the component structure may have been to far gone to refactor. 

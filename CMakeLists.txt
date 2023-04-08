@@ -13,8 +13,7 @@ include_directories(
         "${VENDOR}/includes"
 )
 
-link_directories(${VENDOR}/libs)
-
+link_directories(${VENDOR}/libs/debug)
 
 file(GLOB_RECURSE ENGINE_HEADER_FILES
         ${CORE}/*.h
@@ -43,7 +42,7 @@ add_executable(componentLayout  ${ENGINE_HEADER_FILES} ${ENGINE_SOURCE_FILES} ${
 
 add_library(glad ${VENDOR}/includes/glad/glad.c)
 
-set(LIBS glfw3 glad opengl32 glad)
+set(LIBS glfw3 glad opengl32 glad d3d11 DirectXTK )
 
 target_link_libraries(componentLayout ${LIBS})
 

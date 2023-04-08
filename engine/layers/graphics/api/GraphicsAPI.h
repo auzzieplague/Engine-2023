@@ -9,11 +9,8 @@ class Mesh;
 class GraphicsAPI {
 
 protected:
-    static unsigned int shaderProgram;
 
 public:
-
-    const std::map< GraphicsFlag, unsigned int> flagMappings;
 
     virtual unsigned int loadShader(std::string, std::string);
 
@@ -30,6 +27,16 @@ public:
     virtual void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 
     virtual unsigned int getFlag(GraphicsFlag flag);
+
+    virtual void shaderSetBool(const std::string& name, bool value) const {};
+    virtual void shaderSetInt(const std::string& name, int value) const {};
+    virtual void shaderSetFloat(const std::string& name, float value) const {};
+    virtual void shaderSetVec2(const std::string& name, const glm::vec2& value) const {};
+    virtual void shaderSetVec3(const std::string& name, const glm::vec3& value) const {};
+    virtual void shaderSetVec4(const std::string& name, const glm::vec4& value) const {};
+    virtual void shaderSetMat2(const std::string& name, const glm::mat2& mat) const {};
+    virtual void shaderSetMat3(const std::string& name, const glm::mat3& mat) const {};
+    virtual void shaderSetMat4(const std::string& name, const glm::mat4& mat) const {};
 };
 
 

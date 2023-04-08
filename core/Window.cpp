@@ -5,6 +5,8 @@ GLFWwindow *Window::currentWindow = nullptr;
 GraphicsAPI *Window::api;
 
 GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::string &title) {
+
+    /// setup windowContext struct to allow abstraction of API - then put this into API_openGL
     // init libs and window
     if (!glfwInit()) return nullptr;
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);

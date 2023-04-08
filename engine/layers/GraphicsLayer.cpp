@@ -7,11 +7,16 @@ GraphicsLayer::GraphicsLayer(GraphicsAPI *api) {
     Mesh::setApi(api);
 }
 
-void GraphicsLayer::onAttach(Scene *) {
+void GraphicsLayer::onAttach(Scene *scene) {
     // setup mesh rendering config
     meshConfig.shaderID = api->loadShader("general.vert", "general.frag");
-    meshConfig.enable(flag(CULL_FACE));
+    meshConfig.disable(flag(CULL_FACE));
     api->updateRendererConfig(meshConfig);
+    api->shaderSetMat4("projection",scene->currentCamera->getProjectionMatrix());
+    api->shaderSetMat4("view",scene->currentCamera->getViewMatrix());
+
+    // set projection matrix uniform
+
 
 
     auto *geometry = new Geometry();
@@ -23,15 +28,19 @@ void GraphicsLayer::onAttach(Scene *) {
 //        geometry->buildTorus(0.5f,0.1f,24,24); // slightly busted
 //        geometry->buildCone(0.5f, 1.0f, 24); // busted
 
+    geometry->transform.setPosition({0,0,-5});
     this->testMeshVAO = geometry->generateMeshID();
 
     testMesh = geometry;
 }
 
-void GraphicsLayer::render(Scene *) {
-
+void GraphicsLayer::render(Scene *scene) {
     // update shaders and set api properties
     api->updateRendererConfig(meshConfig);
+
+
+    // send transform
+    api->shaderSetMat4("transform",testMesh->transform.getModelMatrix());
 
     // render meshes
     api->renderMesh(testMesh);

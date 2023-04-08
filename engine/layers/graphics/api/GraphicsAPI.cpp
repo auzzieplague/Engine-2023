@@ -39,3 +39,4 @@ unsigned int GraphicsAPI::getFlag(GraphicsFlag flag) {
     return 0;
 }
 
+

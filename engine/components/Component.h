@@ -2,13 +2,7 @@
 // prefine all components here, mesh, material, texture, animation, script etc.
 
 #include "../Object.h"
-
-//class Component;
-//class Mesh;
-//class CollisionMesh;
-//class Material;
-//class Texture;
-//class Animation;
+#include "../../core/Transform.h"
 
 
 class Component : public Object {
@@ -16,6 +10,8 @@ class Component : public Object {
     // has child component list and then underlying mechanics reference the components in the list
     // should have a scene components list and everything can just references the instances of components as required - mayeb
 public:
+
+    Transform transform;
 
     /**
      *  create a game object that represents the 3D model in the game world.
