@@ -38,7 +38,8 @@ void GraphicsLayer::onAttach(Scene *scene) {
 void GraphicsLayer::render(Scene *scene) {
     // update shaders and set api properties
     api->updateRendererConfig(meshConfig);
-
+    //camera might be dirty
+    api->shaderSetMat4("view",scene->currentCamera->getViewMatrix());
 
     // send transform
     api->shaderSetMat4("transform",testMesh->transform.getModelMatrix());

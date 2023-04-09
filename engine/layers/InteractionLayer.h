@@ -2,6 +2,9 @@
 
 #include "Layer.h"
 #include "../../core/Input.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 class InteractionLayer: public Layer {
 private:
@@ -14,7 +17,9 @@ private:
     Input *input;
 public:
     void onAttach(Scene *scene) override;
+    void processInput(Scene *scene) override;
 
+    void processCameraInput(Scene *scene);
 };
 
 
