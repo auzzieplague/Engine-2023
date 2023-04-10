@@ -21,8 +21,8 @@ struct GeometryConfig {
 
     struct SphereConfig {
         float radius =0.5f;
-        unsigned int rings = 20;
-        unsigned int sectors = 20;
+        unsigned int rings = 5;
+        unsigned int sectors = 5;
     };
 
     struct CapsuleConfig {
@@ -45,10 +45,10 @@ struct GeometryConfig {
     };
 
     struct TerrainConfig {
-        int width = 20;
-        int height = 20;
+        int width = 10;
+        int height = 10;
         float minHeight = 0;
-        float maxHeight = 0.5;
+        float maxHeight = 0;
         float cellSize = 1;
         unsigned int seed = 456;
     };

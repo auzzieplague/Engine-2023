@@ -36,3 +36,4 @@ bool Collider::containsPoint(const glm::vec3 &point) const {
     // The point is inside the convex hull
     return true;
 }
+

@@ -1,41 +1,18 @@
-
 #include <iostream>
 #include "../engine/Engine.h"
-#include "../engine/components/Model.h"
-//#include "../engine/components/Model.h"
-
-#include <Windows.h>
-#include <d3d11.h>
 
 void setupScene(Scene *scene) {
-    auto *model1 = new Model();
-    auto *sphere = new Geometry();
-    GeometryConfig config{
-            .sphere = {
-                    .radius = 0.5f,
-                    .rings = 5,
-                    .sectors =  5},
 
-            .terrain = {
-                    .seed = 123
-            }
-    };
+    auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Terrain);
+    terrain1->setCollidable();
+    terrain1->transform.setPosition({-5, -2, -10});
 
-//    sphere->buildDome();
-//    sphere->buildCube();
-//    sphere->buildSphere(config);
-//    sphere->buildCapsule(); // borked
-//    sphere->buildTorus(); // borked
-//    sphere->buildCone(); // borked
-    sphere->buildTerrain();
+    auto sphere1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
+    sphere1->setCollidable();
+    sphere1->transform.setPosition({0, -2, -10});
 
-
-    model1->mesh = dynamic_cast<Mesh *>(sphere);
-    model1->collider = new Collider();
-
-    model1->transform.setPosition({0, 0, -5});
-    /// gonna need to update geometries with sizing options
-    scene->addComponent(model1);
+    scene->addComponent(sphere1);
+    scene->addComponent(terrain1);
 }
 
 int main() {
