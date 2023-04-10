@@ -10,12 +10,6 @@ bool Input::rightMouseDragging = false;
 glm::vec2 Input::mousePos;
 glm::vec2 Input::lastMousePos;
 
-double Input::lastMouseX = 0.0;
-double Input::lastMouseY = 0.0;
-double Input::mouseX = 0.0;
-double Input::mouseY = 0.0;
-
-
 void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     Input *input = Input::getInstance();
     if (input) {

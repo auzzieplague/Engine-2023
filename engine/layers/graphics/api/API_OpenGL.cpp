@@ -27,6 +27,16 @@ void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
 
 // unsigned int GraphicsLayerOpenGL::testMeshVAO;
 void API_OpenGL::renderMesh(Mesh *mesh) {
+    // if the mesh hasn't been setup yet, we'll need to initialise it (lazy loading)
+    if (mesh->gID == 0) {
+        mesh->generateMeshID();
+    }
+
+    if (mesh->readyCheck()) {
+        Debug::show("mesh not ready");
+        return;
+    }
+
     glBindVertexArray(mesh->gID);
 //    glDrawArrays(GL_TRIANGLES, 0, 6);
 //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -101,6 +111,10 @@ unsigned int API_OpenGL::loadShader(std::string vertex, std::string fragment) {
 
 
 unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
+    if (mesh->indices.empty()){
+        Debug::show("mesh object has no indices");
+        return 0;
+    }
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);

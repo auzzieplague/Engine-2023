@@ -11,7 +11,17 @@ class Component : public Object {
     // should have a scene components list and everything can just references the instances of components as required - mayeb
 public:
 
+    ObjectType getType() override {
+        return ObjectType::OT_Component;
+    };
+
     Transform transform;
+    bool isDirty = true;
+    bool isReady = false;
+
+    virtual bool readyCheck(){
+        return isReady;
+    };
 
     /**
      *  create a game object that represents the 3D model in the game world.

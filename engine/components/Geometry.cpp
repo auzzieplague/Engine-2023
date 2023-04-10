@@ -22,38 +22,42 @@ void Geometry::buildQuad() {
     this->indices = indices;
 }
 
-void Geometry::buildCube() {
+void Geometry::buildCube(GeometryConfig config) {
+    config.box.sizeX=config.box.sizeY=config.box.sizeZ=config.cube.size;
+    buildBox(config);
+}
+void Geometry::buildBox(GeometryConfig config) {
     std::vector<glm::vec3> vertices = {
             // Front face
-            glm::vec3(-0.5f, -0.5f, 0.5f),
-            glm::vec3(0.5f, -0.5f, 0.5f),
-            glm::vec3(0.5f, 0.5f, 0.5f),
-            glm::vec3(-0.5f, 0.5f, 0.5f),
+            glm::vec3(-config.box.sizeX, -config.box.sizeY, config.box.sizeZ),
+            glm::vec3(config.box.sizeX, -config.box.sizeY, config.box.sizeZ),
+            glm::vec3(config.box.sizeX, config.box.sizeY, config.box.sizeZ),
+            glm::vec3(-config.box.sizeX, config.box.sizeY, config.box.sizeZ),
             // Back face
-            glm::vec3(0.5f, -0.5f, -0.5f),
-            glm::vec3(-0.5f, -0.5f, -0.5f),
-            glm::vec3(-0.5f, 0.5f, -0.5f),
-            glm::vec3(0.5f, 0.5f, -0.5f),
+            glm::vec3(config.box.sizeX, -config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(-config.box.sizeX, -config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(-config.box.sizeX, config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(config.box.sizeX, config.box.sizeY, -config.box.sizeZ),
             // Top face
-            glm::vec3(-0.5f, 0.5f, 0.5f),
-            glm::vec3(0.5f, 0.5f, 0.5f),
-            glm::vec3(0.5f, 0.5f, -0.5f),
-            glm::vec3(-0.5f, 0.5f, -0.5f),
+            glm::vec3(-config.box.sizeX, config.box.sizeY, config.box.sizeZ),
+            glm::vec3(config.box.sizeX, config.box.sizeY, config.box.sizeZ),
+            glm::vec3(config.box.sizeX, config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(-config.box.sizeX, config.box.sizeY, -config.box.sizeZ),
             // Bottom face
-            glm::vec3(-0.5f, -0.5f, -0.5f),
-            glm::vec3(0.5f, -0.5f, -0.5f),
-            glm::vec3(0.5f, -0.5f, 0.5f),
-            glm::vec3(-0.5f, -0.5f, 0.5f),
+            glm::vec3(-config.box.sizeX, -config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(config.box.sizeX, -config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(config.box.sizeX, -config.box.sizeY, config.box.sizeZ),
+            glm::vec3(-config.box.sizeX, -config.box.sizeY, config.box.sizeZ),
             // Right face
-            glm::vec3(0.5f, -0.5f, 0.5f),
-            glm::vec3(0.5f, -0.5f, -0.5f),
-            glm::vec3(0.5f, 0.5f, -0.5f),
-            glm::vec3(0.5f, 0.5f, 0.5f),
+            glm::vec3(config.box.sizeX, -config.box.sizeY, config.box.sizeZ),
+            glm::vec3(config.box.sizeX, -config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(config.box.sizeX, config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(config.box.sizeX, config.box.sizeY, config.box.sizeZ),
             // Left face
-            glm::vec3(-0.5f, -0.5f, -0.5f),
-            glm::vec3(-0.5f, -0.5f, 0.5f),
-            glm::vec3(-0.5f, 0.5f, 0.5f),
-            glm::vec3(-0.5f, 0.5f, -0.5f),
+            glm::vec3(-config.box.sizeX, -config.box.sizeY, -config.box.sizeZ),
+            glm::vec3(-config.box.sizeX, -config.box.sizeY, config.box.sizeZ),
+            glm::vec3(-config.box.sizeX, config.box.sizeY, config.box.sizeZ),
+            glm::vec3(-config.box.sizeX, config.box.sizeY, -config.box.sizeZ),
     };
 
     std::vector<unsigned int> indices = {
@@ -82,29 +86,29 @@ void Geometry::buildCube() {
     this->indices = indices;
 }
 
-void Geometry::buildDome(float radius, unsigned int segments) {
+void Geometry::buildDome(GeometryConfig config) {
     positions.clear();
     indices.clear();
 
     // Generate the vertex positions
-    for (unsigned int j = 0; j <= segments; j++) {
-        float y = cos(-pi / 2.0f + (float) j / (float) segments * pi);
-        float r = sin(-pi / 2.0f + (float) j / (float) segments * pi) * radius;
+    for (unsigned int j = 0; j <= config.dome.segments; j++) {
+        float y = cos(-pi / 2.0f + (float) j / (float) config.dome.segments * pi);
+        float r = sin(-pi / 2.0f + (float) j / (float) config.dome.segments * pi) * config.dome.radius;
 
-        for (unsigned int i = 0; i <= segments; i++) {
-            float x = cos((float) i / (float) segments * 2.0f * pi) * r;
-            float z = sin((float) i / (float) segments * 2.0f * pi) * r;
+        for (unsigned int i = 0; i <= config.dome.segments; i++) {
+            float x = cos((float) i / (float) config.dome.segments * 2.0f * pi) * r;
+            float z = sin((float) i / (float) config.dome.segments * 2.0f * pi) * r;
 
             positions.emplace_back(x, y, z);
         }
     }
 
     // Generate the triangle indices
-    for (unsigned int j = 0; j < segments; j++) {
-        for (unsigned int i = 0; i < segments; i++) {
-            unsigned int a = j * (segments + 1) + i;
+    for (unsigned int j = 0; j < config.dome.segments; j++) {
+        for (unsigned int i = 0; i < config.dome.segments; i++) {
+            unsigned int a = j * (config.dome.segments + 1) + i;
             unsigned int b = a + 1;
-            unsigned int c = (j + 1) * (segments + 1) + i;
+            unsigned int c = (j + 1) * (config.dome.segments + 1) + i;
             unsigned int d = c + 1;
 
             indices.push_back(a);
@@ -118,47 +122,47 @@ void Geometry::buildDome(float radius, unsigned int segments) {
     }
 }
 
-void Geometry::buildSphere(float radius, unsigned int rings, unsigned int sectors)  {
-    float const R = 1.0f / (float)(rings - 1);
-    float const S = 1.0f / (float)(sectors - 1);
+void Geometry::buildSphere(GeometryConfig config)  {
+    float const R = 1.0f / (float)(config.sphere.rings - 1);
+    float const S = 1.0f / (float)(config.sphere.sectors - 1);
     float phi, theta;
 
     positions.clear();
     indices.clear();
-    for(unsigned int r = 0; r < rings; ++r) {
-        for(unsigned int s = 0; s < sectors; ++s) {
+    for(unsigned int r = 0; r < config.sphere.rings; ++r) {
+        for(unsigned int s = 0; s < config.sphere.sectors; ++s) {
             phi =  pi * r * R;
             theta = 2.0f * pi * s * S;
             float x = sin(phi) * cos(theta);
             float y = cos(phi);
             float z = sin(phi) * sin(theta);
-            positions.push_back(glm::vec3(x, y, z) * radius);
+            positions.push_back(glm::vec3(x, y, z) * config.sphere.radius);
         }
     }
 
-    for(unsigned int r = 0; r < rings - 1; ++r) {
-        for(unsigned int s = 0; s < sectors - 1; ++s) {
-            unsigned int idx = r * sectors + s;
+    for(unsigned int r = 0; r < config.sphere.rings - 1; ++r) {
+        for(unsigned int s = 0; s < config.sphere.sectors - 1; ++s) {
+            unsigned int idx = r * config.sphere.sectors + s;
             indices.push_back(idx);
             indices.push_back(idx + 1);
-            indices.push_back((r + 1) * sectors + s + 1);
-            indices.push_back((r + 1) * sectors + s + 1);
-            indices.push_back((r + 1) * sectors + s);
+            indices.push_back((r + 1) * config.sphere.sectors + s + 1);
+            indices.push_back((r + 1) * config.sphere.sectors + s + 1);
+            indices.push_back((r + 1) * config.sphere.sectors + s);
             indices.push_back(idx);
         }
     }
 }
 
-void Geometry::buildCapsule(float radius, float halfLength, unsigned int segments)
+void Geometry::buildCapsule(GeometryConfig config)
 {
-    float segmentAngle = pi2 / segments;
+    float segmentAngle = pi2 / config.capsule.segments;
 
     // Create top hemisphere
-    for (unsigned int j = 0; j <= segments / 4; j++) {
+    for (unsigned int j = 0; j <= config.capsule.segments / 4; j++) {
         float inclination = segmentAngle * j;
-        float z = radius * cos(inclination) + halfLength - radius;
-        float xy = radius * sin(inclination);
-        for (unsigned int i = 0; i <= segments; i++) {
+        float z = config.capsule.radius * cos(inclination) + config.capsule.halfLength - config.capsule.radius;
+        float xy = config.capsule.radius * sin(inclination);
+        for (unsigned int i = 0; i <= config.capsule.segments; i++) {
             float azimuth = segmentAngle * i;
             float x = xy * cos(azimuth);
             float y = xy * sin(azimuth);
@@ -167,11 +171,11 @@ void Geometry::buildCapsule(float radius, float halfLength, unsigned int segment
     }
 
     // Create bottom hemisphere
-    for (unsigned int j = 3 * segments / 4; j <= segments; j++) {
+    for (unsigned int j = 3 * config.capsule.segments / 4; j <= config.capsule.segments; j++) {
         float inclination = segmentAngle * j;
-        float z = radius * cos(inclination) - halfLength + radius;
-        float xy = radius * sin(inclination);
-        for (unsigned int i = 0; i <= segments; i++) {
+        float z = config.capsule.radius * cos(inclination) - config.capsule.halfLength + config.capsule.radius;
+        float xy = config.capsule.radius * sin(inclination);
+        for (unsigned int i = 0; i <= config.capsule.segments; i++) {
             float azimuth = segmentAngle * i;
             float x = xy * cos(azimuth);
             float y = xy * sin(azimuth);
@@ -181,10 +185,10 @@ void Geometry::buildCapsule(float radius, float halfLength, unsigned int segment
 
     // Create cylinder
     unsigned int topStart = 0;
-    unsigned int bottomStart = positions.size() - (segments + 1);
-    for (unsigned int j = 0; j < segments; j++) {
-        unsigned int offset = j * (segments + 1);
-        for (unsigned int i = 0; i < segments; i++) {
+    unsigned int bottomStart = positions.size() - (config.capsule.segments + 1);
+    for (unsigned int j = 0; j < config.capsule.segments; j++) {
+        unsigned int offset = j * (config.capsule.segments + 1);
+        for (unsigned int i = 0; i < config.capsule.segments; i++) {
             indices.push_back(topStart + offset + i);
             indices.push_back(topStart + offset + i + 1);
             indices.push_back(bottomStart + offset + i);
@@ -197,40 +201,40 @@ void Geometry::buildCapsule(float radius, float halfLength, unsigned int segment
 }
 
 /// torus has index glitch
-void Geometry::buildTorus(float radius, float tubeRadius, int segments, int sides) {
+void Geometry::buildTorus(GeometryConfig config) {
     positions.clear();
     indices.clear();
 
-    float segmentAngle = pi2 / segments;
-    float sideAngle = pi2 / sides;
+    float segmentAngle = pi2 / config.torus.segments;
+    float sideAngle = pi2 / config.torus.sides;
 
     // Compute torus vertices
-    for (int i = 0; i <= segments; i++) {
+    for (int i = 0; i <= config.torus.segments; i++) {
         float phi = i * segmentAngle;
         glm::vec3 center(std::cos(phi), std::sin(phi), 0.0f);
 
-        for (int j = 0; j <= sides; j++) {
+        for (int j = 0; j <= config.torus.sides; j++) {
             float theta = j * sideAngle;
             glm::vec3 dir(std::cos(theta), std::sin(theta), 0.0f);
-            glm::vec3 vertex = center * (radius + tubeRadius * std::cos(theta)) + dir * tubeRadius * std::sin(theta);
+            glm::vec3 vertex = center * (config.torus.radius + config.torus.tubeRadius * std::cos(theta)) + dir * config.torus.tubeRadius * std::sin(theta);
             positions.push_back(vertex);
         }
     }
 
     // Compute torus indices
-    for (int i = 0; i < segments; i++) {
-        int k1 = i * (sides + 1);
-        int k2 = k1 + sides + 1;
+    for (int i = 0; i < config.torus.segments; i++) {
+        int k1 = i * (config.torus.sides + 1);
+        int k2 = k1 + config.torus.sides + 1;
 
-        for (int j = 0; j < sides; j++, k1++, k2++) {
-            if (j == sides - 1) {
+        for (int j = 0; j < config.torus.sides; j++, k1++, k2++) {
+            if (j == config.torus.sides - 1) {
                 indices.push_back(k1);
                 indices.push_back(k2);
-                indices.push_back(i == segments - 1 ? k2 - sides - 1 : k1 - sides - 1);
+                indices.push_back(i == config.torus.segments - 1 ? k2 - config.torus.sides - 1 : k1 - config.torus.sides - 1);
 
-                indices.push_back(i == segments - 1 ? k2 - sides - 1 : k1 - sides - 1);
+                indices.push_back(i == config.torus.segments - 1 ? k2 - config.torus.sides - 1 : k1 - config.torus.sides - 1);
                 indices.push_back(k2);
-                indices.push_back(i == segments - 1 ? k1 : k2);
+                indices.push_back(i == config.torus.segments - 1 ? k1 : k2);
             }
             else {
                 indices.push_back(k1);
@@ -245,48 +249,48 @@ void Geometry::buildTorus(float radius, float tubeRadius, int segments, int side
     }
 }
 
-void Geometry::buildCone(float radius, float height, int segments) {
+void Geometry::buildCone(GeometryConfig config) {
 
     // Calculate vertex and index counts
-    int vertexCount = segments * 2 + 2;
-    int indexCount = segments * 6;
+    int vertexCount = config.cone.segments * 2 + 2;
+    int indexCount = config.cone.segments * 6;
 
     // Resize vectors to hold new data
     positions.resize(vertexCount);
     indices.resize(indexCount);
 
     // Calculate angle and step size
-    float angleStep = pi2 / segments;
+    float angleStep = pi2 / config.cone.segments;
     float angle = 0.0f;
 
     // Calculate top and bottom points
-    glm::vec3 topPoint(0.0f, height / 2.0f, 0.0f);
-    glm::vec3 bottomPoint(0.0f, -height / 2.0f, 0.0f);
+    glm::vec3 topPoint(0.0f, config.cone.height / 2.0f, 0.0f);
+    glm::vec3 bottomPoint(0.0f, -config.cone.height / 2.0f, 0.0f);
 
     // Create top and bottom triangles
     positions[0] = topPoint;
     positions[vertexCount - 1] = bottomPoint;
-    for (int i = 1; i <= segments; i++)
+    for (int i = 1; i <= config.cone.segments; i++)
     {
         // Calculate current angle
         angle = angleStep * i;
 
         // Calculate position for current vertex on top and bottom circle
-        glm::vec3 topVertex(radius * glm::cos(angle), height / 2.0f, radius * glm::sin(angle));
-        glm::vec3 bottomVertex(radius * glm::cos(angle), -height / 2.0f, radius * glm::sin(angle));
+        glm::vec3 topVertex(config.cone.radius * glm::cos(angle), config.cone.height / 2.0f, config.cone.radius * glm::sin(angle));
+        glm::vec3 bottomVertex(config.cone.radius * glm::cos(angle), -config.cone.height / 2.0f, config.cone.radius * glm::sin(angle));
 
         // Add vertices to positions vector
         positions[i] = topVertex;
-        positions[segments + i] = bottomVertex;
+        positions[config.cone.segments + i] = bottomVertex;
 
         // Add indices for top and bottom triangles
         indices[(i - 1) * 3] = 0;
         indices[(i - 1) * 3 + 1] = i;
-        indices[(i - 1) * 3 + 2] = i % segments + 1;
+        indices[(i - 1) * 3 + 2] = i % config.cone.segments + 1;
 
-        indices[(i + segments - 1) * 3] = vertexCount - 1;
-        indices[(i + segments - 1) * 3 + 1] = segments + i;
-        indices[(i + segments - 1) * 3 + 2] = segments + i % segments + 1;
+        indices[(i + config.cone.segments - 1) * 3] = vertexCount - 1;
+        indices[(i + config.cone.segments - 1) * 3 + 1] = config.cone.segments + i;
+        indices[(i + config.cone.segments - 1) * 3 + 2] = config.cone.segments + i % config.cone.segments + 1;
     }
 
     // Set normals, tangents, and bitangents
@@ -294,32 +298,37 @@ void Geometry::buildCone(float radius, float height, int segments) {
 //    calculateTangents();
 }
 
-void Geometry::buildTerrain(int width, int height, float minHeight, float maxHeight, float cellSize) {
+void Geometry::buildTerrain(GeometryConfig config) {
+    if (config.terrain.seed != 0) {
+        srand(config.terrain.seed);
+    }
+    /// could take a seed in the config, grab a value from rand first to reseed the rand() function .. then set the seed
+    /// when the function ends, reseed
     // Calculate the number of vertices and indices
-    int numVertices = width * height;
-    int numIndices = (width - 1) * (height - 1) * 6;
+    int numVertices = config.terrain.width * config.terrain.height;
+    int numIndices = (config.terrain.width - 1) * (config.terrain.height - 1) * 6;
 
     // Resize the position and index vectors
     positions.resize(numVertices);
     indices.resize(numIndices);
 
-    // Populate the position vector with random heights
-    for (int x = 0; x < width; ++x) {
-        for (int z = 0; z < height; ++z) {
-            int index = x + z * width;
-            float y = minHeight + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (maxHeight - minHeight)));
-            positions[index] = glm::vec3(static_cast<float>(x) * cellSize, y, static_cast<float>(z) * cellSize);
+    // Populate the position vector with random config.terrain.heights
+    for (int x = 0; x < config.terrain.width; ++x) {
+        for (int z = 0; z < config.terrain.height; ++z) {
+            int index = x + z * config.terrain.width;
+            float y = config.terrain.minHeight + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (config.terrain.maxHeight - config.terrain.minHeight)));
+            positions[index] = glm::vec3(static_cast<float>(x) * config.terrain.cellSize, y, static_cast<float>(z) * config.terrain.cellSize);
         }
     }
 
     // Populate the index vector
     int index = 0;
-    for (int x = 0; x < width - 1; ++x) {
-        for (int z = 0; z < height - 1; ++z) {
-            int a = x + z * width;
-            int b = (x + 1) + z * width;
-            int c = x + (z + 1) * width;
-            int d = (x + 1) + (z + 1) * width;
+    for (int x = 0; x < config.terrain.width - 1; ++x) {
+        for (int z = 0; z < config.terrain.height - 1; ++z) {
+            int a = x + z * config.terrain.width;
+            int b = (x + 1) + z * config.terrain.width;
+            int c = x + (z + 1) * config.terrain.width;
+            int d = (x + 1) + (z + 1) * config.terrain.width;
 
             indices[index++] = a;
             indices[index++] = b;
@@ -329,4 +338,8 @@ void Geometry::buildTerrain(int width, int height, float minHeight, float maxHei
             indices[index++] = c;
         }
     }
+
+    // reseed rand
+    srand(time(nullptr));
 }
+

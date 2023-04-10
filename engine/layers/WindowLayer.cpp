@@ -1,13 +1,9 @@
 #pragma once
 
 #include "WindowLayer.h"
-//
-//WindowLayer::WindowLayer(GraphicsAPI *api) {
-//    this->api = api;
-//}
 
 void WindowLayer::onAttach(Scene * scene){
-    Debug::show("Spawning Window");
+    Debug::show("[>] Window Attached");
     scene->currentWindow = new Window(api,1280, 720, "Window Layer");
 }
 

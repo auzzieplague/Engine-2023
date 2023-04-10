@@ -13,9 +13,7 @@ public:
 
     // overrides
     bool initialised = false;
-    virtual uint32_t getType() { return 0; };
     virtual uint32_t getFrequency() { return 0; };
-    virtual const char* getName() { return "(missing getName override)"; };
 
     virtual void onAttach(Scene*) {}
     virtual void onDetach(Scene*) {}

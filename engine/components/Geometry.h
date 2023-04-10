@@ -2,6 +2,66 @@
 
 #include "meshes/Mesh.h"
 
+struct GeometryConfig {
+
+    struct BoxConfig {
+        float sizeX = 0.5f;
+        float sizeY = 0.5f;
+        float sizeZ = 0.5f;
+    };
+
+    struct CubeConfig {
+      float size = 0.5f;
+    };
+
+    struct DomeConfig {
+        float radius = 0.5f;
+        unsigned int segments = 12;
+    };
+
+    struct SphereConfig {
+        float radius =0.5f;
+        unsigned int rings = 20;
+        unsigned int sectors = 20;
+    };
+
+    struct CapsuleConfig {
+        float radius = 0.5f;
+        float halfLength = 1.0f;
+        unsigned int segments = 16;
+    };
+
+    struct TorusConfig {
+        float radius = 0.5f;
+        float tubeRadius = 0.1f;
+        int segments = 12;
+        int sides = 12;
+    };
+
+    struct ConeConfig {
+        float radius = 0.5f;
+        float height = 1.0f;
+        int segments = 24;
+    };
+
+    struct TerrainConfig {
+        int width = 20;
+        int height = 20;
+        float minHeight = 0;
+        float maxHeight = 0.5;
+        float cellSize = 1;
+        unsigned int seed = 456;
+    };
+
+     BoxConfig box;
+     CubeConfig cube;
+     DomeConfig dome;
+     SphereConfig sphere;
+     CapsuleConfig capsule;
+     TorusConfig torus;
+     ConeConfig cone;
+     TerrainConfig terrain;
+};
 
 class Geometry : public Mesh {
     //inherits meshData
@@ -11,27 +71,34 @@ public:
 
     // todo add factory - usually at component level.
     // maintain a type in order to provide interface options for sectors, segments etc to rebuild shape
-    enum geometryType {
-        CUBE, PLANE
+    enum class ShapeType {
+        Quad,
+        Cube,
+        Dome,
+        Sphere,
+        Capsule,
+        Torus,
+        Cone,
+        Terrain
     };
 
     Geometry() = default;;
 
     void buildQuad();
+    void buildBox (GeometryConfig config ={});
+    void buildCube(GeometryConfig config ={});
 
-    void buildCube();
+    void buildDome(GeometryConfig config ={});
 
-    void buildDome(float radius, unsigned int segments);
+    void buildSphere(GeometryConfig config ={});
 
-    void buildSphere(float radius, unsigned int rings, unsigned int sectors);
+    void buildCapsule(GeometryConfig config ={});
 
-    void buildCapsule(float radius, float halfLength, unsigned int segments);
+    void buildTorus(GeometryConfig config ={});
 
-    void buildTorus(float radius, float tubeRadius, int segments, int sides);
+    void buildCone(GeometryConfig config ={});
 
-    void buildCone(float radius, float height, int segments);
-
-    void buildTerrain(int width, int height, float minHeight, float maxHeight, float cellSize);
+    void buildTerrain(GeometryConfig config ={});
 };
 
 

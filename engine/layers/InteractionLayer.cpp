@@ -5,7 +5,7 @@
 
 void InteractionLayer::onAttach(Scene *scene) {
     // bind this input to inputInstance
-    std::cout << "[>] Interaction Attached\n";
+    Debug::show("[>] Interaction Attached");
     this->input = new Input(scene->currentWindow->glRef);
 }
 
@@ -33,6 +33,14 @@ void InteractionLayer::processCameraInput(Scene *scene) {
 
     if (input->isKeyPressed(GLFW_KEY_D)) {
         scene->currentCamera->moveRight(speed);
+    };
+
+    if (input->isKeyPressed(GLFW_KEY_SPACE)) {
+        scene->currentCamera->moveUp(speed);
+    };
+
+    if (input->isKeyPressed(GLFW_KEY_X)) {
+        scene->currentCamera->moveDown(speed);
     };
 
     if (Input::isRightMouseDragging()) {

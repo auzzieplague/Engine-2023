@@ -2,17 +2,29 @@
 
 #include "Component.h"
 #include "meshes/Mesh.h"
-#include "meshes/CollisionMesh.h"
+#include "Collider.h"
 
 class Model: public Component {
 
-    // primary focus on collision mesh
+public:
 
-    CollisionMesh collisionMesh;
-    void setCollisionMesh(Mesh meshToUse, glm::vec3 offset={0,0,0}, glm::vec3 scale={0,0,0});
+    ObjectType getType() override {
+        return ObjectType::OT_Model;
+    };
 
-    // also materials, meshes with submeshes and animation.
-    // mesh needs the material association
+    static Model * createFromGeometry(Geometry::ShapeType shape){
+        auto *model = new Model();
+        switch(shape) {
+            default:
+                Debug::show("unsupported shape requested by model");
+                break;
+            case Geometry::ShapeType::Cube :
+                break;
+        }
+    }
+
+    Collider *collider;
+    Mesh *mesh;
 };
 
 

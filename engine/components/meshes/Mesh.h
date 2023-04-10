@@ -6,6 +6,15 @@
 class GraphicsAPI;
 
 class Mesh : public Component {
+
+    ObjectType getType() override {
+        return ObjectType::OT_Mesh;
+    };
+
+    std::string getName() override {
+        return "Mesh - name tbc";
+    };
+
     enum TOPOLOGY
     {
         POINTS,
@@ -43,6 +52,12 @@ public:
     // need to pass a test cube through as collision mesh on a model to begin testing
 public:
 
+    /**
+     * Note: not all meshes will require loading into video ram,
+     * some meshes are only for collision. Some meshes, although in proximity to the view may never be seen,
+     * so we will only generateMeshID when attempting to render an object that doesnt already have one.
+     * @return
+     */
     unsigned int generateMeshID();
 
     Mesh() {}
@@ -54,11 +69,6 @@ public:
     void loadMesh(std::string);
 //    void loadMesh(assimp);
 
-    /**
-     * take the model data and create a mesh object that can be rendered by the engine.
-     * The mesh object should contain information such as vertex positions, texture coordinates, and indices.
-     */
-    void createMesh();
 
     /**
      * Once the mesh is populated a call to the graphics engine will need to be made to assign the correct, topology
@@ -161,5 +171,6 @@ public:
         }
     };
 
+    bool readyCheck();
 };
 

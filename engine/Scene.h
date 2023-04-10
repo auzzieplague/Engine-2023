@@ -4,11 +4,13 @@
 #include "components/Components.h"
 #include "components/Camera.h"
 #include "../core/Window.h"
+#include "components/Model.h"
 
 class Scene: public Object {
     /// at a high level we just want to add components to the scene graph
-    std::vector<Component*> componentList;
 public:
+    std::vector<Component*> componentList;
+    std::vector<Model*> modelsToRender;
 
     Scene();
 

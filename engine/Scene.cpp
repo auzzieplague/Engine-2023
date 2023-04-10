@@ -6,7 +6,13 @@
 
 void Scene::addComponent(Component * component) {
     // todo: add spawn queue for threading
-    this->componentList.push_back(component);
+    switch (component->getType()) {
+        case ObjectType::OT_Model:
+            this->modelsToRender.push_back(dynamic_cast<Model *>(component));
+            break;
+        default:
+            this->componentList.push_back(component);
+    }
 
     Debug::show("component added");
 }

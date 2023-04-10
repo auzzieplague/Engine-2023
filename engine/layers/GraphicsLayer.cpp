@@ -9,6 +9,7 @@ void GraphicsLayer::setApi(GraphicsAPI *api) {
 }
 
 void GraphicsLayer::onAttach(Scene *scene) {
+    Debug::show("[>] Graphics Attached");
     // setup mesh rendering config
     meshConfig.shaderID = api->loadShader("general.vert", "general.frag");
     meshConfig.disable(flag(CULL_FACE));
@@ -20,19 +21,19 @@ void GraphicsLayer::onAttach(Scene *scene) {
 
 
 
-    auto *geometry = new Geometry();
+//    auto *geometry = new Geometry();
 //    geometry->buildQuad();
 //        geometry->buildCube();
 //        geometry->buildDome(0.5f,12);
-        geometry->buildSphere(0.5f,20,20);
+//        geometry->buildSphere(0.5f,20,20);
 //        geometry->buildCapsule(0.5f,1.0f,16);
 //        geometry->buildTorus(0.5f,0.1f,24,24); // slightly busted
 //        geometry->buildCone(0.5f, 1.0f, 24); // busted
 
-    geometry->transform.setPosition({0,0,-5});
-    this->testMeshVAO = geometry->generateMeshID();
-
-    testMesh = geometry;
+//    geometry->transform.setPosition({0,0,-5});
+//    this->testMeshVAO = geometry->generateMeshID();
+//
+//    testMesh = geometry;
 }
 
 void GraphicsLayer::render(Scene *scene) {
@@ -41,11 +42,17 @@ void GraphicsLayer::render(Scene *scene) {
     //camera might be dirty
     api->shaderSetMat4("view",scene->currentCamera->getViewMatrix());
 
-    // send transform
-    api->shaderSetMat4("transform",testMesh->transform.getModelMatrix());
+    for (auto model: scene->modelsToRender){
+        // ^ will need to be render models list
+        api->shaderSetMat4("transform",model->transform.getModelMatrix());
+        ///todo model can have many meshes
+        api->renderMesh(model->mesh);
 
-    // render meshes
-    api->renderMesh(testMesh);
+    } /// ^ render using model list - testmesh still working below
+
+//    api->shaderSetMat4("transform",testMesh->transform.getModelMatrix());
+//    api->renderMesh(testMesh);
+
 }
 
 unsigned int GraphicsLayer::flag(GraphicsFlag graphicsFlag) {

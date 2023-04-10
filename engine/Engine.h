@@ -9,13 +9,13 @@
 
 class Engine : public Object {
 private:
-    Scene *currentScene{};
     Scene *nextScene{}; // for preloading
     std::vector<Layer *> layers;
     GraphicsAPI *graphicsAPI;
 public:
     void setGraphicsApi(GraphicsAPI *api);
 
+    Scene *currentScene{};
 private:
     Window *window{};
 
