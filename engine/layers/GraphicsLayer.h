@@ -26,4 +26,8 @@ public:
     void onAttach(Scene *) override;
 
     void render(Scene *) override;
+
+    void checkDirtyCamera(Scene *scene) const;
+
+    void initialRenderingSetup(Scene *scene);
 };
