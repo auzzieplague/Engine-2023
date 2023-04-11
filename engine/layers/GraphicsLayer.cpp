@@ -1,8 +1,6 @@
 #include "GraphicsLayer.h"
 #include "graphics/api/GraphicsAPI.h"
 
-
-
 void GraphicsLayer::setApi(GraphicsAPI *api) {
     this->api = api;
     Mesh::setApi(api);
@@ -10,52 +8,46 @@ void GraphicsLayer::setApi(GraphicsAPI *api) {
 
 void GraphicsLayer::onAttach(Scene *scene) {
     Debug::show("[>] Graphics Attached");
-    // setup mesh rendering config
+    initialRenderingSetup(scene);
+}
+
+void GraphicsLayer::initialRenderingSetup(Scene *scene) {
     meshConfig.shaderID = api->loadShader("general.vert", "general.frag");
     meshConfig.disable(flag(CULL_FACE));
+    meshConfig.enable(flag(DEPTH_TEST));
+    meshConfig.setClearFlag(flag(CLEAR_COLOUR_BUFFER));
+    meshConfig.setClearFlag(flag(CLEAR_DEPTH_BUFFER));
+
+//    meshConfig.debugMode=true;
     api->updateRendererConfig(meshConfig);
-    api->shaderSetMat4("projection",scene->currentCamera->getProjectionMatrix());
-    api->shaderSetMat4("view",scene->currentCamera->getViewMatrix());
-
-    // set projection matrix uniform
-
-
-
-//    auto *geometry = new Geometry();
-//    geometry->buildQuad();
-//        geometry->buildCube();
-//        geometry->buildDome(0.5f,12);
-//        geometry->buildSphere(0.5f,20,20);
-//        geometry->buildCapsule(0.5f,1.0f,16);
-//        geometry->buildTorus(0.5f,0.1f,24,24); // slightly busted
-//        geometry->buildCone(0.5f, 1.0f, 24); // busted
-
-//    geometry->transform.setPosition({0,0,-5});
-//    this->testMeshVAO = geometry->generateMeshID();
-//
-//    testMesh = geometry;
+    api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
+    api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
 
 void GraphicsLayer::render(Scene *scene) {
     // update shaders and set api properties
     api->updateRendererConfig(meshConfig);
-    //camera might be dirty
-    api->shaderSetMat4("view",scene->currentCamera->getViewMatrix());
+    // camera might be dirty
+    checkDirtyCamera(scene);
 
-    for (auto model: scene->modelsToRender){
-        // ^ will need to be render models list
-        api->shaderSetMat4("transform",model->transform.getModelMatrix());
-        ///todo model can have many meshes
+    for (auto model: scene->modelsToRender) {
+        api->shaderSetTransform(model->transform.getModelMatrix());
+
+        // todo model can have many meshes
+        api->shaderSetMaterial(model->mesh->material);
         api->renderMesh(model->mesh);
 
-    } /// ^ render using model list - testmesh still working below
+    }
+}
 
-//    api->shaderSetMat4("transform",testMesh->transform.getModelMatrix());
-//    api->renderMesh(testMesh);
-
+void GraphicsLayer::checkDirtyCamera(Scene *scene) const {
+    if (scene->currentCamera->isDirty) {
+        api->shaderSetMat4("view", scene->currentCamera->getViewMatrix());
+        scene->currentCamera->isDirty = false;
+    }
 }
 
 unsigned int GraphicsLayer::flag(GraphicsFlag graphicsFlag) {
-   // grab mapping from api for our enumerations
+    // grab mapping from api for our enumerations
     return api->getFlag(graphicsFlag);
 }

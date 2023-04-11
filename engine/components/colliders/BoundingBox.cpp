@@ -24,3 +24,35 @@ glm::vec3 BoundingBox::getClosestPoint(const glm::vec3 &point) const {
     }
     return closestPoint;
 }
+
+void BoundingBox::findMinMaxCorners(const std::vector<glm::vec3> &vertices) {
+    if (vertices.empty()) {
+        minCorner = glm::vec3(0.0f);
+        maxCorner = glm::vec3(0.0f);
+        return;
+    }
+
+    minCorner = maxCorner = vertices[0];
+
+    for (int i = 1; i < vertices.size(); i++) {
+        glm::vec3 vertex = vertices[i];
+
+        if (vertex.x < minCorner.x) {
+            minCorner.x = vertex.x;
+        } else if (vertex.x > maxCorner.x) {
+            maxCorner.x = vertex.x;
+        }
+
+        if (vertex.y < minCorner.y) {
+            minCorner.y = vertex.y;
+        } else if (vertex.y > maxCorner.y) {
+            maxCorner.y = vertex.y;
+        }
+
+        if (vertex.z < minCorner.z) {
+            minCorner.z = vertex.z;
+        } else if (vertex.z > maxCorner.z) {
+            maxCorner.z = vertex.z;
+        }
+    }
+}

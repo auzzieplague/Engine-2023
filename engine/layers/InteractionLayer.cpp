@@ -45,7 +45,20 @@ void InteractionLayer::processCameraInput(Scene *scene) {
 
     if (Input::isRightMouseDragging()) {
         glm::vec2 delta = Input::mousePos - Input::lastMousePos;
-        Input::lastMousePos =  Input::mousePos;
-        scene->currentCamera->rotate(delta.x *sensitivity,-delta.y*sensitivity,true);
+        Input::lastMousePos = Input::mousePos;
+        scene->currentCamera->rotate(delta.x * sensitivity, -delta.y * sensitivity, true);
+    }
+
+    if (selectedModel) {
+        if (input->isKeyPressed(GLFW_KEY_I)) {
+            glm::vec3 pos = selectedModel->transform.getPosition();
+            pos.y += speed/2;
+            selectedModel->transform.setPosition(pos);
+        };
+        if (input->isKeyPressed(GLFW_KEY_K)) {
+            glm::vec3 pos = selectedModel->transform.getPosition();
+            pos.y -= speed/2;
+            selectedModel->transform.setPosition(pos);
+        };
     }
 };

@@ -15,7 +15,9 @@ private:
     };
     static unsigned int InteractionMode;
     Input *input;
+
 public:
+    Model * selectedModel = nullptr;
     void onAttach(Scene *scene) override;
     void processInput(Scene *scene) override;
 

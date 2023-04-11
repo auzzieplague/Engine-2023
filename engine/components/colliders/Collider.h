@@ -29,7 +29,12 @@ public:
         collisionType = General;
     };
 
-    virtual bool isColliding(Collider *otherCollider) { return false; }
+    virtual bool isColliding(Collider *otherCollider) {
+        // check aabb and circle exist
+        // check circle
+        // check aabb
+        return false;
+    }
 
     [[nodiscard]] bool containsPoint(const glm::vec3 &point) const;
 };

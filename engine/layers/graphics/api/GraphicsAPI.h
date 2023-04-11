@@ -18,8 +18,6 @@ public:
 
     virtual unsigned int setupMesh(Mesh *);
 
-    virtual unsigned int createMaterial();
-
     virtual void renderMesh(Mesh *);
 
     virtual void updateRendererConfig(RenderingConfig &);
@@ -37,6 +35,11 @@ public:
     virtual void shaderSetMat2(const std::string& name, const glm::mat2& mat) const {};
     virtual void shaderSetMat3(const std::string& name, const glm::mat3& mat) const {};
     virtual void shaderSetMat4(const std::string& name, const glm::mat4& mat) const {};
+
+    virtual void shaderSetMaterial(Material material) const {};
+    virtual void shaderSetTransform(const glm::mat4& mat) const {};
+    virtual void shaderSetView(const glm::mat4& mat) const {};
+    virtual void shaderSetProjection(const glm::mat4& mat) const {};
 };
 
 

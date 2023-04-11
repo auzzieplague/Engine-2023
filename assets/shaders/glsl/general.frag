@@ -1,9 +1,9 @@
 #version 330 core
 
+in vec3 vertexColour;
 out vec4 fragColor;
 
 void main()
 {
-//    why is it white
-    fragColor = vec4(1.0, 0.5, 0.3, 1.0);
+    fragColor = vec4(vertexColour, 1.0);
 }

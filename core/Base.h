@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <cassert>
+#include <random>
 
 /// lib includes
 #include <glm/glm.hpp>

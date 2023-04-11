@@ -7,7 +7,6 @@
 class Model : public Component {
 
 public:
-
     Mesh *mesh;
     Collider *collider;
 
@@ -19,11 +18,13 @@ public:
 
     // todo setCollidable(level) radial, box, mesh
     void setCollidable() {
+        //note: model would need to be set collidable before adding to scene, to be added to correct <vector>
         collider = new Collider();
+        collider->aabb.findMinMaxCorners(mesh->positions);
+        collider->sphere.findRadiusAndCenter(mesh->positions);
         // get box of meshes
-        // getRadius of mesh
+        // getRadius of meshes
     }
-
 };
 
 

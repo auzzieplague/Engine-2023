@@ -1,11 +1,7 @@
 #pragma once
 
 struct RenderingConfig {
-    unsigned int shaderID;
-    unsigned int clearFlags = GL_COLOR_BUFFER_BIT;
-    glm::vec4 clearColour {0.2f, 0.3f, 0.3f, 1.0};
-    bool debugMode = true;
-    //    unsigned int culling = GL_CULL_FACE;
+public:
 
     /*
      * some flags will only need to be enabled / disabled intermittently
@@ -17,7 +13,17 @@ struct RenderingConfig {
     std::vector<unsigned int> toDisable;
     unsigned int toDisableFlags = 0;
 
-    void enable (unsigned int flag){
+    unsigned int clearFlags = GL_COLOR_BUFFER_BIT;
+    glm::vec4 clearColour {0.2f, 0.3f, 0.3f, 1.0};
+    unsigned int shaderID;
+    bool debugMode = false;
+
+    /**
+     * amalgamates all flag changes into next render cycle to minimise api calls
+     * - if you need changes applied immediately use @see GraphicsAPI::updateRendererConfig()
+     * @param flag
+     */
+    void enable (unsigned int  flag){
         toEnableFlags = toEnableFlags | flag;
         toEnable.push_back(flag);
     }
@@ -27,4 +33,15 @@ struct RenderingConfig {
         toDisable.push_back(flag);
     }
 
+    void setClearFlag (unsigned int flag){
+        clearFlags = clearFlags | flag;
+    }
+
+    void unsetClearFlag(unsigned int flag) {
+        clearFlags = clearFlags & ~flag;
+    }
+
+    void setClearColour(const glm::vec4 &clearColour) {
+        RenderingConfig::clearColour = clearColour;
+    }
 };

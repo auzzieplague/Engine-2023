@@ -18,11 +18,6 @@ unsigned int GraphicsAPI::setupMesh(Mesh * instance) {
     return 0;
 }
 
-unsigned int GraphicsAPI::createMaterial() {
-    Debug::show("missing override for createMaterial");
-    return 0;
-}
-
 void GraphicsAPI::renderMesh(Mesh *) {
     Debug::show("missing override for renderMesh");
 }

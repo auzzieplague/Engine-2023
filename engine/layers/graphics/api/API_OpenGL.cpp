@@ -1,12 +1,15 @@
 
 #include "API_OpenGL.h"
+#include <glm/gtc/type_ptr.hpp>
 
 //unsigned int API_OpenGL::shaderProgram;
 
 void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
     currentRenderingConfig = &config;
-    glClearColor(config.clearColour.x, config.clearColour.y, config.clearColour.z, config.clearColour.w);
-    glClear(config.clearFlags);
+
+//    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+//    glEnable(GL_DEPTH_TEST);
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if (config.toEnableFlags) {
         glEnable(config.toEnableFlags);
@@ -21,6 +24,9 @@ void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
     if (config.debugMode) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
+
+    glClearColor(config.clearColour.x, config.clearColour.y, config.clearColour.z, config.clearColour.w);
+    glClear(config.clearFlags);
 
     glUseProgram(config.shaderID);
 }
@@ -151,6 +157,12 @@ unsigned int API_OpenGL::getFlag(GraphicsFlag flag) {
     switch (flag) {
         case CULL_FACE:
             return GL_CULL_FACE;
+        case DEPTH_TEST:
+            return GL_DEPTH_TEST;
+        case CLEAR_DEPTH_BUFFER:
+            return GL_DEPTH_BUFFER_BIT;
+        case CLEAR_COLOUR_BUFFER:
+            return GL_COLOR_BUFFER_BIT;
         default:
             return 0;
     }
@@ -159,3 +171,57 @@ unsigned int API_OpenGL::getFlag(GraphicsFlag flag) {
 void API_OpenGL::shaderSetMat4(const std::string &name, const glm::mat4 &mat) const {
     glUniformMatrix4fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
+
+void API_OpenGL::shaderSetVec3(const std::string& name, const glm::vec3& vector) const {
+    glUniform3f(glGetUniformLocation(currentRenderingConfig->shaderID,name.c_str()), vector.x, vector.y, vector.z);
+}
+
+void API_OpenGL::shaderSetFloat(const std::string &name, float value) const {
+    glUniform1f(glGetUniformLocation(currentRenderingConfig->shaderID,name.c_str()), value);
+}
+
+void API_OpenGL::shaderSetVec4(const std::string& name, const glm::vec4& value) const {
+    glUniform4f(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value.x, value.y, value.z, value.w);
+}
+
+void API_OpenGL::shaderSetBool(const std::string& name, bool value) const {
+    glUniform1i(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), (int)value);
+}
+
+void API_OpenGL::shaderSetInt(const std::string& name, int value) const {
+    glUniform1i(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value);
+}
+
+void API_OpenGL::shaderSetVec2(const std::string& name, const glm::vec2& value) const {
+    glUniform2f(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value.x, value.y);
+}
+
+
+void API_OpenGL::shaderSetMat2(const std::string& name, const glm::mat2& mat) const {
+    glUniformMatrix2fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+}
+
+void API_OpenGL::shaderSetMat3(const std::string& name, const glm::mat3& mat) const {
+    glUniformMatrix3fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+}
+
+void API_OpenGL::shaderSetMaterial(Material material) const {
+    shaderSetVec3("material.ambientColor", material.getAmbientColor());
+    shaderSetVec3("material.diffuseColor", material.getDiffuseColor());
+    shaderSetVec3("material.specularColor", material.getSpecularColor());
+    shaderSetFloat("material.shininess", material.getShininess());
+}
+
+void API_OpenGL::shaderSetTransform(const glm::mat4 &mat) const {
+    shaderSetMat4("transform",mat);
+}
+
+void API_OpenGL::shaderSetView(const glm::mat4 &mat) const {
+    shaderSetMat4("view",mat);
+}
+
+void API_OpenGL::shaderSetProjection(const glm::mat4 &mat) const {
+    shaderSetMat4("projection",mat);
+}
+
+

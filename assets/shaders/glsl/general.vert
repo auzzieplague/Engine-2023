@@ -1,13 +1,20 @@
 #version 330
 
 layout (location = 0) in vec3 position;
-layout (location = 1) in vec3 color;
 
-out vec3 vertexColor;
+struct Material {
+    vec3 ambientColor;
+    vec3 diffuseColor;
+    vec3 specularColor;
+    float shininess;
+};
+uniform Material material;
 
 uniform mat4 transform;
 uniform mat4 projection;
 uniform mat4 view;
+
+out vec3 vertexColour;
 
 void main()
 {
@@ -19,15 +26,5 @@ void main()
 
     // Output the transformed position and color
     gl_Position = transformedPosition;
-    vertexColor = color;
+    vertexColour = material.ambientColor;
 }
-
-
-//#version 330 core
-//
-//layout (location = 0) in vec3 aPos;
-//
-//void main()
-//{
-//    gl_Position = vec4(aPos, 1.0);
-//}
