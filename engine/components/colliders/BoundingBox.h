@@ -8,6 +8,7 @@
  */
 class BoundingBox {
 public:
+
     glm::vec3 minCorner;
     glm::vec3 maxCorner;
 

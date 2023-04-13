@@ -15,7 +15,7 @@
 class GraphicsLayer : public Layer {
 
 public:
-    ///testing
+    /// testing
     unsigned int testMeshVAO{};
     Mesh *testMesh{};
     RenderingConfig meshConfig;

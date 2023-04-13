@@ -53,12 +53,32 @@ void InteractionLayer::processCameraInput(Scene *scene) {
         if (input->isKeyPressed(GLFW_KEY_I)) {
             glm::vec3 pos = selectedModel->transform.getPosition();
             pos.y += speed/2;
-            selectedModel->transform.setPosition(pos);
+            selectedModel->setPosition(pos);
         };
         if (input->isKeyPressed(GLFW_KEY_K)) {
             glm::vec3 pos = selectedModel->transform.getPosition();
             pos.y -= speed/2;
-            selectedModel->transform.setPosition(pos);
+            selectedModel->setPosition(pos);
+        };
+        if (input->isKeyPressed(GLFW_KEY_L)) {
+            glm::vec3 pos = selectedModel->transform.getPosition();
+            pos.z += speed/2;
+            selectedModel->setPosition(pos);
+        };
+        if (input->isKeyPressed(GLFW_KEY_O)) {
+            glm::vec3 pos = selectedModel->transform.getPosition();
+            pos.z -= speed/2;
+            selectedModel->setPosition(pos);
+        };
+        if (input->isKeyPressed(GLFW_KEY_PERIOD)) {
+            glm::vec3 pos = selectedModel->transform.getPosition();
+            pos.x += speed/2;
+            selectedModel->setPosition(pos);
+        };
+        if (input->isKeyPressed(GLFW_KEY_COMMA)) {
+            glm::vec3 pos = selectedModel->transform.getPosition();
+            pos.x -= speed/2;
+            selectedModel->setPosition(pos);
         };
     }
 };

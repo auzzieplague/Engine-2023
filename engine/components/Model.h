@@ -20,11 +20,17 @@ public:
     void setCollidable() {
         //note: model would need to be set collidable before adding to scene, to be added to correct <vector>
         collider = new Collider();
-        collider->aabb.findMinMaxCorners(mesh->positions);
-        collider->sphere.findRadiusAndCenter(mesh->positions);
+        collider->rebuild(mesh);
         // get box of meshes
         // getRadius of meshes
     }
+
+    /**
+     * use model->setPostion to correctly update colliders and underlying objects
+     */
+    void setPosition(glm::vec3);
+    void setScale(glm::vec3);
+    void setRotation(glm::vec3);
 };
 
 

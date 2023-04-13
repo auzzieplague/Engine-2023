@@ -5,7 +5,7 @@
 Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig config) {
     auto *model = new Model();
     model->mesh = new Geometry();
-    switch(shape) {
+    switch (shape) {
         default:
             Debug::show("unsupported shape requested by model");
             break;
@@ -32,4 +32,30 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
             break;
     }
     return model;
+}
+
+void Model::setPosition(glm::vec3 newPosition) {
+    // colliders operate in world space, so reset positions
+    if (this->collider) {
+        this->collider->update(transform.getPosition() - newPosition);
+    }
+    this->transform.setPosition(newPosition);
+}
+
+void Model::setScale(glm::vec3) {
+    /* when scaling we will need to rebuild and reset positions of colliders as centers
+     * and corners will have changed
+     */
+    if (this->collider) {
+        this->collider->rebuild(mesh);
+    }
+}
+
+void Model::setRotation(glm::vec3) {
+    /* when rotating we will need to rebuild and reset positions of colliders as centers
+     * and corners will have changed
+     */
+    if (this->collider) {
+        this->collider->rebuild(mesh);
+    }
 }

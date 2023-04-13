@@ -12,8 +12,6 @@ public:
     void update(Scene *scene) override;
 
     void render(Scene *scene) override;
-
-
 };
 
 

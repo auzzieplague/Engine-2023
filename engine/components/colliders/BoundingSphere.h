@@ -8,11 +8,11 @@
  * @author Michael.Whinfrey
  */
 class BoundingSphere {
-    glm::vec3 center;
     float radius;
 
     BoundingSphere(const glm::vec3 &center, float radius) : center(center), radius(radius) {};
 public:
+    glm::vec3 center;
     BoundingSphere() : center(0.0f), radius(0.0f) {}
 
     [[nodiscard]] bool isCollidingWith(const BoundingSphere &otherSphere) const;
