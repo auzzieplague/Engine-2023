@@ -23,6 +23,7 @@ void CollisionLayer::update(Scene *scene) {
      * e.g. comparing 10 items [iteration:comparisons] [1:9], [2:8], [3:7], [4:6] ..
      */
     while (collider1 <= max) {
+
         while (collider2 <= max) {
             // check if models are collidable - will be its own array
             if (scene->modelsToRender[collider1]->collider && scene->modelsToRender[collider2]->collider) {
@@ -36,11 +37,16 @@ void CollisionLayer::update(Scene *scene) {
                     scene->modelsToRender[collider2]->mesh->material.setAmbientColor({1.0f, 1.0f, 1.0f});
                 }
 
+                /// note: in above example, if a node A collides with B but B doesnt collide with C,  C will appear white,
+                /// although collision will have been detected ... so dont depend on these colours,
+                /// may need flags or something to better identify collisions. works ok with 2 models
+
             }
             collider2++;
         }
+
         collider1++;
-        collider2=collider1+1;
+        collider2 = collider1 + 1;
     }
 
 

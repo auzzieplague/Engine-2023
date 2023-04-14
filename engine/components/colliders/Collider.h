@@ -35,14 +35,13 @@ public:
      */
     virtual void update(glm::vec3 offsetChange){
         /**
-         * todo shift position of sphere center ... note center is not origin of model so we can just set position
+         * shift position of sphere center ... note center is not origin of model so we can just set position
          * similarly we need to shift the min and max corners of the bounding box
          *
          * where the object scales, we will need to recalculate the whole volume as corners and
          */
 
-        sphere.center+=offsetChange;
-
+        sphere.moveCenter(offsetChange);
     }
 
     virtual void rebuild(Mesh * mesh){
@@ -66,8 +65,10 @@ public:
             return true;
         };
 
-        // check circle
-        // check aabb
+
+        // todo check aabb
+
+        // todo check mesh - need to add collision mesh to collider as it's not the same as actual mesh
         return false;
     }
 

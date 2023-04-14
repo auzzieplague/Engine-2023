@@ -24,7 +24,7 @@ void setupScene(Scene *scene) {
 
 
     testSphere = Model::createFromGeometry(Geometry::ShapeType::Sphere,
-                                             GeometryConfig {.sphere {.radius =.2,.rings =6, .sectors =6}});
+                                             GeometryConfig {.sphere {.radius =.5,.rings =6, .sectors =6}});
     testSphere->setCollidable();
     testSphere->setPosition({0, 2, -8});
 
@@ -33,7 +33,7 @@ void setupScene(Scene *scene) {
     scene->addComponent(sphere3);
 
     scene->addComponent(testSphere);
-//    scene->addComponent(terrain1);
+    scene->addComponent(terrain1);
 }
 
 int main() {
