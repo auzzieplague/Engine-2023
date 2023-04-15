@@ -11,7 +11,7 @@ void Geometry::buildQuad() {
             glm::vec3(-0.5f, -0.5f, 0.0f)
     };
 
-    // Define the indices of the two triangles that make up the quad
+    // Define the indices of the two triangles that make m_up the quad
     std::vector<unsigned int> indices = {
             0, 1, 2,
             2, 3, 0
@@ -275,7 +275,7 @@ void Geometry::buildCone(GeometryConfig config) {
         // Calculate current angle
         angle = angleStep * i;
 
-        // Calculate position for current vertex on top and bottom circle
+        // Calculate m_position for current vertex on top and bottom circle
         glm::vec3 topVertex(config.cone.radius * glm::cos(angle), config.cone.height / 2.0f, config.cone.radius * glm::sin(angle));
         glm::vec3 bottomVertex(config.cone.radius * glm::cos(angle), -config.cone.height / 2.0f, config.cone.radius * glm::sin(angle));
 
@@ -308,11 +308,11 @@ void Geometry::buildTerrain(GeometryConfig config) {
     int numVertices = config.terrain.width * config.terrain.height;
     int numIndices = (config.terrain.width - 1) * (config.terrain.height - 1) * 6;
 
-    // Resize the position and index vectors
+    // Resize the m_position and index vectors
     positions.resize(numVertices);
     indices.resize(numIndices);
 
-    // Populate the position vector with random config.terrain.heights
+    // Populate the m_position vector with random config.terrain.heights
     for (int x = 0; x < config.terrain.width; ++x) {
         for (int z = 0; z < config.terrain.height; ++z) {
             int index = x + z * config.terrain.width;

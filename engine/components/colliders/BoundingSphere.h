@@ -7,12 +7,11 @@
 /**
  * @author Michael.Whinfrey
  */
-
 class TerrainMesh;
 class BoundingSphere {
 private:
-    float radius;
-    glm::vec3 center;
+    float m_radius;
+    glm::vec3 m_center;
 public:
     [[nodiscard]] float getRadius() const;
     void setRadius(float radius);
@@ -20,8 +19,8 @@ public:
     void setCenter(const glm::vec3 &center);
     void moveCenter(const glm::vec3 &offset);
 
-    BoundingSphere(const glm::vec3 &center, float radius) : center(center), radius(radius) {};
-    BoundingSphere() : center(0.0f), radius(0.0f) {}
+    BoundingSphere(const glm::vec3 &center, float radius) : m_center(center), m_radius(radius) {};
+    BoundingSphere() : m_center(0.0f), m_radius(0.0f) {}
 
     [[nodiscard]] bool isCollidingWith(const BoundingSphere &otherSphere) const;
     [[nodiscard]] bool isCollidingWith(const  TerrainMesh &terrain) const;

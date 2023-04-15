@@ -3,9 +3,9 @@
 #include "BoundingBox.h"
 
 bool BoundingBox::isCollidingWith(const BoundingBox &otherAABB) const {
-    return (maxCorner.x >= otherAABB.minCorner.x && minCorner.x <= otherAABB.maxCorner.x) &&
-           (maxCorner.y >= otherAABB.minCorner.y && minCorner.y <= otherAABB.maxCorner.y) &&
-           (maxCorner.z >= otherAABB.minCorner.z && minCorner.z <= otherAABB.maxCorner.z);
+    return (m_maxCorner.x >= otherAABB.m_minCorner.x && m_minCorner.x <= otherAABB.m_maxCorner.x) &&
+           (m_maxCorner.y >= otherAABB.m_minCorner.y && m_minCorner.y <= otherAABB.m_maxCorner.y) &&
+           (m_maxCorner.z >= otherAABB.m_minCorner.z && m_minCorner.z <= otherAABB.m_maxCorner.z);
 }
 
 glm::vec3 BoundingBox::getClosestPoint(const glm::vec3 &point) const {
@@ -14,10 +14,10 @@ glm::vec3 BoundingBox::getClosestPoint(const glm::vec3 &point) const {
     for (int i = 0; i < 3; i++) {
         float value = point[i];
 
-        if (value < minCorner[i]) {
-            value = minCorner[i];
-        } else if (value > maxCorner[i]) {
-            value = maxCorner[i];
+        if (value < m_minCorner[i]) {
+            value = m_minCorner[i];
+        } else if (value > m_maxCorner[i]) {
+            value = m_maxCorner[i];
         }
 
         closestPoint[i] = value;
@@ -27,32 +27,32 @@ glm::vec3 BoundingBox::getClosestPoint(const glm::vec3 &point) const {
 
 void BoundingBox::findMinMaxCorners(const std::vector<glm::vec3> &vertices) {
     if (vertices.empty()) {
-        minCorner = glm::vec3(0.0f);
-        maxCorner = glm::vec3(0.0f);
+        m_minCorner = glm::vec3(0.0f);
+        m_maxCorner = glm::vec3(0.0f);
         return;
     }
 
-    minCorner = maxCorner = vertices[0];
+    m_minCorner = m_maxCorner = vertices[0];
 
     for (int i = 1; i < vertices.size(); i++) {
         glm::vec3 vertex = vertices[i];
 
-        if (vertex.x < minCorner.x) {
-            minCorner.x = vertex.x;
-        } else if (vertex.x > maxCorner.x) {
-            maxCorner.x = vertex.x;
+        if (vertex.x < m_minCorner.x) {
+            m_minCorner.x = vertex.x;
+        } else if (vertex.x > m_maxCorner.x) {
+            m_maxCorner.x = vertex.x;
         }
 
-        if (vertex.y < minCorner.y) {
-            minCorner.y = vertex.y;
-        } else if (vertex.y > maxCorner.y) {
-            maxCorner.y = vertex.y;
+        if (vertex.y < m_minCorner.y) {
+            m_minCorner.y = vertex.y;
+        } else if (vertex.y > m_maxCorner.y) {
+            m_maxCorner.y = vertex.y;
         }
 
-        if (vertex.z < minCorner.z) {
-            minCorner.z = vertex.z;
-        } else if (vertex.z > maxCorner.z) {
-            maxCorner.z = vertex.z;
+        if (vertex.z < m_minCorner.z) {
+            m_minCorner.z = vertex.z;
+        } else if (vertex.z > m_maxCorner.z) {
+            m_maxCorner.z = vertex.z;
         }
     }
 }

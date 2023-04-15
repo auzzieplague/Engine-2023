@@ -17,14 +17,14 @@ class Collider {
         CT_Terrain,
     };
 
-public:
-
-    BoundingSphere sphere; // center is world position
-    BoundingBox aabb;// world cordinate comparison
-    std::vector<glm::vec3> m_vertices; // needs to contain all model submeshes
+private:
+    BoundingSphere m_sphere; // m_center is world m_position
+    BoundingBox m_aabb;// world coordinate comparison
+    std::vector<glm::vec3> m_vertices; // needs to contain all model sub meshes
 
     ColliderType collisionType;
 
+public:
     explicit Collider() {
         collisionType = CT_General;
     };
@@ -35,38 +35,38 @@ public:
      */
     virtual void update(glm::vec3 offsetChange){
         /**
-         * shift position of sphere center ... note center is not origin of model so we can just set position
+         * shift m_position of m_sphere m_center ... note m_center is not origin of model so we can just set m_position
          * similarly we need to shift the min and max corners of the bounding box
          *
          * where the object scales, we will need to recalculate the whole volume as corners and
          */
 
-        sphere.moveCenter(offsetChange);
+        m_sphere.moveCenter(offsetChange);
     }
 
     virtual void rebuild(Mesh * mesh){
         /**
-         * todo shift position of sphere center ... note center is not origin of model so we can just set position
+         * todo shift m_position of m_sphere m_center ... note m_center is not origin of model so we can just set m_position
          * similarly we need to shift the min and max corners of the bounding box
          *
          * where the object scales, we will need to recalculate the whole volume as corners and
          */
 
-        sphere.findRadiusAndCenter(mesh->positions);
-        aabb.findMinMaxCorners(mesh->positions);
+        m_sphere.findRadiusAndCenter(mesh->positions);
+        m_aabb.findMinMaxCorners(mesh->positions);
     }
 
 
 
     virtual bool isColliding(Collider *otherCollider) {
-        // aabb and sphere are initialised in model constructor
+        // m_aabb and m_sphere are initialised in model constructor
 
-        if (sphere.isCollidingWith(otherCollider->sphere)) {
+        if (m_sphere.isCollidingWith(otherCollider->m_sphere)) {
             return true;
         };
 
 
-        // todo check aabb
+        // todo check m_aabb
 
         // todo check mesh - need to add collision mesh to collider as it's not the same as actual mesh
         return false;

@@ -1,49 +1,49 @@
 #include "Transform.h"
 
 Transform::Transform() :
-        position(glm::vec3(0.0f)),
-        rotation(glm::quat()),
-        scaleVec(glm::vec3(1.0f)) {}
+        m_position(glm::vec3(0.0f)),
+        m_rotation(glm::quat()),
+        m_scale(glm::vec3(1.0f)) {}
 
 glm::vec3 Transform::getPosition() const {
-    return position;
+    return m_position;
 }
 
 glm::quat Transform::getRotation() const {
-    return rotation;
+    return m_rotation;
 }
 
 glm::vec3 Transform::getScale() const {
-    return scaleVec;
+    return m_scale;
 }
 
 glm::mat4 Transform::getModelMatrix() const {
-    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), position);
-    glm::mat4 rotationMatrix = glm::mat4_cast(rotation);
-    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), scaleVec);
+    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), m_position);
+    glm::mat4 rotationMatrix = glm::mat4_cast(m_rotation);
+    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), m_scale);
     return translationMatrix * rotationMatrix * scaleMatrix;
 }
 
 void Transform::setPosition(glm::vec3 position) {
-    this->position = position;
+    this->m_position = position;
 }
 
 void Transform::setRotation(glm::quat rotation) {
-    this->rotation = rotation;
+    this->m_rotation = rotation;
 }
 
 void Transform::setScale(glm::vec3 scale) {
-    this->scaleVec = scale;
+    this->m_scale = scale;
 }
 
 void Transform::translate(glm::vec3 translation) {
-    position += translation;
+    m_position += translation;
 }
 
 void Transform::rotate(glm::vec3 axis, float angle) {
-    rotation = glm::rotate(rotation, angle, axis);
+    m_rotation = glm::rotate(m_rotation, angle, axis);
 }
 
 void Transform::scale(glm::vec3 scale) {
-    this->scaleVec *= scale;
+    this->m_scale *= scale;
 }

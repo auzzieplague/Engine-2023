@@ -39,10 +39,12 @@ void Model::setPosition(glm::vec3 newPosition) {
     if (this->collider) {
         this->collider->update(transform.getPosition() - newPosition);
     }
-    this->transform.setPosition(newPosition);
+    Component::setPosition(newPosition);
+
 }
 
-void Model::setScale(glm::vec3) {
+void Model::setScale(glm::vec3 scale) {
+    Component::setRotation(scale);
     /* when scaling we will need to rebuild and reset positions of colliders as centers
      * and corners will have changed
      */
@@ -51,11 +53,15 @@ void Model::setScale(glm::vec3) {
     }
 }
 
-void Model::setRotation(glm::vec3) {
-    /* when rotating we will need to rebuild and reset positions of colliders as centers
-     * and corners will have changed
-     */
-    if (this->collider) {
-        this->collider->rebuild(mesh);
-    }
+void Model::setRotation(glm::vec3 rotation) {
+    Component::setRotation(rotation);
+        /* when rotating we will need to rebuild and reset positions of colliders as centers
+         * and corners will have changed
+         */
+        if (this->collider) {
+            this->collider->rebuild(mesh);
+        }
+
 }
+
+

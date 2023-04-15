@@ -58,7 +58,7 @@ void CollisionLayer::render(Scene *scene) {
 
     // set colour red if colliding green if not.
 
-    //if collider m_vertices isn't set initialise it with sphere positions.
+    //if collider m_vertices isn't set initialise it with m_sphere positions.
 }
 
 

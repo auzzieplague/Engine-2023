@@ -9,7 +9,7 @@
 #include "graphics/GraphicsFlag.h"
 
 /**
- * When instantiating this class we pass through a framework, which in turn sets up the function pointers
+ * When instantiating this class we pass through a framework, which in turn sets m_up the function pointers
  * for OPENGL or other framework options
  */
 class GraphicsLayer : public Layer {

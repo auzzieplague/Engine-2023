@@ -41,7 +41,7 @@ void Engine::loopLayers() const {
                 layer->render(this->currentScene);
             }
 
-            // process input front to back
+            // process input m_front to back
             for (auto layer : std::ranges::reverse_view(this->layers)) {
                 layer->processInput(this->currentScene);
             }

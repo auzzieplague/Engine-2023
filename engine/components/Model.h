@@ -28,9 +28,9 @@ public:
     /**
      * use model->setPostion to correctly update colliders and underlying objects
      */
-    void setPosition(glm::vec3);
-    void setScale(glm::vec3);
-    void setRotation(glm::vec3);
+    void setPosition(glm::vec3) override;
+    void setScale(glm::vec3) override;
+    void setRotation(glm::vec3) override;
 };
 
 

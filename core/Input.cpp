@@ -4,11 +4,67 @@
 #include <string>
 
 
-Input *Input::instance = nullptr;
-bool Input::leftMouseDragging = false;
-bool Input::rightMouseDragging = false;
-glm::vec2 Input::mousePos;
-glm::vec2 Input::lastMousePos;
+Input *Input::m_instance = nullptr;
+bool Input::m_leftMouseDragging = false;
+bool Input::m_rightMouseDragging = false;
+glm::vec2 Input::m_mousePos;
+glm::vec2 Input::m_lastMousePos;
+
+Input::Input(GLFWwindow *window)  {
+    // Initialize key states to "not pressed"
+    for (bool & m_key : m_keys) {
+        m_key = false;
+    }
+
+    // Initialize mouse button states to "not pressed"
+    for (bool & m_mouseButton : m_mouseButtons) {
+        m_mouseButton = false;
+    }
+
+    m_instance = this;
+    setCallbacksOnWindow(window);
+}
+
+Input *Input::getInstance() {
+    if (Input::m_instance == nullptr){
+        Debug::show("Input is not yet initialised with a window");
+    }
+
+    return Input::m_instance;
+}
+
+
+
+bool Input::isMouseDragging() {
+    return m_leftMouseDragging | m_rightMouseDragging;
+}
+
+bool Input::isLeftMouseDragging() {
+    return m_leftMouseDragging;
+}
+
+
+bool Input::isRightMouseDragging() {
+    return m_rightMouseDragging;
+}
+
+glm::vec2 Input::getLastMousePos() {
+    return m_lastMousePos;
+}
+
+glm::vec2 Input::getMousePos() {
+    return m_mousePos;
+}
+
+const bool *Input::getMMouseButtons() const {
+    return m_mouseButtons;
+}
+
+glm::vec2 Input::getDragDistance() {
+    glm::vec2 delta = m_mousePos - m_lastMousePos;
+    m_lastMousePos = m_mousePos;
+    return delta;
+}
 
 void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     Input *input = Input::getInstance();
@@ -28,8 +84,8 @@ void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, i
 }
 
 void Input::mouseMoveCallback(GLFWwindow *window, double xpos, double ypos) {
-    mousePos.x = xpos;
-    mousePos.y = ypos;
+    m_mousePos.x = xpos;
+    m_mousePos.y = ypos;
 }
 
 void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
@@ -48,37 +104,37 @@ void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int 
     }
 
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        leftMouseDragging = true;
-        lastMousePos = mousePos;
+        m_leftMouseDragging = true;
+        m_lastMousePos = m_mousePos;
     } else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) {
-        leftMouseDragging = false;
+        m_leftMouseDragging = false;
     }
 
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) {
-        rightMouseDragging = true;
-        lastMousePos = mousePos;
+        m_rightMouseDragging = true;
+        m_lastMousePos = m_mousePos;
     } else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) {
-        rightMouseDragging = false;
+        m_rightMouseDragging = false;
     }
 }
 
-bool Input::isMouseDragging() {
-    return leftMouseDragging | rightMouseDragging;
+void Input::setCallbacksOnWindow(GLFWwindow *window) {
+    glfwSetKeyCallback(window, keyCallback);
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
+    glfwSetCursorPosCallback(window, mouseMoveCallback);
 }
 
-bool Input::isLeftMouseDragging() {
-    return leftMouseDragging;
+bool Input::isKeyPressed(int key) const {
+    if (key >= 0 && key < 1024) {
+        return m_keys[key];
+    }
+    return false;
 }
 
-
-bool Input::isRightMouseDragging() {
-    return rightMouseDragging;
+bool Input::isMouseButtonPressed(int button) const {
+    if (button >= 0 && button < 8) {
+        return m_mouseButtons[button];
+    }
+    return false;
 }
 
-glm::vec2 Input::getLastMousePos() {
-    return lastMousePos;
-}
-
-glm::vec2 Input::getMousePos() {
-    return mousePos;
-}

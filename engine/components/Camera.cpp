@@ -2,8 +2,8 @@
 #include "Camera.h"
 
 Camera::Camera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) :
-        position(pos), worldUp(up), yaw(yaw), pitch(pitch), fov(45.0f), aspectRatio(1.0f), nearClip(0.1f),
-        farClip(100.0f) {
+        m_position(pos), m_worldUp(up), m_yaw(yaw), m_pitch(pitch), m_fov(45.0f), m_aspectRatio(1.0f), m_nearClip(0.1f),
+        m_farClip(100.0f) {
     updateCameraVectors();
     updateProjectionMatrix();
     getViewMatrix();
@@ -11,63 +11,63 @@ Camera::Camera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) :
 
 glm::mat4 Camera::getViewMatrix() {
     if (isDirty) {
-        viewMatrix =  glm::lookAt(position, position + front, up);
+        m_viewMatrix =  glm::lookAt(m_position, m_position + m_front, m_up);
         isDirty = false;
     }
-    return viewMatrix;
+    return m_viewMatrix;
 }
 
 void Camera::updateProjectionMatrix()  {
-    projectionMatrix = glm::perspective(glm::radians(fov), aspectRatio, nearClip, farClip);
+    m_projectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_nearClip, m_farClip);
 }
 
 glm::mat4 Camera::getProjectionMatrix()  {
-    return projectionMatrix;
+    return m_projectionMatrix;
 }
 
 void Camera::setAspectRatio(float aspectRatio) {
-    this->aspectRatio = aspectRatio;
+    this->m_aspectRatio = aspectRatio;
     updateProjectionMatrix();
 }
 
 void Camera::setFOV(float fov) {
-    this->fov = fov;
+    this->m_fov = fov;
     updateProjectionMatrix();
 }
 
 void Camera::setClipPlanes(float nearClip, float farClip) {
-    this->nearClip = nearClip;
-    this->farClip = farClip;
+    this->m_nearClip = nearClip;
+    this->m_farClip = farClip;
     updateProjectionMatrix();
 }
 
 void Camera::moveForward(float deltaTime) {
-    position += front * deltaTime;
+    m_position += m_front * deltaTime;
     isDirty= true;
 }
 
 void Camera::moveBackward(float deltaTime) {
-    position -= front * deltaTime;
+    m_position -= m_front * deltaTime;
     isDirty= true;
 }
 
 void Camera::moveRight(float deltaTime) {
-    position += right * deltaTime;
+    m_position += m_right * deltaTime;
     isDirty= true;
 }
 
 void Camera::moveLeft(float deltaTime) {
-    position -= right * deltaTime;
+    m_position -= m_right * deltaTime;
     isDirty= true;
 }
 
 void Camera::moveUp(float deltaTime) {
-    position += up * deltaTime;
+    m_position += m_up * deltaTime;
     isDirty= true;
 }
 
 void Camera::moveDown(float deltaTime) {
-    position -= up * deltaTime;
+    m_position -= m_up * deltaTime;
     isDirty= true;
 }
 
@@ -76,15 +76,15 @@ void Camera::rotate(float xoffset, float yoffset, bool constrainPitch) {
     xoffset *= 0.1f;
     yoffset *= 0.1f;
 
-    yaw += xoffset;
-    pitch += yoffset;
+    m_yaw += xoffset;
+    m_pitch += yoffset;
 
     if (constrainPitch) {
-        if (pitch > 89.0f) {
-            pitch = 89.0f;
+        if (m_pitch > 89.0f) {
+            m_pitch = 89.0f;
         }
-        if (pitch < -89.0f) {
-            pitch = -89.0f;
+        if (m_pitch < -89.0f) {
+            m_pitch = -89.0f;
         }
     }
 
@@ -93,14 +93,14 @@ void Camera::rotate(float xoffset, float yoffset, bool constrainPitch) {
 }
 
 void Camera::updateCameraVectors() {
-    // Calculate the new front vector
+    // Calculate the new m_front vector
     glm::vec3 newFront;
-    newFront.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    newFront.y = sin(glm::radians(pitch));
-    newFront.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front = glm::normalize(newFront);
+    newFront.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+    newFront.y = sin(glm::radians(m_pitch));
+    newFront.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+    m_front = glm::normalize(newFront);
 
-    // Recalculate the right and up vectors
-    right = glm::normalize(glm::cross(front, worldUp));
-    up = glm::normalize(glm::cross(right, front));
+    // Recalculate the m_right and m_up vectors
+    m_right = glm::normalize(glm::cross(m_front, m_worldUp));
+    m_up = glm::normalize(glm::cross(m_right, m_front));
 }
