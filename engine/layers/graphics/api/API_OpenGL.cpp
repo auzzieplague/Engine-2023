@@ -39,7 +39,7 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
     }
 
     if (mesh->readyCheck()) {
-        Debug::show("mesh not ready");
+        Debug::show("mesh not m_ready");
         return;
     }
 

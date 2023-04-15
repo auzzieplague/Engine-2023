@@ -36,7 +36,7 @@ void Transform::setScale(glm::vec3 scale) {
     this->m_scale = scale;
 }
 
-void Transform::translate(glm::vec3 translation) {
+[[maybe_unused]] void Transform::translate(glm::vec3 translation) {
     m_position += translation;
 }
 

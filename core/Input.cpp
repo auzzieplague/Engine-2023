@@ -27,36 +27,34 @@ Input::Input(GLFWwindow *window)  {
 
 Input *Input::getInstance() {
     if (Input::m_instance == nullptr){
-        Debug::show("Input is not yet initialised with a window");
+        Debug::show("Input is not yet m_ready with a window");
     }
 
     return Input::m_instance;
 }
 
 
-
-bool Input::isMouseDragging() {
+[[maybe_unused]] bool Input::isMouseDragging() {
     return m_leftMouseDragging | m_rightMouseDragging;
 }
 
-bool Input::isLeftMouseDragging() {
+[[maybe_unused]] bool Input::isLeftMouseDragging() {
     return m_leftMouseDragging;
 }
-
 
 bool Input::isRightMouseDragging() {
     return m_rightMouseDragging;
 }
 
-glm::vec2 Input::getLastMousePos() {
+[[maybe_unused]] glm::vec2 Input::getLastMousePos() {
     return m_lastMousePos;
 }
 
-glm::vec2 Input::getMousePos() {
+[[maybe_unused]] glm::vec2 Input::getMousePos() {
     return m_mousePos;
 }
 
-const bool *Input::getMMouseButtons() const {
+[[maybe_unused]] const bool *Input::getMMouseButtons() const {
     return m_mouseButtons;
 }
 
@@ -83,14 +81,12 @@ void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, i
     }
 }
 
-void Input::mouseMoveCallback(GLFWwindow *window, double xpos, double ypos) {
-    m_mousePos.x = xpos;
-    m_mousePos.y = ypos;
+void Input::mouseMoveCallback(GLFWwindow *window,double xPos, double yPos) {
+    m_mousePos.x = static_cast<float>(xPos);
+    m_mousePos.y = static_cast<float>(yPos);
 }
 
 void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods) {
-
-
     Input *input = Input::getInstance();
     if (input) {
         if (button >= 0 && button < 8) {
@@ -131,7 +127,7 @@ bool Input::isKeyPressed(int key) const {
     return false;
 }
 
-bool Input::isMouseButtonPressed(int button) const {
+[[maybe_unused]] bool Input::isMouseButtonPressed(int button) const {
     if (button >= 0 && button < 8) {
         return m_mouseButtons[button];
     }

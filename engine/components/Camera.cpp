@@ -25,17 +25,17 @@ glm::mat4 Camera::getProjectionMatrix()  {
     return m_projectionMatrix;
 }
 
-void Camera::setAspectRatio(float aspectRatio) {
+[[maybe_unused]] void Camera::setAspectRatio(float aspectRatio) {
     this->m_aspectRatio = aspectRatio;
     updateProjectionMatrix();
 }
 
-void Camera::setFOV(float fov) {
+[[maybe_unused]] void Camera::setFOV(float fov) {
     this->m_fov = fov;
     updateProjectionMatrix();
 }
 
-void Camera::setClipPlanes(float nearClip, float farClip) {
+[[maybe_unused]] void Camera::setClipPlanes(float nearClip, float farClip) {
     this->m_nearClip = nearClip;
     this->m_farClip = farClip;
     updateProjectionMatrix();

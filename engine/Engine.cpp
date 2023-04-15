@@ -16,8 +16,8 @@ void Engine::start() {
 }
 
 void Engine::loopLayers() const {
-    if (Window::currentWindow) {
-        while (!glfwWindowShouldClose(Window::currentWindow)) {
+    if (Window::getCurrentWindow()) {
+        while (!glfwWindowShouldClose(Window::getCurrentWindow())) {
             for (Layer* layer : this->layers) {
                 layer->beforeUpdate(this->currentScene);
             }
@@ -66,7 +66,7 @@ void Engine::addComponent(Component *component) {
 }
 
 void Engine::attachLayer(Layer *layer) {
-    //assign graphics api into layer
+    //assign graphics m_api into layer
     layer->setApi(this->graphicsAPI);
 
     //run attach hook

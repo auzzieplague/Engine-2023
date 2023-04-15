@@ -15,7 +15,8 @@ public:
     void setPosition(glm::vec3 position);
     void setRotation(glm::quat rotation);
     void setScale(glm::vec3 scale);
-    void translate(glm::vec3 translation);
+
+    [[maybe_unused]] [[maybe_unused]] void translate(glm::vec3 translation);
     void rotate(glm::vec3 axis, float angle);
     void scale(glm::vec3 scaleFactor);
 private:

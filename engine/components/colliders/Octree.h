@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include <vector>
 #include "BoundingSphere.h"
 
@@ -17,11 +16,11 @@ private:
     void subdivide();
 
 public:
-    Octree(const BoundingSphere &boundingSphere, int maxObjectsPerNode = 8)
+    explicit Octree(const BoundingSphere &boundingSphere, int maxObjectsPerNode = 8)
             : m_boundingSphere(boundingSphere), m_maxObjectsPerNode(maxObjectsPerNode) {}
 
     void insert(const BoundingSphere &boundingSphere);
 
-    std::vector<BoundingSphere> getCollisions(const BoundingSphere &boundingSphere) const;
+    [[nodiscard]] std::vector<BoundingSphere> getCollisions(const BoundingSphere &boundingSphere) const;
 
 };

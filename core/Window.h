@@ -8,19 +8,27 @@
 class GraphicsAPI;
 
 class Window {
+private:
+    GLFWwindow *m_glRef{};
+    static GLFWwindow *m_currentWindow;
+    bool m_ready = false;
+    static GraphicsAPI *m_api;
 public:
-    GLFWwindow *glRef{};
-    static GLFWwindow *currentWindow;
-    bool initialised = false;
-    static GraphicsAPI *api;
+    [[nodiscard]] GLFWwindow *glRef() const;
 
-    static void (*onWindowUpdate)(GLFWwindow *window, int width, int height);
+    [[nodiscard]] static GLFWwindow *getCurrentWindow();
+
+    [[maybe_unused]] [[nodiscard]] bool isReady() const;
+
+    [[nodiscard]] static GraphicsAPI *api();
+
+    [[maybe_unused]] static void (*onWindowUpdate)(GLFWwindow *window, int width, int height);
 
     Window(GraphicsAPI *, uint32_t width, uint32_t height, const std::string &title);
 
     GLFWwindow *setupWindow(uint32_t width, uint32_t height, const std::string &title);
 
-    GLFWwindow *getWindow();
+    [[maybe_unused]] GLFWwindow *getWindow();
 
     static void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 };

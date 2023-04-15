@@ -1,8 +1,8 @@
 #include "Window.h"
 #include "../engine/layers/graphics/api/GraphicsAPI.h"
 
-GLFWwindow *Window::currentWindow = nullptr;
-GraphicsAPI *Window::api;
+GLFWwindow *Window::m_currentWindow = nullptr;
+GraphicsAPI *Window::m_api;
 
 GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::string &title) {
 
@@ -23,30 +23,46 @@ GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::stri
         return nullptr;
     }
 
-    this->glRef = window;
-    Window::currentWindow = window;
-    this->initialised = true;
+    this->m_glRef = window;
+    Window::m_currentWindow = window;
+    this->m_ready = true;
 
-    glfwSetFramebufferSizeCallback(glRef, Window::framebufferSizeCallback);
+    glfwSetFramebufferSizeCallback(m_glRef, Window::framebufferSizeCallback);
 
     return window;
 }
 
-GLFWwindow *Window::getWindow() {
-    if (!this->initialised) {
+[[maybe_unused]] GLFWwindow *Window::getWindow() {
+    if (!this->m_ready) {
         setupWindow(1200, 720, "default window");
-        if (!this->initialised) {
-            throw std::runtime_error("the window could not be initialised");
+        if (!this->m_ready) {
+            throw std::runtime_error("the window could not be m_ready");
         }
     }
-    return this->glRef;
+    return this->m_glRef;
 }
 
 void Window::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
-    api->framebufferSizeCallback(window, width, height);
+    m_api->framebufferSizeCallback(window, width, height);
 }
 
 Window::Window(GraphicsAPI *graphicsAPI, uint32_t width, uint32_t height, const std::string &title) {
-    api = graphicsAPI;
+    m_api = graphicsAPI;
     this->setupWindow(width, height, title);
+}
+
+GLFWwindow *Window::glRef() const {
+    return m_glRef;
+}
+
+GLFWwindow *Window::getCurrentWindow() {
+    return m_currentWindow;
+}
+
+[[maybe_unused]] bool Window::isReady() const {
+    return m_ready;
+}
+
+GraphicsAPI *Window::api() {
+    return m_api;
 }

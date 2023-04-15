@@ -14,9 +14,11 @@ private:
     glm::vec3 m_center;
 public:
     [[nodiscard]] float getRadius() const;
-    void setRadius(float radius);
+
+    [[maybe_unused]] void setRadius(float radius);
     [[nodiscard]] const glm::vec3 &getCenter() const;
-    void setCenter(const glm::vec3 &center);
+
+    [[maybe_unused]] void setCenter(const glm::vec3 &center);
     void moveCenter(const glm::vec3 &offset);
 
     BoundingSphere(const glm::vec3 &center, float radius) : m_center(center), m_radius(radius) {};
@@ -24,7 +26,8 @@ public:
 
     [[nodiscard]] bool isCollidingWith(const BoundingSphere &otherSphere) const;
     [[nodiscard]] bool isCollidingWith(const  TerrainMesh &terrain) const;
-    [[nodiscard]] glm::vec3 getClosestPoint(const glm::vec3 &point) const ;
+
+    [[maybe_unused]] [[nodiscard]] glm::vec3 getClosestPoint(const glm::vec3 &point) const ;
 
     void findRadiusAndCenter(const std::vector<glm::vec3>& vertices) ;
 };

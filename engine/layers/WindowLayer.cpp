@@ -12,14 +12,14 @@ void WindowLayer::onDetach(Scene *) {
 }
 
 void WindowLayer::processInput(Scene *scene) {
-    //todo move to api
+    //todo move to m_api
     glfwPollEvents();
 
-    if (glfwGetKey(scene->currentWindow->glRef, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(scene->currentWindow->glRef, true);
+    if (glfwGetKey(scene->currentWindow->glRef(), GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        glfwSetWindowShouldClose(scene->currentWindow->glRef(), true);
     }
 }
 
 void WindowLayer::afterRender(Scene *scene) {
-    glfwSwapBuffers(scene->currentWindow->glRef);
+    glfwSwapBuffers(scene->currentWindow->glRef());
 }

@@ -25,7 +25,7 @@ void GraphicsLayer::initialRenderingSetup(Scene *scene) {
 }
 
 void GraphicsLayer::render(Scene *scene) {
-    // update shaders and set api properties
+    // update shaders and set m_api properties
     api->updateRendererConfig(meshConfig);
     // camera might be dirty
     checkDirtyCamera(scene);
@@ -48,6 +48,6 @@ void GraphicsLayer::checkDirtyCamera(Scene *scene) const {
 }
 
 unsigned int GraphicsLayer::flag(GraphicsFlag graphicsFlag) {
-    // grab mapping from api for our enumerations
+    // grab mapping from m_api for our enumerations
     return api->getFlag(graphicsFlag);
 }

@@ -8,7 +8,7 @@ bool BoundingSphere::isCollidingWith(const BoundingSphere &otherSphere) const  {
     return distance <= sumRadii;
 }
 
-glm::vec3 BoundingSphere::getClosestPoint(const glm::vec3 &point) const {
+[[maybe_unused]] glm::vec3 BoundingSphere::getClosestPoint(const glm::vec3 &point) const {
     glm::vec3 direction = point - m_center;
     float distance = glm::length(direction);
 
@@ -75,7 +75,7 @@ float BoundingSphere::getRadius() const {
     return m_radius;
 }
 
-void BoundingSphere::setRadius(float radius) {
+[[maybe_unused]] void BoundingSphere::setRadius(float radius) {
     BoundingSphere::m_radius = radius;
 }
 
@@ -83,7 +83,7 @@ const glm::vec3 &BoundingSphere::getCenter() const {
     return m_center;
 }
 
-void BoundingSphere::setCenter(const glm::vec3 &center) {
+[[maybe_unused]] void BoundingSphere::setCenter(const glm::vec3 &center) {
     BoundingSphere::m_center = center;
 }
 

@@ -19,7 +19,7 @@ public:
     bool debugMode = false;
 
     /**
-     * amalgamates all flag changes into next render cycle to minimise api calls
+     * amalgamates all flag changes into next render cycle to minimise m_api calls
      * - if you need changes applied immediately use @see GraphicsAPI::updateRendererConfig()
      * @param flag
      */

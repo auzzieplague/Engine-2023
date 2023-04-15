@@ -4463,7 +4463,7 @@ GLFWAPI GLFWcursor* glfwCreateCursor(const GLFWimage* image, int xhot, int yhot)
  *  a window with @ref glfwSetCursor.
  *
  *  @param[in] shape One of the [standard shapes](@ref shapes).
- *  @return A new cursor ready to use or `NULL` if an
+ *  @return A new cursor m_ready to use or `NULL` if an
  *  [error](@ref error_handling) occurred.
  *
  *  @errors Possible errors include @ref GLFW_NOT_INITIALIZED, @ref
@@ -5828,7 +5828,7 @@ GLFWAPI int glfwGetPhysicalDevicePresentationSupport(VkInstance instance, VkPhys
  *  required.
  *
  *  The window surface cannot be shared with another API so the window must
- *  have been created with the [client api hint](@ref GLFW_CLIENT_API_attrib)
+ *  have been created with the [client m_api hint](@ref GLFW_CLIENT_API_attrib)
  *  set to `GLFW_NO_API` otherwise it generates a @ref GLFW_INVALID_VALUE error
  *  and returns `VK_ERROR_NATIVE_WINDOW_IN_USE_KHR`.
  *

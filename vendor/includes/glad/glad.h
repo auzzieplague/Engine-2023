@@ -13,7 +13,7 @@
     Omit khrplatform: False
 
     Commandline:
-        --profile="core" --api="gl=4.6" --generator="c" --spec="gl" --extensions=""
+        --profile="core" --m_api="gl=4.6" --generator="c" --spec="gl" --extensions=""
     Online:
         http://glad.dav1d.de/#profile=core&language=c&specification=gl&loader=on&api=gl%3D4.6
 */

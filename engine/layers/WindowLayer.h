@@ -8,7 +8,7 @@ class WindowLayer : public Layer {
 
 public:
 
-//    explicit WindowLayer(GraphicsAPI *api);
+//    explicit WindowLayer(GraphicsAPI *m_api);
 
     void onAttach(Scene *) override ;
 
