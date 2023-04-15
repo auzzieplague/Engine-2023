@@ -40,9 +40,9 @@ public:
 
     static GraphicsAPI *api;
 
-    Mesh() {}
+    Mesh() = default;
     static void setApi(GraphicsAPI *api);
-    bool readyCheck();
+    bool isReady() override;
 
     /**
      * Note: not all meshes will require loading into video ram,

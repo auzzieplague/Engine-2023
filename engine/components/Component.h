@@ -6,14 +6,25 @@
 
 
 class Component : public Object {
-public:
+protected:
     Transform transform;
-    bool isDirty = true;
-    bool isReady = false;
+    bool dirty = true;
+    bool ready = false;
+
+public:
+    [[nodiscard]] virtual bool isDirty() const;
+    void setDirty(bool dirty = true);
+
+    [[nodiscard]] virtual bool isReady();
+    void setReady(bool ready);
+
+    virtual bool makeReady() {return false;};
+
+    [[nodiscard]] const Transform &getTransform() const;
+
     std::vector<Component *> childComponents;
     // has child component list and then underlying mechanics reference the components in the list
     // should have a scene components list and everything can just references the instances of components as required - mayeb
-public:
 
     virtual void setPosition(glm::vec3 newPosition);
     virtual void setScale(glm::vec3 newScale);
@@ -27,9 +38,6 @@ public:
         return ObjectType::OT_Component;
     };
 
-    virtual bool readyCheck(){
-        return isReady;
-    };
 
     /**
      *  create a game object that represents the 3D model in the game world.

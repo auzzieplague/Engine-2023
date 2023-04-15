@@ -7,16 +7,19 @@ GraphicsAPI *Mesh::api;
 void Mesh::setApi(GraphicsAPI *api) {
     Mesh::api = api;
 }
-bool Mesh::readyCheck(){
-    if (isReady) return true;
+
+bool Mesh::isReady() {
+    if (ready) return true;
 
     // not all meshes will need to be rendered, but at the moment only rendering is using readyCheckk
     // we will need to subclass mesh into render and non render types
-    if (this->gID == 0){
-        isReady = true;
+    if (this->gID != 0){
+        ready = true;
     }
-    return isReady;
-};
+
+    return ready;
+}
+
 unsigned int Mesh::generateMeshID() {
     this->gID = api->setupMesh(this);
     if (this->gID == 0){

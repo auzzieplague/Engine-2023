@@ -6,7 +6,7 @@
 void InteractionLayer::onAttach(Scene *scene) {
     // bind this input to inputInstance
     Debug::show("[>] Interaction Attached");
-    this->input = new Input(scene->currentWindow->glRef);
+    this->input = new Input(scene->currentWindow->glRef());
 }
 
 void InteractionLayer::processInput(Scene *scene) {

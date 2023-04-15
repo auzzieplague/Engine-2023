@@ -31,7 +31,7 @@ void GraphicsLayer::render(Scene *scene) {
     checkDirtyCamera(scene);
 
     for (auto model: scene->modelsToRender) {
-        api->shaderSetTransform(model->transform.getModelMatrix());
+        api->shaderSetTransform(model->getModelMatrix());
 
         // todo model can have many meshes
         api->shaderSetMaterial(model->mesh->material);
@@ -41,9 +41,9 @@ void GraphicsLayer::render(Scene *scene) {
 }
 
 void GraphicsLayer::checkDirtyCamera(Scene *scene) const {
-    if (scene->currentCamera->isDirty) {
+    if (scene->currentCamera->isDirty()) {
         api->shaderSetMat4("view", scene->currentCamera->getViewMatrix());
-        scene->currentCamera->isDirty = false;
+        scene->currentCamera->setDirty(false);
     }
 }
 

@@ -27,3 +27,23 @@ glm::quat  Component::getRotation() {
 glm::mat4 Component::getModelMatrix() {
     return this->transform.getModelMatrix();
 }
+
+const Transform &Component::getTransform() const {
+    return transform;
+}
+
+bool Component::isDirty() const {
+    return dirty;
+}
+
+void Component::setDirty(bool dirty) {
+    Component::dirty = dirty;
+}
+
+bool Component::isReady() {
+    return ready;
+}
+
+void Component::setReady(bool ready) {
+    Component::ready = ready;
+}
