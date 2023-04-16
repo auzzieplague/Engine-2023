@@ -35,7 +35,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 }
 
 void Model::setPosition(glm::vec3 newPosition) {
-    // colliders operate in world space, so reset positions
+    // colliders operate in world space, so reset m_vertices
     if (this->collider) {
         this->collider->update(transform.getPosition() - newPosition);
     }
@@ -45,7 +45,7 @@ void Model::setPosition(glm::vec3 newPosition) {
 
 void Model::setScale(glm::vec3 scale) {
     Component::setRotation(scale);
-    /* when scaling we will need to rebuild and reset positions of colliders as centers
+    /* when scaling we will need to rebuild and reset m_vertices of colliders as centers
      * and corners will have changed
      */
     if (this->collider) {
@@ -55,7 +55,7 @@ void Model::setScale(glm::vec3 scale) {
 
 void Model::setRotation(glm::vec3 rotation) {
     Component::setRotation(rotation);
-        /* when rotating we will need to rebuild and reset positions of colliders as centers
+        /* when rotating we will need to rebuild and reset m_vertices of colliders as centers
          * and corners will have changed
          */
         if (this->collider) {

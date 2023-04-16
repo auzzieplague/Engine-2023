@@ -6,7 +6,6 @@
 
 
 class Collider {
-
     enum ColliderType {
         CT_Box,
         CT_Sphere,
@@ -52,8 +51,8 @@ public:
          * where the object scales, we will need to recalculate the whole volume as corners and
          */
 
-        m_sphere.findRadiusAndCenter(mesh->positions);
-        m_aabb.findMinMaxCorners(mesh->positions);
+        m_sphere.findRadiusAndCenter(mesh->m_vertices);
+        m_aabb.findMinMaxCorners(mesh->m_vertices);
     }
 
 

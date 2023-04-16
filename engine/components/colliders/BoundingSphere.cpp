@@ -24,7 +24,7 @@ bool BoundingSphere::isCollidingWith(const BoundingSphere &otherSphere) const  {
 bool BoundingSphere::isCollidingWith(const TerrainMesh &terrain) const {
 
     /// subdivide the terrain mesh using octree
-    /// actually - all meshes can use octree to partition the faces and vertices
+    /// actually - all meshes can use octree to partition the faces and m_vertices
 
 
     // Check if the m_sphere is completely outside the bounding box of the mesh
@@ -40,9 +40,9 @@ bool BoundingSphere::isCollidingWith(const TerrainMesh &terrain) const {
     // Check if the m_sphere intersects any of the triangles in the mesh
 //    for (const auto &face : terrain.faces) {
 //        // Calculate the normal vector of the face
-//        glm::vec3 v1 = terrain.vertices[face[0]];
-//        glm::vec3 v2 = terrain.vertices[face[1]];
-//        glm::vec3 v3 = terrain.vertices[face[2]];
+//        glm::vec3 v1 = terrain.m_vertices[face[0]];
+//        glm::vec3 v2 = terrain.m_vertices[face[1]];
+//        glm::vec3 v3 = terrain.m_vertices[face[2]];
 //        glm::vec3 normal = glm::normalize(glm::cross(v2 - v1, v3 - v1));
 //
 //        // Calculate the distance between the m_center of the m_sphere and the plane of the face

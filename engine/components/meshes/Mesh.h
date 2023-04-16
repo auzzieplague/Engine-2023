@@ -2,14 +2,28 @@
 
 #include "../Component.h"
 #include "../Material.h"
-//#include "../../layers/graphics/m_api/GraphicsAPI.h"
 
 class GraphicsAPI;
 
 class Mesh : public Component {
+    friend class Collider;
+
+protected:
+    Material m_material;
+    std::vector<glm::vec3> m_vertices;
+    std::vector<glm::vec2> m_uv;
+    std::vector<glm::vec3> m_normals;
+    std::vector<glm::vec3> m_tangents;
+    std::vector<glm::vec3> m_biTangents;
+    std::vector<unsigned int> m_indices;
+
+    unsigned int m_topology = TRIANGLES;
+    unsigned int m_topologyID = 0; // updated in initMesh()
+    unsigned int m_gID = 0;
+    static GraphicsAPI *m_api;
+
 public:
-    enum TOPOLOGY
-    {
+    enum TOPOLOGY {
         POINTS,
         LINES,
         LINE_STRIP,
@@ -26,23 +40,29 @@ public:
         return "Mesh - name tbc";
     };
 
-    unsigned int topology = TRIANGLES;
-    unsigned int topologyID = 0; // updated in initMesh()
-    unsigned int gID = 0;
-
-    Material material;
-    std::vector<glm::vec3> positions;
-    std::vector<glm::vec2> uv;
-    std::vector<glm::vec3> normals;
-    std::vector<glm::vec3> tangents;
-    std::vector<glm::vec3> bitangents;
-    std::vector<unsigned int> indices;
-
-    static GraphicsAPI *api;
+    bool isReady() override;
 
     Mesh() = default;
+
     static void setApi(GraphicsAPI *api);
-    bool isReady() override;
+
+    void setMaterial(const Material &material);
+
+    Material &getMaterial();
+
+    [[nodiscard]] const std::vector<glm::vec3> &getVertices() const;
+
+    [[nodiscard]] const std::vector<glm::vec2> &getUv() const;
+
+    [[nodiscard]] const std::vector<glm::vec3> &getNormals() const;
+
+    [[nodiscard]] const std::vector<glm::vec3> &getTangents() const;
+
+    [[nodiscard]] const std::vector<glm::vec3> &getBiTangents() const;
+
+    [[nodiscard]] const std::vector<unsigned int> &getIndices() const;
+
+    unsigned int getID();
 
     /**
      * Note: not all meshes will require loading into video ram,
@@ -52,8 +72,9 @@ public:
      */
     unsigned int generateMeshID();
 
-    void calculateNormals() ;
-    void calculateTangents() ;
+    void calculateNormals();
+
+    void calculateTangents();
 
 };
 

@@ -7,10 +7,10 @@
  */
 class Material : public Component {
 private:
-    glm::vec3 m_ambientColor;     // Ambient color of the material
-    glm::vec3 m_diffuseColor;     // Diffuse color of the material
-    glm::vec3 m_specularColor;    // Specular color of the material
-    float m_shininess;            // Shininess of the material
+    glm::vec3 m_ambientColor;     // Ambient color of the m_material
+    glm::vec3 m_diffuseColor;     // Diffuse color of the m_material
+    glm::vec3 m_specularColor;    // Specular color of the m_material
+    float m_shininess;            // Shininess of the m_material
 public:
     // Constructor with default values
     Material() {

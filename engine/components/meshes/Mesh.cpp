@@ -2,10 +2,10 @@
 #include "../../layers/graphics/api/GraphicsAPI.h"
 #include "Mesh.h"
 
-GraphicsAPI *Mesh::api;
+GraphicsAPI *Mesh::m_api;
 
 void Mesh::setApi(GraphicsAPI *api) {
-    Mesh::api = api;
+    Mesh::m_api = api;
 }
 
 bool Mesh::isReady() {
@@ -13,7 +13,7 @@ bool Mesh::isReady() {
 
     // not all meshes will need to be rendered, but at the moment only rendering is using readyCheckk
     // we will need to subclass mesh into render and non render types
-    if (this->gID != 0){
+    if (this->m_gID != 0){
         ready = true;
     }
 
@@ -21,27 +21,27 @@ bool Mesh::isReady() {
 }
 
 unsigned int Mesh::generateMeshID() {
-    this->gID = api->setupMesh(this);
-    if (this->gID == 0){
+    this->m_gID = m_api->setupMesh(this);
+    if (this->m_gID == 0){
         Debug::show("Failed to generate meshID for " + getName());
     }
-    return this->gID;
+    return this->m_gID;
 }
 
 void Mesh::calculateNormals() {{
         // Initialize the normal vector for each vertex to (0, 0, 0)
-        std::vector<glm::vec3> vertexNormals(positions.size(), glm::vec3(0.0f));
+        std::vector<glm::vec3> vertexNormals(m_vertices.size(), glm::vec3(0.0f));
 
         // Iterate over each face of the mesh
-        for (size_t i = 0; i < indices.size(); i += 3) {
-            // Get the indices of the three vertices that make m_up the face
-            unsigned int i1 = indices[i];
-            unsigned int i2 = indices[i + 1];
-            unsigned int i3 = indices[i + 2];
+        for (size_t i = 0; i < m_indices.size(); i += 3) {
+            // Get the m_indices of the three m_vertices that make m_up the face
+            unsigned int i1 = m_indices[i];
+            unsigned int i2 = m_indices[i + 1];
+            unsigned int i3 = m_indices[i + 2];
 
             // Calculate the normal vector of the face
-            glm::vec3 v1 = positions[i2] - positions[i1];
-            glm::vec3 v2 = positions[i3] - positions[i1];
+            glm::vec3 v1 = m_vertices[i2] - m_vertices[i1];
+            glm::vec3 v2 = m_vertices[i3] - m_vertices[i1];
             glm::vec3 normal = glm::normalize(glm::cross(v1, v2));
 
             // Add the normal vector of the face to the normal vector of each vertex
@@ -51,8 +51,8 @@ void Mesh::calculateNormals() {{
         }
 
         // Normalize the normal vector for each vertex
-        for (size_t i = 0; i < positions.size(); i++) {
-            normals.push_back(glm::normalize(vertexNormals[i]));
+        for (size_t i = 0; i < m_vertices.size(); i++) {
+            m_normals.push_back(glm::normalize(vertexNormals[i]));
         }
     }
 
@@ -61,21 +61,21 @@ void Mesh::calculateNormals() {{
 
 void Mesh::calculateTangents() {
     // Initialize the tangent and bitangent vectors for each vertex to (0, 0, 0)
-    std::vector<glm::vec3> vertexTangents(positions.size(), glm::vec3(0.0f));
-    std::vector<glm::vec3> vertexBitangents(positions.size(), glm::vec3(0.0f));
+    std::vector<glm::vec3> vertexTangents(m_vertices.size(), glm::vec3(0.0f));
+    std::vector<glm::vec3> vertexBitangents(m_vertices.size(), glm::vec3(0.0f));
 
     // Iterate over each face of the mesh
-    for (size_t i = 0; i < indices.size(); i += 3) {
-        // Get the indices of the three vertices that make m_up the face
-        unsigned int i1 = indices[i];
-        unsigned int i2 = indices[i + 1];
-        unsigned int i3 = indices[i + 2];
+    for (size_t i = 0; i < m_indices.size(); i += 3) {
+        // Get the m_indices of the three m_vertices that make m_up the face
+        unsigned int i1 = m_indices[i];
+        unsigned int i2 = m_indices[i + 1];
+        unsigned int i3 = m_indices[i + 2];
 
         // Calculate the edge vectors and UV differentials for the face
-        glm::vec3 edge1 = positions[i2] - positions[i1];
-        glm::vec3 edge2 = positions[i3] - positions[i1];
-        glm::vec2 deltaUV1 = uv[i2] - uv[i1];
-        glm::vec2 deltaUV2 = uv[i3] - uv[i1];
+        glm::vec3 edge1 = m_vertices[i2] - m_vertices[i1];
+        glm::vec3 edge2 = m_vertices[i3] - m_vertices[i1];
+        glm::vec2 deltaUV1 = m_uv[i2] - m_uv[i1];
+        glm::vec2 deltaUV2 = m_uv[i3] - m_uv[i1];
 
         // Calculate the determinant of the UV matrix
         float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
@@ -102,8 +102,8 @@ void Mesh::calculateTangents() {
     }
 
     // Calculate the final tangent and bitangent vectors for each vertex
-    for (size_t i = 0; i < positions.size(); i++) {
-        glm::vec3 normal = normals[i];
+    for (size_t i = 0; i < m_vertices.size(); i++) {
+        glm::vec3 normal = m_normals[i];
         glm::vec3 tangent = vertexTangents[i];
 
         // Gram-Schmidt orthogonalize the tangent vector with respect to the vertex normal
@@ -113,7 +113,43 @@ void Mesh::calculateTangents() {
         float handedness = glm::dot(glm::cross(normal, tangent), vertexBitangents[i]) < 0.0f ? -1.0f : 1.0f;
 
         // Add the final tangent and bitangent vectors to the mesh
-        tangents.emplace_back(glm::vec4(tangent, handedness));
-        bitangents.push_back(glm::vec3(vertexBitangents[i] * handedness));
+        m_tangents.emplace_back(glm::vec4(tangent, handedness));
+        m_biTangents.push_back(glm::vec3(vertexBitangents[i] * handedness));
     }
+}
+
+ Material &Mesh::getMaterial() {
+    return m_material;
+}
+
+void Mesh::setMaterial(const Material &material) {
+    Mesh::m_material = material;
+}
+
+const std::vector<glm::vec3> &Mesh::getVertices() const {
+    return m_vertices;
+}
+
+const std::vector<glm::vec2> &Mesh::getUv() const {
+    return m_uv;
+}
+
+const std::vector<glm::vec3> &Mesh::getNormals() const {
+    return m_normals;
+}
+
+const std::vector<glm::vec3> &Mesh::getTangents() const {
+    return m_tangents;
+}
+
+const std::vector<glm::vec3> &Mesh::getBiTangents() const {
+    return m_biTangents;
+}
+
+const std::vector<unsigned int> &Mesh::getIndices() const {
+    return m_indices;
+}
+
+unsigned int Mesh::getID() {
+    return this->m_gID;
 };

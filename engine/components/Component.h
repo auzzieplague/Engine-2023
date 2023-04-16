@@ -1,5 +1,5 @@
 #pragma once
-// predefine all components here, mesh, material, texture, animation, script etc.
+// predefine all components here, mesh, m_material, texture, animation, script etc.
 
 #include "../Object.h"
 #include "../../core/Transform.h"
@@ -41,7 +41,7 @@ public:
 
     /**
      *  create a game object that represents the 3D model in the game world.
-     *  The game object should contain the mesh and material objects,
+     *  The game object should contain the mesh and m_material objects,
      *  as well as any other relevant information such as the object's m_position, m_rotation, and scale.
      */
     virtual void init() {

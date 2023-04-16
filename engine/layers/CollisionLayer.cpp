@@ -30,11 +30,11 @@ void CollisionLayer::update(Scene *scene) {
 
                 if (scene->modelsToRender[collider1]->collider->isColliding(
                         scene->modelsToRender[collider2]->collider)) {
-                    scene->modelsToRender[collider1]->mesh->material.setAmbientColor({1.0f, 0, 0});
-                    scene->modelsToRender[collider2]->mesh->material.setAmbientColor({1.0f, 0, 0});
+                    scene->modelsToRender[collider1]->mesh->getMaterial().setAmbientColor({1.0f, 0, 0});
+                    scene->modelsToRender[collider2]->mesh->getMaterial().setAmbientColor({1.0f, 0, 0});
                 } else {
-                    scene->modelsToRender[collider1]->mesh->material.setAmbientColor({1.0f, 1.0f, 1.0f});
-                    scene->modelsToRender[collider2]->mesh->material.setAmbientColor({1.0f, 1.0f, 1.0f});
+                    scene->modelsToRender[collider1]->mesh->getMaterial().setAmbientColor({1.0f, 1.0f, 1.0f});
+                    scene->modelsToRender[collider2]->mesh->getMaterial().setAmbientColor({1.0f, 1.0f, 1.0f});
                 }
 
                 /// note: in above example, if a node A collides with B but B doesnt collide with C,  C will appear white,
@@ -58,7 +58,7 @@ void CollisionLayer::render(Scene *scene) {
 
     // set colour red if colliding green if not.
 
-    //if collider m_vertices isn't set initialise it with m_sphere positions.
+    //if collider m_vertices isn't set initialise it with m_sphere m_vertices.
 }
 
 
