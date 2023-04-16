@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 
-class InteractionLayer: public Layer {
+class InteractionLayer : public Layer {
 private:
 
     enum UserInteractionMode {
@@ -17,8 +17,10 @@ private:
     Input *input;
 
 public:
-    Model * selectedModel = nullptr;
+    Model *selectedModel = nullptr;
+
     void onAttach(Scene *scene) override;
+
     void processInput(Scene *scene) override;
 
     void processCameraInput(Scene *scene);

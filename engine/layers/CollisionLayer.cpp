@@ -12,7 +12,7 @@ void CollisionLayer::update(Scene *scene) {
 
     int collider1 = 0;
     int collider2 = 1;
-    int max = scene->modelsToRender.size() - 1;
+    uint max = scene->modelsToRender.size() - 1;
 
     /*
      * Note: time complexity (n^2 - n) / 2 for these comparisons
@@ -48,7 +48,6 @@ void CollisionLayer::update(Scene *scene) {
         collider1++;
         collider2 = collider1 + 1;
     }
-
 
     // perform collision detection - isColliding
 }

@@ -32,7 +32,7 @@ public:
      * update the centers of the bounding volumes
      * @return
      */
-    virtual void update(glm::vec3 offsetChange){
+    virtual void update(glm::vec3 offsetChange) {
         /**
          * shift m_position of m_sphere m_center ... note m_center is not origin of model so we can just set m_position
          * similarly we need to shift the min and max corners of the bounding box
@@ -43,7 +43,7 @@ public:
         m_sphere.moveCenter(offsetChange);
     }
 
-    virtual void rebuild(Mesh * mesh){
+    virtual void rebuild(Mesh *mesh) {
         /**
          * todo shift m_position of m_sphere m_center ... note m_center is not origin of model so we can just set m_position
          * similarly we need to shift the min and max corners of the bounding box
@@ -54,7 +54,6 @@ public:
         m_sphere.findRadiusAndCenter(mesh->m_vertices);
         m_aabb.findMinMaxCorners(mesh->m_vertices);
     }
-
 
 
     virtual bool isColliding(Collider *otherCollider) {

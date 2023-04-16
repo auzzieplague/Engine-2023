@@ -10,18 +10,18 @@ Camera::Camera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) :
 }
 
 glm::mat4 Camera::getViewMatrix() {
-    if (dirty) {
-        m_viewMatrix =  glm::lookAt(m_position, m_position + m_front, m_up);
-        dirty = false;
+    if (m_dirty) {
+        m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
+        m_dirty = false;
     }
     return m_viewMatrix;
 }
 
-void Camera::updateProjectionMatrix()  {
+void Camera::updateProjectionMatrix() {
     m_projectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_nearClip, m_farClip);
 }
 
-glm::mat4 Camera::getProjectionMatrix()  {
+glm::mat4 Camera::getProjectionMatrix() {
     return m_projectionMatrix;
 }
 
@@ -43,32 +43,32 @@ glm::mat4 Camera::getProjectionMatrix()  {
 
 void Camera::moveForward(float deltaTime) {
     m_position += m_front * deltaTime;
-    dirty= true;
+    m_dirty = true;
 }
 
 void Camera::moveBackward(float deltaTime) {
     m_position -= m_front * deltaTime;
-    dirty= true;
+    m_dirty = true;
 }
 
 void Camera::moveRight(float deltaTime) {
     m_position += m_right * deltaTime;
-    dirty= true;
+    m_dirty = true;
 }
 
 void Camera::moveLeft(float deltaTime) {
     m_position -= m_right * deltaTime;
-    dirty= true;
+    m_dirty = true;
 }
 
 void Camera::moveUp(float deltaTime) {
     m_position += m_up * deltaTime;
-    dirty= true;
+    m_dirty = true;
 }
 
 void Camera::moveDown(float deltaTime) {
     m_position -= m_up * deltaTime;
-    dirty= true;
+    m_dirty = true;
 }
 
 
@@ -89,7 +89,7 @@ void Camera::rotate(float xoffset, float yoffset, bool constrainPitch) {
     }
 
     updateCameraVectors();
-    dirty = true;
+    m_dirty = true;
 }
 
 void Camera::updateCameraVectors() {

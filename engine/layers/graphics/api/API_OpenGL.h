@@ -42,10 +42,13 @@ public:
 
     void shaderSetFloat(const std::string &name, float value) const override;
 
-    void shaderSetMaterial(Material material) const override ;
-    void shaderSetTransform(const glm::mat4& mat) const override ;
-    void shaderSetView(const glm::mat4& mat) const override;
-    void shaderSetProjection(const glm::mat4& mat) const override;
+    void shaderSetMaterial(Material material) const override;
+
+    void shaderSetTransform(const glm::mat4 &mat) const override;
+
+    void shaderSetView(const glm::mat4 &mat) const override;
+
+    void shaderSetProjection(const glm::mat4 &mat) const override;
 
 };
 

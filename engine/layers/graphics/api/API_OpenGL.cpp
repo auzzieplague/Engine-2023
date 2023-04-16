@@ -117,7 +117,7 @@ unsigned int API_OpenGL::loadShader(std::string vertex, std::string fragment) {
 
 
 unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
-    if (mesh->getIndices().empty()){
+    if (mesh->getIndices().empty()) {
         Debug::show("mesh object has no getIndices");
         return 0;
     }
@@ -129,7 +129,8 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-    glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size() * sizeof(glm::vec3), &mesh->getVertices()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size() * sizeof(glm::vec3), &mesh->getVertices()[0],
+                 GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size() * sizeof(unsigned int), &mesh->getIndices()[0],
@@ -172,37 +173,40 @@ void API_OpenGL::shaderSetMat4(const std::string &name, const glm::mat4 &mat) co
     glUniformMatrix4fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
-void API_OpenGL::shaderSetVec3(const std::string& name, const glm::vec3& vector) const {
-    glUniform3f(glGetUniformLocation(currentRenderingConfig->shaderID,name.c_str()), vector.x, vector.y, vector.z);
+void API_OpenGL::shaderSetVec3(const std::string &name, const glm::vec3 &vector) const {
+    glUniform3f(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), vector.x, vector.y, vector.z);
 }
 
 void API_OpenGL::shaderSetFloat(const std::string &name, float value) const {
-    glUniform1f(glGetUniformLocation(currentRenderingConfig->shaderID,name.c_str()), value);
+    glUniform1f(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value);
 }
 
-void API_OpenGL::shaderSetVec4(const std::string& name, const glm::vec4& value) const {
-    glUniform4f(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value.x, value.y, value.z, value.w);
+void API_OpenGL::shaderSetVec4(const std::string &name, const glm::vec4 &value) const {
+    glUniform4f(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value.x, value.y, value.z,
+                value.w);
 }
 
-void API_OpenGL::shaderSetBool(const std::string& name, bool value) const {
-    glUniform1i(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), (int)value);
+void API_OpenGL::shaderSetBool(const std::string &name, bool value) const {
+    glUniform1i(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), (int) value);
 }
 
-void API_OpenGL::shaderSetInt(const std::string& name, int value) const {
+void API_OpenGL::shaderSetInt(const std::string &name, int value) const {
     glUniform1i(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value);
 }
 
-void API_OpenGL::shaderSetVec2(const std::string& name, const glm::vec2& value) const {
+void API_OpenGL::shaderSetVec2(const std::string &name, const glm::vec2 &value) const {
     glUniform2f(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value.x, value.y);
 }
 
 
-void API_OpenGL::shaderSetMat2(const std::string& name, const glm::mat2& mat) const {
-    glUniformMatrix2fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+void API_OpenGL::shaderSetMat2(const std::string &name, const glm::mat2 &mat) const {
+    glUniformMatrix2fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE,
+                       glm::value_ptr(mat));
 }
 
-void API_OpenGL::shaderSetMat3(const std::string& name, const glm::mat3& mat) const {
-    glUniformMatrix3fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE, glm::value_ptr(mat));
+void API_OpenGL::shaderSetMat3(const std::string &name, const glm::mat3 &mat) const {
+    glUniformMatrix3fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE,
+                       glm::value_ptr(mat));
 }
 
 void API_OpenGL::shaderSetMaterial(Material material) const {
@@ -213,15 +217,15 @@ void API_OpenGL::shaderSetMaterial(Material material) const {
 }
 
 void API_OpenGL::shaderSetTransform(const glm::mat4 &mat) const {
-    shaderSetMat4("transform",mat);
+    shaderSetMat4("transform", mat);
 }
 
 void API_OpenGL::shaderSetView(const glm::mat4 &mat) const {
-    shaderSetMat4("view",mat);
+    shaderSetMat4("view", mat);
 }
 
 void API_OpenGL::shaderSetProjection(const glm::mat4 &mat) const {
-    shaderSetMat4("projection",mat);
+    shaderSetMat4("projection", mat);
 }
 
 

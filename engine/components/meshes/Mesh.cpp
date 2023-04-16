@@ -9,26 +9,27 @@ void Mesh::setApi(GraphicsAPI *api) {
 }
 
 bool Mesh::isReady() {
-    if (ready) return true;
+    if (m_ready) return true;
 
     // not all meshes will need to be rendered, but at the moment only rendering is using readyCheckk
     // we will need to subclass mesh into render and non render types
-    if (this->m_gID != 0){
-        ready = true;
+    if (this->m_gID != 0) {
+        m_ready = true;
     }
 
-    return ready;
+    return m_ready;
 }
 
 unsigned int Mesh::generateMeshID() {
     this->m_gID = m_api->setupMesh(this);
-    if (this->m_gID == 0){
+    if (this->m_gID == 0) {
         Debug::show("Failed to generate meshID for " + getName());
     }
     return this->m_gID;
 }
 
-void Mesh::calculateNormals() {{
+void Mesh::calculateNormals() {
+    {
         // Initialize the normal vector for each vertex to (0, 0, 0)
         std::vector<glm::vec3> vertexNormals(m_vertices.size(), glm::vec3(0.0f));
 
@@ -118,7 +119,7 @@ void Mesh::calculateTangents() {
     }
 }
 
- Material &Mesh::getMaterial() {
+Material &Mesh::getMaterial() {
     return m_material;
 }
 

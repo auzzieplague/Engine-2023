@@ -11,7 +11,7 @@ struct GeometryConfig {
     };
 
     struct CubeConfig {
-      float size = 0.5f;
+        float size = 0.5f;
     };
 
     struct DomeConfig {
@@ -20,7 +20,7 @@ struct GeometryConfig {
     };
 
     struct SphereConfig {
-        float radius =0.5f;
+        float radius = 0.5f;
         unsigned int rings = 5;
         unsigned int sectors = 5;
     };
@@ -53,21 +53,22 @@ struct GeometryConfig {
         unsigned int seed = 456;
     };
 
-     BoxConfig box;
-     CubeConfig cube;
-     DomeConfig dome;
-     SphereConfig sphere;
-     CapsuleConfig capsule;
-     TorusConfig torus;
-     ConeConfig cone;
-     TerrainConfig terrain;
+    BoxConfig box;
+    CubeConfig cube;
+    DomeConfig dome;
+    SphereConfig sphere;
+    CapsuleConfig capsule;
+    TorusConfig torus;
+    ConeConfig cone;
+    TerrainConfig terrain;
 };
 
 class Geometry : public Mesh {
     //inherits meshData
-public:
+private:
     float pi = 3.1415926;
     float pi2 = 3.1415926 * 2;
+public:
 
     // todo add factory - usually at component level.
     // maintain a type in order to provide interface options for sectors, segments etc to rebuild shape
@@ -85,20 +86,22 @@ public:
     Geometry() = default;;
 
     void buildQuad();
-    void buildBox (GeometryConfig config ={});
-    void buildCube(GeometryConfig config ={});
 
-    void buildDome(GeometryConfig config ={});
+    void buildBox(GeometryConfig config = {});
 
-    void buildSphere(GeometryConfig config ={});
+    void buildCube(GeometryConfig config = {});
 
-    void buildCapsule(GeometryConfig config ={});
+    void buildDome(GeometryConfig config = {});
 
-    void buildTorus(GeometryConfig config ={});
+    void buildSphere(GeometryConfig config = {});
 
-    void buildCone(GeometryConfig config ={});
+    void buildCapsule(GeometryConfig config = {});
 
-    void buildTerrain(GeometryConfig config ={});
+    void buildTorus(GeometryConfig config = {});
+
+    void buildCone(GeometryConfig config = {});
+
+    void buildTerrain(GeometryConfig config = {});
 };
 
 

@@ -14,7 +14,7 @@ public:
     unsigned int toDisableFlags = 0;
 
     unsigned int clearFlags = GL_COLOR_BUFFER_BIT;
-    glm::vec4 clearColour {0.2f, 0.3f, 0.3f, 1.0};
+    glm::vec4 clearColour{0.2f, 0.3f, 0.3f, 1.0};
     unsigned int shaderID;
     bool debugMode = false;
 
@@ -23,17 +23,17 @@ public:
      * - if you need changes applied immediately use @see GraphicsAPI::updateRendererConfig()
      * @param flag
      */
-    void enable (unsigned int  flag){
+    void enable(unsigned int flag) {
         toEnableFlags = toEnableFlags | flag;
         toEnable.push_back(flag);
     }
 
-    void disable (unsigned int flag){
+    void disable(unsigned int flag) {
         toDisableFlags = toDisableFlags | flag;
         toDisable.push_back(flag);
     }
 
-    void setClearFlag (unsigned int flag){
+    void setClearFlag(unsigned int flag) {
         clearFlags = clearFlags | flag;
     }
 

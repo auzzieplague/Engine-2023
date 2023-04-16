@@ -7,14 +7,11 @@
 class WindowLayer : public Layer {
 
 public:
+    void onAttach(Scene *) override;
 
-//    explicit WindowLayer(GraphicsAPI *m_api);
+    void onDetach(Scene *) override;
 
-    void onAttach(Scene *) override ;
+    void processInput(Scene *scene) override;
 
-    void onDetach(Scene *) override ;
-
-    void processInput(Scene *scene) override ;
-
-    void afterRender(Scene *scene) override ;
+    void afterRender(Scene *scene) override;
 };

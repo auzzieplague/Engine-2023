@@ -2,7 +2,7 @@
 
 #include "BoundingSphere.h"
 
-bool BoundingSphere::isCollidingWith(const BoundingSphere &otherSphere) const  {
+bool BoundingSphere::isCollidingWith(const BoundingSphere &otherSphere) const {
     float distance = glm::distance(m_center, otherSphere.m_center);
     float sumRadii = m_radius + otherSphere.m_radius;
     return distance <= sumRadii;
@@ -95,14 +95,14 @@ void BoundingSphere::findRadiusAndCenter(const std::vector<glm::vec3> &vertices)
     }
 
     glm::vec3 sum(0.0f);
-    for (const auto& vertex : vertices) {
+    for (const auto &vertex: vertices) {
         sum += vertex;
     }
 
     m_center = sum / static_cast<float>(vertices.size());
 
     float maxDistanceSq = 0.0f;
-    for (const auto& vertex : vertices) {
+    for (const auto &vertex: vertices) {
         float distanceSq = glm::distance(vertex, m_center);
         distanceSq = distanceSq * distanceSq;
         if (distanceSq > maxDistanceSq) {
@@ -114,5 +114,5 @@ void BoundingSphere::findRadiusAndCenter(const std::vector<glm::vec3> &vertices)
 }
 
 void BoundingSphere::moveCenter(const glm::vec3 &offset) {
-    this->m_center+=offset;
+    this->m_center += offset;
 }

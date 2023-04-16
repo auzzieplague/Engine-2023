@@ -2,9 +2,9 @@
 
 #include "WindowLayer.h"
 
-void WindowLayer::onAttach(Scene * scene){
+void WindowLayer::onAttach(Scene *scene) {
     Debug::show("[>] Window Attached");
-    scene->currentWindow = new Window(api,1280, 720, "Window Layer");
+    scene->currentWindow = new Window(api, 1280, 720, "Window Layer");
 }
 
 void WindowLayer::onDetach(Scene *) {

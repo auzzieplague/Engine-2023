@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Collider.h"
 
 bool Collider::containsPoint(const glm::vec3 &point) const {

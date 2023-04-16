@@ -16,7 +16,7 @@ void InteractionLayer::processInput(Scene *scene) {
 void InteractionLayer::processCameraInput(Scene *scene) {
     /// todo add mappings for camera keys, for now just use wasd
 
-    float speed = 0.005 ;
+    float speed = 0.005;
     float sensitivity = 1;
 
     if (input->isKeyPressed(GLFW_KEY_W)) {
@@ -51,32 +51,32 @@ void InteractionLayer::processCameraInput(Scene *scene) {
     if (selectedModel) {
         if (input->isKeyPressed(GLFW_KEY_I)) {
             glm::vec3 pos = selectedModel->getPosition();
-            pos.y += speed/2;
+            pos.y += speed / 2;
             selectedModel->setPosition(pos);
         };
         if (input->isKeyPressed(GLFW_KEY_K)) {
             glm::vec3 pos = selectedModel->getPosition();
-            pos.y -= speed/2;
+            pos.y -= speed / 2;
             selectedModel->setPosition(pos);
         };
         if (input->isKeyPressed(GLFW_KEY_L)) {
             glm::vec3 pos = selectedModel->getPosition();
-            pos.z += speed/2;
+            pos.z += speed / 2;
             selectedModel->setPosition(pos);
         };
         if (input->isKeyPressed(GLFW_KEY_O)) {
             glm::vec3 pos = selectedModel->getPosition();
-            pos.z -= speed/2;
+            pos.z -= speed / 2;
             selectedModel->setPosition(pos);
         };
         if (input->isKeyPressed(GLFW_KEY_PERIOD)) {
             glm::vec3 pos = selectedModel->getPosition();
-            pos.x += speed/2;
+            pos.x += speed / 2;
             selectedModel->setPosition(pos);
         };
         if (input->isKeyPressed(GLFW_KEY_COMMA)) {
             glm::vec3 pos = selectedModel->getPosition();
-            pos.x -= speed/2;
+            pos.x -= speed / 2;
             selectedModel->setPosition(pos);
         };
     }

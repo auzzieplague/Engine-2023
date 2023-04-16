@@ -13,7 +13,7 @@ unsigned int GraphicsAPI::loadShader(std::string, std::string) {
     return 0;
 }
 
-unsigned int GraphicsAPI::setupMesh(Mesh * instance) {
+unsigned int GraphicsAPI::setupMesh(Mesh *instance) {
     Debug::show("missing override for setupMesh");
     return 0;
 }

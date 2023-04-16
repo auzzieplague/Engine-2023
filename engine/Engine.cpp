@@ -18,35 +18,35 @@ void Engine::start() {
 void Engine::loopLayers() const {
     if (Window::getCurrentWindow()) {
         while (!glfwWindowShouldClose(Window::getCurrentWindow())) {
-            for (Layer* layer : this->layers) {
+            for (Layer *layer: this->layers) {
                 layer->beforeUpdate(this->currentScene);
             }
 
-            for (Layer* layer : this->layers) {
+            for (Layer *layer: this->layers) {
                 layer->update(this->currentScene);
             }
 
-            for (Layer* layer : this->layers) {
+            for (Layer *layer: this->layers) {
                 layer->afterUpdate(this->currentScene);
             }
 
             // passes layers and scene to gui modelRenderer (overridden method)
 //            Engine::processAppendedGUItems(this->layers, this->currentScene);
 
-            for (Layer* layer : this->layers) {
+            for (Layer *layer: this->layers) {
                 layer->beforeRender(this->currentScene);
             }
 
-            for (Layer* layer : this->layers) {
+            for (Layer *layer: this->layers) {
                 layer->render(this->currentScene);
             }
 
             // process input m_front to back
-            for (auto layer : std::ranges::reverse_view(this->layers)) {
+            for (auto layer: std::ranges::reverse_view(this->layers)) {
                 layer->processInput(this->currentScene);
             }
 
-            for (auto layer : std::ranges::reverse_view(this->layers)) {
+            for (auto layer: std::ranges::reverse_view(this->layers)) {
                 layer->afterRender(this->currentScene);
             }
 

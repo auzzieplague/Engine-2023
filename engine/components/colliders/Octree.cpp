@@ -12,7 +12,7 @@ void Octree::insert(const BoundingSphere &boundingSphere) {
         }
     } else {
         // Non-leaf node
-        for (auto& child : m_children) {
+        for (auto &child: m_children) {
             if (child.m_boundingSphere.isCollidingWith(boundingSphere)) {
                 child.insert(boundingSphere);
             }
@@ -25,14 +25,14 @@ std::vector<BoundingSphere> Octree::getCollisions(const BoundingSphere &bounding
     if (m_boundingSphere.isCollidingWith(boundingSphere)) {
         if (m_children.empty()) {
             // Leaf node
-            for (const auto& object : m_objects) {
+            for (const auto &object: m_objects) {
                 if (object.isCollidingWith(boundingSphere)) {
                     collisions.push_back(object);
                 }
             }
         } else {
             // Non-leaf node
-            for (const auto& child : m_children) {
+            for (const auto &child: m_children) {
                 auto childCollisions = child.getCollisions(boundingSphere);
                 collisions.insert(collisions.end(), childCollisions.begin(), childCollisions.end());
             }
@@ -53,8 +53,8 @@ void Octree::subdivide() {
         m_children.emplace_back(childBoundingSphere, m_maxObjectsPerNode);
     }
     // Move objects to children
-    for (auto& object : m_objects) {
-        for (auto& child : m_children) {
+    for (auto &object: m_objects) {
+        for (auto &child: m_children) {
             if (child.m_boundingSphere.isCollidingWith(object)) {
                 child.insert(object);
             }

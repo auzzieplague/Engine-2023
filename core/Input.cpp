@@ -10,14 +10,14 @@ bool Input::m_rightMouseDragging = false;
 glm::vec2 Input::m_mousePos;
 glm::vec2 Input::m_lastMousePos;
 
-Input::Input(GLFWwindow *window)  {
+Input::Input(GLFWwindow *window) {
     // Initialize key states to "not pressed"
-    for (bool & m_key : m_keys) {
+    for (bool &m_key: m_keys) {
         m_key = false;
     }
 
     // Initialize mouse button states to "not pressed"
-    for (bool & m_mouseButton : m_mouseButtons) {
+    for (bool &m_mouseButton: m_mouseButtons) {
         m_mouseButton = false;
     }
 
@@ -26,7 +26,7 @@ Input::Input(GLFWwindow *window)  {
 }
 
 Input *Input::getInstance() {
-    if (Input::m_instance == nullptr){
+    if (Input::m_instance == nullptr) {
         Debug::show("Input is not yet m_ready with a window");
     }
 
@@ -81,7 +81,7 @@ void Input::keyCallback(GLFWwindow *window, int key, int scancode, int action, i
     }
 }
 
-void Input::mouseMoveCallback(GLFWwindow *window,double xPos, double yPos) {
+void Input::mouseMoveCallback(GLFWwindow *window, double xPos, double yPos) {
     m_mousePos.x = static_cast<float>(xPos);
     m_mousePos.y = static_cast<float>(yPos);
 }

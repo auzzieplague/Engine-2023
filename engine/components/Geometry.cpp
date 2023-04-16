@@ -23,9 +23,10 @@ void Geometry::buildQuad() {
 }
 
 void Geometry::buildCube(GeometryConfig config) {
-    config.box.sizeX=config.box.sizeY=config.box.sizeZ=config.cube.size;
+    config.box.sizeX = config.box.sizeY = config.box.sizeZ = config.cube.size;
     buildBox(config);
 }
+
 void Geometry::buildBox(GeometryConfig config) {
     std::vector<glm::vec3> vertices = {
             // Front face
@@ -122,16 +123,16 @@ void Geometry::buildDome(GeometryConfig config) {
     }
 }
 
-void Geometry::buildSphere(GeometryConfig config)  {
-    float const R = 1.0f / (float)(config.sphere.rings - 1);
-    float const S = 1.0f / (float)(config.sphere.sectors - 1);
+void Geometry::buildSphere(GeometryConfig config) {
+    float const R = 1.0f / (float) (config.sphere.rings - 1);
+    float const S = 1.0f / (float) (config.sphere.sectors - 1);
     float phi, theta;
 
     m_vertices.clear();
     m_indices.clear();
-    for(unsigned int r = 0; r < config.sphere.rings; ++r) {
-        for(unsigned int s = 0; s < config.sphere.sectors; ++s) {
-            phi =  pi * r * R;
+    for (unsigned int r = 0; r < config.sphere.rings; ++r) {
+        for (unsigned int s = 0; s < config.sphere.sectors; ++s) {
+            phi = pi * r * R;
             theta = 2.0f * pi * s * S;
             float x = sin(phi) * cos(theta);
             float y = cos(phi);
@@ -140,8 +141,8 @@ void Geometry::buildSphere(GeometryConfig config)  {
         }
     }
 
-    for(unsigned int r = 0; r < config.sphere.rings - 1; ++r) {
-        for(unsigned int s = 0; s < config.sphere.sectors - 1; ++s) {
+    for (unsigned int r = 0; r < config.sphere.rings - 1; ++r) {
+        for (unsigned int s = 0; s < config.sphere.sectors - 1; ++s) {
             unsigned int idx = r * config.sphere.sectors + s;
             m_indices.push_back(idx);
             m_indices.push_back(idx + 1);
@@ -153,8 +154,7 @@ void Geometry::buildSphere(GeometryConfig config)  {
     }
 }
 
-void Geometry::buildCapsule(GeometryConfig config)
-{
+void Geometry::buildCapsule(GeometryConfig config) {
     float segmentAngle = pi2 / config.capsule.segments;
 
     // Create top hemisphere
@@ -216,7 +216,8 @@ void Geometry::buildTorus(GeometryConfig config) {
         for (int j = 0; j <= config.torus.sides; j++) {
             float theta = j * sideAngle;
             glm::vec3 dir(std::cos(theta), std::sin(theta), 0.0f);
-            glm::vec3 vertex = center * (config.torus.radius + config.torus.tubeRadius * std::cos(theta)) + dir * config.torus.tubeRadius * std::sin(theta);
+            glm::vec3 vertex = center * (config.torus.radius + config.torus.tubeRadius * std::cos(theta)) +
+                               dir * config.torus.tubeRadius * std::sin(theta);
             m_vertices.push_back(vertex);
         }
     }
@@ -230,13 +231,14 @@ void Geometry::buildTorus(GeometryConfig config) {
             if (j == config.torus.sides - 1) {
                 m_indices.push_back(k1);
                 m_indices.push_back(k2);
-                m_indices.push_back(i == config.torus.segments - 1 ? k2 - config.torus.sides - 1 : k1 - config.torus.sides - 1);
+                m_indices.push_back(
+                        i == config.torus.segments - 1 ? k2 - config.torus.sides - 1 : k1 - config.torus.sides - 1);
 
-                m_indices.push_back(i == config.torus.segments - 1 ? k2 - config.torus.sides - 1 : k1 - config.torus.sides - 1);
+                m_indices.push_back(
+                        i == config.torus.segments - 1 ? k2 - config.torus.sides - 1 : k1 - config.torus.sides - 1);
                 m_indices.push_back(k2);
                 m_indices.push_back(i == config.torus.segments - 1 ? k1 : k2);
-            }
-            else {
+            } else {
                 m_indices.push_back(k1);
                 m_indices.push_back(k2);
                 m_indices.push_back(k1 + 1);
@@ -270,14 +272,15 @@ void Geometry::buildCone(GeometryConfig config) {
     // Create top and bottom triangles
     m_vertices[0] = topPoint;
     m_vertices[vertexCount - 1] = bottomPoint;
-    for (int i = 1; i <= config.cone.segments; i++)
-    {
+    for (int i = 1; i <= config.cone.segments; i++) {
         // Calculate current angle
         angle = angleStep * i;
 
         // Calculate m_position for current vertex on top and bottom circle
-        glm::vec3 topVertex(config.cone.radius * glm::cos(angle), config.cone.height / 2.0f, config.cone.radius * glm::sin(angle));
-        glm::vec3 bottomVertex(config.cone.radius * glm::cos(angle), -config.cone.height / 2.0f, config.cone.radius * glm::sin(angle));
+        glm::vec3 topVertex(config.cone.radius * glm::cos(angle), config.cone.height / 2.0f,
+                            config.cone.radius * glm::sin(angle));
+        glm::vec3 bottomVertex(config.cone.radius * glm::cos(angle), -config.cone.height / 2.0f,
+                               config.cone.radius * glm::sin(angle));
 
         // Add m_vertices to m_vertices vector
         m_vertices[i] = topVertex;
@@ -316,8 +319,11 @@ void Geometry::buildTerrain(GeometryConfig config) {
     for (int x = 0; x < config.terrain.width; ++x) {
         for (int z = 0; z < config.terrain.height; ++z) {
             int index = x + z * config.terrain.width;
-            float y = config.terrain.minHeight + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (config.terrain.maxHeight - config.terrain.minHeight)));
-            m_vertices[index] = glm::vec3(static_cast<float>(x) * config.terrain.cellSize, y, static_cast<float>(z) * config.terrain.cellSize);
+            float y = config.terrain.minHeight + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX /
+                                                                                                  (config.terrain.maxHeight -
+                                                                                                   config.terrain.minHeight)));
+            m_vertices[index] = glm::vec3(static_cast<float>(x) * config.terrain.cellSize, y,
+                                          static_cast<float>(z) * config.terrain.cellSize);
         }
     }
 

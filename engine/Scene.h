@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Object.h"
-#include "components/Components.h"
 #include "components/Camera.h"
 #include "../core/Window.h"
 #include "components/Model.h"

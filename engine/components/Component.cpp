@@ -1,49 +1,49 @@
 #include "Component.h"
 
 void Component::setPosition(glm::vec3 newPosition) {
-    this->transform.setPosition(newPosition);
+    this->m_transform.setPosition(newPosition);
 }
 
 void Component::setRotation(glm::vec3 newRotation) {
-    this->transform.setRotation(newRotation);
+    this->m_transform.setRotation(newRotation);
 }
 
 void Component::setScale(glm::vec3 newScale) {
-    this->transform.setScale(newScale);
+    this->m_transform.setScale(newScale);
 }
 
 glm::vec3 Component::getPosition() {
-    return this->transform.getPosition();
+    return this->m_transform.getPosition();
 }
 
 glm::vec3 Component::getScale() {
-    return this->transform.getScale();
+    return this->m_transform.getScale();
 }
 
-glm::quat  Component::getRotation() {
-    return this->transform.getRotation();
+glm::quat Component::getRotation() {
+    return this->m_transform.getRotation();
 }
 
 glm::mat4 Component::getModelMatrix() {
-    return this->transform.getModelMatrix();
+    return this->m_transform.getModelMatrix();
 }
 
 const Transform &Component::getTransform() const {
-    return transform;
+    return m_transform;
 }
 
 bool Component::isDirty() const {
-    return dirty;
+    return m_dirty;
 }
 
 void Component::setDirty(bool dirty) {
-    Component::dirty = dirty;
+    Component::m_dirty = dirty;
 }
 
 bool Component::isReady() {
-    return ready;
+    return m_ready;
 }
 
 void Component::setReady(bool ready) {
-    Component::ready = ready;
+    Component::m_ready = ready;
 }

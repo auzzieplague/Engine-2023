@@ -11,12 +11,12 @@ std::map<std::string, std::string> AssetManager::category_path = {
         {"rocks",          "../assets/models/landscape/rocks"},
 };
 #else
-    /// should be pulling from packages in live mode anyway
-    std::map<std::string, std::string> AssetManager::category_path = {
-            {"shaders_opengl", "shaders/glsl"},
-            {"trees",          "models/landscape/foliage"},
-            {"rocks",          "models/landscape/rocks"},
-    };
+/// should be pulling from packages in live mode anyway
+std::map<std::string, std::string> AssetManager::category_path = {
+        {"shaders_opengl", "shaders/glsl"},
+        {"trees",          "models/landscape/foliage"},
+        {"rocks",          "models/landscape/rocks"},
+};
 #endif
 
 std::string AssetManager::getPath(std::string category) {

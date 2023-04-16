@@ -7,32 +7,40 @@
 
 class Component : public Object {
 protected:
-    Transform transform;
-    bool dirty = true;
-    bool ready = false;
+    Transform m_transform;
+    bool m_dirty = true;
+    bool m_ready = false;
 
 public:
     [[nodiscard]] virtual bool isDirty() const;
+
     void setDirty(bool dirty = true);
 
     [[nodiscard]] virtual bool isReady();
-    void setReady(bool ready);
 
-    virtual bool makeReady() {return false;};
+    void setReady(bool ready = true);
+
+    virtual bool makeReady() { return false; };
 
     [[nodiscard]] const Transform &getTransform() const;
 
     std::vector<Component *> childComponents;
     // has child component list and then underlying mechanics reference the components in the list
-    // should have a scene components list and everything can just references the instances of components as required - mayeb
+    // should have a scene components list and everything can just reference the instances of components as required
 
     virtual void setPosition(glm::vec3 newPosition);
+
     virtual void setScale(glm::vec3 newScale);
+
     virtual void setRotation(glm::vec3 newRotation);
+
     [[nodiscard]] virtual glm::vec3 getPosition();
+
     [[nodiscard]] virtual glm::vec3 getScale();
-    [[nodiscard]] virtual glm::quat  getRotation();
-    [[nodiscard]] virtual glm::mat4  getModelMatrix();
+
+    [[nodiscard]] virtual glm::quat getRotation();
+
+    [[nodiscard]] virtual glm::mat4 getModelMatrix();
 
     ObjectType getType() override {
         return ObjectType::OT_Component;

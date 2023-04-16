@@ -14,9 +14,11 @@ private:
     bool m_keys[1024]{};
     bool m_mouseButtons[8]{};
 
-    static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) ;
+    static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
+
     static void mouseMoveCallback(GLFWwindow *window, double xPos, double yPos);
-    static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+
+    static void mouseButtonCallback(GLFWwindow *window, int button, int action, int mods);
 
 public:
     [[maybe_unused]] [[nodiscard]] static bool isMouseDragging();
@@ -37,7 +39,7 @@ public:
 
     [[maybe_unused]] [[nodiscard]] bool isMouseButtonPressed(int button) const;
 
-    ///todo sub out glfw window with  window and switch callback assignment based on m_api
+    /// todo sub out glfw window with  window and switch callback assignment based on m_api
     explicit Input(GLFWwindow *window);
 
     [[nodiscard]] static Input *getInstance();

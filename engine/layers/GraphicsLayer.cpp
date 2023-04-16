@@ -27,7 +27,7 @@ void GraphicsLayer::initialRenderingSetup(Scene *scene) {
 void GraphicsLayer::render(Scene *scene) {
     // update shaders and set m_api properties
     api->updateRendererConfig(meshConfig);
-    // camera might be dirty
+    // camera might be m_dirty
     checkDirtyCamera(scene);
 
     for (auto model: scene->modelsToRender) {
