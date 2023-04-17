@@ -8,7 +8,7 @@ void setupScene(Scene *scene) {
 
     auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Terrain);
 //    terrain1->setCollider();
-    terrain1->setPosition({-5, -2, -10});
+    terrain1->setPosition({-5, -1, -10});
 
     auto sphere1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
     sphere1->setCollider();
@@ -26,7 +26,7 @@ void setupScene(Scene *scene) {
     testSphere = Model::createFromGeometry(Geometry::ShapeType::Sphere,
                                              GeometryConfig {.sphere {.radius =.5,.rings =6, .sectors =6}});
     testSphere->setCollider();
-    testSphere->setPosition({0, 2, -8});
+    testSphere->setPosition({0, 0, -8});
 
     scene->addComponent(sphere1);
     scene->addComponent(sphere2);

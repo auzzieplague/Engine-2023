@@ -10,10 +10,16 @@ void CollisionLayer::update(Scene *scene) {
     // check collider of models
     // will be checking collidable models in the scene for now just checking all render models
 
+    /// just for debugging collision
+    bool alreadyColliding[1000];
+    for (int i = 0; i < 1000; i++) {
+        alreadyColliding[i] = false;
+    }
+
     int collider1 = 0;
     int collider2 = 1;
     uint max = scene->modelsToRender.size() - 1;
-
+    float colourOffset = 0.15f;
     /*
      * Note: time complexity (n^2 - n) / 2 for these comparisons
      * each iteration compares all the proceeding items against itself
@@ -28,15 +34,23 @@ void CollisionLayer::update(Scene *scene) {
             // check if models are collidable - will be its own array
             if (scene->modelsToRender[collider1]->collider && scene->modelsToRender[collider2]->collider) {
 
-                if (scene->modelsToRender[collider1]->collider->isColliding(
-                        scene->modelsToRender[collider2]->collider)) {
-                    scene->modelsToRender[collider1]->mesh->getMaterial().setAmbientColor({1.0f, 0, 0});
-                    scene->modelsToRender[collider2]->mesh->getMaterial().setAmbientColor({1.0f, 0, 0});
+                if (scene->modelsToRender[collider1]->collider->isColliding( scene->modelsToRender[collider2]->collider)) {
+                    if (!alreadyColliding[collider1]) {
+                        scene->modelsToRender[collider1]->mesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
+                        colourOffset += 0.1f;
+                    }
+                    if (!alreadyColliding[collider2]) {
+                        scene->modelsToRender[collider2]->mesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
+                        colourOffset += 0.1f;
+                    }
                 } else {
-                    scene->modelsToRender[collider1]->mesh->getMaterial().setAmbientColor({1.0f, 1.0f, 1.0f});
-                    scene->modelsToRender[collider2]->mesh->getMaterial().setAmbientColor({1.0f, 1.0f, 1.0f});
+                    if (!alreadyColliding[collider1]) {
+                        scene->modelsToRender[collider1]->mesh->restoreMaterial();
+                    }
+                    if (!alreadyColliding[collider2]) {
+                        scene->modelsToRender[collider2]->mesh->restoreMaterial();
+                    }
                 }
-
                 /// note: in above example, if a node A collides with B but B doesnt collide with C,  C will appear white,
                 /// although collision will have been detected ... so dont depend on these colours,
                 /// may need flags or something to better identify collisions. works ok with 2 models

@@ -4,5 +4,6 @@ enum GraphicsFlag {
     DEPTH_TEST,
     CLEAR_DEPTH_BUFFER,
     CLEAR_COLOUR_BUFFER,
+    ALPHA_BLENDING,
 };
 

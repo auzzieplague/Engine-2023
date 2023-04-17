@@ -10,6 +10,7 @@ class Mesh : public Component {
 
 protected:
     Material m_material;
+    Material m_material_original;
     std::vector<glm::vec3> m_vertices;
     std::vector<glm::vec2> m_uv;
     std::vector<glm::vec3> m_normals;
@@ -47,6 +48,7 @@ public:
     static void setApi(GraphicsAPI *api);
 
     void setMaterial(const Material &material);
+    void restoreMaterial();
 
     Material &getMaterial();
 

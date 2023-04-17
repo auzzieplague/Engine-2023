@@ -7,10 +7,19 @@
  */
 class Material : public Component {
 private:
-    glm::vec3 m_ambientColor;     // Ambient color of the m_material
-    glm::vec3 m_diffuseColor;     // Diffuse color of the m_material
-    glm::vec3 m_specularColor;    // Specular color of the m_material
-    float m_shininess;            // Shininess of the m_material
+    glm::vec3 m_ambientColor;     // Ambient color of the material
+    glm::vec3 m_diffuseColor;     // Diffuse color of the material
+    glm::vec3 m_specularColor;    // Specular color of the material
+    float m_shininess;            // Shininess of the material
+    /*
+     * Transparency is a more complex issue than setting opacity on the material
+     * alpha blending will need to be enabled for items with transparent materials
+     * they will have to be drawn using the painters algorithm or similar to be use in conjunction with zbuffer.
+     *
+     * Transparency will probably need to be property on the component itself,
+     * allowing sub meshes with transparent pieces to be moved into a later rendering cycle
+     */
+    // float transparency;
 public:
     // Constructor with default values
     Material() {

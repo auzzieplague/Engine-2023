@@ -7,19 +7,21 @@
 void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
     currentRenderingConfig = &config;
 
-//    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-//    glEnable(GL_DEPTH_TEST);
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    for (auto enable : config.toEnable){
+        glEnable(enable);
 
-    if (config.toEnableFlags) {
-        glEnable(config.toEnableFlags);
-        config.toEnableFlags = 0;
+        if (enable == GL_BLEND) {
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        }
     }
 
-    if (config.toDisableFlags) {
-        glDisable(config.toDisableFlags);
-        config.toDisableFlags = 0;
+    config.toEnableFlags = 0;
+
+    for (auto disable : config.toDisable){
+        glDisable(disable);
     }
+
+    config.toDisableFlags = 0;
 
     if (config.debugMode) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -164,6 +166,8 @@ unsigned int API_OpenGL::getFlag(GraphicsFlag flag) {
             return GL_DEPTH_BUFFER_BIT;
         case CLEAR_COLOUR_BUFFER:
             return GL_COLOR_BUFFER_BIT;
+        case ALPHA_BLENDING:
+            return GL_BLEND;
         default:
             return 0;
     }
