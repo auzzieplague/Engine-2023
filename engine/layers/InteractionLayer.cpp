@@ -49,35 +49,38 @@ void InteractionLayer::processCameraInput(Scene *scene) {
     }
 
     if (selectedModel) {
-        if (input->isKeyPressed(GLFW_KEY_I)) {
+        if (input->isKeyPressed(GLFW_KEY_I) | input->isKeyPressed(GLFW_KEY_KP_ADD)) {
             glm::vec3 pos = selectedModel->getPosition();
             pos.y += speed / 2;
             selectedModel->setPosition(pos);
         };
-        if (input->isKeyPressed(GLFW_KEY_K)) {
+        if (input->isKeyPressed(GLFW_KEY_K) | input->isKeyPressed(GLFW_KEY_KP_SUBTRACT)) {
             glm::vec3 pos = selectedModel->getPosition();
             pos.y -= speed / 2;
             selectedModel->setPosition(pos);
         };
-        if (input->isKeyPressed(GLFW_KEY_L)) {
+        if (input->isKeyPressed(GLFW_KEY_L) | input->isKeyPressed(GLFW_KEY_KP_2)) {
             glm::vec3 pos = selectedModel->getPosition();
             pos.z += speed / 2;
             selectedModel->setPosition(pos);
         };
-        if (input->isKeyPressed(GLFW_KEY_O)) {
+        if (input->isKeyPressed(GLFW_KEY_O) | input->isKeyPressed(GLFW_KEY_KP_8)) {
             glm::vec3 pos = selectedModel->getPosition();
             pos.z -= speed / 2;
             selectedModel->setPosition(pos);
         };
-        if (input->isKeyPressed(GLFW_KEY_PERIOD)) {
+        if (input->isKeyPressed(GLFW_KEY_PERIOD) | input->isKeyPressed(GLFW_KEY_KP_6)) {
             glm::vec3 pos = selectedModel->getPosition();
             pos.x += speed / 2;
             selectedModel->setPosition(pos);
         };
-        if (input->isKeyPressed(GLFW_KEY_COMMA)) {
+        if (input->isKeyPressed(GLFW_KEY_COMMA) | input->isKeyPressed(GLFW_KEY_KP_4)) {
             glm::vec3 pos = selectedModel->getPosition();
             pos.x -= speed / 2;
             selectedModel->setPosition(pos);
+        };
+        if (input->isKeyPressed(GLFW_KEY_R)) {
+            Debug::resetIteration();
         };
     }
 };

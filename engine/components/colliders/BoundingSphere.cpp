@@ -94,24 +94,43 @@ void BoundingSphere::findRadiusAndCenter(const std::vector<glm::vec3> &vertices)
         return;
     }
 
-    glm::vec3 sum(0.0f);
+    glm::vec3 minBound = vertices[0];
+    glm::vec3 maxBound = vertices[0];
     for (const auto &vertex: vertices) {
-        sum += vertex;
+        minBound = glm::min(minBound, vertex);
+        maxBound = glm::max(maxBound, vertex);
     }
 
-    m_center = sum / static_cast<float>(vertices.size());
-
-    float maxDistanceSq = 0.0f;
-    for (const auto &vertex: vertices) {
-        float distanceSq = glm::distance(vertex, m_center);
-        distanceSq = distanceSq * distanceSq;
-        if (distanceSq > maxDistanceSq) {
-            maxDistanceSq = distanceSq;
-        }
-    }
-
-    m_radius = std::sqrt(maxDistanceSq);
+    /// different models have different origins, some negative, some positive - not always the center
+    m_center = (minBound + maxBound) / 2.0f;
+    m_radius = glm::length(maxBound - m_center);
 }
+//
+//void BoundingSphere::findRadiusAndCenter(const std::vector<glm::vec3> &vertices) {
+//    if (vertices.empty()) {
+//        m_center = glm::vec3(0.0f);
+//        m_radius = 0.0f;
+//        return;
+//    }
+//
+//    glm::vec3 sum(0.0f);
+//    for (const auto &vertex: vertices) {
+//        sum += vertex;
+//    }
+//
+//    m_center = sum / static_cast<float>(vertices.size());
+//
+//    float maxDistanceSq = 0.0f;
+//    for (const auto &vertex: vertices) {
+//        float distanceSq = glm::distance(vertex, m_center);
+//        distanceSq = distanceSq * distanceSq;
+//        if (distanceSq > maxDistanceSq) {
+//            maxDistanceSq = distanceSq;
+//        }
+//    }
+//
+//    m_radius = std::sqrt(maxDistanceSq);
+//}
 
 void BoundingSphere::moveCenter(const glm::vec3 &offset) {
     this->m_center += offset;

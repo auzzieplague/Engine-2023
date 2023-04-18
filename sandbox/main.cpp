@@ -6,13 +6,13 @@ Model * testSphere;
 
 void setupScene(Scene *scene) {
 
-    auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Terrain);
-//    terrain1->setCollider();
-    terrain1->setPosition({-5, -1, -10});
+    auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
+    terrain1->setCollider();
+    terrain1->setPosition({-5, 0, -10});
 
     auto sphere1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
     sphere1->setCollider();
-    sphere1->setPosition({-2, 2, -10});
+    sphere1->setPosition({-0.5, 2, -10});
 
     auto sphere2 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
     sphere2->setCollider();
@@ -28,12 +28,11 @@ void setupScene(Scene *scene) {
     testSphere->setCollider();
     testSphere->setPosition({0, 0, -8});
 
-    scene->addComponent(sphere1);
     scene->addComponent(sphere2);
-    scene->addComponent(sphere3);
-
     scene->addComponent(testSphere);
+    scene->addComponent(sphere3);
     scene->addComponent(terrain1);
+    scene->addComponent(sphere1);
 }
 
 int main() {
@@ -48,6 +47,9 @@ int main() {
     engine->attachLayer(interactionLayer);
     setupScene(engine->currentScene);
     interactionLayer->selectedModel = testSphere;
+
+    Debug::show("[->] Use 'R' to generate collision report");
+    Debug::show("[->] Use NumPad 4862+- to navigate test");
 
     engine->start();
     Debug::show("done");
