@@ -41,6 +41,7 @@ public:
          */
 
         m_sphere.moveCenter(offsetChange);
+        m_aabb.moveCorners(offsetChange);
     }
 
     virtual void rebuild(Mesh *mesh) {
@@ -52,22 +53,28 @@ public:
          */
 
         m_sphere.findRadiusAndCenter(mesh->m_vertices);
-//        m_aabb.findMinMaxCorners(mesh->m_vertices);
+        m_aabb.findMinMaxCorners(mesh->m_vertices);
     }
 
 
     virtual bool isColliding(Collider *otherCollider) {
         // m_aabb and m_sphere are m_ready in model constructor
 
-        if (m_sphere.isCollidingWith(otherCollider->m_sphere)) {
-            return true;
+        // waterfall logic to determine not colliding.
+        if (!m_sphere.isCollidingWith(otherCollider->m_sphere)) {
+            return false;
         };
 
+        // note: spheres would be i'll suited to box collision so we'll need to do some type checking
+
+        if (!m_aabb.isCollidingWith(otherCollider->m_aabb)) {
+            return false;
+        };
 
         // todo check m_aabb
 
         // todo check mesh - need to add collision mesh to collider as it's not the same as actual mesh
-        return false;
+        return true;
     }
 
     [[nodiscard]] bool containsPoint(const glm::vec3 &point) const;

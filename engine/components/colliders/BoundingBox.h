@@ -18,6 +18,12 @@ public:
 
     void findMinMaxCorners(const std::vector<glm::vec3> &vertices);
 
+    void moveCorners(glm::vec3 offset)
+    {
+        m_minCorner-=offset;
+        m_maxCorner-=offset;
+    }
+
     // Returns true if this AABB is colliding with the given otherAABB
     [[nodiscard]] bool isCollidingWith(const BoundingBox &otherAABB) const;
 
