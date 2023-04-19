@@ -52,7 +52,7 @@ public:
          */
 
         m_sphere.findRadiusAndCenter(mesh->m_vertices);
-        m_aabb.findMinMaxCorners(mesh->m_vertices);
+//        m_aabb.findMinMaxCorners(mesh->m_vertices);
     }
 
 

@@ -89,22 +89,60 @@ const glm::vec3 &BoundingSphere::getCenter() const {
 
 void BoundingSphere::findRadiusAndCenter(const std::vector<glm::vec3> &vertices) {
     if (vertices.empty()) {
-        m_center = glm::vec3(0.0f);
-        m_radius = 0.0f;
+        m_center = glm::vec3(0);
+        m_radius = 0;
         return;
     }
 
-    glm::vec3 minBound = vertices[0];
-    glm::vec3 maxBound = vertices[0];
-    for (const auto &vertex: vertices) {
-        minBound = glm::min(minBound, vertex);
-        maxBound = glm::max(maxBound, vertex);
+    // Compute the bounding sphere using Ritter's algorithm
+    glm::vec3 minVertex = vertices[0];
+    glm::vec3 maxVertex = vertices[0];
+    for (const auto& vertex : vertices) {
+        minVertex = glm::min(minVertex, vertex);
+        maxVertex = glm::max(maxVertex, vertex);
     }
 
-    /// different models have different origins, some negative, some positive - not always the center
-    m_center = (minBound + maxBound) / 2.0f;
-    m_radius = glm::length(maxBound - m_center);
+    glm::vec3 initialCenter = (minVertex + maxVertex) / 2.0f;
+    float initialRadius = glm::distance(initialCenter, maxVertex);
+
+    glm::vec3 center = initialCenter;
+    float radius = initialRadius;
+    for (int i = 0; i < 2; ++i) {
+        for (const auto& vertex : vertices) {
+            float distance = glm::distance(vertex, center);
+            if (distance > radius) {
+                float newRadius = (radius + distance) / 2.0f;
+                float k = newRadius / distance;
+                center = center * (1.0f - k) + vertex * k;
+                radius = newRadius;
+            }
+        }
+    }
+
+    // Update the center and radius of the bounding sphere
+    m_center = center;
+    m_radius = radius;
 }
+
+
+//void BoundingSphere::findRadiusAndCenter(const std::vector<glm::vec3> &vertices) {
+//    if (vertices.empty()) {
+//        m_center = glm::vec3(0.0f);
+//        m_radius = 0.0f;
+//        return;
+//    }
+//
+//    glm::vec3 minBound = vertices[0];
+//    glm::vec3 maxBound = vertices[0];
+//    for (const auto &vertex: vertices) {
+//        minBound = glm::min(minBound, vertex);
+//        maxBound = glm::max(maxBound, vertex);
+//    }
+//
+//    /// different models have different origins, some negative, some positive - not always the center
+//    m_center = (minBound + maxBound) / 2.0f;
+//    m_radius = glm::length(maxBound - m_center);
+//}
 //
 //void BoundingSphere::findRadiusAndCenter(const std::vector<glm::vec3> &vertices) {
 //    if (vertices.empty()) {
@@ -133,5 +171,5 @@ void BoundingSphere::findRadiusAndCenter(const std::vector<glm::vec3> &vertices)
 //}
 
 void BoundingSphere::moveCenter(const glm::vec3 &offset) {
-    this->m_center += offset;
+    this->m_center -= offset;
 }

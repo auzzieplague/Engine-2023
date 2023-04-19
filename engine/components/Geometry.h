@@ -49,7 +49,7 @@ struct GeometryConfig {
         int height = 10;
         float minHeight = 0;
         float maxHeight = 0;
-        float cellSize = 1;
+        float cellSize = 2;
         unsigned int seed = 456;
     };
 

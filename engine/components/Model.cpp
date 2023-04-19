@@ -35,12 +35,11 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 }
 
 void Model::setPosition(glm::vec3 newPosition) {
-    // colliders operate in world space, so reset m_vertices
+    // note: it's a prerequisite that you setCollider() before moving things around
     if (this->collider) {
         this->collider->update(m_transform.getPosition() - newPosition);
     }
     Component::setPosition(newPosition);
-
 }
 
 void Model::setScale(glm::vec3 scale) {
@@ -62,6 +61,16 @@ void Model::setRotation(glm::vec3 rotation) {
         this->collider->rebuild(mesh);
     }
 
+}
+
+void Model::setCollider()  {
+    //note: model would need to be set collidable before adding to scene, to be added to correct <vector>
+    collider = new Collider();
+    collider->rebuild(mesh);
+    this->collider->update(-m_transform.getPosition());
+
+    // get box of meshes
+    // getRadius of meshes
 }
 
 

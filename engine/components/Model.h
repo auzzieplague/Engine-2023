@@ -17,13 +17,7 @@ public:
     static Model *createFromGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
 
     // todo setCollider(level) radial, box, mesh
-    void setCollider() {
-        //note: model would need to be set collidable before adding to scene, to be added to correct <vector>
-        collider = new Collider();
-        collider->rebuild(mesh);
-        // get box of meshes
-        // getRadius of meshes
-    }
+    void setCollider();
 
     /**
      * use model->setPostion to correctly update colliders and underlying objects

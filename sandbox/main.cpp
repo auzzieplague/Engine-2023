@@ -2,37 +2,56 @@
 #include "../engine/Engine.h"
 #include "../engine/layers/CollisionLayer.h"
 
-Model * testSphere;
+Model *testSphere;
 
 void setupScene(Scene *scene) {
 
-    auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
+    auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Terrain);
+    terrain1->setPosition({-8, -2, -8});
     terrain1->setCollider();
-    terrain1->setPosition({-5, 0, -10});
-
-    auto sphere1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
-    sphere1->setCollider();
-    sphere1->setPosition({-0.5, 2, -10});
-
-    auto sphere2 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
-    sphere2->setCollider();
-    sphere2->setPosition({2, 2, -10});
-
-    auto sphere3 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
-    sphere3->setCollider();
-    sphere3->setPosition({0, 2, -10});
+    scene->addComponent(terrain1);
 
 
     testSphere = Model::createFromGeometry(Geometry::ShapeType::Sphere,
-                                             GeometryConfig {.sphere {.radius =.5,.rings =6, .sectors =6}});
+                                           GeometryConfig{.sphere {.radius =.5, .rings =6, .sectors =6}});
+    testSphere->setPosition({0, 0, -12});
     testSphere->setCollider();
-    testSphere->setPosition({0, 0, -8});
 
-    scene->addComponent(sphere2);
+    auto object1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
+    object1->setCollider();
+    object1->setPosition({2, 0, -12});
+
+    auto object2 = Model::createFromGeometry(Geometry::ShapeType::Cube);
+    object2->setCollider();
+    object2->setPosition({2, 2, -12});
+
+    auto object3 = Model::createFromGeometry(Geometry::ShapeType::Dome);
+    object3->setCollider();
+    object3->setPosition({-2.5, 0, -12});
+
+
+    auto object4 = Model::createFromGeometry(Geometry::ShapeType::Torus);
+    object4->setCollider();
+    object4->setPosition({0, 2, -12});
+
+
+    scene->addComponent(object2);
+    scene->addComponent(object3);
+    scene->addComponent(object1);
+    scene->addComponent(object4);
     scene->addComponent(testSphere);
-    scene->addComponent(sphere3);
-    scene->addComponent(terrain1);
-    scene->addComponent(sphere1);
+
+//
+//    for (int x = 0; x < 20; x+=5) {
+//        for (int z = 0; z < 20; z+=5) {
+//            auto spot = Model::createFromGeometry(Geometry::ShapeType::Sphere,
+//                                                    GeometryConfig{.sphere {.radius =.2, .rings =3, .sectors =6}});
+//            spot->setPosition({x, 0, z});
+//            spot->setCollider();
+//            scene->addComponent(spot);
+//        }
+//    }
+
 }
 
 int main() {
@@ -43,7 +62,7 @@ int main() {
     engine->attachLayer(new CollisionLayer());
 
     //setup interaction layer and scene together to inject a test model
-    auto * interactionLayer = new InteractionLayer();
+    auto *interactionLayer = new InteractionLayer();
     engine->attachLayer(interactionLayer);
     setupScene(engine->currentScene);
     interactionLayer->selectedModel = testSphere;
