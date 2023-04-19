@@ -62,3 +62,11 @@ void Octree::subdivide() {
     }
     m_objects.clear();
 }
+
+void *Octree::getObjectPtr() const {
+    return m_object_ptr;
+}
+
+void Octree::setObjectPtr(void *objectPtr) {
+    m_object_ptr = objectPtr;
+}

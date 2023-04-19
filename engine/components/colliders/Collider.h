@@ -71,7 +71,7 @@ public:
             return false;
         };
 
-        // todo check m_aabb
+        // octree on mesh
 
         // todo check mesh - need to add collision mesh to collider as it's not the same as actual mesh
         return true;

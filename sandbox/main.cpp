@@ -30,7 +30,7 @@ void sphereCollisionTesting(Scene *scene) {
 
     int start = 10;
     int end = 20;
-    int space = 2;
+    int space = 1;
 
     auto test = Model::createFromGeometry(Geometry::ShapeType::Cube,
                                           GeometryConfig{.cube {.size=2}});
@@ -53,10 +53,10 @@ void sphereCollisionTesting(Scene *scene) {
 
 void setupScene(Scene *scene) {
 
-    //    sphereCollisionTesting(scene);
+//    sphereCollisionTesting(scene);
 
     auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Terrain);
-    terrain1->setPosition({-8, -2, -8});
+    terrain1->setPosition({-8, -2, -15});
     terrain1->setCollider();
     scene->addComponent(terrain1);
 

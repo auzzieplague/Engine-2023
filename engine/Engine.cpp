@@ -15,9 +15,12 @@ void Engine::start() {
     this->loopLayers();
 }
 
-void Engine::loopLayers() const {
+void Engine::loopLayers()  {
+    initFrameTimer();
+
     if (Window::getCurrentWindow()) {
         while (!glfwWindowShouldClose(Window::getCurrentWindow())) {
+
             for (Layer *layer: this->layers) {
                 layer->beforeUpdate(this->currentScene);
             }
@@ -31,7 +34,7 @@ void Engine::loopLayers() const {
             }
 
             // passes layers and scene to gui modelRenderer (overridden method)
-//            Engine::processAppendedGUItems(this->layers, this->currentScene);
+            // Engine::processAppendedGUItems(this->layers, this->currentScene);
 
             for (Layer *layer: this->layers) {
                 layer->beforeRender(this->currentScene);
@@ -50,6 +53,8 @@ void Engine::loopLayers() const {
                 layer->afterRender(this->currentScene);
             }
 
+            // pass down framerate value to scene for use by layers
+            this->currentScene->currentFrameRate = this->getCurrentFramerate();
 //            glfwPollEvents();
         }
     }
@@ -57,7 +62,7 @@ void Engine::loopLayers() const {
     Engine::stop();
 }
 
-void Engine::stop() const {
+void Engine::stop() {
     delete this->currentScene;
 }
 
@@ -90,3 +95,24 @@ Engine *Engine::getInstance() {
 void Engine::setGraphicsApi(GraphicsAPI *api) {
     Engine::graphicsAPI = api;
 }
+
+void Engine::initFrameTimer() {
+    lastTime = std::chrono::high_resolution_clock::now();
+}
+
+float Engine::getCurrentFramerate() {
+
+    // Get the current timestamp
+    auto now = std::chrono::high_resolution_clock::now();
+
+    // Calculate the elapsed time since the previous frame
+    std::chrono::duration<double> elapsed = now - lastTime;
+
+    // Calculate the current framerate by dividing 1 by the elapsed time
+    float framerate = 1.0f / elapsed.count();
+
+    // Update lastTime to the current timestamp for the next frame
+    lastTime = now;
+
+    return framerate;
+};

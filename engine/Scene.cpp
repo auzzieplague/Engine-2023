@@ -14,6 +14,8 @@ void Scene::addComponent(Component * component) {
             this->componentList.push_back(component);
     }
 
+    // todo add octree to scene
+    // add component reference and bounding sphere into octree
     Debug::show("component added");
 }
 

@@ -6,6 +6,7 @@
 #include "../engine/layers/WindowLayer.h"
 #include "../engine/layers/graphics/api/API_OpenGL.h"
 #include "../engine/layers/InteractionLayer.h"
+#include <chrono>
 
 class Engine : public Object {
 private:
@@ -27,11 +28,20 @@ public:
 
     static Engine *getInstance();
 
+    // Define a variable to store the previous frame's timestamp
+    std::chrono::time_point<std::chrono::high_resolution_clock> lastTime;
+
+// Call this function at the start of the render loop to initialize lastTime
+    void initFrameTimer();
+
+// Call this function at the end of the render loop to calculate the current framerate
+    float getCurrentFramerate() ;
+
     void attachLayer(Layer *layer); // initialises layer
 
     void addComponent(Component *component); // passthrough to scene
 
     void start();               // kick-start engine
-    void loopLayers() const;    // main loop
-    void stop() const;          // cleanup
+    void loopLayers();          // main loop
+    void stop();          // cleanup
 };
