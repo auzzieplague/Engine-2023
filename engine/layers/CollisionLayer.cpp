@@ -37,9 +37,7 @@ void CollisionLayer::update(Scene *scene) {
         while (collider2 <= max) {
             // check if models are collidable - will be its own array
             if (scene->modelsToRender[collider1]->collider && scene->modelsToRender[collider2]->collider) {
-                if (Debug::getIteration() == 1) {
-                    std::cout << collider1 << "<->" << collider2 << "  ";
-                }
+
 
                 if (scene->modelsToRender[collider1]->collider->isColliding(
                         scene->modelsToRender[collider2]->collider)) {
@@ -58,6 +56,9 @@ void CollisionLayer::update(Scene *scene) {
                     alreadyColliding[collider2] = true;
 
                 } else {
+                    if (Debug::getIteration() == 1) {
+                        std::cout << collider1 << "<->" << collider2 << "  ";
+                    }
                     if (!alreadyColliding[collider1]) {
                         scene->modelsToRender[collider1]->mesh->restoreMaterial();
                     }
