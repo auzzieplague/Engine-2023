@@ -4,11 +4,13 @@
 #include "components/Camera.h"
 #include "../core/Window.h"
 #include "components/Model.h"
+#include "components/colliders/Octree.h"
 
 class Scene : public Object {
     /// at a high level we just want to add components to the scene graph
 public:
     float currentFrameRate = 1.0f;
+
     std::vector<Component *> componentList;
     std::vector<Model *> modelsToRender;
 
@@ -16,7 +18,7 @@ public:
 
     void addComponent(Component *);
 
-    Camera *currentCamera;
-    Window *currentWindow;
+    Camera *currentCamera{};
+    Window *currentWindow{};
 };
 

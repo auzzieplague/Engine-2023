@@ -1,37 +1,38 @@
-#pragma once
-
+#include <iostream>
 #include <vector>
-#include "BoundingSphere.h"
+#include <glm/glm.hpp>
 
-/**
- * @author Michael.Whinfrey
- */
 class Octree {
-private:
-    BoundingSphere m_boundingSphere;
-    int m_maxObjectsPerNode;
-    std::vector<BoundingSphere> m_objects;
-    std::vector<Octree> m_children;
-    void *m_object_ptr;
 public:
-    [[nodiscard]] void *getObjectPtr() const;
+    Octree(const glm::vec3& min, const glm::vec3& max, int max_depth) : depth_(max_depth) {
+        // Create root node
+        nodes_.resize(1);
+        nodes_[0].min = min;
+        nodes_[0].max = max;
+    }
 
-    void setObjectPtr(void *objectPtr);
+    Octree(const std::vector<glm::vec3> &points, const glm::vec3 &min, const glm::vec3 &max, int max_depth);
+
+    void insert(const std::vector<glm::vec3>& points, int node_index=0, int depth=8);
+    [[nodiscard]] bool node_exists(int node_index) const;
+    [[nodiscard]] bool is_leaf(int node_index) const;
+    [[nodiscard]] int get_child_node_index(int node_index, int child_index) const;
+    [[nodiscard]] int get_octant_index(int node_index) const;
+
+    bool has_child_node(int i);
 
 private:
-    void subdivide();
-
-public:
-    explicit Octree(const BoundingSphere &boundingSphere, int maxObjectsPerNode = 8)
-            : m_boundingSphere(boundingSphere), m_maxObjectsPerNode(maxObjectsPerNode) { m_object_ptr = nullptr; }
-
-    void insert(const BoundingSphere &boundingSphere);
-
-    void insert(const BoundingSphere &boundingSphere, void *object_ptr) {
-        m_object_ptr = object_ptr;
-        insert(boundingSphere);
+    struct Node {
+        glm::vec3 min;
+        glm::vec3 max;
+        std::vector<int> point_indices;
+        int child_node_indices[8] = {-1, -1, -1, -1, -1, -1, -1, -1};
     };
 
-    [[nodiscard]] std::vector<BoundingSphere> getCollisions(const BoundingSphere &boundingSphere) const;
+    int depth_;
+    std::vector<Node> nodes_;
 
+    int create_node(const glm::vec3& min, const glm::vec3& max);
+    [[nodiscard]] bool node_contains_point(int node_index, const glm::vec3& point) const;
+    [[nodiscard]] int find_child_node_index(int node_index, const glm::vec3& point) const;
 };
