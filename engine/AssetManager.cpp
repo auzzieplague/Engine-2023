@@ -6,7 +6,7 @@
 
 #ifdef DEVMODE
 std::map<std::string, std::string> AssetManager::category_path = {
-        {"shaders_opengl", "../../../assets/shaders/glsl"},
+        {"shaders_opengl", "../assets/shaders/glsl"},
         {"trees",          "../../assets/models/landscape/foliage"},
         {"rocks",          "../../assets/models/landscape/rocks"},
 };
