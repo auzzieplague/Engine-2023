@@ -1,141 +1,159 @@
 #include <iostream>
-#include "../engine/Engine.h"
-#include "../engine/layers/CollisionLayer.h"
+//#include "../engine/Engine.h"
+//#include "../engine/layers/CollisionLayer.h"
+#include <PxPhysicsAPI.h>
 
-Model *testSphere;
+//Model *testSphere;
+void testPhysx (){
 
-void sphereCollisionTesting(Scene *scene) {
+    // declare variables
+    physx::PxDefaultAllocator      mDefaultAllocatorCallback;
+    physx::PxDefaultErrorCallback  mDefaultErrorCallback;
+    physx::PxDefaultCpuDispatcher* mDispatcher = NULL;
+    physx::PxTolerancesScale       mToleranceScale;
 
-    auto object1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
-    object1->setCollider();
-    object1->setPosition({2, 0, -12});
+    physx::PxFoundation*           mFoundation = NULL;
+    physx::PxPhysics*              mPhysics = NULL;
 
-    auto object2 = Model::createFromGeometry(Geometry::ShapeType::Cube);
-    object2->setCollider();
-    object2->setPosition({2, 2, -12});
+    physx::PxScene*                mScene = NULL;
+    physx::PxMaterial*             mMaterial = NULL;
 
-    auto object3 = Model::createFromGeometry(Geometry::ShapeType::Dome);
-    object3->setCollider();
-    object3->setPosition({-2.5, 0, -12});
+    physx::PxPvd*                  mPvd = NULL;
 
 
-    auto object4 = Model::createFromGeometry(Geometry::ShapeType::Torus);
-    object4->setCollider();
-    object4->setPosition({0, 2, -12});
+    // init physx
+    mFoundation = PxCreateFoundation(PX_PHYSICS_VERSION, mDefaultAllocatorCallback, mDefaultErrorCallback);
+    if (!mFoundation) throw("PxCreateFoundation failed!");
+    mPvd = PxCreatePvd(*mFoundation);
+    physx::PxPvdTransport* transport = physx::PxDefaultPvdSocketTransportCreate("127.0.0.1", 5425, 10);
+    mPvd->connect(*transport, physx::PxPvdInstrumentationFlag::eALL);
+    mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation,  physx::PxTolerancesScale(),true, mPvd);
+    mToleranceScale.length = 100;        // typical length of an object
+    mToleranceScale.speed = 981;         // typical speed of an object, gravity*1s is a reasonable choice
+    mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation, mToleranceScale, true, mPvd);
+    mPhysics = PxCreatePhysics(PX_PHYSICS_VERSION, *mFoundation, mToleranceScale);
 
-    scene->addComponent(object2);
-    scene->addComponent(object3);
-    scene->addComponent(object1);
-    scene->addComponent(object4);
+    physx::PxSceneDesc sceneDesc(mPhysics->getTolerancesScale());
+    sceneDesc.gravity = physx::PxVec3(0.0f, -9.81f, 0.0f);
+    mDispatcher = physx::PxDefaultCpuDispatcherCreate(2);
+    sceneDesc.cpuDispatcher	= mDispatcher;
+    sceneDesc.filterShader	= physx::PxDefaultSimulationFilterShader;
+    mScene = mPhysics->createScene(sceneDesc);
 
-    int start = 10;
-    int end = 20;
-    int space = 1;
+    physx::PxPvdSceneClient* pvdClient = mScene->getScenePvdClient();
+    if(pvdClient)
+    {
+        pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
+        pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONTACTS, true);
+        pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_SCENEQUERIES, true);
+    }
 
-    auto test = Model::createFromGeometry(Geometry::ShapeType::Cube,
-                                          GeometryConfig{.cube {.size=2}});
-    test->setPosition({start+4.2, start+4.2, start+4.2});
-    test->setCollider();
-    scene->addComponent(test);
 
-    for (int x = start; x < end; x+=space) {
-        for (int z = start; z < end; z+=space) {
-            for (int y = start; y < end; y+=space) {
-                auto spot = Model::createFromGeometry(Geometry::ShapeType::Sphere,
-                                                      GeometryConfig{.sphere {.radius =.1, .rings =3, .sectors =6}});
-                spot->setPosition({x, y, z});
-                spot->setCollider();
-                scene->addComponent(spot);
-            }
+    // create simulation
+    mMaterial = mPhysics->createMaterial(0.5f, 0.5f, 0.6f);
+    physx::PxRigidStatic* groundPlane = PxCreatePlane(*mPhysics, physx::PxPlane(0,1,0,50), *mMaterial);
+    mScene->addActor(*groundPlane);
+
+    float halfExtent = .5f;
+    physx::PxShape* shape = mPhysics->createShape(physx::PxBoxGeometry(halfExtent, halfExtent, halfExtent), *mMaterial);
+    physx::PxU32 size = 30;
+    physx::PxTransform t(physx::PxVec3(0));
+    for (physx::PxU32 i = 0; i < size; i++) {
+        for (physx::PxU32 j = 0; j < size - i; j++) {
+            physx::PxTransform localTm(physx::PxVec3(physx::PxReal(j * 2) - physx::PxReal(size - i), physx::PxReal(i * 2 + 1), 0) * halfExtent);
+            physx::PxRigidDynamic* body = mPhysics->createRigidDynamic(t.transform(localTm));
+            body->attachShape(*shape);
+            physx::PxRigidBodyExt::updateMassAndInertia(*body, 10.0f);
+            mScene->addActor(*body);
         }
     }
-}
-
-void setupScene(Scene *scene) {
-
-//    sphereCollisionTesting(scene);
-
-    auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Terrain);
-    terrain1->setPosition({-8, -2, -15});
-    terrain1->setCollider();
-    scene->addComponent(terrain1);
+    shape->release();
 
 
-    testSphere = Model::createFromGeometry(Geometry::ShapeType::Sphere,
-                                           GeometryConfig{.sphere {.radius =.5, .rings =6, .sectors =6}});
-    testSphere->setPosition({0, 0, -12});
-    testSphere->setCollider();
-    scene->addComponent(testSphere);
 
-    // then point / face collision
 
-    // then octree to break down world and also meshes
-
-}
-
-void count_points(const Octree& octree, std::vector<int>& point_counts, int node_index=0) {
-    // Base case: if the node is a leaf, increment the point count for its octant
-    if (octree.is_leaf(node_index)) {
-        int octant_index = octree.get_octant_index(node_index);
-        point_counts[octant_index]++;
-        return;
-    }
-
-    // Recursive case: traverse all child nodes and count the points in each of their octants
-    for (int i = 0; i < 8; ++i) {
-        int child_node_index = octree.get_child_node_index(node_index, i);
-        if (!octree.is_leaf(child_node_index)) {
-            count_points(octree, point_counts, child_node_index);
-        }
-    }
-}
-
-void testOctree (){
-    // Create an Octree that spans from (-1, -1, -1) to (1, 1, 1) and has a depth of 2
-    Octree octree(glm::vec3(-1.f), glm::vec3(1.f), 2);
-
-    // Generate 1000 random points in the range (-1, -1, -1) to (1, 1, 1)
-    std::vector<glm::vec3> points;
-    for (int i = 0; i < 1000; ++i) {
-        float x = static_cast<float>(rand()) / RAND_MAX * 2.f - 1.f;
-        float y = static_cast<float>(rand()) / RAND_MAX * 2.f - 1.f;
-        float z = static_cast<float>(rand()) / RAND_MAX * 2.f - 1.f;
-        points.emplace_back(x, y, z);
-    }
-
-    // Insert the points into the Octree
-    octree.insert(points);
-
-    // Count the number of points in each octant
-    std::vector<int> point_counts(8);
-    count_points(octree, point_counts);
-
-    // Print the point counts
-    for (int i = 0; i < 8; ++i) {
-        std::cout << "Octant " << i << ": " << point_counts[i] << " points\n";
+//     run simulation
+    while(1){
+        mScene->simulate(1.0f/60.0f);
+        mScene->fetchResults(true);
     }
 
 }
+//void sphereCollisionTesting(Scene *scene) {
+//
+//    auto object1 = Model::createFromGeometry(Geometry::ShapeType::Sphere);
+//    object1->setCollider();
+//    object1->setPosition({2, 0, -12});
+//
+//    auto object2 = Model::createFromGeometry(Geometry::ShapeType::Cube);
+//    object2->setCollider();
+//    object2->setPosition({2, 2, -12});
+//
+//    auto object3 = Model::createFromGeometry(Geometry::ShapeType::Dome);
+//    object3->setCollider();
+//    object3->setPosition({-2.5, 0, -12});
+//
+//
+//    auto object4 = Model::createFromGeometry(Geometry::ShapeType::Torus);
+//    object4->setCollider();
+//    object4->setPosition({0, 2, -12});
+//
+//    scene->addComponent(object2);
+//    scene->addComponent(object3);
+//    scene->addComponent(object1);
+//    scene->addComponent(object4);
+//
+//    int start = 10;
+//    int end = 20;
+//    int space = 1;
+//
+//    auto test = Model::createFromGeometry(Geometry::ShapeType::Cube,
+//                                          GeometryConfig{.cube {.size=2}});
+//    test->setPosition({start+4.2, start+4.2, start+4.2});
+//    test->setCollider();
+//    scene->addComponent(test);
+//
+//    for (int x = start; x < end; x+=space) {
+//        for (int z = start; z < end; z+=space) {
+//            for (int y = start; y < end; y+=space) {
+//                auto spot = Model::createFromGeometry(Geometry::ShapeType::Sphere,
+//                                                      GeometryConfig{.sphere {.radius =.1, .rings =3, .sectors =6}});
+//                spot->setPosition({x, y, z});
+//                spot->setCollider();
+//                scene->addComponent(spot);
+//            }
+//        }
+//    }
+//}
+//
+//void setupScene(Scene *scene) {
+//
+////    sphereCollisionTesting(scene);
+//
+//    auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Terrain);
+//    terrain1->setPosition({-8, -2, -15});
+//    terrain1->setCollider();
+//    scene->addComponent(terrain1);
+//
+//
+//    testSphere = Model::createFromGeometry(Geometry::ShapeType::Sphere,
+//                                           GeometryConfig{.sphere {.radius =.5, .rings =6, .sectors =6}});
+//    testSphere->setPosition({0, 0, -12});
+//    testSphere->setCollider();
+//    scene->addComponent(testSphere);
+//}
+
+void outputExecutionMode() {
+#ifdef _WIN64
+    std::cout << "Running in 64-bit mode" << std::endl;
+#else
+    std::cout << "Running in 32-bit mode" << std::endl;
+#endif
+}
+
 
 int main() {
+    outputExecutionMode();
 
-    testOctree();
-//
-//    Engine *engine = Engine::getInstance();
-//    engine->setGraphicsApi(new API_OpenGL());
-//    engine->attachLayer(new WindowLayer());
-//    engine->attachLayer(new GraphicsLayer());
-//    engine->attachLayer(new CollisionLayer());
-//
-//    //setup interaction layer and scene together to inject a test model
-//    auto *interactionLayer = new InteractionLayer();
-//    engine->attachLayer(interactionLayer);
-//    setupScene(engine->currentScene);
-//    interactionLayer->selectedModel = testSphere;
-//
-//    Debug::show("[->] Use 'R' to generate collision report");
-//    Debug::show("[->] Use NumPad 4862+- to navigate test");
-//
-//    engine->start();
-//    Debug::show("done");
+    testPhysx();
 }

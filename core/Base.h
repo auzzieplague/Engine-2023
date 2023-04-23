@@ -9,6 +9,8 @@
 #include <map>
 #include <cassert>
 #include <random>
+#include <cstdlib>
+#include <ctime>
 
 /// lib includes
 #include <glm/glm.hpp>

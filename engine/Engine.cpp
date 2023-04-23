@@ -1,8 +1,6 @@
 
 #include "Engine.h"
 
-#include <ranges>
-
 Engine *Engine::instance;
 
 Engine::Engine(uint32_t width, uint32_t height, const std::string &title, Scene *scene) {
@@ -44,13 +42,12 @@ void Engine::loopLayers()  {
                 layer->render(this->currentScene);
             }
 
-            // process input m_front to back
-            for (auto layer: std::ranges::reverse_view(this->layers)) {
-                layer->processInput(this->currentScene);
+            for (auto it = std::rbegin(this->layers); it != std::rend(this->layers); ++it) {
+                (*it)->processInput(this->currentScene);
             }
 
-            for (auto layer: std::ranges::reverse_view(this->layers)) {
-                layer->afterRender(this->currentScene);
+            for (auto it = std::rbegin(this->layers); it != std::rend(this->layers); ++it) {
+                (*it)->afterRender(this->currentScene);
             }
 
             // pass down framerate value to scene for use by layers
