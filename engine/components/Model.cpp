@@ -48,29 +48,44 @@ void Model::setScale(glm::vec3 scale) {
      * and corners will have changed
      */
     if (this->collider) {
+        // physx setTransform can replace this - if physics is running
         this->collider->rebuild(mesh);
     }
 }
 
 void Model::setRotation(glm::vec3 rotation) {
     Component::setRotation(rotation);
-    /* when rotating we will need to rebuild and reset m_vertices of colliders as centers
+    /*
+     * when rotating we will need to rebuild and reset m_vertices of colliders as centers
      * and corners will have changed
      */
     if (this->collider) {
+        // physx setTransform can replace this - if physics is running
         this->collider->rebuild(mesh);
     }
-
 }
 
-void Model::applyForce(glm::vec3 force){
+void Model::applyForce(glm::vec3 force) const{
     // todo: check if dynamic .. probably subclass dynamic and static models so no checking required
+    if (!physicsBody) {
+        return;
+    }
+
     dynamic_cast<physx::PxRigidDynamic *>(this->physicsBody)->addForce(physx::PxVec3(force.x, force.y, force.z));
 }
 
+
+void Model::applyImpulse(glm::vec3 force) const{
+    // todo: check if dynamic .. probably subclass dynamic and static models so no checking required
+    if (!physicsBody) {
+        return;
+    }
+
+    dynamic_cast<physx::PxRigidDynamic *>(this->physicsBody)->addForce(physx::PxVec3(force.x, force.y, force.z),physx::PxForceMode::eIMPULSE);
+}
+
 void Model::setCollider(ColliderConfig config)  {
-    //note: model would need to be set collidable before adding to scene, to be added to correct <vector>
-    //todo allow user to specify collider config - dynamic / static - shape to use
+    // note: model would need to be set collidable before adding to scene, to be added to correct <vector>
     collider = new Collider(config);
     collider->rebuild(mesh);
     this->collider->update(-m_transform.getPosition());
@@ -80,10 +95,13 @@ void Model::setCollider(ColliderConfig config)  {
 }
 
 void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
-    this->m_transform.applyPxTransform(pxTransform);
 
     //todo - will replace isColliding function with physX checks, but until then we will need to apply the position updates to the collider
     collider->rebuild(mesh);
     this->collider->update(-m_transform.getPosition());
-//    this->mesh->applyPxTransform(pxTransform);
+
+    if (!physicsBody) {
+        return;
+    }
+    this->m_transform.applyPxTransform(pxTransform);
 }

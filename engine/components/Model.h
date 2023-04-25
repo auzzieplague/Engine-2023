@@ -32,7 +32,9 @@ public:
 
     // physics handlers
     void applyPxTransform(const physx::PxTransform& pxTransform);
-    void applyForce(glm::vec3 force = {});
+    void applyForce(glm::vec3 force = {}) const;
+
+    void applyImpulse(glm::vec3 force) const;
 };
 
 

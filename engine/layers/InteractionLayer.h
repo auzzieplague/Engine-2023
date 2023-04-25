@@ -23,7 +23,11 @@ public:
 
     void processInput(Scene *scene) override;
 
-    void processCameraInput(Scene *scene);
+    void processCameraInput(Scene *scene, float movement);
+
+    void handleCharacterKeysWithPhysics();
+
+    void handleCharacterKeys(float movement);
 };
 
 

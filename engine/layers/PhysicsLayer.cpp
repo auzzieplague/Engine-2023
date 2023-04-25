@@ -1,6 +1,25 @@
-
 #include <PxSimulationEventCallback.h>
 #include "PhysicsLayer.h"
+
+void PhysicsLayer::onAttach(Scene *) {
+    Debug::show("[>] Physics Attached");
+    initPhysicsWorld();
+}
+
+void PhysicsLayer::update(Scene *scene) {
+    this->processSpawnQueue(scene);
+    // process spawn queue
+
+    physx::PxTransform transform;
+    //update positions of models
+    for (auto model: scene->modelsWithPhysics) {
+        transform = model->physicsBody->getGlobalPose();
+        model->applyPxTransform(transform);
+    }
+
+    mScene->simulate(1.0f / 60.0f);
+    mScene->fetchResults(true);
+}
 
 void PhysicsLayer::initPhysicsWorld() {
     // init physx
@@ -21,11 +40,6 @@ void PhysicsLayer::initPhysicsWorld() {
     sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
     mScene = mPhysics->createScene(sceneDesc);
 
-    // Register the collision callback function
-//    physx::PxSimulationEventCallback* callback = new physx::PxSimulationEventCallback();
-//    callback->onContact(&onCollision);
-//    mScene->setSimulationEventCallback(callback);
-
     physx::PxPvdSceneClient *pvdClient = mScene->getScenePvdClient();
     if (pvdClient) {
         pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);
@@ -34,22 +48,7 @@ void PhysicsLayer::initPhysicsWorld() {
     }
 }
 
-void PhysicsLayer::onAttach(Scene *) {
-    initPhysicsWorld();
-}
-
-void PhysicsLayer::onCollision(const physx::PxContactPairHeader& pairHeader, const physx::PxContactPair* pairs, physx::PxU32 nbPairs){
-//    physx::PxRigidActor* actor1 = pairHeader.actors[0]->isRigidActor();
-//    physx::PxRigidActor* actor2 = pairHeader.actors[1]->isRigidActor();
-//    if (actor1 && actor2)
-//    {
-//        physx::PxU64 id1 = actor1->userData;
-//        physx::PxU64 id2 = actor2->userData;
-//        std::cout << "Objects " << id1 << " and " << id2 << " are colliding!" << std::endl;
-//    }
-}
-
-physx::PxTriangleMesh*  PhysicsLayer::createTriangleMeshForModel(Model * model) {
+physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
 // Create the triangle mesh descriptor
     auto vertices = model->mesh->getVertices();
     auto indices = model->mesh->getIndices();
@@ -66,14 +65,13 @@ physx::PxTriangleMesh*  PhysicsLayer::createTriangleMeshForModel(Model * model) 
     // triangles appeared to be coming out backwards in PVD
     meshDesc.flags = physx::PxMeshFlags(physx::PxMeshFlag::eFLIPNORMALS); // <-- set the eFLIPNORMALS flag
 
-
     // Create the cooking object
     physx::PxTolerancesScale scale;
     physx::PxCookingParams params(scale);
-    physx::PxCooking* cooking = PxCreateCooking(PX_PHYSICS_VERSION, mPhysics->getFoundation(), params);
+    physx::PxCooking *cooking = PxCreateCooking(PX_PHYSICS_VERSION, mPhysics->getFoundation(), params);
 
     // Create the triangle mesh in the PhysX SDK
-    physx::PxTriangleMesh* triangleMesh = nullptr;
+    physx::PxTriangleMesh *triangleMesh = nullptr;
     physx::PxDefaultMemoryOutputStream writeBuffer;
     if (cooking->cookTriangleMesh(meshDesc, writeBuffer)) {
         physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
@@ -99,7 +97,7 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
                                                             config.material.restitution);
 
     physx::PxShape *shape;
-    physx::PxTriangleMesh* triangleMesh;
+    physx::PxTriangleMesh *triangleMesh;
     switch (config.shape) {
         case config.Box:
             shape = mPhysics->createShape(physx::PxBoxGeometry(config.size, config.size, config.size), *mMaterial);
@@ -123,7 +121,7 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
             model->physicsBody = mPhysics->createRigidDynamic(t);
             break;
         default:
-        model->physicsBody  = mPhysics->createRigidStatic(t);
+            model->physicsBody = mPhysics->createRigidStatic(t);
     }
 
     model->physicsBody->attachShape(*shape);
@@ -134,18 +132,5 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
     scene->modelsWithPhysics.push_back(model);
 }
 
-void PhysicsLayer::update(Scene *scene) {
-    this->processSpawnQueue(scene);
-    // process spawn queue
 
-    physx::PxTransform transform;
-    //update positions of models
-    for (auto model: scene->modelsWithPhysics) {
-        transform = model->physicsBody->getGlobalPose();
-        model->applyPxTransform(transform);
-    }
-
-    mScene->simulate(1.0f / 60.0f);
-    mScene->fetchResults(true);
-}
 

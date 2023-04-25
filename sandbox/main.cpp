@@ -3,13 +3,12 @@
 #include "../engine/layers/CollisionLayer.h"
 #include "../engine/layers/PhysicsLayer.h"
 
-
 Model *testSphere;
-
 
 void setupScene(Scene *scene) {
     ColliderConfig config{};
-     testSphere = Model::createFromGeometry(Geometry::ShapeType::Sphere, GeometryConfig{.sphere{.radius=0.5,.rings=10,.sectors=10}});
+    testSphere = Model::createFromGeometry(Geometry::ShapeType::Sphere,
+                                           GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}});
     config.shape = config.Sphere;
     config.type = config.Dynamic;
     testSphere->setCollider(config);
@@ -22,6 +21,9 @@ void setupScene(Scene *scene) {
     config = {.shape=config.HeightMap, .type=config.Static};
     terrain1->setCollider(config);
     scene->addComponent(terrain1);
+
+    Debug::show("[->] Use 'R' to generate collision report");
+    Debug::show("[->] Use NumPad 4862+- to navigate test");
 }
 
 void outputExecutionMode() {
@@ -33,26 +35,30 @@ void outputExecutionMode() {
 }
 
 
+
 int main() {
     outputExecutionMode();
 
+    /// Required Layers
     Engine *engine = Engine::getInstance();
     engine->setGraphicsApi(new API_OpenGL());
-    engine->attachLayer(new WindowLayer());
-    engine->attachLayer(new GraphicsLayer());
-    engine->attachLayer(new CollisionLayer());
+    engine->attachLayer(new WindowLayer());    // maintains the window interface & required for input processing
 
-    engine->attachLayer(new PhysicsLayer());
 
-    //setup interaction layer and scene together to inject a test model
+    /// optional layers
+    engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene
+    engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
+    engine->attachLayer(new CollisionLayer()); // processes collisions effects
+
+    // setup interaction layer and scene together to inject a test model
     auto *interactionLayer = new InteractionLayer();
     engine->attachLayer(interactionLayer);
     setupScene(engine->currentScene);
     interactionLayer->selectedModel = testSphere;
 
-    Debug::show("[->] Use 'R' to generate collision report");
-    Debug::show("[->] Use NumPad 4862+- to navigate test");
 
+    /// kick-start the main loop
     engine->start();
-    Debug::show("done");
+
+    Debug::show("[>] Expected engine->stop()");
 }
