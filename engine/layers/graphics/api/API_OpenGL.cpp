@@ -35,13 +35,13 @@ void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
 
 // unsigned int GraphicsLayerOpenGL::testMeshVAO;
 void API_OpenGL::renderMesh(Mesh *mesh) {
-    // if the mesh hasn't been setup yet, we'll need to initialise it (lazy loading)
+    // if the mMesh hasn't been setup yet, we'll need to initialise it (lazy loading)
     if (mesh->getID() == 0) {
         mesh->generateMeshID();
     }
 
     if (!mesh->isReady()) {
-        Debug::show("mesh not m_ready");
+        Debug::show("mMesh not m_ready");
         return;
     }
 
@@ -49,7 +49,7 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
 //    glDrawArrays(GL_TRIANGLES, 0, 6);
 //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glDrawElements(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, 0);
-//    glDrawElements(GL_LINES, mesh->m_indices.size(), GL_UNSIGNED_INT, 0);
+//    glDrawElements(GL_LINES, mMesh->m_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0); // no need to unbind it every time
 
 }
@@ -120,7 +120,7 @@ unsigned int API_OpenGL::loadShader(std::string vertex, std::string fragment) {
 
 unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     if (mesh->getIndices().empty()) {
-        Debug::show("mesh object has no getIndices");
+        Debug::show("mMesh object has no getIndices");
         return 0;
     }
     unsigned int VBO, VAO, EBO;

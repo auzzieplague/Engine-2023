@@ -7,7 +7,7 @@ void CollisionLayer::onAttach(Scene *scene) {
 }
 
 void CollisionLayer::update(Scene *scene) {
-    // check collider of models
+    // check mCollider of models
     // will be checking collidable models in the scene for now just checking all render models
 
     /// just for debugging collision
@@ -36,20 +36,20 @@ void CollisionLayer::update(Scene *scene) {
 
         while (collider2 <= max) {
             // check if models are collidable - will be its own array
-            if (scene->modelsToRender[collider1]->collider && scene->modelsToRender[collider2]->collider) {
+            if (scene->modelsToRender[collider1]->mCollider && scene->modelsToRender[collider2]->mCollider) {
 
 
-                if (scene->modelsToRender[collider1]->collider->isColliding(
-                        scene->modelsToRender[collider2]->collider)) {
+                if (scene->modelsToRender[collider1]->mCollider->isColliding(
+                        scene->modelsToRender[collider2]->mCollider)) {
 
                     if (Debug::getIteration() == 1) {
                         std::cout  << " [" << collider1 << "-X-" << collider2 << "] ";
                     }
 
-                    scene->modelsToRender[collider1]->mesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
+                    scene->modelsToRender[collider1]->mMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
                     colourOffset += 0.1f;
 
-                    scene->modelsToRender[collider2]->mesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
+                    scene->modelsToRender[collider2]->mMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
                     colourOffset += 0.1f;
 
                     alreadyColliding[collider1] = true;
@@ -60,10 +60,10 @@ void CollisionLayer::update(Scene *scene) {
                         std::cout << collider1 << "<->" << collider2 << "  ";
                     }
                     if (!alreadyColliding[collider1]) {
-                        scene->modelsToRender[collider1]->mesh->restoreMaterial();
+                        scene->modelsToRender[collider1]->mMesh->restoreMaterial();
                     }
                     if (!alreadyColliding[collider2]) {
-                        scene->modelsToRender[collider2]->mesh->restoreMaterial();
+                        scene->modelsToRender[collider2]->mMesh->restoreMaterial();
                     }
                 }
             }
@@ -88,7 +88,7 @@ void CollisionLayer::render(Scene *scene) {
 
     // set colour red if colliding green if not.
 
-    //if collider m_vertices isn't set initialise it with m_sphere m_vertices.
+    //if mCollider m_vertices isn't set initialise it with m_sphere m_vertices.
 }
 
 

@@ -13,7 +13,7 @@ void PhysicsLayer::update(Scene *scene) {
     physx::PxTransform transform;
     //update positions of models
     for (auto model: scene->modelsWithPhysics) {
-        transform = model->physicsBody->getGlobalPose();
+        transform = model->mPhysicsBody->getGlobalPose();
         model->applyPxTransform(transform);
     }
 
@@ -49,11 +49,11 @@ void PhysicsLayer::initPhysicsWorld() {
 }
 
 physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
-// Create the triangle mesh descriptor
-    auto vertices = model->mesh->getVertices();
-    auto indices = model->mesh->getIndices();
+// Create the triangle mMesh descriptor
+    auto vertices = model->mMesh->getVertices();
+    auto indices = model->mMesh->getIndices();
 
-    // Create the triangle mesh descriptor
+    // Create the triangle mMesh descriptor
     physx::PxTriangleMeshDesc meshDesc;
     meshDesc.points.count = vertices.size();
     meshDesc.points.stride = sizeof(glm::vec3);
@@ -70,7 +70,7 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
     physx::PxCookingParams params(scale);
     physx::PxCooking *cooking = PxCreateCooking(PX_PHYSICS_VERSION, mPhysics->getFoundation(), params);
 
-    // Create the triangle mesh in the PhysX SDK
+    // Create the triangle mMesh in the PhysX SDK
     physx::PxTriangleMesh *triangleMesh = nullptr;
     physx::PxDefaultMemoryOutputStream writeBuffer;
     if (cooking->cookTriangleMesh(meshDesc, writeBuffer)) {
@@ -91,7 +91,7 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
     scene->modelsWithPhysicsQueue.pop_front();
 
     // use the ColliderConfig for physics config
-    ColliderConfig config = model->collider->getConfig();
+    ColliderConfig config = model->mCollider->getConfig();
     physx::PxMaterial *mMaterial = mPhysics->createMaterial(config.material.staticFriction,
                                                             config.material.dynamicFriction,
                                                             config.material.restitution);
@@ -118,14 +118,14 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
 
     switch (config.type) {
         case config.Dynamic:
-            model->physicsBody = mPhysics->createRigidDynamic(t);
+            model->mPhysicsBody = mPhysics->createRigidDynamic(t);
             break;
         default:
-            model->physicsBody = mPhysics->createRigidStatic(t);
+            model->mPhysicsBody = mPhysics->createRigidStatic(t);
     }
 
-    model->physicsBody->attachShape(*shape);
-    mScene->addActor(*model->physicsBody);
+    model->mPhysicsBody->attachShape(*shape);
+    mScene->addActor(*model->mPhysicsBody);
     shape->release();
 
     // now everything is ready, push this model into the physics array

@@ -86,9 +86,9 @@ public:
             return false;
         };
 
-        // octree on mesh
+        // octree on mMesh
 
-        // todo check mesh - need to add collision mesh to collider as it's not the same as actual mesh
+        // todo check mMesh - need to add collision mMesh to mCollider as it's not the same as actual mMesh
         return true;
     }
 

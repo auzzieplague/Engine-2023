@@ -8,9 +8,9 @@
 class Model : public Component {
 
 public:
-    Mesh *mesh;
-    Collider *collider;
-    physx::PxRigidActor* physicsBody;
+    Mesh *mMesh;
+    Collider *mCollider;
+    physx::PxRigidActor* mPhysicsBody;
 
     ObjectType getType() override {
         return ObjectType::OT_Model;
@@ -18,7 +18,7 @@ public:
 
     static Model *createFromGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
 
-    // todo setCollider(level) radial, box, mesh
+    // todo setCollider(level) radial, box, mMesh
     void setCollider(ColliderConfig config);
 
     /**

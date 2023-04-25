@@ -2,7 +2,7 @@
 
 void Scene::addModel(Model *model) {
     this->modelsToRender.push_back(model);
-    if (model->collider) {
+    if (model->mCollider) {
         // do some physics assigment
         this->modelsWithPhysicsQueue.push_back(model);
     }

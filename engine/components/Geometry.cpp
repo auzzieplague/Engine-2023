@@ -17,7 +17,7 @@ void Geometry::buildQuad() {
             2, 3, 0
     };
 
-    // Assign the vertex m_vertices and m_indices to the mesh
+    // Assign the vertex m_vertices and m_indices to the mMesh
     this->m_vertices = vertices;
     this->m_indices = indices;
 }
@@ -82,7 +82,7 @@ void Geometry::buildBox(GeometryConfig config) {
             22, 23, 20
     };
 
-    // Assign the vertex m_vertices and m_indices to the mesh
+    // Assign the vertex m_vertices and m_indices to the mMesh
     this->m_vertices = vertices;
     this->m_indices = indices;
 }

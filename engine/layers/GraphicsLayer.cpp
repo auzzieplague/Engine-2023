@@ -35,8 +35,8 @@ void GraphicsLayer::render(Scene *scene) {
         api->shaderSetTransform(model->getModelMatrix());
 
         // todo model can have many meshes
-        api->shaderSetMaterial(model->mesh->getMaterial());
-        api->renderMesh(model->mesh);
+        api->shaderSetMaterial(model->mMesh->getMaterial());
+        api->renderMesh(model->mMesh);
     }
 }
 
