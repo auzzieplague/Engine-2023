@@ -1,32 +1,22 @@
 #pragma once
 
 #include "Layer.h"
-//#include <PxPhysicsAPI.h>
-#include <PxPhysics.h>
-#include <cooking/PxCooking.h>
+#include <PxPhysicsAPI.h>
 
 class PhysicsLayer  : public Layer {
 
 public:
-    // declare variables
     physx::PxDefaultAllocator      mDefaultAllocatorCallback;
     physx::PxDefaultErrorCallback  mDefaultErrorCallback;
-    physx::PxDefaultCpuDispatcher* mDispatcher = NULL;
+    physx::PxDefaultCpuDispatcher* mDispatcher = nullptr;
     physx::PxTolerancesScale       mToleranceScale;
-
-    physx::PxFoundation*           mFoundation = NULL;
-    physx::PxPhysics*              mPhysics = NULL;
-
-    physx::PxScene*                mScene = NULL;
-
-
-    physx::PxPvd*                  mPvd = NULL;
-
-//    void setApi(GraphicsAPI *api) override;
+    physx::PxFoundation*           mFoundation = nullptr;
+    physx::PxPhysics*              mPhysics = nullptr;
+    physx::PxScene*                mScene = nullptr;
+    physx::PxPvd*                  mPvd = nullptr;
 
     void onAttach(Scene *) override;
 
-//    void render(Scene *) override;
     void update(Scene *) override;
 
     void initPhysicsWorld();
@@ -34,7 +24,4 @@ public:
     void processSpawnQueue(Scene *scene);
 
     physx::PxTriangleMesh* createTriangleMeshForModel(Model * model);
-
-    void
-    onCollision(const physx::PxContactPairHeader &pairHeader, const physx::PxContactPair *pairs, unsigned int nbPairs);
 };
