@@ -78,5 +78,7 @@ public:
 
     void calculateTangents();
 
+    void applyPxTransform(const physx::PxTransform &pxTransform);
+
 };
 

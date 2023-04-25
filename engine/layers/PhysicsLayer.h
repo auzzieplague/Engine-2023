@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Layer.h"
-#include <PxPhysicsAPI.h>
+//#include <PxPhysicsAPI.h>
+#include <PxPhysics.h>
+#include <cooking/PxCooking.h>
 
 class PhysicsLayer  : public Layer {
 
@@ -16,7 +18,7 @@ public:
     physx::PxPhysics*              mPhysics = NULL;
 
     physx::PxScene*                mScene = NULL;
-    physx::PxMaterial*             mMaterial = NULL;
+
 
     physx::PxPvd*                  mPvd = NULL;
 
@@ -27,4 +29,12 @@ public:
 //    void render(Scene *) override;
     void update(Scene *) override;
 
+    void initPhysicsWorld();
+
+    void processSpawnQueue(Scene *scene);
+
+    physx::PxTriangleMesh* createTriangleMeshForModel(Model * model);
+
+    void
+    onCollision(const physx::PxContactPairHeader &pairHeader, const physx::PxContactPair *pairs, unsigned int nbPairs);
 };

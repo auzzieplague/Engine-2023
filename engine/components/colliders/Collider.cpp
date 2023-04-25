@@ -38,3 +38,7 @@ bool Collider::containsPoint(const glm::vec3 &point) const {
     return true;
 }
 
+ColliderConfig Collider::getConfig() const {
+    return this->m_config;
+}
+

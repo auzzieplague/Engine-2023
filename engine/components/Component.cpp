@@ -47,3 +47,5 @@ bool Component::isReady() {
 void Component::setReady(bool ready) {
     Component::m_ready = ready;
 }
+
+

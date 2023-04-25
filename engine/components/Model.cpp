@@ -63,9 +63,15 @@ void Model::setRotation(glm::vec3 rotation) {
 
 }
 
-void Model::setCollider()  {
+void Model::applyForce(glm::vec3 force){
+    // todo: check if dynamic .. probably subclass dynamic and static models so no checking required
+    dynamic_cast<physx::PxRigidDynamic *>(this->physicsBody)->addForce(physx::PxVec3(force.x, force.y, force.z));
+}
+
+void Model::setCollider(ColliderConfig config)  {
     //note: model would need to be set collidable before adding to scene, to be added to correct <vector>
-    collider = new Collider();
+    //todo allow user to specify collider config - dynamic / static - shape to use
+    collider = new Collider(config);
     collider->rebuild(mesh);
     this->collider->update(-m_transform.getPosition());
 
@@ -73,4 +79,11 @@ void Model::setCollider()  {
     // getRadius of meshes
 }
 
+void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
+    this->m_transform.applyPxTransform(pxTransform);
 
+    //todo - will replace isColliding function with physX checks, but until then we will need to apply the position updates to the collider
+    collider->rebuild(mesh);
+    this->collider->update(-m_transform.getPosition());
+//    this->mesh->applyPxTransform(pxTransform);
+}

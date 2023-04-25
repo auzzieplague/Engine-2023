@@ -5,28 +5,43 @@
 #include "BoundingBox.h"
 
 
-class Collider {
-    enum ColliderType {
-        CT_Box,
-        CT_Sphere,
-        CT_Capsule,
-        CT_Mesh,
-        CT_ConvexMesh,
-        CT_General,
-        CT_Terrain,
+struct ColliderConfig {
+    enum CollisionShape {
+        Box, Sphere, HeightMap
     };
+
+    CollisionShape shape = Box;
+
+    enum CollisionType {
+        Static, Dynamic
+    };
+
+    CollisionType type = Static;
+
+    struct MaterialConfig {
+        float staticFriction = 0.5;
+        float dynamicFriction = 0.5;
+        float restitution = 0.6;
+    };
+
+    MaterialConfig material {};
+
+    float size= 0.5;
+};
+
+class Collider {
 
 private:
     BoundingSphere m_sphere; // m_center is world m_position
     BoundingBox m_aabb;// world coordinate comparison
-    std::vector<glm::vec3> m_vertices; // needs to contain all model sub meshes
-
-    ColliderType collisionType;
-
+    std::vector<glm::vec3> m_vertices; // the hull needs to contain all model sub meshes
 public:
-    explicit Collider() {
-        collisionType = CT_General;
+    ColliderConfig m_config;
+    explicit Collider(ColliderConfig config) {
+        m_config = config;
     };
+
+    [[nodiscard]] ColliderConfig getConfig() const;
 
     /**
      * update the centers of the bounding volumes

@@ -70,5 +70,7 @@ public:
     virtual void update() {
         std::cout << "update not implemented for component\n";
     };
+
+
 };
 

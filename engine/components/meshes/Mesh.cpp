@@ -124,7 +124,7 @@ Material &Mesh::getMaterial() {
 }
 
 void Mesh::setMaterial(const Material &material) {
-    Mesh::m_material =  Mesh::m_material_original = material;
+    Mesh::m_material = Mesh::m_material_original = material;
 }
 
 const std::vector<glm::vec3> &Mesh::getVertices() const {
@@ -157,4 +157,8 @@ unsigned int Mesh::getID() {
 
 void Mesh::restoreMaterial() {
     this->m_material = this->m_material_original;
+}
+
+void Mesh::applyPxTransform(const physx::PxTransform &pxTransform) {
+    this->m_transform.applyPxTransform(pxTransform);
 };

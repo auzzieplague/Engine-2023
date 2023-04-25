@@ -17,6 +17,8 @@ void InteractionLayer::processCameraInput(Scene *scene) {
     /// todo add mappings for camera keys, for now just use wasd
 
     float speed = 10; // travel speed
+    float force = 5; // force to apply to objects
+
     float movement = speed / scene->currentFrameRate;
 
 
@@ -53,34 +55,43 @@ void InteractionLayer::processCameraInput(Scene *scene) {
 
     if (selectedModel) {
         if (input->isKeyPressed(GLFW_KEY_I) | input->isKeyPressed(GLFW_KEY_KP_8)) {
-            glm::vec3 pos = selectedModel->getPosition();
-            pos.y += movement / 2;
-            selectedModel->setPosition(pos);
+//            glm::vec3 pos = selectedModel->getPosition();
+//            pos.y += movement / 2;
+//            selectedModel->setPosition(pos);
+
+            selectedModel->applyForce(glm::vec3{0,0,-force});
         };
         if (input->isKeyPressed(GLFW_KEY_K) | input->isKeyPressed(GLFW_KEY_KP_2)) {
-            glm::vec3 pos = selectedModel->getPosition();
-            pos.y -= movement / 2;
-            selectedModel->setPosition(pos);
+//            glm::vec3 pos = selectedModel->getPosition();
+//            pos.y -= movement / 2;
+//            selectedModel->setPosition(pos);
+
+            selectedModel->applyForce(glm::vec3{0,0,+force});
         };
         if (input->isKeyPressed(GLFW_KEY_L) | input->isKeyPressed(GLFW_KEY_KP_ADD)) {
-            glm::vec3 pos = selectedModel->getPosition();
-            pos.z += movement / 2;
-            selectedModel->setPosition(pos);
+//            glm::vec3 pos = selectedModel->getPosition();
+//            pos.z += movement / 2;
+//            selectedModel->setPosition(pos);
+
+            selectedModel->applyForce(glm::vec3{0,force,0});
         };
         if (input->isKeyPressed(GLFW_KEY_O) | input->isKeyPressed(GLFW_KEY_KP_SUBTRACT)) {
-            glm::vec3 pos = selectedModel->getPosition();
-            pos.z -= movement / 2;
-            selectedModel->setPosition(pos);
+//            glm::vec3 pos = selectedModel->getPosition();
+//            pos.z -= movement / 2;
+//            selectedModel->setPosition(pos);
+            selectedModel->applyForce(glm::vec3{0,-force,0});
         };
         if (input->isKeyPressed(GLFW_KEY_PERIOD) | input->isKeyPressed(GLFW_KEY_KP_6)) {
-            glm::vec3 pos = selectedModel->getPosition();
-            pos.x += movement / 2;
-            selectedModel->setPosition(pos);
+//            glm::vec3 pos = selectedModel->getPosition();
+//            pos.x += movement / 2;
+//            selectedModel->setPosition(pos);
+            selectedModel->applyForce(glm::vec3{force,0,0});
         };
         if (input->isKeyPressed(GLFW_KEY_COMMA) | input->isKeyPressed(GLFW_KEY_KP_4)) {
-            glm::vec3 pos = selectedModel->getPosition();
-            pos.x -= movement / 2;
-            selectedModel->setPosition(pos);
+//            glm::vec3 pos = selectedModel->getPosition();
+//            pos.x -= movement / 2;
+//            selectedModel->setPosition(pos);
+            selectedModel->applyForce(glm::vec3{-force,0,0});
         };
         if (input->isKeyPressed(GLFW_KEY_R)) {
             Debug::resetIteration();

@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <deque>
 #include <map>
 #include <cassert>
 #include <random>
