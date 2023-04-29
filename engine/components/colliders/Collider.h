@@ -7,7 +7,7 @@
 
 struct ColliderConfig {
     enum CollisionShape {
-        Box, Sphere, HeightMap
+        Box, Sphere, HeightMap, Mesh
     };
 
     CollisionShape shape = Box;

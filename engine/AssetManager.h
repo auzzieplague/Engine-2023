@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../core/Base.h"
+#include "stb_image.h"
 
 /**
 * the function of this class is to load, cache, package (compress, decompress) assets
@@ -18,6 +19,9 @@ public:
     static std::string getRelativePath(std::string category, std::string assetName);
 
     static std::string stringFromFile(std::string &path);
+
+    // loads or retrieves from cache - the specified height map
+    static HeightMap getHeightMap ( const std::string &name, float scale = 1, float minHeight = -1, float maxHeight = 1);
 
 };
 

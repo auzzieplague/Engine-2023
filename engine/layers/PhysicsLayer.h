@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Layer.h"
+#include "../components/Terrain.h"
 #include <PxPhysicsAPI.h>
 
 class PhysicsLayer  : public Layer {
@@ -24,4 +25,6 @@ public:
     void processSpawnQueue(Scene *scene);
 
     physx::PxTriangleMesh* createTriangleMeshForModel(Model * model);
+
+    physx::PxHeightFieldGeometry createHeightGeometry(Terrain *model);
 };

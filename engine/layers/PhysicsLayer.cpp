@@ -1,5 +1,8 @@
 #include <PxSimulationEventCallback.h>
+#include <PxPhysicsAPI.h>
+#include <cooking/PxCooking.h>
 #include "PhysicsLayer.h"
+#include "../components/Terrain.h"
 
 void PhysicsLayer::onAttach(Scene *) {
     Debug::show("[>] Physics Attached");
@@ -83,6 +86,38 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
 }
 
 
+physx::PxHeightFieldGeometry PhysicsLayer::createHeightGeometry(Terrain *model) {
+    HeightMap heightMap = model->getHeightMap();
+    physx::PxHeightFieldGeometry hfGeom;
+    physx::PxHeightFieldDesc hfDesc;
+    hfDesc.format = physx::PxHeightFieldFormat::eS16_TM;
+    hfDesc.nbColumns = heightMap.width;
+    hfDesc.nbRows = heightMap.height;
+    hfDesc.samples.data = heightMap.vertexHeights.data();
+    hfDesc.samples.stride = sizeof(physx::PxHeightFieldSample); //maybe
+
+
+    // Create the cooking object
+    physx::PxTolerancesScale scale;
+    physx::PxCookingParams params(scale);
+    physx::PxCooking *cooking = PxCreateCooking(PX_PHYSICS_VERSION, mPhysics->getFoundation(), params);
+
+    // Create height field geometry
+    physx::PxHeightField *heightField = nullptr;
+
+    physx::PxDefaultMemoryOutputStream writeBuffer;
+    if (cooking->cookHeightField(hfDesc, writeBuffer)) {
+        physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
+        heightField = mPhysics->createHeightField(readBuffer);
+        hfGeom = physx::PxHeightFieldGeometry(heightField, physx::PxMeshGeometryFlags(), heightMap.scale, heightMap.scale,
+                                            heightMap.scale);
+    }
+
+    cooking->release();
+
+    return hfGeom;
+}
+
 void PhysicsLayer::processSpawnQueue(Scene *scene) {
 
     if (scene->modelsWithPhysicsQueue.size() == 0) return;
@@ -97,12 +132,19 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
                                                             config.material.restitution);
 
     physx::PxShape *shape;
-    physx::PxTriangleMesh *triangleMesh;
+    physx::PxTriangleMesh *triangleMesh; // refactor and remove after testing
+    physx::PxHeightFieldGeometry hfGeom; // refactor and remove
+
     switch (config.shape) {
         case config.Box:
             shape = mPhysics->createShape(physx::PxBoxGeometry(config.size, config.size, config.size), *mMaterial);
             break;
         case config.HeightMap:
+            hfGeom = createHeightGeometry(dynamic_cast<Terrain *>(model));
+            shape = mPhysics->createShape(physx::PxHeightFieldGeometry(hfGeom), *mMaterial);
+            // punch in any holes
+            break;
+        case config.Mesh:
             triangleMesh = createTriangleMeshForModel(model);
             if (triangleMesh) {
                 shape = mPhysics->createShape(physx::PxTriangleMeshGeometry(triangleMesh), *mMaterial);
