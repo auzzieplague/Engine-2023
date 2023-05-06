@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Model.h"
+#include "Terrain.h"
 
 Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig config) {
     auto *model = new Model();
@@ -16,6 +17,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
             dynamic_cast<Geometry *>(model->mMesh)->buildSphere(config);
             break;
         case Geometry::ShapeType::Terrain :
+            // here we're treating terrain as a model just for testing purposes
             dynamic_cast<Geometry *>(model->mMesh)->buildTerrain(config);
             break;
         case Geometry::ShapeType::Dome :

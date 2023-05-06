@@ -6,12 +6,14 @@ class Object {
 public:
 
     enum class ObjectType {
-        OT_Object = 1,
-        OT_Component = 2,
-        OT_Model = 3,
-        OT_Mesh = 4,
-        OT_Texture = 5,
-        OT_Light = 6
+        OT_Unknown,
+        OT_Object,
+        OT_Component,
+        OT_Model,
+        OT_Terrain,
+        OT_Mesh,
+        OT_Texture,
+        OT_Light6
     };
 
     virtual ObjectType getType() {

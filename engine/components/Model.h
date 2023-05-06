@@ -19,7 +19,7 @@ public:
     static Model *createFromGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
 
     // todo setCollider(level) radial, box, mMesh
-    void setCollider(ColliderConfig config);
+    virtual void setCollider(ColliderConfig config);
 
     /**
      * use model->setPostion to correctly update colliders and underlying objects

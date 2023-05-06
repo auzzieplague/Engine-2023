@@ -22,7 +22,8 @@ public:
 
     void initPhysicsWorld();
 
-    void processSpawnQueue(Scene *scene);
+    void processModelSpawnQueue(Scene *scene);
+    void processTerrainSpawnQueue(Scene *scene);
 
     physx::PxTriangleMesh* createTriangleMeshForModel(Model * model);
 

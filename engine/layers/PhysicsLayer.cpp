@@ -10,14 +10,15 @@ void PhysicsLayer::onAttach(Scene *) {
 }
 
 void PhysicsLayer::update(Scene *scene) {
-    this->processSpawnQueue(scene);
-    // process spawn queue
+    // process spawn queues
+    this->processModelSpawnQueue(scene);
+    this->processTerrainSpawnQueue(scene);
 
     physx::PxTransform transform;
     //update positions of models
     for (auto model: scene->modelsWithPhysics) {
         transform = model->mPhysicsBody->getGlobalPose();
-        model->applyPxTransform(transform);
+         model->applyPxTransform(transform);
     }
 
     mScene->simulate(1.0f / 60.0f);
@@ -80,6 +81,7 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
         physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
         triangleMesh = mPhysics->createTriangleMesh(readBuffer);
     }
+
     cooking->release();
 
     return triangleMesh;
@@ -87,15 +89,32 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
 
 
 physx::PxHeightFieldGeometry PhysicsLayer::createHeightGeometry(Terrain *model) {
-    HeightMap heightMap = model->getHeightMap();
     physx::PxHeightFieldGeometry hfGeom;
     physx::PxHeightFieldDesc hfDesc;
     hfDesc.format = physx::PxHeightFieldFormat::eS16_TM;
+    HeightMap heightMap = model->getHeightMap();
     hfDesc.nbColumns = heightMap.width;
     hfDesc.nbRows = heightMap.height;
-    hfDesc.samples.data = heightMap.vertexHeights.data();
-    hfDesc.samples.stride = sizeof(physx::PxHeightFieldSample); //maybe
 
+    // samples inst just vertex heights it's also material 1 and 2 for triangles
+    std::vector<physx::PxHeightFieldSample> samples;
+    samples.resize(hfDesc.nbRows * hfDesc.nbColumns);
+    int i=0;
+    for (int row =0; row < hfDesc.nbRows ; row++){
+    for (int col =0; col < hfDesc.nbColumns ; col++){
+        samples[i].height = heightMap.vertexHeights[i];
+        samples[i].materialIndex0 = 2;
+        samples[i].materialIndex1 = 3;
+        i++;
+    }}
+
+    hfDesc.samples.data = samples.data();
+
+    if (hfDesc.samples.data== nullptr){
+        std::cout<<"busted";
+    }
+
+    hfDesc.samples.stride = sizeof(physx::PxHeightFieldSample);
 
     // Create the cooking object
     physx::PxTolerancesScale scale;
@@ -104,7 +123,6 @@ physx::PxHeightFieldGeometry PhysicsLayer::createHeightGeometry(Terrain *model) 
 
     // Create height field geometry
     physx::PxHeightField *heightField = nullptr;
-
     physx::PxDefaultMemoryOutputStream writeBuffer;
     if (cooking->cookHeightField(hfDesc, writeBuffer)) {
         physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
@@ -114,11 +132,10 @@ physx::PxHeightFieldGeometry PhysicsLayer::createHeightGeometry(Terrain *model) 
     }
 
     cooking->release();
-
     return hfGeom;
 }
 
-void PhysicsLayer::processSpawnQueue(Scene *scene) {
+void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
 
     if (scene->modelsWithPhysicsQueue.size() == 0) return;
     // pull off the next item this frame
@@ -139,11 +156,7 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
         case config.Box:
             shape = mPhysics->createShape(physx::PxBoxGeometry(config.size, config.size, config.size), *mMaterial);
             break;
-        case config.HeightMap:
-            hfGeom = createHeightGeometry(dynamic_cast<Terrain *>(model));
-            shape = mPhysics->createShape(physx::PxHeightFieldGeometry(hfGeom), *mMaterial);
-            // punch in any holes
-            break;
+
         case config.Mesh:
             triangleMesh = createTriangleMeshForModel(model);
             if (triangleMesh) {
@@ -153,7 +166,7 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
         default:
             shape = mPhysics->createShape(physx::PxSphereGeometry(config.size), *mMaterial);
             break;
-    };
+    }
 
     glm::vec3 p = model->getPosition();
     physx::PxTransform t(physx::PxVec3(p.x, p.y, p.z));
@@ -172,6 +185,41 @@ void PhysicsLayer::processSpawnQueue(Scene *scene) {
 
     // now everything is ready, push this model into the physics array
     scene->modelsWithPhysics.push_back(model);
+
+}
+
+void PhysicsLayer::processTerrainSpawnQueue(Scene *scene) {
+
+    if (scene->terrainsWithPhysicsQueue.size() == 0) return;
+    // pull off the next item this frame
+    auto terrain = scene->terrainsWithPhysicsQueue.front();
+    scene->terrainsWithPhysicsQueue.pop_front();
+
+    ColliderConfig config = terrain->mCollider->getConfig();
+
+    physx::PxMaterial *mMaterial = mPhysics->createMaterial(config.material.staticFriction,
+                                                            config.material.dynamicFriction,
+                                                            config.material.restitution);
+    glm::vec3 p = terrain->getPosition();
+    physx::PxTransform t(physx::PxVec3(p.x, p.y, p.z));
+
+    physx::PxHeightFieldGeometry hfGeom=createHeightGeometry(terrain);
+
+    physx::PxShape *shape = mPhysics->createShape(physx::PxHeightFieldGeometry(hfGeom), *mMaterial);
+    switch (config.type) {
+        case config.Dynamic:
+            terrain->mPhysicsBody = mPhysics->createRigidDynamic(t);
+            break;
+        default:
+            terrain->mPhysicsBody = mPhysics->createRigidStatic(t);
+    }
+
+    terrain->mPhysicsBody->attachShape(*shape);
+    mScene->addActor(*terrain->mPhysicsBody);
+    shape->release();
+
+    // now everything is ready, push this terrain into the physics array
+    scene->modelsWithPhysics.push_back(terrain);
 }
 
 

@@ -12,14 +12,14 @@ void setupScene(Scene *scene) {
     config.shape = config.Sphere;
     config.type = config.Dynamic;
     testSphere->setCollider(config);
-    testSphere->setPosition({2, 0, -12});
+    testSphere->setPosition({2, 10, -12});
     scene->addComponent(testSphere);
 
-    auto *terrain1 = Model::createFromGeometry(Geometry::ShapeType::Terrain,
-                                               GeometryConfig{.terrain{.minHeight =0, .maxHeight = 0.1}});
-    terrain1->setPosition({-8, -2, -15});
+    /// todo - first create new Terrain() and then use createFromGeometry or create a better factory.
+    Terrain *terrain1 = new Terrain("test_map");
     config = {.shape=config.HeightMap, .type=config.Static};
     terrain1->setCollider(config);
+    terrain1->setPosition({-50, -10, -50});
     scene->addComponent(terrain1);
 
     Debug::show("[->] Use 'R' to generate collision report");

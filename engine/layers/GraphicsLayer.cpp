@@ -31,6 +31,15 @@ void GraphicsLayer::render(Scene *scene) {
     // camera might be m_dirty
     checkDirtyCamera(scene);
 
+    // render terrains and skybox first to cull overdraw
+    for (auto model: scene->terrainsToRender) {
+//        api->shaderSetTransform(model->getModelMatrix());
+
+        // todo terrains have multiple materials
+
+//        api->renderMesh(model->mMesh);
+    }
+
     for (auto model: scene->modelsToRender) {
         api->shaderSetTransform(model->getModelMatrix());
 

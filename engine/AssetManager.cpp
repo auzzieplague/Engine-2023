@@ -7,10 +7,10 @@
 
 #ifdef DEVMODE
 std::map<std::string, std::string> AssetManager::category_path = {
-        {"shaders_opengl", "../assets/shaders/glsl"},
-        {"heightmaps",     "../assets/heightmaps"},
-        {"trees",          "../assets/models/landscape/foliage"},
-        {"rocks",          "../assets/models/landscape/rocks"},
+        {"shaders_opengl", "shaders/glsl"},
+        {"heightmaps",     "heightmaps"},
+        {"trees",          "models/landscape/foliage"},
+        {"rocks",          "models/landscape/rocks"},
 };
 #else
 /// should be pulling from packages in live mode anyway
@@ -25,13 +25,13 @@ std::string AssetManager::getPath(std::string category) {
     auto assetPathPrefix = "../assets/";
     auto it = category_path.find(category);
     // if there's no match for category then reference in code is an error
-    assert(it != category_path.end());
+    assert(it != category_path.end() && "Asset category was not found");
     return assetPathPrefix + it->second;
 }
 
 std::string AssetManager::getRelativePath(std::string category, std::string assetName) {
 
-    std::string filename = getPath(category) + "/" + assetName;
+//    std::string filename = getPath(category) + "/" + assetName;
     return getPath(category) + "/" + assetName;
 }
 
@@ -50,7 +50,7 @@ HeightMap AssetManager::getHeightMap(
 
     /// note: no need to cache a height map, it likely won't be used more than once in the same scene
 
-    auto filename = getPath("HeightMaps") + name + ".png";
+    auto filename = getRelativePath("heightmaps",  name + ".png");
     HeightMap heightMap;
     int width, height, numComponents;
     unsigned char *imageData = stbi_load(filename.c_str(), &width, &height, &numComponents, 0);
@@ -65,26 +65,29 @@ HeightMap AssetManager::getHeightMap(
     heightMap.minHeight = minHeight;
     heightMap.maxHeight = maxHeight;
 
+    int size = width*height;
     // Allocate memory for height map data
-    heightMap.vertexHeights.resize(height);
-    heightMap.uvCoordinates.resize(height);
-    heightMap.normalVectors.resize(height);
-    heightMap.colorData.resize(height);
+    heightMap.vertexHeights.resize(size);
+    heightMap.uvCoordinates.resize(size);
+    heightMap.normalVectors.resize(size);
+    heightMap.colorData.resize(size);
 
+    int i=0;
     for (int y = 0; y < height; y++) {
-        heightMap.vertexHeights[y].resize(width);
-        heightMap.uvCoordinates[y].resize(width);
-        heightMap.normalVectors[y].resize(width);
-        heightMap.colorData[y].resize(width);
+//        heightMap.vertexHeights[y].resize(width);
+//        heightMap.uvCoordinates[y].resize(width);
+//        heightMap.normalVectors[y].resize(width);
+//        heightMap.colorData[y].resize(width);
         for (int x = 0; x < width; x++) {
             // Calculate height value from image data
             float heightValue =
                     minHeight + (maxHeight - minHeight) * imageData[(y * width + x) * numComponents] / 255.0f;
-            heightMap.vertexHeights[y][x] = heightValue;
+            heightMap.vertexHeights[i] = heightValue;
 
             // Set UV coordinates to match vertex position
 //            heightMap.uvCoordinates[y][x] = glm::vec2(x * 1.0f / (width - 1), y * 1.0f / (height - 1));
 //            heightMap.uvCoordinates[y][x] = {x * 1.0f / (width - 1), y * 1.0f / (height - 1)};
+        i++;
         }
     }
 
