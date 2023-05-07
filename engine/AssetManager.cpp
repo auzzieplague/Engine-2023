@@ -46,11 +46,11 @@ std::string AssetManager::stringFromFile(std::string &path) {
 }
 
 HeightMap AssetManager::getHeightMap(
-        const std::string &name, float scale , float minHeight, float maxHeight) {
+        const std::string &name,
+        float scale, float minHeight,
+        float maxHeight) {
 
-    /// note: no need to cache a height map, it likely won't be used more than once in the same scene
-
-    auto filename = getRelativePath("heightmaps",  name + ".png");
+    auto filename = getRelativePath("heightmaps", name + ".png");
     HeightMap heightMap;
     int width, height, numComponents;
     unsigned char *imageData = stbi_load(filename.c_str(), &width, &height, &numComponents, 0);
@@ -65,29 +65,49 @@ HeightMap AssetManager::getHeightMap(
     heightMap.minHeight = minHeight;
     heightMap.maxHeight = maxHeight;
 
-    int size = width*height;
+    int size = width * height;
     // Allocate memory for height map data
     heightMap.vertexHeights.resize(size);
-    heightMap.uvCoordinates.resize(size);
-    heightMap.normalVectors.resize(size);
-    heightMap.colorData.resize(size);
+    heightMap.indices.resize(6 * (width - 1) * (height - 1));
+    heightMap.uvCoordinates.resize(2 * size);
+    heightMap.vertices.resize(3 * size);
 
-    int i=0;
-    for (int y = 0; y < height; y++) {
-//        heightMap.vertexHeights[y].resize(width);
-//        heightMap.uvCoordinates[y].resize(width);
-//        heightMap.normalVectors[y].resize(width);
-//        heightMap.colorData[y].resize(width);
-        for (int x = 0; x < width; x++) {
+    int i = 0,index = 0;
+    for (int y = 0; y < height-1; y++) {
+        for (int x = 0; x < width-1; x++) {
             // Calculate height value from image data
+
             float heightValue =
                     minHeight + (maxHeight - minHeight) * imageData[(y * width + x) * numComponents] / 255.0f;
-            heightMap.vertexHeights[i] = heightValue;
 
-            // Set UV coordinates to match vertex position
-//            heightMap.uvCoordinates[y][x] = glm::vec2(x * 1.0f / (width - 1), y * 1.0f / (height - 1));
-//            heightMap.uvCoordinates[y][x] = {x * 1.0f / (width - 1), y * 1.0f / (height - 1)};
-        i++;
+            heightMap.vertexHeights[i] = heightValue*scale;
+
+            // Calculate vertex position based on (x,y,height) coordinates
+            float xPos = (float)x / (width - 1) ;
+            float yPos = heightValue ;
+            float zPos = (float)y / (height - 1) ;
+
+            heightMap.vertices[i * 3] = xPos ;
+            heightMap.vertices[i * 3 + 1] = yPos;
+            heightMap.vertices[i * 3 + 2] = zPos ;
+
+            float u = (float)x / (float)(width - 1);
+            float v = (float)y / (float)(height - 1);
+            heightMap.uvCoordinates[2 * (y * width + x) + 0] = u;
+            heightMap.uvCoordinates[2 * (y * width + x) + 1] = v;
+
+            if (x < width - 3 && y < height - 2) {
+                // Add indices for two triangles of the quad
+                heightMap.indices[index++] = i;
+                heightMap.indices[index++] = i + 1;
+                heightMap.indices[index++] = i + width;
+
+                heightMap.indices[index++] = i + 1;
+                heightMap.indices[index++] = i + width + 1;
+                heightMap.indices[index++] = i + width;
+            }
+
+            i++;
         }
     }
 

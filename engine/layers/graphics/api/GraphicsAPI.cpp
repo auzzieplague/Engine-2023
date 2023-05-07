@@ -34,4 +34,13 @@ unsigned int GraphicsAPI::getFlag(GraphicsFlag flag) {
     return 0;
 }
 
+unsigned int GraphicsAPI::setupTerrain(HeightMap * heightMap) {
+    Debug::show("missing override for setupTerrain");
+    return 0;
+}
+
+void GraphicsAPI::renderTerrain(Terrain *terrain) {
+    Debug::show("missing override for renderTerrain");
+}
+
 

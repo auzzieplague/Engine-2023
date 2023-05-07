@@ -18,7 +18,11 @@ public:
 
     virtual unsigned int setupMesh(Mesh *);
 
+    virtual unsigned int setupTerrain(HeightMap *heightmap);
+
     virtual void renderMesh(Mesh *);
+
+    virtual void renderTerrain(Terrain *terrain);
 
     virtual void updateRendererConfig(RenderingConfig &);
 
@@ -51,6 +55,8 @@ public:
     virtual void shaderSetView(const glm::mat4 &mat) const {};
 
     virtual void shaderSetProjection(const glm::mat4 &mat) const {};
+
+
 };
 
 

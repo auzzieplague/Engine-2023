@@ -21,7 +21,7 @@ public:
     static std::string stringFromFile(std::string &path);
 
     // loads or retrieves from cache - the specified height map
-    static HeightMap getHeightMap ( const std::string &name, float scale = 1, float minHeight = -1, float maxHeight = 1);
+    static HeightMap getHeightMap ( const std::string &name, float scale = 1, float minHeight = 0, float maxHeight = 1);
 
 };
 

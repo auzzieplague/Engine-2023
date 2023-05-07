@@ -20,7 +20,11 @@ public:
 
     unsigned int setupMesh(Mesh *mesh) override;
 
+    unsigned int setupTerrain(HeightMap *heightmap) override;
+
     void renderMesh(Mesh *) override;
+
+    void renderTerrain(Terrain *terrain) override;
 
     unsigned int getFlag(GraphicsFlag flag) override;
 

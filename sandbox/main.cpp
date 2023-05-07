@@ -10,16 +10,16 @@ void setupScene(Scene *scene) {
     testSphere = Model::createFromGeometry(Geometry::ShapeType::Sphere,
                                            GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}});
     config.shape = config.Sphere;
-    config.type = config.Dynamic;
+    config.type = config.Static;
     testSphere->setCollider(config);
-    testSphere->setPosition({2, 10, -12});
+    testSphere->setPosition({0, 0, 0});
     scene->addComponent(testSphere);
 
     /// todo - first create new Terrain() and then use createFromGeometry or create a better factory.
-    Terrain *terrain1 = new Terrain("test_map");
+    Terrain *terrain1 = new Terrain("test_map_64", 1, 0, 1);
     config = {.shape=config.HeightMap, .type=config.Static};
     terrain1->setCollider(config);
-    terrain1->setPosition({-50, -10, -50});
+    terrain1->setPosition({0, 0, 0});
     scene->addComponent(terrain1);
 
     Debug::show("[->] Use 'R' to generate collision report");

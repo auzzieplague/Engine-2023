@@ -3,7 +3,9 @@
 
 void GraphicsLayer::setApi(GraphicsAPI *api) {
     this->api = api;
+    // let any graphics objects that contain their own setup methods know which API to call.
     Mesh::setApi(api);
+    Terrain::setApi(api);
 }
 
 void GraphicsLayer::onAttach(Scene *scene) {
@@ -31,14 +33,6 @@ void GraphicsLayer::render(Scene *scene) {
     // camera might be m_dirty
     checkDirtyCamera(scene);
 
-    // render terrains and skybox first to cull overdraw
-    for (auto model: scene->terrainsToRender) {
-//        api->shaderSetTransform(model->getModelMatrix());
-
-        // todo terrains have multiple materials
-
-//        api->renderMesh(model->mMesh);
-    }
 
     for (auto model: scene->modelsToRender) {
         api->shaderSetTransform(model->getModelMatrix());
@@ -47,6 +41,14 @@ void GraphicsLayer::render(Scene *scene) {
         api->shaderSetMaterial(model->mMesh->getMaterial());
         api->renderMesh(model->mMesh);
     }
+
+    // render terrains and skybox first to cull overdraw
+    for (auto terrain: scene->terrainsToRender) {
+        api->shaderSetTransform(terrain->getModelMatrix());
+        // todo terrains have multiple materials
+        api->renderTerrain(terrain);
+    }
+
 }
 
 void GraphicsLayer::checkDirtyCamera(Scene *scene) const {

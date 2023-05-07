@@ -35,7 +35,7 @@ void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
 
 // unsigned int GraphicsLayerOpenGL::testMeshVAO;
 void API_OpenGL::renderMesh(Mesh *mesh) {
-    // if the mMesh hasn't been setup yet, we'll need to initialise it (lazy loading)
+    // if the Mesh hasn't been setup yet, we'll need to initialise it (lazy loading)
     if (mesh->getID() == 0) {
         mesh->generateMeshID();
     }
@@ -51,8 +51,25 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
     glDrawElements(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, 0);
 //    glDrawElements(GL_LINES, mMesh->m_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0); // no need to unbind it every time
-
 }
+
+void API_OpenGL::renderTerrain(Terrain *terrain) {
+    // if the Mesh hasn't been setup yet, we'll need to initialise it (lazy loading)
+    if (terrain->getID() == 0) {
+        terrain->generateMeshID();
+    }
+
+    if (!terrain->isReady()) {
+        Debug::show("mMesh not m_ready");
+        return;
+    }
+
+    glBindVertexArray(terrain->getID());
+//    glDrawArrays(GL_POINTS, 0, terrain->getHeightMap().vertices.size());
+    glDrawElements(GL_TRIANGLES, terrain->getIndices().size(), GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0); // no need to unbind it every time
+}
+
 
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -120,7 +137,7 @@ unsigned int API_OpenGL::loadShader(std::string vertex, std::string fragment) {
 
 unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     if (mesh->getIndices().empty()) {
-        Debug::show("mMesh object has no getIndices");
+        Debug::show("mMesh object has no indices");
         return 0;
     }
     unsigned int VBO, VAO, EBO;
@@ -151,7 +168,32 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0);
 
-//    testMeshVAO=VAO;
+    return VAO;
+}
+
+GLuint API_OpenGL::setupTerrain(HeightMap *heightmap) {
+    unsigned int VBO, VAO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glBufferData(GL_ARRAY_BUFFER, heightmap->vertices.size() * sizeof(float), & heightmap->vertices[0],
+                 GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, heightmap->indices.size() * sizeof(unsigned int), &heightmap->indices[0],
+                 GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *) 0);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    glBindVertexArray(0);
+
     return VAO;
 }
 

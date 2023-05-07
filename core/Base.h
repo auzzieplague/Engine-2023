@@ -29,8 +29,16 @@ struct HeightMap {
     float scale;
     float minHeight;
     float maxHeight;
+    std::vector<unsigned int> indices;
+
+    [[nodiscard]] const std::vector<unsigned int> &getIndices() const {
+        return indices;
+    }
+
     std::vector<float> vertexHeights;
+    std::vector<float> vertices;
     std::vector<float> uvCoordinates;
     std::vector<float> normalVectors;
     std::vector<glm::vec4> colorData;
+
 };

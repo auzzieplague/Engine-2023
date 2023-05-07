@@ -45,7 +45,7 @@ void Model::setPosition(glm::vec3 newPosition) {
 }
 
 void Model::setScale(glm::vec3 scale) {
-    Component::setRotation(scale);
+    Component::setScale(scale);
     /* when scaling we will need to rebuild and reset m_vertices of colliders as centers
      * and corners will have changed
      */

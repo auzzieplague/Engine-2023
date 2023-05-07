@@ -127,8 +127,12 @@ physx::PxHeightFieldGeometry PhysicsLayer::createHeightGeometry(Terrain *model) 
     if (cooking->cookHeightField(hfDesc, writeBuffer)) {
         physx::PxDefaultMemoryInputData readBuffer(writeBuffer.getData(), writeBuffer.getSize());
         heightField = mPhysics->createHeightField(readBuffer);
-        hfGeom = physx::PxHeightFieldGeometry(heightField, physx::PxMeshGeometryFlags(), heightMap.scale, heightMap.scale,
-                                            heightMap.scale);
+
+        /// need to ensure widths, heights, scales are matching - here there is no width!!
+        hfGeom = physx::PxHeightFieldGeometry(heightField, physx::PxMeshGeometryFlags(),
+                                              heightMap.scale,
+                                              heightMap.scale,
+                                              heightMap.scale);
     }
 
     cooking->release();
