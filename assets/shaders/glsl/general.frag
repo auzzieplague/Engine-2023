@@ -2,6 +2,7 @@
 
 in vec3 vertexColour;
 out vec4 fragColor;
+in vec3 fragPos; // for lighting calcs
 
 void main()
 {

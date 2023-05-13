@@ -51,7 +51,7 @@ void Model::setScale(glm::vec3 scale) {
      */
     if (this->mCollider) {
         // physx setTransform can replace this - if physics is running
-        this->mCollider->rebuild(mMesh);
+//        this->mCollider->rebuild(mMesh);
     }
 }
 
@@ -106,4 +106,12 @@ void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
         return;
     }
     this->m_transform.applyPxTransform(pxTransform);
+}
+
+void Model::getMeshFromHeightMap(std::string name) {
+    this->mMesh = AssetManager::getMeshFromHeightMap(name,1,1);
+}
+
+physx::PxTransform Model::getPxTransform() {
+    return this->m_transform.getPxTransform();
 }

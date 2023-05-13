@@ -57,6 +57,17 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
     auto vertices = model->mMesh->getVertices();
     auto indices = model->mMesh->getIndices();
 
+    // Get the scale matrix of the model
+//    glm::vec3 scale = model->getScale();
+    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), model->getScale());
+
+    // Scale the vertices of the mesh
+    for (auto& vertex : vertices)
+    {
+        glm::vec4 scaledVertex = scaleMatrix * glm::vec4(vertex, 1.0f);
+        vertex = glm::vec3(scaledVertex);
+    }
+
     // Create the triangle mMesh descriptor
     physx::PxTriangleMeshDesc meshDesc;
     meshDesc.points.count = vertices.size();
@@ -156,9 +167,20 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
     physx::PxTriangleMesh *triangleMesh; // refactor and remove after testing
     physx::PxHeightFieldGeometry hfGeom; // refactor and remove
 
+    /**
+     * Regarding Transform of physx objects,
+     * Our shapes being passed to Physx need scaling up to match the objects transform when rendering.
+     * - we cannot pass scale as a transform variable, only position and rotation, scale must be handled when
+     *   initialising shape / vertices.
+     * - sphere geometry doesnt accept rotational values so we need to pass different transform params based on shape
+     */
+    auto scale = model->getScale();
     switch (config.shape) {
         case config.Box:
-            shape = mPhysics->createShape(physx::PxBoxGeometry(config.size, config.size, config.size), *mMaterial);
+            shape = mPhysics->createShape(physx::PxBoxGeometry(
+                    config.size * scale.x,
+                    config.size * scale.y,
+                    config.size * scale.z), *mMaterial);
             break;
 
         case config.Mesh:
@@ -167,20 +189,41 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
                 shape = mPhysics->createShape(physx::PxTriangleMeshGeometry(triangleMesh), *mMaterial);
             }
             break;
-        default:
+        case config.Sphere:
             shape = mPhysics->createShape(physx::PxSphereGeometry(config.size), *mMaterial);
+            break;
+        default:
+
+            // the problem is scale values are  applied when rendering which arent being captured in physx,
+            // ergo we will need to scale the size accordingly.
+            shape = mPhysics->createShape(physx::PxSphereGeometry(config.size * scale.x), *mMaterial);
             break;
     }
 
-    glm::vec3 p = model->getPosition();
-    physx::PxTransform t(physx::PxVec3(p.x, p.y, p.z));
 
-    switch (config.type) {
-        case config.Dynamic:
-            model->mPhysicsBody = mPhysics->createRigidDynamic(t);
+    /*
+     * Build correct transform parameters - Different shapes have different transform params,
+     * for example sphere geometry cannot have a rotational component.
+     */
+    physx::PxTransform buildTransform;  // different shapes have different transform properties
+    auto position = model->getPosition();
+    switch (config.shape) {
+        case config.Box:
+        case config.Mesh:
+            buildTransform = model->getPxTransform();
             break;
         default:
-            model->mPhysicsBody = mPhysics->createRigidStatic(t);
+            buildTransform = physx::PxTransform(physx::PxVec3(position.x,position.y,position.z));
+            break;
+    }
+
+    // apply transform and instantiate correct physics body type
+    switch (config.type) {
+        case config.Dynamic:
+            model->mPhysicsBody = mPhysics->createRigidDynamic(buildTransform);
+            break;
+        default:
+            model->mPhysicsBody = mPhysics->createRigidStatic(buildTransform);
     }
 
     model->mPhysicsBody->attachShape(*shape);

@@ -161,4 +161,12 @@ void Mesh::restoreMaterial() {
 
 void Mesh::applyPxTransform(const physx::PxTransform &pxTransform) {
     this->m_transform.applyPxTransform(pxTransform);
+}
+
+void Mesh::setVertices(const std::vector<glm::vec3> &mVertices) {
+    m_vertices = mVertices;
+}
+
+void Mesh::setIndices(const std::vector<unsigned int> &mIndices) {
+    m_indices = mIndices;
 };

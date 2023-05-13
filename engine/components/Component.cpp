@@ -28,7 +28,7 @@ glm::mat4 Component::getModelMatrix() {
     return this->m_transform.getModelMatrix();
 }
 
-const Transform &Component::getTransform() const {
+Transform Component::getTransform() const {
     return m_transform;
 }
 

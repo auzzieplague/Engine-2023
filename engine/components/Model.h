@@ -8,9 +8,9 @@
 class Model : public Component {
 
 public:
-    Mesh *mMesh;
-    Collider *mCollider;
-    physx::PxRigidActor* mPhysicsBody;
+    Mesh *mMesh{};
+    Collider *mCollider{};
+    physx::PxRigidActor* mPhysicsBody{};
 
     ObjectType getType() override {
         return ObjectType::OT_Model;
@@ -22,7 +22,7 @@ public:
     virtual void setCollider(ColliderConfig config);
 
     /**
-     * use model->setPostion to correctly update colliders and underlying objects
+     * use model->setPosition to correctly update colliders and underlying objects
      */
     void setPosition(glm::vec3) override;
 
@@ -32,9 +32,14 @@ public:
 
     // physics handlers
     void applyPxTransform(const physx::PxTransform& pxTransform);
+
+    physx::PxTransform getPxTransform();
+
     void applyForce(glm::vec3 force = {}) const;
 
     void applyImpulse(glm::vec3 force) const;
+
+    void getMeshFromHeightMap(std::string);
 };
 
 

@@ -7,7 +7,7 @@
 
 class Component : public Object {
 protected:
-    Transform m_transform;
+    Transform m_transform{};
     bool m_dirty = true;
     bool m_ready = false;
 
@@ -22,7 +22,7 @@ public:
 
     virtual bool makeReady() { return false; };
 
-    [[nodiscard]] const Transform &getTransform() const;
+    [[nodiscard]] Transform getTransform() const;
 
     std::vector<Component *> childComponents;
     // has child component list and then underlying mechanics reference the components in the list

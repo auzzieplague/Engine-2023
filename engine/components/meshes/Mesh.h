@@ -12,6 +12,12 @@ protected:
     Material m_material;
     Material m_material_original;
     std::vector<glm::vec3> m_vertices;
+public:
+    void setVertices(const std::vector<glm::vec3> &mVertices);
+
+    void setIndices(const std::vector<unsigned int> &mIndices);
+
+protected:
     std::vector<glm::vec2> m_uv;
     std::vector<glm::vec3> m_normals;
     std::vector<glm::vec3> m_tangents;

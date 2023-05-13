@@ -10,9 +10,13 @@ struct Material {
 };
 uniform Material material;
 
+
+
 uniform mat4 transform;
 uniform mat4 projection;
 uniform mat4 view;
+
+out vec3 fragPos; //for lighting calcs
 
 out vec3 vertexColour;
 
@@ -23,6 +27,10 @@ void main()
 
     // Transform the vertex position
     vec4 transformedPosition = modelViewProjectionMatrix * vec4(position, 1.0);
+
+
+    // set and pass frag pos for lighting calculations
+    fragPos = vec3(transform * vec4(position, 1.0));
 
     // Output the transformed position and color
     gl_Position = transformedPosition;
