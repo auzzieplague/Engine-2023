@@ -15,7 +15,7 @@ void PhysicsLayer::update(Scene *scene) {
     this->processTerrainSpawnQueue(scene);
 
     physx::PxTransform transform;
-    //update positions of models
+    //updatePosition positions of models
     for (auto model: scene->modelsWithPhysics) {
         transform = model->mPhysicsBody->getGlobalPose();
          model->applyPxTransform(transform);
@@ -174,15 +174,14 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
      *   initialising shape / vertices.
      * - sphere geometry doesnt accept rotational values so we need to pass different transform params based on shape
      */
-    auto scale = model->getScale();
-
+   glm::vec3 size = model->mCollider->getSize();
     switch (config.shape) {
         case config.Box:
             //size will be based on aabb
             shape = mPhysics->createShape(physx::PxBoxGeometry(
-                    config.size ,
-                    config.size ,
-                    config.size ), *mMaterial);
+                    size.x ,
+                    size.y ,
+                    size.z ), *mMaterial);
             break;
 
         case config.Mesh:
@@ -192,14 +191,9 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
             }
             break;
         case config.Sphere:
-            // size will be based on radious
-            shape = mPhysics->createShape(physx::PxSphereGeometry(config.size), *mMaterial);
-            break;
         default:
-
-            // the problem is scale values are  applied when rendering which arent being captured in physx,
-            // ergo we will need to scale the size accordingly.
-            shape = mPhysics->createShape(physx::PxSphereGeometry(config.size * scale.x), *mMaterial);
+            // m_size based on scale and radius of X, no support for ellipses
+            shape = mPhysics->createShape(physx::PxSphereGeometry(size.x), *mMaterial);
             break;
     }
 

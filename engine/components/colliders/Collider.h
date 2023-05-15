@@ -26,7 +26,7 @@ struct ColliderConfig {
 
     MaterialConfig material {};
 
-    float size= 0.5;
+
 };
 
 class Collider {
@@ -35,6 +35,8 @@ private:
     BoundingSphere m_sphere; // m_center is world m_position
     BoundingBox m_aabb;// world coordinate comparison
     std::vector<glm::vec3> m_vertices; // the hull needs to contain all model sub meshes
+    glm::vec3 m_size{}; // used for physx objects
+
 public:
     ColliderConfig m_config;
     explicit Collider(ColliderConfig config) {
@@ -45,14 +47,30 @@ public:
     float getRadius(){
         return this->m_sphere.getRadius();
     }
-    float getSize() {
 
+    glm::vec3 getSize() {
+        return this->m_size;
     }
+
+    void updateSize(glm::vec3 scale = {1,1,1}) {
+        // updatePosition m_size value of collider based on type
+        switch (m_config.shape) {
+            case m_config.Sphere:
+                // radius from collider - scale from transform
+                this->m_size = this->getRadius() * scale;
+                break;
+            case m_config.Box:
+            case m_config.Mesh:
+            default:
+                this->m_size = {1.0f, 1.0f, 1.0f};
+        }
+    }
+
     /**
-     * update the centers of the bounding volumes
+     * updatePosition the centers of the bounding volumes
      * @return
      */
-    virtual void update(glm::vec3 offsetChange) {
+    virtual void updatePosition(glm::vec3 offsetChange) {
         /**
          * shift m_position of m_sphere m_center ... note m_center is not origin of model so we can just set m_position
          * similarly we need to shift the min and max corners of the bounding box

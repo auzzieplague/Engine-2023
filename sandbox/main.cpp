@@ -12,7 +12,7 @@ void setupScene(Scene *scene) {
                                            GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}});
     config.shape = config.Sphere;
     config.type = config.Dynamic;
-    testSphere->setScale({0.1, 0.1, 0.1 });
+    testSphere->setScale({2, 2, 2 });
     testSphere->setPosition({0, 0, -2});
     testSphere->setCollider(config);
     scene->addComponent(testSphere);

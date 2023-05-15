@@ -28,7 +28,7 @@ void GraphicsLayer::initialRenderingSetup(Scene *scene) {
 }
 
 void GraphicsLayer::render(Scene *scene) {
-    // update shaders and set m_api properties
+    // updatePosition shaders and set m_api properties
     api->updateRendererConfig(meshConfig);
     // camera might be m_dirty
     checkDirtyCamera(scene);
@@ -36,7 +36,7 @@ void GraphicsLayer::render(Scene *scene) {
 
     for (auto model: scene->modelsToRender) {
 
-        // need to update model matrix before each frame - if dirty
+        // need to updatePosition model matrix before each frame - if dirty
         api->shaderSetTransform(model->getModelMatrix());
 
         // todo model can have many meshes

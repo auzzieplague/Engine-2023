@@ -39,7 +39,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 void Model::setPosition(glm::vec3 newPosition) {
     // note: it's a prerequisite that you setCollider() before moving things around
     if (this->mCollider) {
-        this->mCollider->update(m_transform.getPosition() - newPosition);
+        this->mCollider->updatePosition(m_transform.getPosition() - newPosition);
     }
     Component::setPosition(newPosition);
 }
@@ -90,31 +90,15 @@ void Model::setCollider(ColliderConfig config)  {
     // note: model would need to be set collidable before adding to scene, to be added to correct <vector>
     mCollider = new Collider(config);
     mCollider->rebuild(mMesh);
-    this->mCollider->update(-m_transform.getPosition());
-
-    // update size value of collider based on type
-
-    switch (config.shape) {
-        case config.Sphere:
-            break;
-        case config.Box:
-            break;
-        case config.Mesh:
-            break;
-
-        default:
-            config.size =1.0f;
-    }
-
-    // get box of meshes
-    // getRadius of meshes
+    this->mCollider->updatePosition(-m_transform.getPosition());
+    this->mCollider->updateSize(this->getScale());
 }
 
 void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
 
     //todo - will replace isColliding function with physX checks, but until then we will need to apply the position updates to the mCollider
     mCollider->rebuild(mMesh);
-    this->mCollider->update(-m_transform.getPosition());
+    this->mCollider->updatePosition(-m_transform.getPosition());
 
     if (!mPhysicsBody) {
         return;

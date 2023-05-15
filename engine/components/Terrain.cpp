@@ -18,7 +18,7 @@ HeightMap Terrain::loadHeightMap(const std::string &name) {
 void Terrain::setCollider(ColliderConfig config)  {
     mCollider = new Collider(config);
     // terrain physics object gets built on spawn and is always static
-    this->mCollider->update(-m_transform.getPosition());
+    this->mCollider->updatePosition(-m_transform.getPosition());
 
 }
 
