@@ -92,6 +92,20 @@ void Model::setCollider(ColliderConfig config)  {
     mCollider->rebuild(mMesh);
     this->mCollider->update(-m_transform.getPosition());
 
+    // update size value of collider based on type
+
+    switch (config.shape) {
+        case config.Sphere:
+            break;
+        case config.Box:
+            break;
+        case config.Mesh:
+            break;
+
+        default:
+            config.size =1.0f;
+    }
+
     // get box of meshes
     // getRadius of meshes
 }

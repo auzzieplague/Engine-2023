@@ -42,7 +42,12 @@ public:
     };
 
     [[nodiscard]] ColliderConfig getConfig() const;
+    float getRadius(){
+        return this->m_sphere.getRadius();
+    }
+    float getSize() {
 
+    }
     /**
      * update the centers of the bounding volumes
      * @return

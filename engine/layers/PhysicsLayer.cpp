@@ -175,12 +175,14 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
      * - sphere geometry doesnt accept rotational values so we need to pass different transform params based on shape
      */
     auto scale = model->getScale();
+
     switch (config.shape) {
         case config.Box:
+            //size will be based on aabb
             shape = mPhysics->createShape(physx::PxBoxGeometry(
-                    config.size * scale.x,
-                    config.size * scale.y,
-                    config.size * scale.z), *mMaterial);
+                    config.size ,
+                    config.size ,
+                    config.size ), *mMaterial);
             break;
 
         case config.Mesh:
@@ -190,6 +192,7 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
             }
             break;
         case config.Sphere:
+            // size will be based on radious
             shape = mPhysics->createShape(physx::PxSphereGeometry(config.size), *mMaterial);
             break;
         default:

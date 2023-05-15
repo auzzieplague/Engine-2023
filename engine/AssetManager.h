@@ -24,7 +24,7 @@ public:
     // loads or retrieves from cache - the specified height map
     static HeightMap getHeightMap ( const std::string &name, float scale = 1, float minHeight = 0, float maxHeight = 1);
 
-    static Mesh *getMeshFromHeightMap(const std::string &filePath, float heightScale, float uvScale);
+    static Mesh *getMeshFromHeightMap(const std::string &filePath, float heightScale, float uvScale, bool flipTriangles = false);
 };
 
 

@@ -118,7 +118,7 @@ HeightMap AssetManager::getHeightMap(
     return heightMap;
 }
 
-Mesh* AssetManager::getMeshFromHeightMap(const std::string& fileName, float heightScale, float uvScale) {
+Mesh* AssetManager::getMeshFromHeightMap(const std::string& fileName, float heightScale, float uvScale, bool flipTriangles) {
 
     auto filename = getRelativePath("heightmaps", fileName + ".png");
     int width, height, channels;
@@ -135,15 +135,20 @@ Mesh* AssetManager::getMeshFromHeightMap(const std::string& fileName, float heig
     std::vector<glm::vec3> normals;
     std::vector<unsigned int> indices;
 
+    // Calculate center offset
+    glm::vec3 offset(-0.5f * static_cast<float>(width) / static_cast<float>(height), 0.0f, -0.5f);
+
     // Generate vertices and UVs
     for (int z = 0; z < height; z++) {
         for (int x = 0; x < width; x++) {
             float xPos = (float) x / (float) width;
             float zPos = (float) z / (float) height;
             float yPos = ((float) data[z * width + x] / 255.0f) * heightScale;
-
-            vertices.push_back(glm::vec3(xPos, yPos, zPos));
-            uv.push_back(glm::vec2(xPos * uvScale, zPos * uvScale));
+            // Center the mesh at (0, 0, 0)
+            glm::vec3 vertexPos(xPos, yPos, zPos);
+            vertexPos += offset;
+            vertices.push_back(vertexPos);
+            uv.emplace_back(xPos * uvScale, zPos * uvScale);
         }
     }
 
@@ -155,13 +160,22 @@ Mesh* AssetManager::getMeshFromHeightMap(const std::string& fileName, float heig
             int bottomLeft = ((z + 1) * width) + x;
             int bottomRight = bottomLeft + 1;
 
-            indices.push_back(topLeft);
-            indices.push_back(bottomLeft);
-            indices.push_back(topRight);
+            if (flipTriangles){
+                indices.push_back(topLeft);
+                indices.push_back(bottomLeft);
+                indices.push_back(topRight);
+                indices.push_back(topRight);
+                indices.push_back(bottomLeft);
+                indices.push_back(bottomRight);
+            } else {
+                indices.push_back(bottomLeft);
+                indices.push_back(topLeft);
+                indices.push_back(topRight);
+                indices.push_back(bottomRight);
+                indices.push_back(bottomLeft);
+                indices.push_back(topRight);
+            }
 
-            indices.push_back(topRight);
-            indices.push_back(bottomLeft);
-            indices.push_back(bottomRight);
         }
     }
 
