@@ -7,7 +7,7 @@
  * @author Michael.Whinfrey
  */
 class BoundingBox {
-private:
+public:
     glm::vec3 m_minCorner;
     glm::vec3 m_maxCorner;
 public:

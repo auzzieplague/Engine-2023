@@ -60,7 +60,10 @@ public:
                 this->m_size = this->getRadius() * scale;
                 break;
             case m_config.Box:
+                this->m_size = (m_aabb.m_maxCorner - m_aabb.m_minCorner)*scale;
+                break;
             case m_config.Mesh:
+                // mesh is preloaded scaled each vertex is scaled before loading into shape
             default:
                 this->m_size = {1.0f, 1.0f, 1.0f};
         }

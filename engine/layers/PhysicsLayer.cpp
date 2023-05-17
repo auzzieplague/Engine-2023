@@ -18,7 +18,7 @@ void PhysicsLayer::update(Scene *scene) {
     //updatePosition positions of models
     for (auto model: scene->modelsWithPhysics) {
         transform = model->mPhysicsBody->getGlobalPose();
-         model->applyPxTransform(transform);
+        model->applyPxTransform(transform);
     }
 
     mScene->simulate(1.0f / 60.0f);
@@ -62,8 +62,7 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
     glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), model->getScale());
 
     // Scale the vertices of the mesh
-    for (auto& vertex : vertices)
-    {
+    for (auto &vertex: vertices) {
         glm::vec4 scaledVertex = scaleMatrix * glm::vec4(vertex, 1.0f);
         vertex = glm::vec3(scaledVertex);
     }
@@ -110,19 +109,20 @@ physx::PxHeightFieldGeometry PhysicsLayer::createHeightGeometry(Terrain *model) 
     // samples inst just vertex heights it's also material 1 and 2 for triangles
     std::vector<physx::PxHeightFieldSample> samples;
     samples.resize(hfDesc.nbRows * hfDesc.nbColumns);
-    int i=0;
-    for (int row =0; row < hfDesc.nbRows ; row++){
-    for (int col =0; col < hfDesc.nbColumns ; col++){
-        samples[i].height = heightMap.vertexHeights[i];
-        samples[i].materialIndex0 = 2;
-        samples[i].materialIndex1 = 3;
-        i++;
-    }}
+    int i = 0;
+    for (int row = 0; row < hfDesc.nbRows; row++) {
+        for (int col = 0; col < hfDesc.nbColumns; col++) {
+            samples[i].height = heightMap.vertexHeights[i];
+            samples[i].materialIndex0 = 2;
+            samples[i].materialIndex1 = 3;
+            i++;
+        }
+    }
 
     hfDesc.samples.data = samples.data();
 
-    if (hfDesc.samples.data== nullptr){
-        std::cout<<"busted";
+    if (hfDesc.samples.data == nullptr) {
+        std::cout << "busted";
     }
 
     hfDesc.samples.stride = sizeof(physx::PxHeightFieldSample);
@@ -174,14 +174,14 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
      *   initialising shape / vertices.
      * - sphere geometry doesnt accept rotational values so we need to pass different transform params based on shape
      */
-   glm::vec3 size = model->mCollider->getSize();
+    glm::vec3 size = model->mCollider->getSize();
     switch (config.shape) {
         case config.Box:
             //size will be based on aabb
             shape = mPhysics->createShape(physx::PxBoxGeometry(
-                    size.x ,
-                    size.y ,
-                    size.z ), *mMaterial);
+                    size.x,
+                    size.y,
+                    size.z), *mMaterial);
             break;
 
         case config.Mesh:
@@ -205,12 +205,12 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
     physx::PxTransform buildTransform;  // different shapes have different transform properties
     auto position = model->getPosition();
     switch (config.shape) {
-        case config.Box:
         case config.Mesh:
             buildTransform = model->getPxTransform();
             break;
+        case config.Box:
         default:
-            buildTransform = physx::PxTransform(physx::PxVec3(position.x,position.y,position.z));
+            buildTransform = physx::PxTransform(physx::PxVec3(position.x, position.y, position.z));
             break;
     }
 
@@ -247,7 +247,7 @@ void PhysicsLayer::processTerrainSpawnQueue(Scene *scene) {
     glm::vec3 p = terrain->getPosition();
     physx::PxTransform t(physx::PxVec3(p.x, p.y, p.z));
 
-    physx::PxHeightFieldGeometry hfGeom=createHeightGeometry(terrain);
+    physx::PxHeightFieldGeometry hfGeom = createHeightGeometry(terrain);
 
     physx::PxShape *shape = mPhysics->createShape(physx::PxHeightFieldGeometry(hfGeom), *mMaterial);
     switch (config.type) {
