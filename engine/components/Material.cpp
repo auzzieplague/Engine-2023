@@ -13,13 +13,6 @@ void Material::setAmbientColor(const glm::vec3 &mAmbientColor) {
     m_ambientColor = mAmbientColor;
 }
 
-const glm::vec3 &Material::getDiffuseColor() const {
-    return m_diffuseColor;
-}
-
-void Material::setDiffuseColor(const glm::vec3 &mDiffuseColor) {
-    m_diffuseColor = mDiffuseColor;
-}
 
 const glm::vec3 &Material::getSpecularColor() const {
     return m_specularColor;

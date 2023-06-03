@@ -91,5 +91,6 @@ public:
 
     void applyPxTransform(const physx::PxTransform &pxTransform);
 
+    void switchIndexOrder(bool clockwise = true);
 };
 

@@ -7,7 +7,6 @@ in vec3 fragNormal;
 
 struct Material {
     vec3 ambientColor;
-    vec3 diffuseColor;
     vec3 specularColor;
     float shininess;
 
@@ -23,17 +22,14 @@ out vec4 fragColor;
 void main()
 {
     vec4 textureColour = texture(material.diffuseTexture, fragUV);
+    vec3 normal = normalize(texture(material.normalTexture, fragUV).rgb * 2.0 - 1.0);
+    vec3 diffuseColor = textureColour.rgb;
+
 
     // Light properties
-    vec3 lightPosition = vec3(0, 2, -1);
+    vec3 lightPosition = vec3(0, 2, -4.5);
     vec3 lightColor = vec3(1,1,1);
     float specularStrength =0.5;
-
-    // Material properties
-    vec3 ambientColor = vec3(0.2, 0.2, 0.2);
-    vec3 diffuseColor = textureColour.rgb;
-    vec3 specularColor = vec3(1.0, 1.0, 1.0);
-    float shininess = 32.0;
 
     // Light attenuation
     float constant = 1.0;
@@ -45,17 +41,17 @@ void main()
     float distance = length(lightPosition - fragPos);
 
     // Calculate the ambient light component
-    vec3 ambient = ambientColor * diffuseColor;
+    vec3 ambient = material.ambientColor * diffuseColor;
 
     // Calculate the diffuse light component
-    float diffuseFactor = max(dot(fragNormal, lightDir), 0.0);
+    float diffuseFactor = max(dot(normal, lightDir), 0.0);
     vec3 diffuse = diffuseColor * lightColor * diffuseFactor;
 
     // Calculate the specular light component
     vec3 viewDir = normalize(camera - fragPos);
-    vec3 reflectDir = reflect(-lightDir, fragNormal);
-    float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
-    vec3 specular = specularColor * lightColor * specularFactor * specularStrength;
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = material.specularColor * lightColor * specularFactor * specularStrength;
 
     // Calculate the attenuation factor
     float attenuation = 1.0 / (constant + linear * distance + quadratic * (distance * distance));
@@ -65,4 +61,5 @@ void main()
 
     // Apply the final color to the fragment
     fragColor = vec4(finalColor, textureColour.a);
+//    fragColor = vec4(normal, textureColour.a);
 }

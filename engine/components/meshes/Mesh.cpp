@@ -187,3 +187,15 @@ void Mesh::setTangents(const std::vector<glm::vec3> &mTangents) {
 void Mesh::setBiTangents(const std::vector<glm::vec3> &mBiTangents) {
     m_biTangents = mBiTangents;
 }
+
+void Mesh::switchIndexOrder( bool clockwise) {
+    if (clockwise) {
+        for (size_t i = 0; i < m_indices.size(); i += 3) {
+            std::swap(m_indices[i], m_indices[i + 1]);
+        }
+    } else {
+        for (size_t i = 0; i < m_indices.size(); i += 3) {
+            std::swap(m_indices[i], m_indices[i + 2]);
+        }
+    }
+}

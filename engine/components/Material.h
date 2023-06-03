@@ -13,7 +13,6 @@ protected:
     // sort models to be rendered by shaderID before render
 
     glm::vec3 m_ambientColor;     // Ambient color of the material
-    glm::vec3 m_diffuseColor;     // Diffuse color of the material
     glm::vec3 m_specularColor;    // Specular color of the material
     float m_shininess;            // Shininess of the material
 
@@ -35,10 +34,9 @@ public:
 
     // Constructor with default values
     Material() {
-        randomAmbientColor();
-        this->m_diffuseColor = {0.8f, 0.8f, 0.8f};
+        this->m_ambientColor = {0.25f, 0.25f, 0.25f};
         this->m_specularColor = {1.0f, 1.0f, 1.0f};
-        this->m_shininess = {32.0f};
+        this->m_shininess = 32.0f;
     };
 
     void setDiffuseTexture(unsigned int ID);

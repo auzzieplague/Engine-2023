@@ -141,3 +141,15 @@ physx::PxTransform Model::getPxTransform() {
 void Model::setMaterial(Material material) {
     this->mMesh->setMaterial(material);
 }
+
+void Model::rotateX(float degrees) {
+    this->m_transform.rotateX(degrees);
+}
+
+void Model::rotateY(float degrees) {
+    this->m_transform.rotateY(degrees);
+}
+
+void Model::rotateZ(float degrees) {
+    this->m_transform.rotateZ(degrees);
+}

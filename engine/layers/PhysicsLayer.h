@@ -27,5 +27,5 @@ public:
 
     physx::PxTriangleMesh* createTriangleMeshForModel(Model * model);
 
-    physx::PxHeightFieldGeometry createHeightGeometry(Terrain *model);
+//    physx::PxHeightFieldGeometry createHeightGeometry(Terrain *model);
 };

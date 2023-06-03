@@ -265,7 +265,7 @@ void API_OpenGL::shaderSetMat3(const std::string &name, const glm::mat3 &mat) co
 
 void API_OpenGL::shaderSetMaterial(Material material) const {
     shaderSetVec3("material.ambientColor", material.getAmbientColor());
-    shaderSetVec3("material.diffuseColor", material.getDiffuseColor());
+//    shaderSetVec3("material.diffuseColor", material.getDiffuseColor());
     shaderSetVec3("material.specularColor", material.getSpecularColor());
     shaderSetFloat("material.shininess", material.getShininess());
 

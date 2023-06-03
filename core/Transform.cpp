@@ -18,21 +18,30 @@ glm::vec3 Transform::getScale() const {
     return m_scale;
 }
 
-// todo = rename, nothing to do with a model at this point
-glm::mat4 Transform::getModelMatrix() const {
+//// todo = rename, nothing to do with a model at this point
+glm::mat4 Transform::getModelMatrix()  {
+    return this->getMatrix();
     // if not dirty can probably return last result rather than recalc
-    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), m_position);
-    glm::mat4 rotationMatrix = glm::mat4_cast(m_rotation);
-    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), m_scale);
-    return translationMatrix * rotationMatrix * scaleMatrix;
+//    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), m_position);
+//    glm::mat4 rotationMatrix = glm::mat4_cast(m_rotation);
+//    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), m_scale);
+//    return translationMatrix * rotationMatrix * scaleMatrix;
 }
 
 void Transform::setPosition(glm::vec3 position) {
     this->m_position = position;
 }
 
-void Transform::setRotation(glm::quat rotation) {
-    this->m_rotation = rotation;
+glm::quat toQuaternion(const glm::vec3& euler) {
+    glm::quat q;
+    q = glm::angleAxis(glm::radians(euler.z), glm::vec3(0, 0, 1));
+    q = glm::angleAxis(glm::radians(euler.y), glm::vec3(0, 1, 0)) * q;
+    q = glm::angleAxis(glm::radians(euler.x), glm::vec3(1, 0, 0)) * q;
+    return q;
+}
+
+void Transform::setRotation(glm::vec3 rotation) {
+    this->m_rotation = toQuaternion(rotation);
 }
 
 void Transform::setScale(glm::vec3 scale) {

@@ -21,11 +21,11 @@ public:
 
     [[nodiscard]] glm::vec3 getScale() const;
 
-    [[nodiscard]] glm::mat4 getModelMatrix() const;
+    [[nodiscard]] glm::mat4 getModelMatrix();
 
     void setPosition(glm::vec3 position);
 
-    void setRotation(glm::quat rotation);
+    void setRotation(glm::vec3 rotation);
 
     void setScale(glm::vec3 scale);
 
@@ -53,7 +53,7 @@ public:
 //        m_scale = scale;
     }
 
-    glm::mat4 getMatrix(){
+    glm::mat4 getMatrix() {
         glm::mat4 matrix(1.0f); // identity matrix - constructor applies value diagonally
         matrix = glm::translate(matrix, m_position);
         matrix = glm::rotate(matrix, glm::radians(m_rotation.x), glm::vec3(1, 0, 0));
@@ -61,6 +61,25 @@ public:
         matrix = glm::rotate(matrix, glm::radians(m_rotation.z), glm::vec3(0, 0, 1));
         matrix = glm::scale(matrix, m_scale);
         return matrix;
+    }
+
+
+    void rotateX(float degrees) {
+        float radians = glm::radians(degrees);
+        glm::quat rotation = glm::angleAxis(radians, glm::vec3(1, 0, 0));
+        m_rotation = rotation * m_rotation;
+    }
+
+    void rotateY(float degrees) {
+        float radians = glm::radians(degrees);
+        glm::quat rotation = glm::angleAxis(radians, glm::vec3(0, 1, 0));
+        m_rotation = rotation * m_rotation;
+    }
+
+    void rotateZ(float degrees) {
+        float radians = glm::radians(degrees);
+        glm::quat rotation = glm::angleAxis(radians, glm::vec3(0, 0, 1));
+        m_rotation = rotation * m_rotation;
     }
 
     physx::PxTransform getPxTransform() const;

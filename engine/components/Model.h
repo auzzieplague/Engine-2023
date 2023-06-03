@@ -29,6 +29,9 @@ public:
     void setScale(glm::vec3) override;
 
     void setRotation(glm::vec3) override;
+    void rotateX(float degrees);
+    void rotateY(float degrees);
+    void rotateZ(float degrees);
 
     // physics handlers
     void applyPxTransform(const physx::PxTransform& pxTransform);

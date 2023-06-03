@@ -223,7 +223,18 @@ void Geometry::buildSphere(GeometryConfig config) {
             float x = sin(phi) * cos(theta);
             float y = cos(phi);
             float z = sin(phi) * sin(theta);
-            m_vertices.push_back(glm::vec3(x, y, z) * config.sphere.radius);
+            glm::vec3 position = glm::vec3(x, y, z) * config.sphere.radius;
+
+            // Calculate UV coordinates
+            float u = static_cast<float>(s) / (config.sphere.sectors - 1);
+            float v = static_cast<float>(r) / (config.sphere.rings - 1);
+
+            // Calculate normals
+            glm::vec3 normal = glm::normalize(position);
+
+            m_vertices.push_back(position);
+            m_UVs.push_back(glm::vec2(u, v));
+            m_normals.push_back(normal);
         }
     }
 
@@ -239,6 +250,37 @@ void Geometry::buildSphere(GeometryConfig config) {
         }
     }
 }
+//
+//void Geometry::buildSphere(GeometryConfig config) {
+//    float const R = 1.0f / (float) (config.sphere.rings - 1);
+//    float const S = 1.0f / (float) (config.sphere.sectors - 1);
+//    float phi, theta;
+//
+//    m_vertices.clear();
+//    m_indices.clear();
+//    for (unsigned int r = 0; r < config.sphere.rings; ++r) {
+//        for (unsigned int s = 0; s < config.sphere.sectors; ++s) {
+//            phi = pi * r * R;
+//            theta = 2.0f * pi * s * S;
+//            float x = sin(phi) * cos(theta);
+//            float y = cos(phi);
+//            float z = sin(phi) * sin(theta);
+//            m_vertices.push_back(glm::vec3(x, y, z) * config.sphere.radius);
+//        }
+//    }
+//
+//    for (unsigned int r = 0; r < config.sphere.rings - 1; ++r) {
+//        for (unsigned int s = 0; s < config.sphere.sectors - 1; ++s) {
+//            unsigned int idx = r * config.sphere.sectors + s;
+//            m_indices.push_back(idx);
+//            m_indices.push_back(idx + 1);
+//            m_indices.push_back((r + 1) * config.sphere.sectors + s + 1);
+//            m_indices.push_back((r + 1) * config.sphere.sectors + s + 1);
+//            m_indices.push_back((r + 1) * config.sphere.sectors + s);
+//            m_indices.push_back(idx);
+//        }
+//    }
+//}
 
 void Geometry::buildCapsule(GeometryConfig config) {
     float segmentAngle = pi2 / config.capsule.segments;

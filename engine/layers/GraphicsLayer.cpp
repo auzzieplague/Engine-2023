@@ -15,7 +15,7 @@ void GraphicsLayer::onAttach(Scene *scene) {
 
 void GraphicsLayer::initialRenderingSetup(Scene *scene) {
     meshConfig.shaderID = api->loadShader("general.vert", "general.frag");
-//    meshConfig.disable(flag(CULL_FACE));
+    meshConfig.enable(flag(CULL_FACE));
 //    meshConfig.enable(flag(ALPHA_BLENDING));
     meshConfig.enable(flag(DEPTH_TEST));
     meshConfig.setClearFlag(flag(CLEAR_COLOUR_BUFFER));

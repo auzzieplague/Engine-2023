@@ -7,19 +7,22 @@ Model *playerObject;
 
 void setupScene(Scene *scene) {
 
-    auto *lightPos = new Model();
-    lightPos = Model::createFromGeometry(Geometry::ShapeType::Cube,GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}});
+    Material light;
+    light.setAmbientColor(glm::vec3(1,1,1));
+    auto lightPos = Model::createFromGeometry(Geometry::ShapeType::Cube,GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}});
     lightPos->setPosition({0, 2, -1});
+    lightPos->setMaterial(light);
     scene->addComponent(lightPos);
 
     playerObject = Model::createFromGeometry(Geometry::ShapeType::Cube,
-//                                           GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}}
-                                           GeometryConfig{.box{.sizeX=2,.sizeY=2,.sizeZ=2}}
+                                           GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}}
+//                                           GeometryConfig{.box{.sizeX=2,.sizeY=2,.sizeZ=2}}
                                            );
 
     Material material;
-    material.setAmbientColor(glm::vec3(0,1,0));
-    material.loadFromAsset("mats_ground", "grass1");
+    material.setAmbientColor(glm::vec3(0.25,0.25,0.25));
+//    material.loadFromAsset("mats_ground", "grass1");
+    material.loadFromAsset("mats_ground", "gray-bricks1");
     // load texture - done
     // add material - done
     // setMaterial on mesh - done
@@ -29,16 +32,17 @@ void setupScene(Scene *scene) {
 
     playerObject->setScale({1, 1, 1 });
     playerObject->setMaterial(material);
-    playerObject->setPosition({0, 0, 0});
+    playerObject->setPosition({0, 0, -5});
+    playerObject->setRotation({3, 5, 2});
 
     ColliderConfig config{};
-//    config.shape = config.Box;
+//    config.shape = config.Sphere;
 //    config.type = config.Static;
 //    playerObject->setCollider(config);
     scene->addComponent(playerObject);
 
 //    return;
-
+    material.loadFromAsset("mats_ground", "grass1");
     auto *terrain1 = new Model();
     terrain1->getMeshFromHeightMap("test_map_64");
     terrain1->setPosition({0, -20, 0});
@@ -48,6 +52,7 @@ void setupScene(Scene *scene) {
     auto test = terrain1->getModelMatrix();
     config = {.shape=config.Mesh, .type=config.Static};
     terrain1->setCollider(config);
+//    terrain1->mMesh->switchIndexOrder();
     scene->addComponent(terrain1);
 
     Debug::show("[->] Use 'R' to generate collision report");

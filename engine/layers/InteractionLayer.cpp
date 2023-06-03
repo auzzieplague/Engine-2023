@@ -62,6 +62,10 @@ void InteractionLayer::handleCharacterKeys(float movement) {
         pos.x -= movement / 2;
         selectedModel->setPosition(pos);
     };
+
+    if (input->isKeyPressed(GLFW_KEY_KP_MULTIPLY)) {
+        selectedModel->rotateX(0.5);
+    }
 }
 
 void InteractionLayer::handleCharacterKeysWithPhysics() {
@@ -86,7 +90,6 @@ void InteractionLayer::handleCharacterKeysWithPhysics() {
     if (input->isKeyPressed(GLFW_KEY_COMMA) | input->isKeyPressed(GLFW_KEY_KP_4)) {
         selectedModel->applyImpulse(glm::vec3{-force, 0, 0});
     }
-
 }
 
 void InteractionLayer::processCameraInput(Scene *scene, float movement) {

@@ -5,6 +5,7 @@ void Component::setPosition(glm::vec3 newPosition) {
 }
 
 void Component::setRotation(glm::vec3 newRotation) {
+    // convert degrees to quaternion
     this->m_transform.setRotation(newRotation);
 }
 
