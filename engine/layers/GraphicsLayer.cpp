@@ -37,7 +37,7 @@ void GraphicsLayer::render(Scene *scene) {
     for (auto model: scene->modelsToRender) {
 
         // need to updatePosition model matrix before each frame - if dirty
-        api->shaderSetTransform(model->getModelMatrix());
+        api->shaderSetTransform(model->getMatrix());
         // todo model can have many meshes
         api->shaderSetMaterial(model->mMesh->getMaterial());
         api->renderMesh(model->mMesh);
@@ -47,7 +47,7 @@ void GraphicsLayer::render(Scene *scene) {
     /// note currently rendering terrain as mesh for initial testing - fix scaling
     // render terrains and skybox first to cull overdraw
 //    for (auto terrain: scene->terrainsToRender) {
-//        api->shaderSetTransform(terrain->getModelMatrix());
+//        api->shaderSetTransform(terrain->getMatrix());
 //        // todo terrains have multiple materials
 //        api->renderTerrain(terrain);
 //    }

@@ -63,8 +63,16 @@ void InteractionLayer::handleCharacterKeys(float movement) {
         selectedModel->setPosition(pos);
     };
 
-    if (input->isKeyPressed(GLFW_KEY_KP_MULTIPLY)) {
-        selectedModel->rotateX(0.5);
+    if (input->isKeyPressed(GLFW_KEY_T)) {
+        selectedModel->rotateX(0.1);
+    }
+
+    if (input->isKeyPressed(GLFW_KEY_Y)) {
+        selectedModel->rotateY(0.1);
+    }
+
+    if (input->isKeyPressed(GLFW_KEY_U)) {
+        selectedModel->rotateZ(0.1);
     }
 }
 

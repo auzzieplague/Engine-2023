@@ -25,8 +25,8 @@ glm::quat Component::getRotation() {
     return this->m_transform.getRotation();
 }
 
-glm::mat4 Component::getModelMatrix() {
-    return this->m_transform.getModelMatrix();
+glm::mat4 Component::getMatrix() {
+    return this->m_transform.getMatrix();
 }
 
 Transform Component::getTransform() const {

@@ -40,7 +40,7 @@ public:
 
     [[nodiscard]] virtual glm::quat getRotation();
 
-    [[nodiscard]] virtual glm::mat4 getModelMatrix();
+    [[nodiscard]] virtual glm::mat4 getMatrix();
 
     ObjectType getType() override {
         return ObjectType::OT_Component;

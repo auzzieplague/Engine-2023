@@ -6,36 +6,20 @@
 Model *playerObject;
 
 void setupScene(Scene *scene) {
+    ColliderConfig config{};
 
-    Material light;
-    light.setAmbientColor(glm::vec3(1,1,1));
-    auto lightPos = Model::createFromGeometry(Geometry::ShapeType::Cube,GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}});
-    lightPos->setPosition({0, 2, -1});
-    lightPos->setMaterial(light);
-    scene->addComponent(lightPos);
-
-    playerObject = Model::createFromGeometry(Geometry::ShapeType::Cube,
-                                           GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}}
-//                                           GeometryConfig{.box{.sizeX=2,.sizeY=2,.sizeZ=2}}
-                                           );
+    playerObject = Model::createFromGeometry(Geometry::ShapeType::Cube);
 
     Material material;
-    material.setAmbientColor(glm::vec3(0.25,0.25,0.25));
-//    material.loadFromAsset("mats_ground", "grass1");
     material.loadFromAsset("mats_ground", "gray-bricks1");
-    // load texture - done
-    // add material - done
-    // setMaterial on mesh - done
-    // push material textures to shader
-    // update shader to use textures
+//    material.loadFromAsset("mats_ground", "gray-bricks1");
 
-
-    playerObject->setScale({1, 1, 1 });
+    playerObject->setScale({5, 5, 5 });
     playerObject->setMaterial(material);
     playerObject->setPosition({0, 0, -5});
-    playerObject->setRotation({3, 5, 2});
+    playerObject->setRotation({30, 0, 0});
 
-    ColliderConfig config{};
+
 //    config.shape = config.Sphere;
 //    config.type = config.Static;
 //    playerObject->setCollider(config);
@@ -49,7 +33,7 @@ void setupScene(Scene *scene) {
     terrain1->setRotation({0, 0, 0});
     terrain1->setScale({100, 10, 100});
     terrain1->setMaterial(material);
-    auto test = terrain1->getModelMatrix();
+    auto test = terrain1->getMatrix();
     config = {.shape=config.Mesh, .type=config.Static};
     terrain1->setCollider(config);
 //    terrain1->mMesh->switchIndexOrder();

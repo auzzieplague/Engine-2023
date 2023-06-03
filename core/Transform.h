@@ -21,7 +21,7 @@ public:
 
     [[nodiscard]] glm::vec3 getScale() const;
 
-    [[nodiscard]] glm::mat4 getModelMatrix();
+    [[nodiscard]] glm::mat4 getMatrix();
 
     void setPosition(glm::vec3 position);
 
@@ -51,16 +51,6 @@ public:
         m_position = position;
         m_rotation = rotation;
 //        m_scale = scale;
-    }
-
-    glm::mat4 getMatrix() {
-        glm::mat4 matrix(1.0f); // identity matrix - constructor applies value diagonally
-        matrix = glm::translate(matrix, m_position);
-        matrix = glm::rotate(matrix, glm::radians(m_rotation.x), glm::vec3(1, 0, 0));
-        matrix = glm::rotate(matrix, glm::radians(m_rotation.y), glm::vec3(0, 1, 0));
-        matrix = glm::rotate(matrix, glm::radians(m_rotation.z), glm::vec3(0, 0, 1));
-        matrix = glm::scale(matrix, m_scale);
-        return matrix;
     }
 
 

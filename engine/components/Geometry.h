@@ -26,8 +26,8 @@ struct GeometryConfig {
 
     struct SphereConfig {
         float radius = 0.5f;
-        unsigned int rings = 5;
-        unsigned int sectors = 5;
+        unsigned int rings = 8;
+        unsigned int sectors = 8;
     };
 
     struct CapsuleConfig {
