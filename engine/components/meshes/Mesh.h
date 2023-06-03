@@ -14,12 +14,17 @@ protected:
     std::vector<glm::vec3> m_vertices;
 public:
     void setVertices(const std::vector<glm::vec3> &mVertices);
-
     void setIndices(const std::vector<unsigned int> &mIndices);
+    void setUVs(std::vector<glm::vec2> &UVs);
+    void setNormals(const std::vector<glm::vec3> &mNormals);
+    void setTangents(const std::vector<glm::vec3> &mTangents);
+    void setBiTangents(const std::vector<glm::vec3> &mBiTangents);
+protected:
+    std::vector<glm::vec2> m_UVs;
+    std::vector<glm::vec3> m_normals;
+
 
 protected:
-    std::vector<glm::vec2> m_uv;
-    std::vector<glm::vec3> m_normals;
     std::vector<glm::vec3> m_tangents;
     std::vector<glm::vec3> m_biTangents;
     std::vector<unsigned int> m_indices;
@@ -60,7 +65,7 @@ public:
 
     [[nodiscard]] const std::vector<glm::vec3> &getVertices() const;
 
-    [[nodiscard]] const std::vector<glm::vec2> &getUv() const;
+    [[nodiscard]] const std::vector<glm::vec2> &getUVs() const;
 
     [[nodiscard]] const std::vector<glm::vec3> &getNormals() const;
 
@@ -70,7 +75,7 @@ public:
 
     [[nodiscard]] const std::vector<unsigned int> &getIndices() const;
 
-    unsigned int getID();
+    unsigned int getID() const;
 
     /**
      * Note: not all meshes will require loading into video ram,

@@ -2,13 +2,13 @@
 
 #include "Geometry.h"
 
-void Geometry::buildQuad() {
+void Geometry::buildQuad(GeometryConfig config) {
     // Define the vertex m_vertices
     std::vector<glm::vec3> vertices = {
-            glm::vec3(-0.5f, 0.5f, 0.0f),
-            glm::vec3(0.5f, 0.5f, 0.0f),
-            glm::vec3(0.5f, -0.5f, 0.0f),
-            glm::vec3(-0.5f, -0.5f, 0.0f)
+            glm::vec3(-config.quad.sizeX, config.quad.sizeY, 0.0f),
+            glm::vec3(config.quad.sizeX, config.quad.sizeY, 0.0f),
+            glm::vec3(config.quad.sizeX, -config.quad.sizeY, 0.0f),
+            glm::vec3(-config.quad.sizeX, -config.quad.sizeY, 0.0f)
     };
 
     // Define the m_indices of the two triangles that make m_up the quad
@@ -17,9 +17,27 @@ void Geometry::buildQuad() {
             2, 3, 0
     };
 
+    // Define the UVs
+    std::vector<glm::vec2> uvs = {
+            glm::vec2(0.0f, 1.0f),
+            glm::vec2(1.0f, 1.0f),
+            glm::vec2(1.0f, 0.0f),
+            glm::vec2(0.0f, 0.0f)
+    };
+
+    // Define the normals
+    std::vector<glm::vec3> normals = {
+            glm::vec3(0.0f, 0.0f, 1.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f)
+    };
+
     // Assign the vertex m_vertices and m_indices to the mMesh
     this->m_vertices = vertices;
     this->m_indices = indices;
+    this->m_normals = normals;
+    this->m_UVs = uvs;
 }
 
 void Geometry::buildCube(GeometryConfig config) {
@@ -82,9 +100,77 @@ void Geometry::buildBox(GeometryConfig config) {
             22, 23, 20
     };
 
+    std::vector<glm::vec2> uvs = {
+            // Front face
+            glm::vec2(0.0f, 0.0f),
+            glm::vec2(1.0f, 0.0f),
+            glm::vec2(1.0f, 1.0f),
+            glm::vec2(0.0f, 1.0f),
+            // Back face
+            glm::vec2(0.0f, 0.0f),
+            glm::vec2(1.0f, 0.0f),
+            glm::vec2(1.0f, 1.0f),
+            glm::vec2(0.0f, 1.0f),
+            // Top face
+            glm::vec2(0.0f, 1.0f),
+            glm::vec2(1.0f, 1.0f),
+            glm::vec2(1.0f, 0.0f),
+            glm::vec2(0.0f, 0.0f),
+            // Bottom face
+            glm::vec2(0.0f, 0.0f),
+            glm::vec2(1.0f, 0.0f),
+            glm::vec2(1.0f, 1.0f),
+            glm::vec2(0.0f, 1.0f),
+            // Right face
+            glm::vec2(0.0f, 0.0f),
+            glm::vec2(1.0f, 0.0f),
+            glm::vec2(1.0f, 1.0f),
+            glm::vec2(0.0f, 1.0f),
+            // Left face
+            glm::vec2(0.0f, 0.0f),
+            glm::vec2(1.0f, 0.0f),
+            glm::vec2(1.0f, 1.0f),
+            glm::vec2(0.0f, 1.0f),
+    };
+
+    std::vector<glm::vec3> normals = {
+            // Front face
+            glm::vec3(0.0f, 0.0f, -1.0f),
+            glm::vec3(0.0f, 0.0f, -1.0f),
+            glm::vec3(0.0f, 0.0f, -1.0f),
+            glm::vec3(0.0f, 0.0f, -1.0f),
+            // Back face
+            glm::vec3(0.0f, 0.0f, 1.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f),
+            glm::vec3(0.0f, 0.0f, 1.0f),
+            // Top face
+            glm::vec3(0.0f, 1.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f),
+            glm::vec3(0.0f, 1.0f, 0.0f),
+            // Bottom face
+            glm::vec3(0.0f, -1.0f, 0.0f),
+            glm::vec3(0.0f, -1.0f, 0.0f),
+            glm::vec3(0.0f, -1.0f, 0.0f),
+            glm::vec3(0.0f, -1.0f, 0.0f),
+            // Right face
+            glm::vec3(1.0f, 0.0f, 0.0f),
+            glm::vec3(1.0f, 0.0f, 0.0f),
+            glm::vec3(1.0f, 0.0f, 0.0f),
+            glm::vec3(1.0f, 0.0f, 0.0f),
+            // Left face
+            glm::vec3(-1.0f, 0.0f, 0.0f),
+            glm::vec3(-1.0f, 0.0f, 0.0f),
+            glm::vec3(-1.0f, 0.0f, 0.0f),
+            glm::vec3(-1.0f, 0.0f, 0.0f),
+    };
+
     // Assign the vertex m_vertices and m_indices to the mMesh
     this->m_vertices = vertices;
     this->m_indices = indices;
+    this->m_UVs = uvs;
+    this->m_normals = normals;
 }
 
 void Geometry::buildDome(GeometryConfig config) {

@@ -14,6 +14,8 @@ public:
 
     virtual unsigned int loadShader(std::string, std::string);
 
+    virtual unsigned int loadTexture (std::string filename);
+
     virtual unsigned int compileShader(std::string &source, unsigned int type);
 
     virtual unsigned int setupMesh(Mesh *);
@@ -56,7 +58,7 @@ public:
 
     virtual void shaderSetProjection(const glm::mat4 &mat) const {};
 
-
+    virtual void  shaderSetCamera(Camera *pCamera){};
 };
 
 

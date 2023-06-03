@@ -15,7 +15,7 @@ class AssetManager {
 private:
     static std::map<std::string, std::string> category_path;
 public:
-    static std::string getPath(std::string category);
+    static std::string getPath(const std::string& category);
 
     static std::string getRelativePath(std::string category, std::string assetName);
 

@@ -4,6 +4,11 @@
 
 struct GeometryConfig {
 
+    struct QuadConfig {
+        float sizeX = 8.0f;
+        float sizeY = 8.0f;
+    };
+
     struct BoxConfig {
         float sizeX = 0.5f;
         float sizeY = 0.5f;
@@ -61,6 +66,7 @@ struct GeometryConfig {
     TorusConfig torus;
     ConeConfig cone;
     TerrainConfig terrain;
+    QuadConfig quad;
 };
 
 class Geometry : public Mesh {
@@ -85,7 +91,7 @@ public:
 
     Geometry() = default;;
 
-    void buildQuad();
+    void buildQuad(GeometryConfig config = {});
 
     void buildBox(GeometryConfig config = {});
 

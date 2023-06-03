@@ -2,7 +2,7 @@
 #include "API_OpenGL.h"
 #include <glm/gtc/type_ptr.hpp>
 
-//unsigned int API_OpenGL::shaderProgram;
+// unsigned int API_OpenGL::shaderProgram;
 
 void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
     currentRenderingConfig = &config;
@@ -144,28 +144,36 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-    // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+
     glBindVertexArray(VAO);
+
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-    glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size() * sizeof(glm::vec3), &mesh->getVertices()[0],
-                 GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size() * sizeof(unsigned int), &mesh->getIndices()[0],
-                 GL_STATIC_DRAW);
-
+    glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size() * sizeof(glm::vec3), &mesh->getVertices()[0], GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void *) 0);
     glEnableVertexAttribArray(0);
 
-    // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    // remember: do NOT unbind the EBO while a VAO is active as the bound element buffer object IS stored in the VAO; keep the EBO bound.
-    //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+// Bind and set UVs
+    unsigned int uvVBO;
+    glGenBuffers(1, &uvVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, uvVBO);
+    glBufferData(GL_ARRAY_BUFFER, mesh->getUVs().size() * sizeof(glm::vec2), &mesh->getUVs()[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void *) 0);
+    glEnableVertexAttribArray(1);
 
-    // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-    // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+    // Bind and set Normals
+    unsigned int normalVBO;
+    glGenBuffers(1, &normalVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, normalVBO);
+    glBufferData(GL_ARRAY_BUFFER, mesh->getNormals().size() * sizeof(glm::vec3), &mesh->getNormals()[0], GL_STATIC_DRAW);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void *) 0);
+    glEnableVertexAttribArray(2);
+
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size() * sizeof(unsigned int), &mesh->getIndices()[0], GL_STATIC_DRAW);
+
     glBindVertexArray(0);
 
     return VAO;
@@ -260,6 +268,17 @@ void API_OpenGL::shaderSetMaterial(Material material) const {
     shaderSetVec3("material.diffuseColor", material.getDiffuseColor());
     shaderSetVec3("material.specularColor", material.getSpecularColor());
     shaderSetFloat("material.shininess", material.getShininess());
+
+    // here we need to activate the textures
+    unsigned int textureID = material.getDiffuseTexture();
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    shaderSetInt("material.diffuseTexture", 0);
+
+    textureID = material.getNormalTexture();
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    shaderSetInt("material.normalTexture", 1);
 }
 
 void API_OpenGL::shaderSetTransform(const glm::mat4 &mat) const {
@@ -273,5 +292,47 @@ void API_OpenGL::shaderSetView(const glm::mat4 &mat) const {
 void API_OpenGL::shaderSetProjection(const glm::mat4 &mat) const {
     shaderSetMat4("projection", mat);
 }
+
+void API_OpenGL::shaderSetCamera(Camera *camera) {
+    shaderSetVec3("camera", camera->getPosition());
+}
+
+
+unsigned int API_OpenGL::loadTexture(std::string fileName) {
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+
+    int width, height, numChannels;
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char* data = stbi_load(fileName.c_str(), &width, &height, &numChannels, 0);
+    if (data) {
+        GLenum format;
+        if (numChannels == 1)
+            format = GL_RED;
+        else if (numChannels == 3)
+            format = GL_RGB;
+        else if (numChannels == 4)
+            format = GL_RGBA;
+
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(data);
+    }
+    else {
+        // Failed to load texture
+        stbi_image_free(data);
+        return 0;
+    }
+
+    return textureID;
+}
+
 
 

@@ -40,6 +40,8 @@ public:
     void applyImpulse(glm::vec3 force) const;
 
     void getMeshFromHeightMap(std::string);
+
+    void setMaterial(Material material);
 };
 
 

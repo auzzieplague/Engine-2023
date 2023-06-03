@@ -14,6 +14,8 @@ public:
 
     unsigned int loadShader(std::string, std::string) override;
 
+    unsigned int loadTexture (std::string) override;
+
     unsigned int compileShader(std::string &source, unsigned int type) override;
 
     void updateRendererConfig(RenderingConfig &) override;
@@ -53,6 +55,8 @@ public:
     void shaderSetView(const glm::mat4 &mat) const override;
 
     void shaderSetProjection(const glm::mat4 &mat) const override;
+
+    void  shaderSetCamera(Camera *pCamera)  override;
 
 };
 

@@ -3,48 +3,48 @@
 #include "../engine/layers/CollisionLayer.h"
 #include "../engine/layers/PhysicsLayer.h"
 
-Model *testSphere;
+Model *playerObject;
 
 void setupScene(Scene *scene) {
-    ColliderConfig config{};
 
-    testSphere = Model::createFromGeometry(Geometry::ShapeType::Cube,
+    auto *lightPos = new Model();
+    lightPos = Model::createFromGeometry(Geometry::ShapeType::Cube,GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}});
+    lightPos->setPosition({0, 2, -1});
+    scene->addComponent(lightPos);
+
+    playerObject = Model::createFromGeometry(Geometry::ShapeType::Cube,
 //                                           GeometryConfig{.sphere{.radius=0.5, .rings=10, .sectors=10}}
-                                           GeometryConfig{.box{.sizeX=1,.sizeY=2,.sizeZ=3}}
+                                           GeometryConfig{.box{.sizeX=2,.sizeY=2,.sizeZ=2}}
                                            );
-    config.shape = config.Box;
-    config.type = config.Dynamic;
-    testSphere->setScale({1, 2, 3 });
-    testSphere->setPosition({0, 0, -20});
-    testSphere->setCollider(config);
-    scene->addComponent(testSphere);
+
+    Material material;
+    material.setAmbientColor(glm::vec3(0,1,0));
+    material.loadFromAsset("mats_ground", "grass1");
+    // load texture - done
+    // add material - done
+    // setMaterial on mesh - done
+    // push material textures to shader
+    // update shader to use textures
 
 
-    config.shape = config.Sphere;
-    config.type = config.Dynamic;
-    std::vector<glm::vec3> positions = {
-            {-4, 0, -4},
-            {4, 0, -4},
-            {-4, 0, 4},
-            {4, 0, 4},
-    };
+    playerObject->setScale({1, 1, 1 });
+    playerObject->setMaterial(material);
+    playerObject->setPosition({0, 0, 0});
 
-    for (auto position : positions) {
-        auto *model = Model::createFromGeometry(Geometry::ShapeType::Sphere,
-                                  GeometryConfig{.sphere{.radius=0.1, .rings=10, .sectors=10}});
-        model->setPosition(position);
-        model->setCollider(config);
-        scene->addComponent(model);
-    }
+    ColliderConfig config{};
+//    config.shape = config.Box;
+//    config.type = config.Static;
+//    playerObject->setCollider(config);
+    scene->addComponent(playerObject);
 
+//    return;
 
     auto *terrain1 = new Model();
     terrain1->getMeshFromHeightMap("test_map_64");
-//            Model::createFromGeometry(Geometry::ShapeType::Terrain,
-//                                               GeometryConfig{.terrain{.minHeight =0, .maxHeight = 0.1}});
     terrain1->setPosition({0, -20, 0});
     terrain1->setRotation({0, 0, 0});
     terrain1->setScale({100, 10, 100});
+    terrain1->setMaterial(material);
     auto test = terrain1->getModelMatrix();
     config = {.shape=config.Mesh, .type=config.Static};
     terrain1->setCollider(config);
@@ -80,8 +80,15 @@ int main() {
     // setup interaction layer and scene together to inject a test model
     auto *interactionLayer = new InteractionLayer();
     engine->attachLayer(interactionLayer);
-    setupScene(engine->currentScene);
-    interactionLayer->selectedModel = testSphere;
+
+    try {
+        setupScene(engine->currentScene);
+    } catch(const std::exception& e) {
+        Debug::show("[!] Scene Setup Error");
+        Debug::show(e.what());
+    }
+
+    interactionLayer->selectedModel = playerObject;
 
 
     /// kick-start the main loop

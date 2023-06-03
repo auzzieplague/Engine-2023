@@ -43,4 +43,9 @@ void GraphicsAPI::renderTerrain(Terrain *terrain) {
     Debug::show("missing override for renderTerrain");
 }
 
+unsigned int GraphicsAPI::loadTexture(std::string filename) {
+    Debug::show("missing override for loadTexture");
+    return 0;
+}
+
 

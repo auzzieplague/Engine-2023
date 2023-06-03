@@ -20,7 +20,7 @@ bool Mesh::isReady() {
     return m_ready;
 }
 
-unsigned int Mesh::generateMeshID() {
+unsigned int Mesh:: generateMeshID() {
     this->m_gID = m_api->setupMesh(this);
     if (this->m_gID == 0) {
         Debug::show("Failed to generate meshID for " + getName());
@@ -30,6 +30,7 @@ unsigned int Mesh::generateMeshID() {
 
 void Mesh::calculateNormals() {
     {
+        m_normals.clear();
         // Initialize the normal vector for each vertex to (0, 0, 0)
         std::vector<glm::vec3> vertexNormals(m_vertices.size(), glm::vec3(0.0f));
 
@@ -75,8 +76,8 @@ void Mesh::calculateTangents() {
         // Calculate the edge vectors and UV differentials for the face
         glm::vec3 edge1 = m_vertices[i2] - m_vertices[i1];
         glm::vec3 edge2 = m_vertices[i3] - m_vertices[i1];
-        glm::vec2 deltaUV1 = m_uv[i2] - m_uv[i1];
-        glm::vec2 deltaUV2 = m_uv[i3] - m_uv[i1];
+        glm::vec2 deltaUV1 = m_UVs[i2] - m_UVs[i1];
+        glm::vec2 deltaUV2 = m_UVs[i3] - m_UVs[i1];
 
         // Calculate the determinant of the UV matrix
         float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
@@ -124,15 +125,15 @@ Material &Mesh::getMaterial() {
 }
 
 void Mesh::setMaterial(const Material &material) {
-    Mesh::m_material = Mesh::m_material_original = material;
+    m_material = Mesh::m_material_original = material;
 }
 
 const std::vector<glm::vec3> &Mesh::getVertices() const {
     return m_vertices;
 }
 
-const std::vector<glm::vec2> &Mesh::getUv() const {
-    return m_uv;
+const std::vector<glm::vec2> &Mesh::getUVs() const {
+    return m_UVs;
 }
 
 const std::vector<glm::vec3> &Mesh::getNormals() const {
@@ -151,7 +152,7 @@ const std::vector<unsigned int> &Mesh::getIndices() const {
     return m_indices;
 }
 
-unsigned int Mesh::getID() {
+unsigned int Mesh::getID() const {
     return this->m_gID;
 }
 
@@ -169,4 +170,20 @@ void Mesh::setVertices(const std::vector<glm::vec3> &mVertices) {
 
 void Mesh::setIndices(const std::vector<unsigned int> &mIndices) {
     m_indices = mIndices;
-};
+}
+
+void Mesh::setUVs(std::vector<glm::vec2> &UVs) {
+    m_UVs= UVs;
+}
+
+void Mesh::setNormals(const std::vector<glm::vec3> &mNormals) {
+    m_normals = mNormals;
+}
+
+void Mesh::setTangents(const std::vector<glm::vec3> &mTangents) {
+    m_tangents = mTangents;
+}
+
+void Mesh::setBiTangents(const std::vector<glm::vec3> &mBiTangents) {
+    m_biTangents = mBiTangents;
+}

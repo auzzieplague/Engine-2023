@@ -52,4 +52,6 @@ public:
     void moveDown(float deltaTime);
 
     void rotate(float xoffset, float yoffset, bool constrainPitch = true);
+
+    glm::vec3 getPosition ();
 };

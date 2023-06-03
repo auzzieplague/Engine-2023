@@ -4,14 +4,14 @@
 #include "AssetManager.h"
 #include "components/meshes/Mesh.h"
 
-#define DEVMODE
+#define DEV_MODE
 
-#ifdef DEVMODE
+#ifdef DEV_MODE
 std::map<std::string, std::string> AssetManager::category_path = {
         {"shaders_opengl", "shaders/glsl"},
-        {"heightmaps",     "heightmaps"},
-        {"trees",          "models/landscape/foliage"},
-        {"rocks",          "models/landscape/rocks"},
+        {"heightmap",      "heightmaps"},
+        {"material",       "materials"},
+        {"mats_ground",          "materials/ground"},
 };
 #else
 /// should be pulling from packages in live mode anyway
@@ -22,7 +22,7 @@ std::map<std::string, std::string> AssetManager::category_path = {
 };
 #endif
 
-std::string AssetManager::getPath(std::string category) {
+std::string AssetManager::getPath(const std::string& category) {
     auto assetPathPrefix = "../assets/";
     auto it = category_path.find(category);
     // if there's no match for category then reference in code is an error
@@ -51,7 +51,7 @@ HeightMap AssetManager::getHeightMap(
         float scale, float minHeight,
         float maxHeight) {
 
-    auto filename = getRelativePath("heightmaps", name + ".png");
+    auto filename = getRelativePath("heightmap", name + ".png");
     HeightMap heightMap;
     int width, height, numComponents;
     unsigned char *imageData = stbi_load(filename.c_str(), &width, &height, &numComponents, 0);
@@ -73,27 +73,27 @@ HeightMap AssetManager::getHeightMap(
     heightMap.uvCoordinates.resize(2 * size);
     heightMap.vertices.resize(3 * size);
 
-    int i = 0,index = 0;
-    for (int y = 0; y < height-1; y++) {
-        for (int x = 0; x < width-1; x++) {
+    int i = 0, index = 0;
+    for (int y = 0; y < height - 1; y++) {
+        for (int x = 0; x < width - 1; x++) {
             // Calculate height value from image data
 
             float heightValue =
                     minHeight + (maxHeight - minHeight) * imageData[(y * width + x) * numComponents] / 255.0f;
 
-            heightMap.vertexHeights[i] = heightValue*scale;
+            heightMap.vertexHeights[i] = heightValue * scale;
 
             // Calculate vertex position based on (x,y,height) coordinates
-            float xPos = (float)x / (width - 1) ;
-            float yPos = heightValue ;
-            float zPos = (float)y / (height - 1) ;
+            float xPos = (float) x / (width - 1);
+            float yPos = heightValue;
+            float zPos = (float) y / (height - 1);
 
-            heightMap.vertices[i * 3] = xPos ;
+            heightMap.vertices[i * 3] = xPos;
             heightMap.vertices[i * 3 + 1] = yPos;
-            heightMap.vertices[i * 3 + 2] = zPos ;
+            heightMap.vertices[i * 3 + 2] = zPos;
 
-            float u = (float)x / (float)(width - 1);
-            float v = (float)y / (float)(height - 1);
+            float u = (float) x / (float) (width - 1);
+            float v = (float) y / (float) (height - 1);
             heightMap.uvCoordinates[2 * (y * width + x) + 0] = u;
             heightMap.uvCoordinates[2 * (y * width + x) + 1] = v;
 
@@ -118,9 +118,10 @@ HeightMap AssetManager::getHeightMap(
     return heightMap;
 }
 
-Mesh* AssetManager::getMeshFromHeightMap(const std::string& fileName, float heightScale, float uvScale, bool flipTriangles) {
+Mesh *
+AssetManager::getMeshFromHeightMap(const std::string &fileName, float heightScale, float uvScale, bool flipTriangles) {
 
-    auto filename = getRelativePath("heightmaps", fileName + ".png");
+    auto filename = getRelativePath("heightmap", fileName + ".png");
     int width, height, channels;
     stbi_set_flip_vertically_on_load(true);
     unsigned char *data = stbi_load(filename.c_str(), &width, &height, &channels, 1);
@@ -160,7 +161,7 @@ Mesh* AssetManager::getMeshFromHeightMap(const std::string& fileName, float heig
             int bottomLeft = ((z + 1) * width) + x;
             int bottomRight = bottomLeft + 1;
 
-            if (flipTriangles){
+            if (flipTriangles) {
                 indices.push_back(topLeft);
                 indices.push_back(bottomLeft);
                 indices.push_back(topRight);
@@ -241,8 +242,8 @@ Mesh* AssetManager::getMeshFromHeightMap(const std::string& fileName, float heig
     Mesh *mesh = new Mesh();
     mesh->setVertices(vertices);
     mesh->setIndices(indices);
-//    mesh->setUVs(uv);
-//    mesh->setNormals(normals);
+    mesh->setUVs(uv);
+    mesh->setNormals(normals);
 //    mesh->setTangents(m_tangents);
 //    mesh->setBiTangents(m_biTangents);
     return mesh;

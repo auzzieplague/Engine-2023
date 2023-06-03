@@ -91,6 +91,7 @@ Engine *Engine::getInstance() {
 
 void Engine::setGraphicsApi(GraphicsAPI *api) {
     Engine::graphicsAPI = api;
+    Material::setGraphicsAPI(api);
 }
 
 void Engine::initFrameTimer() {

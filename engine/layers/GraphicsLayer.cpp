@@ -15,7 +15,7 @@ void GraphicsLayer::onAttach(Scene *scene) {
 
 void GraphicsLayer::initialRenderingSetup(Scene *scene) {
     meshConfig.shaderID = api->loadShader("general.vert", "general.frag");
-    meshConfig.disable(flag(CULL_FACE));
+//    meshConfig.disable(flag(CULL_FACE));
 //    meshConfig.enable(flag(ALPHA_BLENDING));
     meshConfig.enable(flag(DEPTH_TEST));
     meshConfig.setClearFlag(flag(CLEAR_COLOUR_BUFFER));
@@ -33,12 +33,11 @@ void GraphicsLayer::render(Scene *scene) {
     // camera might be m_dirty
     checkDirtyCamera(scene);
 
-
+    api->shaderSetCamera(scene->currentCamera);
     for (auto model: scene->modelsToRender) {
 
         // need to updatePosition model matrix before each frame - if dirty
         api->shaderSetTransform(model->getModelMatrix());
-
         // todo model can have many meshes
         api->shaderSetMaterial(model->mMesh->getMaterial());
         api->renderMesh(model->mMesh);
