@@ -34,7 +34,7 @@ void GraphicsLayer::render(Scene *scene) {
     checkDirtyCamera(scene);
 
     api->shaderSetCamera(scene->currentCamera);
-    for (auto model: scene->modelsToRender) {
+    for (auto model: scene->modelsInScene) {
 
         // need to updatePosition model matrix before each frame - if dirty
         api->shaderSetTransform(model->getMatrix());

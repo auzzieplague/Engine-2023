@@ -125,6 +125,14 @@ Material &Mesh::getMaterial() {
 }
 
 void Mesh::setMaterial(const Material &material) {
+    // here we need to make a decision about which level of shader to use
+    /*
+     * Base: simple geometry shader, uses ambient colour to render item, no textures
+     * Diffuse: renders diffuse texture with lighting
+     * Normal: renders diffuse and normal with lighting
+     * PBR: full texture set
+     */
+
     m_material = Mesh::m_material_original = material;
 }
 

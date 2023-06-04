@@ -31,6 +31,12 @@ protected:
     uint m_texture_normal = 0;
     // float transparency;
 public:
+    enum SHADER_TYPE {
+        SHADER_BASE,
+        SHADER_DIFFUSE,
+        SHADER_NORMAL,
+        SHADER_PBR,
+    };
 
     // Constructor with default values
     Material() {
@@ -44,6 +50,7 @@ public:
     unsigned int getDiffuseTexture();
     unsigned int getNormalTexture();
 
+    SHADER_TYPE getShaderType ();
 
     const glm::vec3 &getDiffuseColor() const;
 
@@ -57,15 +64,7 @@ public:
 
     void setShininess(float mShininess);
 
-    void randomAmbientColor() {
-        // Set m_up the random number generator
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<float> dis(0.0f, 1.0f);
-
-        // Generate a random ambient color
-        m_ambientColor = glm::vec3(dis(gen), dis(gen), dis(gen));
-    }
+    void randomAmbientColor();
 
     const glm::vec3 &getAmbientColor() const;
 

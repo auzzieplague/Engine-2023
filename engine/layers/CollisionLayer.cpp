@@ -18,7 +18,7 @@ void CollisionLayer::update(Scene *scene) {
 
     int collider1 = 0;
     int collider2 = 1;
-    uint max = scene->modelsToRender.size() - 1;
+    uint max = scene->modelsInScene.size() - 1;
     float colourOffset = 0.15f;
     /*
      * Note: time complexity (n^2 - n) / 2 for these comparisons
@@ -36,20 +36,20 @@ void CollisionLayer::update(Scene *scene) {
 
         while (collider2 <= max) {
             // check if models are collidable - will be its own array
-            if (scene->modelsToRender[collider1]->mCollider && scene->modelsToRender[collider2]->mCollider) {
+            if (scene->modelsInScene[collider1]->mCollider && scene->modelsInScene[collider2]->mCollider) {
 
 
-                if (scene->modelsToRender[collider1]->mCollider->isColliding(
-                        scene->modelsToRender[collider2]->mCollider)) {
+                if (scene->modelsInScene[collider1]->mCollider->isColliding(
+                        scene->modelsInScene[collider2]->mCollider)) {
 
                     if (Debug::getIteration() == 1) {
                         std::cout  << " [" << collider1 << "-X-" << collider2 << "] ";
                     }
 
-                    scene->modelsToRender[collider1]->mMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
+                    scene->modelsInScene[collider1]->mMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
                     colourOffset += 0.1f;
 
-                    scene->modelsToRender[collider2]->mMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
+                    scene->modelsInScene[collider2]->mMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
                     colourOffset += 0.1f;
 
                     alreadyColliding[collider1] = true;
@@ -60,10 +60,10 @@ void CollisionLayer::update(Scene *scene) {
                         std::cout << collider1 << "<->" << collider2 << "  ";
                     }
                     if (!alreadyColliding[collider1]) {
-                        scene->modelsToRender[collider1]->mMesh->restoreMaterial();
+                        scene->modelsInScene[collider1]->mMesh->restoreMaterial();
                     }
                     if (!alreadyColliding[collider2]) {
-                        scene->modelsToRender[collider2]->mMesh->restoreMaterial();
+                        scene->modelsInScene[collider2]->mMesh->restoreMaterial();
                     }
                 }
             }

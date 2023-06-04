@@ -14,14 +14,11 @@ public:
 
     std::vector<Component *> componentList;
 
-    std::deque<Model *> modelsToRenderQueue; //todo spawn queue for threading same as onion core
+    std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
+    std::vector<Model *> modelsInScene;
+    std::vector<Model *> meshesToRender;
 
-    std::vector<Model *> modelsToRender;
-    std::vector<Terrain *> terrainsToRender;
-
-    std::deque<Terrain *> terrainsWithPhysicsQueue;
     std::deque<Model *> modelsWithPhysicsQueue;
-
     std::vector<Model *> modelsWithPhysics;
 
     Scene();
@@ -32,8 +29,6 @@ public:
     Window *currentWindow{};
 
     void addModel(Model *model);
-
-    void addTerrain(Terrain *terrain);
 
 };
 

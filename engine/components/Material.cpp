@@ -57,3 +57,22 @@ unsigned int Material::getDiffuseTexture() {
 unsigned int Material::getNormalTexture() {
     return m_texture_normal;
 }
+
+void Material::randomAmbientColor() {
+    // Set m_up the random number generator
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dis(0.0f, 1.0f);
+
+    // Generate a random ambient color
+    m_ambientColor = glm::vec3(dis(gen), dis(gen), dis(gen));
+}
+
+Material::SHADER_TYPE Material::getShaderType() {
+    if (!m_texture_diffuse) return Material::SHADER_BASE;
+    if (!m_texture_normal) return Material::SHADER_DIFFUSE;
+
+    //todo: more PBR checks and more types
+
+    return Material::SHADER_NORMAL;
+}

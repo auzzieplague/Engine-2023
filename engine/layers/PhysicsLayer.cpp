@@ -179,43 +179,6 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
 
 }
 
-/**
- * @deprecated 3/06/23 using mesh as terrain, performance is similar
- * @param scene
- */
-void PhysicsLayer::processTerrainSpawnQueue(Scene *scene) {
-//
-//    if (scene->terrainsWithPhysicsQueue.size() == 0) return;
-//    // pull off the next item this frame
-//    auto terrain = scene->terrainsWithPhysicsQueue.front();
-//    scene->terrainsWithPhysicsQueue.pop_front();
-//
-//    ColliderConfig config = terrain->mCollider->getConfig();
-//
-//    physx::PxMaterial *mMaterial = mPhysics->createMaterial(config.material.staticFriction,
-//                                                            config.material.dynamicFriction,
-//                                                            config.material.restitution);
-//    glm::vec3 p = terrain->getPosition();
-//    physx::PxTransform t(physx::PxVec3(p.x, p.y, p.z));
-//
-//    physx::PxHeightFieldGeometry hfGeom = createHeightGeometry(terrain);
-//
-//    physx::PxShape *shape = mPhysics->createShape(physx::PxHeightFieldGeometry(hfGeom), *mMaterial);
-//    switch (config.type) {
-//        case config.Dynamic:
-//            terrain->mPhysicsBody = mPhysics->createRigidDynamic(t);
-//            break;
-//        default:
-//            terrain->mPhysicsBody = mPhysics->createRigidStatic(t);
-//    }
-//
-//    terrain->mPhysicsBody->attachShape(*shape);
-//    mScene->addActor(*terrain->mPhysicsBody);
-//    shape->release();
-//
-//    // now everything is ready, push this terrain into the physics array
-//    scene->modelsWithPhysics.push_back(terrain);
-}
 
 
 
