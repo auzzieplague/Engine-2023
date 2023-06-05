@@ -8,20 +8,20 @@ Model *playerObject;
 Model * modelWithSubMeshes () {
     Material material;
     material.loadFromAsset("mats_ground", "gray-bricks1");
-    material.setAmbientColor(glm::vec3(1,0,0));
+    material.setAmbientColor(glm::vec3(0.5,0,0));
 
     auto *root = Model::createFromGeometry(Geometry::ShapeType::Cube);
-    root->rootMesh->setPosition(glm::vec3(1,2,1)); // should be relative to parent mesh
+    root->rootMesh->setPosition(glm::vec3(0,0,0)); // should be relative to parent mesh
 
     auto subMesh = new Geometry();
     subMesh->buildCube();
-    subMesh->setPosition(glm::vec3(1,1,3)); // should be relative to parent mesh
+    subMesh->setPosition(glm::vec3(1,1,0)); // should be relative to parent mesh
     subMesh->setMaterial(material);
     root->rootMesh->addMesh(subMesh);
     auto subSubMesh = new Geometry();
     subSubMesh->buildCube();
-    subSubMesh->setPosition(glm::vec3(1,1,2)); // should be relative to parent mesh
-    material.setAmbientColor(glm::vec3(0,1,0));
+    subSubMesh->setPosition(glm::vec3(-1,1,0)); // should be relative to parent mesh
+    material.setAmbientColor(glm::vec3(0,0.5,0));
     subSubMesh->setMaterial(material);
     subMesh->addMesh(subSubMesh);
     return root;
@@ -39,7 +39,7 @@ void setupScene(Scene *scene) {
 
     playerObject->setScale({1, 1, 1 });
     playerObject->setMaterial(material);
-    playerObject->setPosition({-5, 0, -5});
+    playerObject->setPosition({0, 0, -10});
     playerObject->setRotation({30, 0, 0});
 
 

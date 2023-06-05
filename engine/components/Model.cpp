@@ -48,7 +48,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
     }
 
 //    model->rootMesh->calculateNormals();
-
+    model->childComponents.push_back(model->rootMesh);
     // check if model has UVs and Normals, if not, build them
     if (model->rootMesh->getUVs().size() == 0) {
         throw std::runtime_error("missing UVs for shape:" + shapeText);
@@ -56,6 +56,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
     if (model->rootMesh->getNormals().size() == 0) {
         throw std::runtime_error("missing Normals for shape:" + shapeText);
     }
+
     return model;
 }
 
@@ -64,7 +65,9 @@ void Model::setPosition(glm::vec3 newPosition) {
     if (this->mCollider) {
         this->mCollider->updatePosition(m_transform.getPosition() - newPosition);
     }
+    // set primary mesh location
     Component::setPosition(newPosition);
+//    this->rootMesh->setPosition(newPosition);
 }
 
 void Model::setScale(glm::vec3 scale) {
@@ -152,4 +155,8 @@ void Model::rotateY(float degrees) {
 
 void Model::rotateZ(float degrees) {
     this->m_transform.rotateZ(degrees);
+}
+
+glm::vec3 Model::getPosition() {
+    return this->rootMesh->getPosition();
 }

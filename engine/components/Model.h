@@ -23,8 +23,10 @@ public:
 
     /**
      * use model->setPosition to correctly update colliders and underlying objects
+     * using rootMesh transform
      */
     void setPosition(glm::vec3) override;
+    glm::vec3 getPosition() override;
 
     void setScale(glm::vec3) override;
 
