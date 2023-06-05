@@ -12,7 +12,7 @@ bool Mesh::isReady() {
     if (m_ready) return true;
 
     // not all meshes will need to be rendered, but at the moment only rendering is using readyCheckk
-    // we will need to subclass mMesh into render and non render types
+    // we will need to subclass rootMesh into render and non render types
     if (this->m_gID != 0) {
         m_ready = true;
     }
@@ -34,7 +34,7 @@ void Mesh::calculateNormals() {
         // Initialize the normal vector for each vertex to (0, 0, 0)
         std::vector<glm::vec3> vertexNormals(m_vertices.size(), glm::vec3(0.0f));
 
-        // Iterate over each face of the mMesh
+        // Iterate over each face of the rootMesh
         for (size_t i = 0; i < m_indices.size(); i += 3) {
             // Get the m_indices of the three m_vertices that make m_up the face
             unsigned int i1 = m_indices[i];
@@ -66,7 +66,7 @@ void Mesh::calculateTangents() {
     std::vector<glm::vec3> vertexTangents(m_vertices.size(), glm::vec3(0.0f));
     std::vector<glm::vec3> vertexBitangents(m_vertices.size(), glm::vec3(0.0f));
 
-    // Iterate over each face of the mMesh
+    // Iterate over each face of the rootMesh
     for (size_t i = 0; i < m_indices.size(); i += 3) {
         // Get the m_indices of the three m_vertices that make m_up the face
         unsigned int i1 = m_indices[i];
@@ -114,7 +114,7 @@ void Mesh::calculateTangents() {
         // Calculate the handedness of the tangent and bitangent vectors
         float handedness = glm::dot(glm::cross(normal, tangent), vertexBitangents[i]) < 0.0f ? -1.0f : 1.0f;
 
-        // Add the final tangent and bitangent vectors to the mMesh
+        // Add the final tangent and bitangent vectors to the rootMesh
         m_tangents.emplace_back(glm::vec4(tangent, handedness));
         m_biTangents.push_back(glm::vec3(vertexBitangents[i] * handedness));
     }
@@ -148,14 +148,6 @@ const std::vector<glm::vec3> &Mesh::getNormals() const {
     return m_normals;
 }
 
-const std::vector<glm::vec3> &Mesh::getTangents() const {
-    return m_tangents;
-}
-
-const std::vector<glm::vec3> &Mesh::getBiTangents() const {
-    return m_biTangents;
-}
-
 const std::vector<unsigned int> &Mesh::getIndices() const {
     return m_indices;
 }
@@ -186,14 +178,6 @@ void Mesh::setUVs(std::vector<glm::vec2> &UVs) {
 
 void Mesh::setNormals(const std::vector<glm::vec3> &mNormals) {
     m_normals = mNormals;
-}
-
-void Mesh::setTangents(const std::vector<glm::vec3> &mTangents) {
-    m_tangents = mTangents;
-}
-
-void Mesh::setBiTangents(const std::vector<glm::vec3> &mBiTangents) {
-    m_biTangents = mBiTangents;
 }
 
 void Mesh::switchIndexOrder( bool clockwise) {

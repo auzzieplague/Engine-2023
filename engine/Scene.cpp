@@ -4,7 +4,7 @@ void Scene::addModel(Model *model) {
     // todo: need to insert the models into the render array at the right spot
     // keep pointers to the last BASE, DIFFUSE, NORMAL items to be rendered
     // might have to change vector to dequeue or something
-    auto shaderType = model->mMesh->getMaterial().getShaderType();
+    auto shaderType = model->rootMesh->getMaterial().getShaderType();
 
     this->modelsInScene.push_back(model);
     if (model->mCollider) {

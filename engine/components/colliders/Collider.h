@@ -113,9 +113,9 @@ public:
             return false;
         };
 
-        // octree on mMesh
+        // octree on rootMesh
 
-        // todo check mMesh - need to add collision mMesh to mCollider as it's not the same as actual mMesh
+        // todo check rootMesh - need to add collision rootMesh to mCollider as it's not the same as actual rootMesh
         return true;
     }
 

@@ -1,5 +1,5 @@
 #pragma once
-// predefine all components here, mMesh, m_material, texture, animation, script etc.
+// predefine all components here, rootMesh, m_material, texture, animation, script etc.
 
 #include "../Object.h"
 #include "../../core/Transform.h"
@@ -8,6 +8,7 @@
 class Component : public Object {
 protected:
     Transform m_transform{};
+    Transform worldTransform; // to be updated when parents transform
     bool m_dirty = true;
     bool m_ready = false;
 
@@ -25,8 +26,6 @@ public:
     [[nodiscard]] Transform getTransform() const;
 
     std::vector<Component *> childComponents;
-    // has child component list and then underlying mechanics reference the components in the list
-    // should have a scene components list and everything can just reference the instances of components as required
 
     virtual void setPosition(glm::vec3 newPosition);
 
@@ -49,7 +48,7 @@ public:
 
     /**
      *  create a game object that represents the 3D model in the game world.
-     *  The game object should contain the mMesh and m_material objects,
+     *  The game object should contain the rootMesh and m_material objects,
      *  as well as any other relevant information such as the object's m_position, m_rotation, and scale.
      */
     virtual void init() {
@@ -58,7 +57,7 @@ public:
 
     /**
      *  render the game object using the engine's rendering pipeline.
-     *  This may involve setting m_up the camera, setting shader parameters, and sending the mMesh data to the GPU.
+     *  This may involve setting m_up the camera, setting shader parameters, and sending the rootMesh data to the GPU.
      */
     virtual void render() {
         std::cout << "render not implemented for component\n";

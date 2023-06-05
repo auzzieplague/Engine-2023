@@ -33,15 +33,33 @@ void GraphicsLayer::render(Scene *scene) {
     // camera might be m_dirty
     checkDirtyCamera(scene);
 
-    api->shaderSetCamera(scene->currentCamera);
+    // collect meshes - todo: sort by shader
+    std::vector<Mesh *> meshes;
     for (auto model: scene->modelsInScene) {
-
-        // need to updatePosition model matrix before each frame - if dirty
-        api->shaderSetTransform(model->getMatrix());
-        // todo model can have many meshes
-        api->shaderSetMaterial(model->mMesh->getMaterial());
-        api->renderMesh(model->mMesh);
+        meshes.insert(meshes.end(), model->rootMesh->meshTree.begin(), model->rootMesh->meshTree.end());
     }
+
+        api->shaderSetCamera(scene->currentCamera);
+
+    for( auto mesh: meshes ) {
+
+        //todo on setPosition etc, will need to build worldTransforms for children
+        // getmatrix() will need to return worldMatrix - will use existing transform as local transforms.
+        // were adding child  meshes to childComponents ... trying to keep this functionality general
+        // other components might be added to a mesh, light, socket etc ... tbc
+        api->shaderSetTransform(mesh->getMatrix());
+        api->shaderSetMaterial(mesh->getMaterial());
+        api->renderMesh(mesh);
+    }
+//
+//    for (auto model: scene->modelsInScene) {
+//
+//        // need to updatePosition model matrix before each frame - if dirty
+//        api->shaderSetTransform(model->getMatrix());
+//        // todo model can have many meshes
+//        api->shaderSetMaterial(model->rootMesh->getMaterial());
+//        api->renderMesh(model->rootMesh);
+//    }
 
 
     /// note currently rendering terrain as mesh for initial testing - fix scaling

@@ -8,7 +8,7 @@
 class Model : public Component {
 
 public:
-    Mesh *mMesh{};
+    Mesh *rootMesh{};
     Collider *mCollider{};
     physx::PxRigidActor* mPhysicsBody{};
 
@@ -18,7 +18,7 @@ public:
 
     static Model *createFromGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
 
-    // todo setCollider(level) radial, box, mMesh
+    // todo setCollider(level) radial, box, rootMesh
     virtual void setCollider(ColliderConfig config);
 
     /**

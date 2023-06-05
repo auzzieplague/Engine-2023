@@ -5,18 +5,41 @@
 
 Model *playerObject;
 
+Model * modelWithSubMeshes () {
+    Material material;
+    material.loadFromAsset("mats_ground", "gray-bricks1");
+    material.setAmbientColor(glm::vec3(1,0,0));
+
+    auto *root = Model::createFromGeometry(Geometry::ShapeType::Cube);
+    root->rootMesh->setPosition(glm::vec3(1,2,1)); // should be relative to parent mesh
+
+    auto subMesh = new Geometry();
+    subMesh->buildCube();
+    subMesh->setPosition(glm::vec3(1,1,3)); // should be relative to parent mesh
+    subMesh->setMaterial(material);
+    root->rootMesh->addMesh(subMesh);
+    auto subSubMesh = new Geometry();
+    subSubMesh->buildCube();
+    subSubMesh->setPosition(glm::vec3(1,1,2)); // should be relative to parent mesh
+    material.setAmbientColor(glm::vec3(0,1,0));
+    subSubMesh->setMaterial(material);
+    subMesh->addMesh(subSubMesh);
+    return root;
+}
+
 void setupScene(Scene *scene) {
     ColliderConfig config{};
 
-    playerObject = Model::createFromGeometry(Geometry::ShapeType::Cube);
+//    playerObject = Model::createFromGeometry(Geometry::ShapeType::Cube);
+    playerObject = modelWithSubMeshes();
 
     Material material;
     material.loadFromAsset("mats_ground", "gray-bricks1");
-//    material.loadFromAsset("mats_ground", "gray-bricks1");
 
-    playerObject->setScale({5, 5, 5 });
+
+    playerObject->setScale({1, 1, 1 });
     playerObject->setMaterial(material);
-    playerObject->setPosition({0, 0, -5});
+    playerObject->setPosition({-5, 0, -5});
     playerObject->setRotation({30, 0, 0});
 
 
@@ -25,7 +48,7 @@ void setupScene(Scene *scene) {
 //    playerObject->setCollider(config);
     scene->addComponent(playerObject);
 
-//    return;
+    return;
     material.loadFromAsset("mats_ground", "grass1");
     auto *terrain1 = new Model();
     terrain1->getMeshFromHeightMap("test_map_64");
@@ -36,7 +59,7 @@ void setupScene(Scene *scene) {
     auto test = terrain1->getMatrix();
     config = {.shape=config.Mesh, .type=config.Static};
     terrain1->setCollider(config);
-//    terrain1->mMesh->switchIndexOrder();
+//    terrain1->rootMesh->switchIndexOrder();
     scene->addComponent(terrain1);
 
     Debug::show("[->] Use 'R' to generate collision report");

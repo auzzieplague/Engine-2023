@@ -5,7 +5,7 @@
 
 Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig config) {
     auto *model = new Model();
-    model->mMesh = new Geometry();
+    model->rootMesh = new Geometry();
 
     std::string shapeText = "";
     switch (shape) {
@@ -14,46 +14,46 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
             break;
         case Geometry::ShapeType::Cube :
             shapeText = "Cube";
-            dynamic_cast<Geometry *>(model->mMesh)->buildCube(config);
+            dynamic_cast<Geometry *>(model->rootMesh)->buildCube(config);
             break;
         case Geometry::ShapeType::Sphere :
             shapeText = "Sphere";
-            dynamic_cast<Geometry *>(model->mMesh)->buildSphere(config);
+            dynamic_cast<Geometry *>(model->rootMesh)->buildSphere(config);
             break;
         case Geometry::ShapeType::Terrain :
             shapeText = "Terrain";
             // here we're treating terrain as a model just for testing purposes
-            dynamic_cast<Geometry *>(model->mMesh)->buildTerrain(config);
+            dynamic_cast<Geometry *>(model->rootMesh)->buildTerrain(config);
             break;
         case Geometry::ShapeType::Dome :
             shapeText = "Dome";
-            dynamic_cast<Geometry *>(model->mMesh)->buildDome(config);
+            dynamic_cast<Geometry *>(model->rootMesh)->buildDome(config);
             break;
         case Geometry::ShapeType::Torus :
             shapeText = "Torus";
-            dynamic_cast<Geometry *>(model->mMesh)->buildTorus(config);
+            dynamic_cast<Geometry *>(model->rootMesh)->buildTorus(config);
             break;
         case Geometry::ShapeType::Capsule :
             shapeText = "Capsule";
-            dynamic_cast<Geometry *>(model->mMesh)->buildCapsule(config);
+            dynamic_cast<Geometry *>(model->rootMesh)->buildCapsule(config);
             break;
         case Geometry::ShapeType::Cone :
             shapeText = "Cone";
-            dynamic_cast<Geometry *>(model->mMesh)->buildCone(config);
+            dynamic_cast<Geometry *>(model->rootMesh)->buildCone(config);
             break;
         case Geometry::ShapeType::Quad :
             shapeText = "Quad";
-            dynamic_cast<Geometry *>(model->mMesh)->buildQuad(config);
+            dynamic_cast<Geometry *>(model->rootMesh)->buildQuad(config);
             break;
     }
 
-//    model->mMesh->calculateNormals();
+//    model->rootMesh->calculateNormals();
 
     // check if model has UVs and Normals, if not, build them
-    if (model->mMesh->getUVs().size() == 0) {
+    if (model->rootMesh->getUVs().size() == 0) {
         throw std::runtime_error("missing UVs for shape:" + shapeText);
     }
-    if (model->mMesh->getNormals().size() == 0) {
+    if (model->rootMesh->getNormals().size() == 0) {
         throw std::runtime_error("missing Normals for shape:" + shapeText);
     }
     return model;
@@ -74,7 +74,7 @@ void Model::setScale(glm::vec3 scale) {
      */
     if (this->mCollider) {
         // physx setTransform can replace this - if physics is running
-//        this->mCollider->rebuild(mMesh);
+//        this->mCollider->rebuild(rootMesh);
     }
 }
 
@@ -86,7 +86,7 @@ void Model::setRotation(glm::vec3 rotation) {
      */
     if (this->mCollider) {
         // physx setTransform can replace this - if physics is running
-        this->mCollider->rebuild(mMesh);
+        this->mCollider->rebuild(rootMesh);
     }
 }
 
@@ -113,7 +113,7 @@ void Model::applyImpulse(glm::vec3 force) const {
 void Model::setCollider(ColliderConfig config) {
     // note: model would need to be set collidable before adding to scene, to be added to correct <vector>
     mCollider = new Collider(config);
-    mCollider->rebuild(mMesh);
+    mCollider->rebuild(rootMesh);
     this->mCollider->updatePosition(-m_transform.getPosition());
     this->mCollider->updateSize(this->getScale());
 }
@@ -121,7 +121,7 @@ void Model::setCollider(ColliderConfig config) {
 void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
 
     //todo - will replace isColliding function with physX checks, but until then we will need to apply the position updates to the mCollider
-    mCollider->rebuild(mMesh);
+    mCollider->rebuild(rootMesh);
     this->mCollider->updatePosition(-m_transform.getPosition());
 
     if (!mPhysicsBody) {
@@ -131,7 +131,7 @@ void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
 }
 
 void Model::getMeshFromHeightMap(std::string name) {
-    this->mMesh = AssetManager::getMeshFromHeightMap(name, 1, 1);
+    this->rootMesh = AssetManager::getMeshFromHeightMap(name, 1, 1);
 }
 
 physx::PxTransform Model::getPxTransform() {
@@ -139,7 +139,7 @@ physx::PxTransform Model::getPxTransform() {
 }
 
 void Model::setMaterial(Material material) {
-    this->mMesh->setMaterial(material);
+    this->rootMesh->setMaterial(material);
 }
 
 void Model::rotateX(float degrees) {
