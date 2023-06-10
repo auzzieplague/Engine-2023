@@ -60,14 +60,14 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
     return model;
 }
 
-void Model::setPosition(glm::vec3 newPosition) {
+void Model::setLocalPosition(glm::vec3 newPosition) {
     // note: it's a prerequisite that you setCollider() before moving things around
     if (this->mCollider) {
-        this->mCollider->updatePosition(m_transform.getPosition() - newPosition);
+        this->mCollider->updatePosition(localTransform.getPosition() - newPosition);
     }
     // set primary mesh location
-    Component::setPosition(newPosition);
-//    this->rootMesh->setPosition(newPosition);
+    Component::setLocalPosition(newPosition);
+//    this->rootMesh->setLocalPosition(newPosition);
 }
 
 void Model::setScale(glm::vec3 scale) {
@@ -81,8 +81,8 @@ void Model::setScale(glm::vec3 scale) {
     }
 }
 
-void Model::setRotation(glm::vec3 rotation) {
-    Component::setRotation(rotation);
+void Model::setLocalRotation(glm::vec3 rotation) {
+    Component::setLocalRotation(rotation);
     /*
      * when rotating we will need to rebuild and reset m_vertices of colliders as centers
      * and corners will have changed
@@ -117,7 +117,7 @@ void Model::setCollider(ColliderConfig config) {
     // note: model would need to be set collidable before adding to scene, to be added to correct <vector>
     mCollider = new Collider(config);
     mCollider->rebuild(rootMesh);
-    this->mCollider->updatePosition(-m_transform.getPosition());
+    this->mCollider->updatePosition(-localTransform.getPosition());
     this->mCollider->updateSize(this->getScale());
 }
 
@@ -125,12 +125,12 @@ void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
 
     //todo - will replace isColliding function with physX checks, but until then we will need to apply the position updates to the mCollider
     mCollider->rebuild(rootMesh);
-    this->mCollider->updatePosition(-m_transform.getPosition());
+    this->mCollider->updatePosition(-localTransform.getPosition());
 
     if (!mPhysicsBody) {
         return;
     }
-    this->m_transform.applyPxTransform(pxTransform);
+    this->localTransform.applyPxTransform(pxTransform);
 }
 
 void Model::getMeshFromHeightMap(std::string name) {
@@ -138,7 +138,7 @@ void Model::getMeshFromHeightMap(std::string name) {
 }
 
 physx::PxTransform Model::getPxTransform() {
-    return this->m_transform.getPxTransform();
+    return this->localTransform.getPxTransform();
 }
 
 void Model::setMaterial(Material material) {
@@ -146,17 +146,22 @@ void Model::setMaterial(Material material) {
 }
 
 void Model::rotateX(float degrees) {
-    this->m_transform.rotateX(degrees);
+    //todo move to component
+    this->localTransform.rotateX(degrees);
+    updateCombinedTransform();
+    // update local positions to rotate around parent
+
+    updateChildTransforms();
 }
 
 void Model::rotateY(float degrees) {
-    this->m_transform.rotateY(degrees);
+//    this->localTransform.rotateY(degrees);
 }
 
 void Model::rotateZ(float degrees) {
-    this->m_transform.rotateZ(degrees);
+//    this->localTransform.rotateZ(degrees);
 }
 
-glm::vec3 Model::getPosition() {
-    return this->rootMesh->getPosition();
+glm::vec3 Model::getLocalPosition() {
+    return this->rootMesh->getLocalPosition();
 }

@@ -105,6 +105,6 @@ void Camera::updateCameraVectors() {
     m_up = glm::normalize(glm::cross(m_right, m_front));
 }
 
-glm::vec3 Camera::getPosition() {
+glm::vec3 Camera::getLocalPosition() {
     return m_position;
 }

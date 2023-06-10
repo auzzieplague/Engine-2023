@@ -150,7 +150,7 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
      * for example sphere geometry cannot have a rotational component.
      */
     physx::PxTransform buildTransform;  // different shapes have different transform properties
-    auto position = model->getPosition();
+    auto position = model->getLocalPosition();
     switch (config.shape) {
         case config.Mesh:
             buildTransform = model->getPxTransform();

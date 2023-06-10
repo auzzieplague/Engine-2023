@@ -11,19 +11,21 @@ Model * modelWithSubMeshes () {
     material.setAmbientColor(glm::vec3(0.5,0,0));
 
     auto *root = Model::createFromGeometry(Geometry::ShapeType::Cube);
-    root->rootMesh->setPosition(glm::vec3(0,0,0)); // should be relative to parent mesh
+    root->setWorldPosition(glm::vec3(-1, 0, -25));
 
     auto subMesh = new Geometry();
     subMesh->buildCube();
-    subMesh->setPosition(glm::vec3(1,1,0)); // should be relative to parent mesh
+    subMesh->setLocalPosition(glm::vec3(1, 0, -2)); // should be relative to parent mesh
     subMesh->setMaterial(material);
     root->rootMesh->addMesh(subMesh);
+
     auto subSubMesh = new Geometry();
     subSubMesh->buildCube();
-    subSubMesh->setPosition(glm::vec3(-1,1,0)); // should be relative to parent mesh
+    subSubMesh->setLocalPosition(glm::vec3(-1, 1, 0)); // should be relative to parent mesh
     material.setAmbientColor(glm::vec3(0,0.5,0));
     subSubMesh->setMaterial(material);
-    subMesh->addMesh(subSubMesh);
+//    subMesh->addMesh(subSubMesh);
+    root->rootMesh->addMesh(subSubMesh);
     return root;
 }
 
@@ -39,8 +41,8 @@ void setupScene(Scene *scene) {
 
     playerObject->setScale({1, 1, 1 });
     playerObject->setMaterial(material);
-    playerObject->setPosition({0, 0, -10});
-    playerObject->setRotation({30, 0, 0});
+    playerObject->setLocalPosition({0, 0, -10});
+    playerObject->setLocalRotation({30, 0, 0});
 
 
 //    config.shape = config.Sphere;
@@ -52,11 +54,11 @@ void setupScene(Scene *scene) {
     material.loadFromAsset("mats_ground", "grass1");
     auto *terrain1 = new Model();
     terrain1->getMeshFromHeightMap("test_map_64");
-    terrain1->setPosition({0, -20, 0});
-    terrain1->setRotation({0, 0, 0});
+    terrain1->setLocalPosition({0, -20, 0});
+    terrain1->setLocalRotation({0, 0, 0});
     terrain1->setScale({100, 10, 100});
     terrain1->setMaterial(material);
-    auto test = terrain1->getMatrix();
+    auto test = terrain1->getLocalMatrix();
     config = {.shape=config.Mesh, .type=config.Static};
     terrain1->setCollider(config);
 //    terrain1->rootMesh->switchIndexOrder();

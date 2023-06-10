@@ -7,43 +7,48 @@
 
 class Component : public Object {
 protected:
-    Transform m_transform{};
-    Transform worldTransform; // to be updated when parents transform
+    Transform localTransform{};
+    Transform worldTransform{};
+    Transform combinedTransform{};
     bool m_dirty = true;
     bool m_ready = false;
 
 public:
-    [[nodiscard]] virtual bool isDirty() const;
-
-    void setDirty(bool dirty = true);
-
-    [[nodiscard]] virtual bool isReady();
-
-    void setReady(bool ready = true);
-
-    virtual bool makeReady() { return false; };
-
-    [[nodiscard]] Transform getTransform() const;
-
-    std::vector<Component *> childComponents;
-
-    virtual void setPosition(glm::vec3 newPosition);
-
-    virtual void setScale(glm::vec3 newScale);
-
-    virtual void setRotation(glm::vec3 newRotation);
-
-    [[nodiscard]] virtual glm::vec3 getPosition();
-
-    [[nodiscard]] virtual glm::vec3 getScale();
-
-    [[nodiscard]] virtual glm::quat getRotation();
-
-    [[nodiscard]] virtual glm::mat4 getMatrix();
-
     ObjectType getType() override {
         return ObjectType::OT_Component;
     };
+
+    std::vector<Component *> childComponents;
+
+    [[nodiscard]] virtual bool isDirty() const;
+    void setDirty(bool dirty = true);
+    [[nodiscard]] virtual bool isReady();
+    void setReady(bool ready = true);
+
+    virtual void setLocalPosition(glm::vec3 newPosition);
+    virtual void setLocalRotation(glm::vec3 newRotation);
+    virtual void setLocalRotation(glm::quat rotation);
+    virtual void setLocalTransform(Transform transform);
+    [[nodiscard]] virtual glm::vec3 getLocalPosition();
+    [[nodiscard]] virtual glm::quat getLocalRotation();
+    [[nodiscard]] virtual glm::mat4 getLocalMatrix();
+    [[nodiscard]] Transform getLocalTransform() const;
+
+    virtual void setWorldPosition(glm::vec3 newPosition);
+    virtual void setWorldRotation(glm::vec3 newRotation);
+    virtual void setWorldRotation(glm::quat rotation);
+    [[nodiscard]] virtual glm::vec3 getWorldPosition();
+    [[nodiscard]] virtual glm::quat getWorldRotation();
+    [[nodiscard]] virtual glm::mat4 getTransformMatrix();
+    [[nodiscard]] Transform getWorldTransform() const;
+    virtual void setWorldTransform(Transform transform);
+
+    void updateChildTransforms();
+
+    void updateCombinedTransform();
+
+    virtual void setScale(glm::vec3 newScale);
+    [[nodiscard]] virtual glm::vec3 getScale();
 
 
     /**
@@ -64,12 +69,12 @@ public:
     };
 
     /**
-     * update the game object's m_position, m_rotation, and scale based on any changes in the game world or user input.
+     * update the game object's position, rotation, and scale based on any changes in the game world or user input
      */
     virtual void update() {
         std::cout << "update not implemented for component\n";
     };
 
+    void rotateAround(glm::vec3 pivotPoint,glm::quat rotation);
 
 };
-

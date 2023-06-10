@@ -43,6 +43,10 @@ void Transform::setRotation(glm::vec3 rotation) {
     this->m_rotation = toQuaternion(rotation);
 }
 
+void Transform::setRotation(glm::quat rotation) {
+    this->m_rotation = rotation;
+}
+
 void Transform::setScale(glm::vec3 scale) {
     this->m_scale = scale;
 }
@@ -70,3 +74,4 @@ physx::PxTransform Transform::getPxTransform() const {
     return t;
 
 }
+

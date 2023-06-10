@@ -53,5 +53,5 @@ public:
 
     void rotate(float xoffset, float yoffset, bool constrainPitch = true);
 
-    glm::vec3 getPosition ();
+    glm::vec3 getLocalPosition ();
 };

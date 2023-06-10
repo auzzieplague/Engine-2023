@@ -24,8 +24,8 @@ public:
     [[nodiscard]] glm::mat4 getMatrix();
 
     void setPosition(glm::vec3 position);
-
     void setRotation(glm::vec3 rotation);
+    void setRotation(glm::quat rotation);
 
     void setScale(glm::vec3 scale);
 
@@ -73,4 +73,10 @@ public:
     }
 
     physx::PxTransform getPxTransform() const;
+
+    glm::vec3 getRotationEuler() const {
+        glm::quat rotation = m_rotation;
+        glm::vec3 euler = glm::degrees(glm::eulerAngles(rotation));
+        return euler;
+    }
 };

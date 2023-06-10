@@ -294,7 +294,7 @@ void API_OpenGL::shaderSetProjection(const glm::mat4 &mat) const {
 }
 
 void API_OpenGL::shaderSetCamera(Camera *camera) {
-    shaderSetVec3("camera", camera->getPosition());
+    shaderSetVec3("camera", camera->getLocalPosition());
 }
 
 

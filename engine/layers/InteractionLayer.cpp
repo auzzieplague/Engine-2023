@@ -30,49 +30,52 @@ void InteractionLayer::processInput(Scene *scene) {
 
 void InteractionLayer::handleCharacterKeys(float movement) {
     if (input->isKeyPressed(GLFW_KEY_I) | input->isKeyPressed(GLFW_KEY_KP_8)) {
-        glm::vec3 pos = selectedModel->getPosition();
+        glm::vec3 pos = selectedModel->getWorldPosition();
         pos.y += movement / 2;
-        selectedModel->setPosition(pos);
+        selectedModel->setWorldPosition(pos);
 
     };
     if (input->isKeyPressed(GLFW_KEY_K) | input->isKeyPressed(GLFW_KEY_KP_2)) {
-        glm::vec3 pos = selectedModel->getPosition();
+        glm::vec3 pos = selectedModel->getWorldPosition();
         pos.y -= movement / 2;
-        selectedModel->setPosition(pos);
+        selectedModel->setWorldPosition(pos);
 
     };
     if (input->isKeyPressed(GLFW_KEY_L) | input->isKeyPressed(GLFW_KEY_KP_ADD)) {
-        glm::vec3 pos = selectedModel->getPosition();
+        glm::vec3 pos = selectedModel->getWorldPosition();
         pos.z += movement / 2;
-        selectedModel->setPosition(pos);
+        selectedModel->setWorldPosition(pos);
 
     };
     if (input->isKeyPressed(GLFW_KEY_O) | input->isKeyPressed(GLFW_KEY_KP_SUBTRACT)) {
-        glm::vec3 pos = selectedModel->getPosition();
+        glm::vec3 pos = selectedModel->getWorldPosition();
         pos.z -= movement / 2;
-        selectedModel->setPosition(pos);
+        selectedModel->setWorldPosition(pos);
     };
     if (input->isKeyPressed(GLFW_KEY_PERIOD) | input->isKeyPressed(GLFW_KEY_KP_6)) {
-        glm::vec3 pos = selectedModel->getPosition();
+        glm::vec3 pos = selectedModel->getWorldPosition();
         pos.x += movement / 2;
-        selectedModel->setPosition(pos);
+        selectedModel->setWorldPosition(pos);
     };
     if (input->isKeyPressed(GLFW_KEY_COMMA) | input->isKeyPressed(GLFW_KEY_KP_4)) {
-        glm::vec3 pos = selectedModel->getPosition();
+        glm::vec3 pos = selectedModel->getWorldPosition();
         pos.x -= movement / 2;
-        selectedModel->setPosition(pos);
+        selectedModel->setWorldPosition(pos);
     };
 
     if (input->isKeyPressed(GLFW_KEY_T)) {
+//        selectedModel->rotateAround(selectedModel->getLocalPosition(), glm::vec3(0.1, 0, 0));
         selectedModel->rotateX(0.1);
     }
 
     if (input->isKeyPressed(GLFW_KEY_Y)) {
-        selectedModel->rotateY(0.1);
+//        selectedModel->rotateAround(selectedModel->getLocalPosition(), glm::vec3(0, 0.1, 0));
+//        selectedModel->rotateY(0.1);
     }
 
     if (input->isKeyPressed(GLFW_KEY_U)) {
-        selectedModel->rotateZ(0.1);
+//        selectedModel->rotateAround(selectedModel->getLocalPosition(), glm::vec3(0, 0, 0.1));
+//        selectedModel->rotateZ(0.1);
     }
 }
 

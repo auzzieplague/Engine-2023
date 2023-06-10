@@ -22,15 +22,15 @@ public:
     virtual void setCollider(ColliderConfig config);
 
     /**
-     * use model->setPosition to correctly update colliders and underlying objects
+     * use model->setLocalPosition to correctly update colliders and underlying objects
      * using rootMesh transform
      */
-    void setPosition(glm::vec3) override;
-    glm::vec3 getPosition() override;
+    void setLocalPosition(glm::vec3) override;
+    glm::vec3 getLocalPosition() override;
 
     void setScale(glm::vec3) override;
 
-    void setRotation(glm::vec3) override;
+    void setLocalRotation(glm::vec3) override;
     void rotateX(float degrees);
     void rotateY(float degrees);
     void rotateZ(float degrees);

@@ -35,20 +35,45 @@ public:
     std::vector<Mesh *> meshTree;
 
     void addMesh(Mesh *subMesh) {
+
+        // todo : on component addChild - if mesh, call this rather than forcing developer to addMesh explicitly
+        /*
+         * Note: on construction this mesh is added to mesh tree, so mesh tree always contains self
+         *
+         */
         subMesh->parentMesh = this;
-//        subMeshes.push_back(subMesh);
         childComponents.push_back(subMesh);
         // each mesh should know its parent and root, and be added to the root mesh tree
 
+        // if this mesh has a parent mesh (is a child), update the rootMesh tree
         if (this->parentMesh) {
-            // all children should be added to the root node
-            rootMesh->meshTree.push_back(subMesh);
+            // update existing submesh meshtree parent, root values accordingly
+            for (auto nestedMesh: subMesh->meshTree) {
+                nestedMesh->parentMesh = this;
+                nestedMesh->rootMesh = this->rootMesh;
+//                updateComponentWorldTransform(nestedMesh, this->getWorldTransform());
+                nestedMesh->worldTransform.setPosition(this->worldTransform.getPosition()+nestedMesh->getLocalPosition());
+                nestedMesh->updateCombinedTransform();
+            }
+            rootMesh->meshTree.insert(rootMesh->meshTree.end(), subMesh->meshTree.begin(), subMesh->meshTree.end());
+
+            //todo update all submeshtree items world transform
+
         } else {
-            // if this is the first child being added, assign rootMesh
+            // if this is the first child being added, make this the rootMesh
             subMesh->rootMesh = this;
             meshTree.push_back(subMesh);
+            // apply this world transform to child
+//            updateComponentWorldTransform(subMesh, this->getWorldTransform());
+
+            subMesh->worldTransform.setPosition(this->worldTransform.getPosition()+subMesh->getLocalPosition());
+            subMesh->updateCombinedTransform();
         }
+
     };
+
+
+
 
     void setVertices(const std::vector<glm::vec3> &mVertices);
 

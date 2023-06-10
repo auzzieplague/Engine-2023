@@ -161,7 +161,7 @@ void Mesh::restoreMaterial() {
 }
 
 void Mesh::applyPxTransform(const physx::PxTransform &pxTransform) {
-    this->m_transform.applyPxTransform(pxTransform);
+    this->localTransform.applyPxTransform(pxTransform);
 }
 
 void Mesh::setVertices(const std::vector<glm::vec3> &mVertices) {
