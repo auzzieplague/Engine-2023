@@ -152,9 +152,9 @@ struct PxQueryCache
 	*/
 	PX_INLINE PxQueryCache(PxShape* s, PxU32 findex) : shape(s), actor(NULL), faceIndex(findex) {}
 
-	PxShape*		shape;			//!< Shape to test for intersection first
+	PxShape*		shape;			//!< Shape to tests for intersection first
 	PxRigidActor*	actor;			//!< Actor to which the shape belongs
-	PxU32			faceIndex;		//!< Triangle index to test first - NOT CURRENTLY SUPPORTED
+	PxU32			faceIndex;		//!< Triangle index to tests first - NOT CURRENTLY SUPPORTED
 };
 
 /** 
@@ -1342,7 +1342,7 @@ class PxScene
 									const PxQueryCache* cache = NULL) const = 0;
 
 	/**
-	\brief Performs a sweep test against objects in the scene, returns results in a PxSweepBuffer object
+	\brief Performs a sweep tests against objects in the scene, returns results in a PxSweepBuffer object
 	or via a custom user callback implementation inheriting from PxSweepCallback.
 	
 	\note	Touching hits are not ordered.
@@ -1375,7 +1375,7 @@ class PxScene
 
 
 	/**
-	\brief Performs an overlap test of a given geometry against objects in the scene, returns results in a PxOverlapBuffer object
+	\brief Performs an overlap tests of a given geometry against objects in the scene, returns results in a PxOverlapBuffer object
 	or via a custom user callback implementation inheriting from PxOverlapCallback.
 	
 	\note Filtering: returning eBLOCK from user filter for overlap queries will cause a warning (see #PxQueryHitType).

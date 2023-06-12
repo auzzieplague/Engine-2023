@@ -19,6 +19,7 @@ public:
     };
 
     std::vector<Component *> childComponents;
+    virtual void addChild(Component *child);
 
     [[nodiscard]] virtual bool isDirty() const;
     void setDirty(bool dirty = true);

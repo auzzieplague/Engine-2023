@@ -8,6 +8,7 @@ void Component::setLocalPosition(glm::vec3 newPosition) {
 void Component::setLocalRotation(glm::vec3 newRotation) {
     // convert degrees to quaternion
     this->localTransform.setRotation(newRotation);
+    updateCombinedTransform();
 }
 
 void Component::setLocalRotation(glm::quat rotation) {
@@ -40,30 +41,28 @@ void Component::setWorldTransform(Transform transform) {
 };
 
 void Component::updateChildTransforms() {
-    // children don't use their own world positions, they rely on the parent position plus their local offsets.
     for (auto child: this->childComponents){
-        child->setWorldPosition(this->worldTransform.getPosition()+child->getLocalPosition());
-//        child->rotateAround(this->worldTransform.getPosition(),this->localTransform.getRotation());
-        child->setWorldRotation(this->localTransform.getRotation()+child->getLocalRotation()); // ? not really
+        // update world position of child to reflect parent position changes
+        child->worldTransform = this->combinedTransform;
         child->updateCombinedTransform();
+        child->updateChildTransforms();
     }
 }
 
 /**
- * updates world transform of this
+ * updates combined transform of this component
  */
 void Component::updateCombinedTransform() {
-    this->combinedTransform.setPosition(this->worldTransform.getPosition()+this->localTransform.getPosition());
-    this->combinedTransform.setRotation(this->worldTransform.getRotation()+this->localTransform.getRotation());
+    glm::mat4 preTransform = this->worldTransform.getMatrix() *this->localTransform.getMatrix();
+    this->combinedTransform.setPosition(glm::vec3(preTransform[3]));
+    this->combinedTransform.setRotation(glm::quat_cast(preTransform));
+    this->updateChildTransforms();
 }
-
-
-
 
 void Component::setWorldPosition(glm::vec3 newPosition) {
     this->worldTransform.setPosition(newPosition);
     this->updateCombinedTransform();
-    this->updateChildTransforms();
+    updateChildTransforms();
 }
 
 void Component::setWorldRotation(glm::vec3 newRotation) {
@@ -151,6 +150,10 @@ void Component::rotateAround(glm::vec3 pivotPoint, glm::quat rotation) {
 //        child->setLocalRotation(childRotation);
 //        child->rotateAround(pivotPoint, degrees);
 //    }
+}
+
+void Component::addChild(Component *child) {
+    this->childComponents.push_back(child);
 }
 
 

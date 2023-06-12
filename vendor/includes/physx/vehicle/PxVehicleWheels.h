@@ -75,12 +75,12 @@ struct PxVehicleWheelsSimFlag
 		eLIMIT_SUSPENSION_EXPANSION_VELOCITY = (1 << 0),
 
 		/**
-		\brief Disable internal cylinder-plane intersection test.
+		\brief Disable internal cylinder-plane intersection tests.
 
 		By default the internal code runs a post-process on sweep results, approximating the wheel shape with a
 		cylinder and tweaking the sweep hit results accordingly. This can produce artefacts in certain cases, in
 		particular when the swept shape is very different from a cylinder - e.g. with swept spheres. This flag
-		tells the system to disable this internal test, and reuse the direct user-provided sweep results.
+		tells the system to disable this internal tests, and reuse the direct user-provided sweep results.
 
 		The default code refines the sweep results in each substep. Enabling this flag makes the system partially
 		reuse the same sweep results over each substep, which could potentially create other artefacts.

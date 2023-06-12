@@ -64,18 +64,15 @@ void InteractionLayer::handleCharacterKeys(float movement) {
     };
 
     if (input->isKeyPressed(GLFW_KEY_T)) {
-//        selectedModel->rotateAround(selectedModel->getLocalPosition(), glm::vec3(0.1, 0, 0));
         selectedModel->rotateX(0.1);
     }
 
     if (input->isKeyPressed(GLFW_KEY_Y)) {
-//        selectedModel->rotateAround(selectedModel->getLocalPosition(), glm::vec3(0, 0.1, 0));
-//        selectedModel->rotateY(0.1);
+        selectedModel->rotateY(0.1);
     }
 
     if (input->isKeyPressed(GLFW_KEY_U)) {
-//        selectedModel->rotateAround(selectedModel->getLocalPosition(), glm::vec3(0, 0, 0.1));
-//        selectedModel->rotateZ(0.1);
+        selectedModel->rotateZ(0.1);
     }
 }
 

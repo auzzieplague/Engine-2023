@@ -65,7 +65,7 @@ class PxGeometryQuery
 public:
 
 	/**
-	\brief Sweep a specified geometry object in space and test for collision with a given object.
+	\brief Sweep a specified geometry object in space and tests for collision with a given object.
 
 	The following combinations are supported.
 
@@ -78,7 +78,7 @@ public:
 	\param[in] maxDist Maximum sweep distance, has to be in the [0, inf) range
 	\param[in] geom0 The geometry object to sweep. Supported geometries are #PxSphereGeometry, #PxCapsuleGeometry, #PxBoxGeometry and #PxConvexMeshGeometry
 	\param[in] pose0 Pose of the geometry object to sweep
-	\param[in] geom1 The geometry object to test the sweep against
+	\param[in] geom1 The geometry object to tests the sweep against
 	\param[in] pose1 Pose of the geometry object to sweep against
 	\param[out] sweepHit The sweep hit information. Only valid if this method returns true.
 	\param[in] hitFlags Specify which properties per hit should be computed and written to result hit array. Combination of #PxHitFlag flags
@@ -100,7 +100,7 @@ public:
 
 
 	/**
-	\brief Overlap test for two geometry objects.
+	\brief Overlap tests for two geometry objects.
 
 	All combinations are supported except:
 	\li PxPlaneGeometry vs. {PxPlaneGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
@@ -120,11 +120,11 @@ public:
 
 
 	/**
-	\brief Raycast test against a geometry object.
+	\brief Raycast tests against a geometry object.
 
-	\param[in] origin The origin of the ray to test the geometry object against
-	\param[in] unitDir Normalized direction of the ray to test the geometry object against
-	\param[in] geom The geometry object to test the ray against
+	\param[in] origin The origin of the ray to tests the geometry object against
+	\param[in] unitDir Normalized direction of the ray to tests the geometry object against
+	\param[in] geom The geometry object to tests the ray against
 	\param[in] pose Pose of the geometry object
 	\param[in] maxDist Maximum ray length, has to be in the [0, inf) range
 	\param[in] hitFlags Specification of the kind of information to retrieve on hit. Combination of #PxHitFlag flags

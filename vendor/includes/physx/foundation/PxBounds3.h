@@ -167,7 +167,7 @@ class PxBounds3
 
 	/**
 	\brief indicates whether the intersection of this and b is empty or not.
-	\param b Bounds to test for intersection.
+	\param b Bounds to tests for intersection.
 	*/
 	PX_CUDA_CALLABLE PX_FORCE_INLINE bool intersects(const PxBounds3& b) const;
 
@@ -180,7 +180,7 @@ class PxBounds3
 
 	/**
 	\brief indicates if these bounds contain v.
-	\param v Point to test against bounds.
+	\param v Point to tests against bounds.
 	*/
 	PX_CUDA_CALLABLE PX_FORCE_INLINE bool contains(const PxVec3& v) const;
 

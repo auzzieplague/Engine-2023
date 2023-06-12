@@ -68,12 +68,12 @@ public:
 	}
 
 	/**
-	\brief Raycast test against the shape.
+	\brief Raycast tests against the shape.
 
 	\param[in] shape the shape
 	\param[in] actor the actor to which the shape is attached
-	\param[in] rayOrigin The origin of the ray to test the geometry object against
-	\param[in] rayDir The direction of the ray to test the geometry object against
+	\param[in] rayOrigin The origin of the ray to tests the geometry object against
+	\param[in] rayDir The direction of the ray to tests the geometry object against
 	\param[in] maxDist Maximum ray length
 	\param[in] hitFlags Specify which properties per hit should be computed and written to result hit array. Combination of #PxHitFlag flags
 	\param[in] maxHits max number of returned hits = size of 'rayHits' buffer
@@ -95,7 +95,7 @@ public:
 
 	\param[in] shape the shape
 	\param[in] actor the actor to which the shape is attached
-	\param[in] otherGeom The other geometry object to test overlap with
+	\param[in] otherGeom The other geometry object to tests overlap with
 	\param[in] otherGeomPose Pose of the other geometry object
 	\return True if the shape overlaps the geometry object
 

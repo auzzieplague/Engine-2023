@@ -318,7 +318,7 @@ namespace physx
 		virtual		void					computeCoefficientMatrix(PxArticulationCache& cache) const = 0;
 		
 		/**
-		\brief compute the lambda value when the test impulse is 1
+		\brief compute the lambda value when the tests impulse is 1
 		\param[in] initialState the initial state of the articulation system
 		\param[in] jointTorque M(q)*qddot + C(q,qdot) + g(q)
 		\param[in] maxIter maximum number of solver iterations to run. If the system converges, fewer iterations may be used. 

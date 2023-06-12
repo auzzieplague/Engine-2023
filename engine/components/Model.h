@@ -18,6 +18,8 @@ public:
 
     static Model *createFromGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
 
+    void addChild(Component *child) override; // need to add meshes to meshtree
+
     // todo setCollider(level) radial, box, rootMesh
     virtual void setCollider(ColliderConfig config);
 
@@ -26,7 +28,6 @@ public:
      * using rootMesh transform
      */
     void setLocalPosition(glm::vec3) override;
-    glm::vec3 getLocalPosition() override;
 
     void setScale(glm::vec3) override;
 

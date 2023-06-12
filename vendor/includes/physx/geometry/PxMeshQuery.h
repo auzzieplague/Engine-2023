@@ -109,7 +109,7 @@ public:
 
 	Returned triangle indices can be used with #getTriangle() to retrieve the triangle properties.
 
-	\param[in] geom The geometry object to test for mesh triangle overlaps. Supported geometries are #PxSphereGeometry, #PxCapsuleGeometry and #PxBoxGeometry
+	\param[in] geom The geometry object to tests for mesh triangle overlaps. Supported geometries are #PxSphereGeometry, #PxCapsuleGeometry and #PxBoxGeometry
 	\param[in] geomPose Pose of the geometry object
 	\param[in] meshGeom The triangle mesh geometry to check overlap against
 	\param[in] meshPose Pose of the triangle mesh
@@ -130,7 +130,7 @@ public:
 
 	Returned triangle indices can be used with #getTriangle() to retrieve the triangle properties.
 
-	\param[in] geom The geometry object to test for height field overlaps. Supported geometries are #PxSphereGeometry, #PxCapsuleGeometry and #PxBoxGeometry. The sphere and capsule queries are currently conservative estimates.
+	\param[in] geom The geometry object to tests for height field overlaps. Supported geometries are #PxSphereGeometry, #PxCapsuleGeometry and #PxBoxGeometry. The sphere and capsule queries are currently conservative estimates.
 	\param[in] geomPose Pose of the geometry object
 	\param[in] hfGeom The height field geometry to check overlap against
 	\param[in] hfPose Pose of the height field
@@ -148,7 +148,7 @@ public:
 
 
 	/**
-	\brief Sweep a specified geometry object in space and test for collision with a set of given triangles.
+	\brief Sweep a specified geometry object in space and tests for collision with a set of given triangles.
 
 	This function simply sweeps input geometry against each input triangle, in the order they are given.
 	This is an O(N) operation with N = number of input triangles. It does not use any particular acceleration structure.

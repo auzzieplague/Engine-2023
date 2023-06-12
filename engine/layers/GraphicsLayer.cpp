@@ -39,37 +39,15 @@ void GraphicsLayer::render(Scene *scene) {
         meshes.insert(meshes.end(), model->rootMesh->meshTree.begin(), model->rootMesh->meshTree.end());
     }
 
-        api->shaderSetCamera(scene->currentCamera);
+    api->shaderSetCamera(scene->currentCamera);
 
-    for( auto mesh: meshes ) {
-
-        //todo on setLocalPosition etc, will need to build worldTransforms for children
-        // getmatrix() will need to return worldMatrix - will use existing transform as local transforms.
-        // were adding child  meshes to childComponents ... trying to keep this functionality general
-        // other components might be added to a mesh, light, socket etc ... tbc
+    for (auto mesh: meshes) {
         api->shaderSetTransform(mesh->getTransformMatrix());
         api->shaderSetMaterial(mesh->getMaterial());
         api->renderMesh(mesh);
     }
-//
-//    for (auto model: scene->modelsInScene) {
-//
-//        // need to updatePosition model matrix before each frame - if dirty
-//        api->shaderSetTransform(model->getLocalMatrix());
-//        // todo model can have many meshes
-//        api->shaderSetMaterial(model->rootMesh->getMaterial());
-//        api->renderMesh(model->rootMesh);
-//    }
 
-
-    /// note currently rendering terrain as mesh for initial testing - fix scaling
-    // render terrains and skybox first to cull overdraw
-//    for (auto terrain: scene->terrainsToRender) {
-//        api->shaderSetTransform(terrain->getLocalMatrix());
-//        // todo terrains have multiple materials
-//        api->renderTerrain(terrain);
-//    }
-
+    // todo - instance render the cubes using the same model
 }
 
 void GraphicsLayer::checkDirtyCamera(Scene *scene) const {

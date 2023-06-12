@@ -48,15 +48,15 @@ namespace glm
 			// calculate distance from vert0 to ray origin
 			vec<3, T, Q> const tvec = orig - vert0;
 
-			// calculate U parameter and test bounds
+			// calculate U parameter and tests bounds
 			baryPosition.x = glm::dot(tvec, p);
 			if(baryPosition.x < static_cast<T>(0) || baryPosition.x > det)
 				return false;
 
-			// prepare to test V parameter
+			// prepare to tests V parameter
 			qvec = glm::cross(tvec, edge1);
 
-			// calculate V parameter and test bounds
+			// calculate V parameter and tests bounds
 			baryPosition.y = glm::dot(dir, qvec);
 			if((baryPosition.y < static_cast<T>(0)) || ((baryPosition.x + baryPosition.y) > det))
 				return false;
@@ -66,15 +66,15 @@ namespace glm
 			// calculate distance from vert0 to ray origin
 			vec<3, T, Q> const tvec = orig - vert0;
 
-			// calculate U parameter and test bounds
+			// calculate U parameter and tests bounds
 			baryPosition.x = glm::dot(tvec, p);
 			if((baryPosition.x > static_cast<T>(0)) || (baryPosition.x < det))
 				return false;
 
-			// prepare to test V parameter
+			// prepare to tests V parameter
 			qvec = glm::cross(tvec, edge1);
 
-			// calculate V parameter and test bounds
+			// calculate V parameter and tests bounds
 			baryPosition.y = glm::dot(dir, qvec);
 			if((baryPosition.y > static_cast<T>(0)) || (baryPosition.x + baryPosition.y < det))
 				return false;

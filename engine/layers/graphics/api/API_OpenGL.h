@@ -6,7 +6,7 @@ class API_OpenGL : public GraphicsAPI {
 public:
     RenderingConfig *currentRenderingConfig;
 
-    /* todo add a hook and replace glGetUniformLocation, with a map to cache the calls - then test performance
+    /* todo add a hook and replace glGetUniformLocation, with a map to cache the calls - then tests performance
      * modern OpenGL implementations have optimisations that can reduce the overhead of calling glGetUniformLocation,
      * so the performance difference between the two approaches may not be significant in practice.
     */

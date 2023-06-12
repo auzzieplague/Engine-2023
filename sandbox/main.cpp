@@ -12,7 +12,8 @@ Model * modelWithSubMeshes () {
 
     auto *root = Model::createFromGeometry(Geometry::ShapeType::Cube);
     root->setWorldPosition(glm::vec3(-1, 0, -25));
-
+    root->setLocalRotation(glm::vec3(-30, 0, -25));
+//
     auto subMesh = new Geometry();
     subMesh->buildCube();
     subMesh->setLocalPosition(glm::vec3(1, 0, -2)); // should be relative to parent mesh
@@ -24,8 +25,8 @@ Model * modelWithSubMeshes () {
     subSubMesh->setLocalPosition(glm::vec3(-1, 1, 0)); // should be relative to parent mesh
     material.setAmbientColor(glm::vec3(0,0.5,0));
     subSubMesh->setMaterial(material);
-//    subMesh->addMesh(subSubMesh);
-    root->rootMesh->addMesh(subSubMesh);
+    subMesh->addMesh(subSubMesh);
+//    root->rootMesh->addMesh(subSubMesh);
     return root;
 }
 
@@ -65,7 +66,7 @@ void setupScene(Scene *scene) {
     scene->addComponent(terrain1);
 
     Debug::show("[->] Use 'R' to generate collision report");
-    Debug::show("[->] Use NumPad 4862+- to navigate test");
+    Debug::show("[->] Use NumPad 4862+- to navigate tests");
 }
 
 void outputExecutionMode() {
@@ -91,7 +92,7 @@ int main() {
     engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
 //    engine->attachLayer(new CollisionLayer()); // processes collisions effects
 
-    // setup interaction layer and scene together to inject a test model
+    // setup interaction layer and scene together to inject a tests model
     auto *interactionLayer = new InteractionLayer();
     engine->attachLayer(interactionLayer);
 

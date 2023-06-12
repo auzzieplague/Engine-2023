@@ -20,7 +20,7 @@ bool Mesh::isReady() {
     return m_ready;
 }
 
-unsigned int Mesh:: generateMeshID() {
+unsigned int Mesh::generateMeshID() {
     this->m_gID = m_api->setupMesh(this);
     if (this->m_gID == 0) {
         Debug::show("Failed to generate meshID for " + getName());
@@ -173,14 +173,14 @@ void Mesh::setIndices(const std::vector<unsigned int> &mIndices) {
 }
 
 void Mesh::setUVs(std::vector<glm::vec2> &UVs) {
-    m_UVs= UVs;
+    m_UVs = UVs;
 }
 
 void Mesh::setNormals(const std::vector<glm::vec3> &mNormals) {
     m_normals = mNormals;
 }
 
-void Mesh::switchIndexOrder( bool clockwise) {
+void Mesh::switchIndexOrder(bool clockwise) {
     if (clockwise) {
         for (size_t i = 0; i < m_indices.size(); i += 3) {
             std::swap(m_indices[i], m_indices[i + 1]);
@@ -191,3 +191,50 @@ void Mesh::switchIndexOrder( bool clockwise) {
         }
     }
 }
+
+void Mesh::addChild(Component *child) {
+    if (child->getType() == ObjectType::OT_Mesh) {
+        addMesh(dynamic_cast<Mesh *>(child));
+//        this->meshTree.push_back(dynamic_cast<Mesh *>(child));
+
+    }
+
+    Component::addChild(child);
+}
+
+void Mesh::addMesh(Mesh *subMesh) {
+
+    /*
+     * Note: on construction this mesh is added to mesh tree, so mesh tree always contains self
+     *
+     */
+    subMesh->parentMesh = this;
+    childComponents.push_back(subMesh);
+    // each mesh should know its parent and root, and be added to the root mesh tree
+
+    // if this mesh has a parent mesh (is a child), update the rootMesh tree
+    if (this->parentMesh) {
+        // update existing submesh meshtree parent, root values accordingly
+        for (auto nestedMesh: subMesh->meshTree) {
+            nestedMesh->parentMesh = this;
+            nestedMesh->rootMesh = this->rootMesh;
+//                updateComponentWorldTransform(nestedMesh, this->getWorldTransform());
+            nestedMesh->worldTransform.setPosition(this->worldTransform.getPosition()+nestedMesh->getLocalPosition());
+            nestedMesh->updateCombinedTransform();
+        }
+        rootMesh->meshTree.insert(rootMesh->meshTree.end(), subMesh->meshTree.begin(), subMesh->meshTree.end());
+
+        //todo update all submeshtree items world transform
+
+    } else {
+        // if this is the first child being added, make this the rootMesh
+        subMesh->rootMesh = this;
+        meshTree.push_back(subMesh);
+        // apply this world transform to child
+//            updateComponentWorldTransform(subMesh, this->getWorldTransform());
+
+        subMesh->worldTransform.setPosition(this->worldTransform.getPosition()+subMesh->getLocalPosition());
+        subMesh->updateCombinedTransform();
+    }
+
+};

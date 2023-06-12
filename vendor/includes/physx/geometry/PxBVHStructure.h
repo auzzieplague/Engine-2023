@@ -59,7 +59,7 @@ class PxBVHStructure: public PxBase
 public:
 
 	/**
-	\brief Raycast test against a BVH structure.
+	\brief Raycast tests against a BVH structure.
 
 	\param[in] origin		The origin of the ray.
 	\param[in] unitDir		Normalized direction of the ray.
@@ -75,7 +75,7 @@ public:
 										PxU32* PX_RESTRICT rayHits) const = 0;
 
 	/**
-	\brief Sweep test against a BVH structure.
+	\brief Sweep tests against a BVH structure.
 
 	\param[in] aabb			The axis aligned bounding box to sweep
 	\param[in] unitDir		Normalized direction of the sweep.
@@ -91,7 +91,7 @@ public:
 										PxU32* PX_RESTRICT sweepHits) const = 0;
 
 	/**
-	\brief AABB overlap test against a BVH structure.
+	\brief AABB overlap tests against a BVH structure.
 
 	\param[in] aabb			The axis aligned bounding box		
 	\param[in] maxHits		Max number of returned hits = size of 'overlapHits' buffer

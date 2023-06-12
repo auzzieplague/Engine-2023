@@ -177,7 +177,7 @@ struct PxCookingParams
 	/**
 	\brief Zero-size area epsilon used in convex hull computation.
 
-	If the area of a triangle of the hull is below this value, the triangle will be rejected. This test
+	If the area of a triangle of the hull is below this value, the triangle will be rejected. This tests
 	is done only if PxConvexFlag::eCHECK_ZERO_AREA_TRIANGLES is used.
 
 	@see PxConvexFlag::eCHECK_ZERO_AREA_TRIANGLES

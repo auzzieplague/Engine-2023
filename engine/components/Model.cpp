@@ -49,6 +49,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 
 //    model->rootMesh->calculateNormals();
     model->childComponents.push_back(model->rootMesh);
+//    model->addChild(model->rootMesh);
     // check if model has UVs and Normals, if not, build them
     if (model->rootMesh->getUVs().size() == 0) {
         throw std::runtime_error("missing UVs for shape:" + shapeText);
@@ -146,7 +147,6 @@ void Model::setMaterial(Material material) {
 }
 
 void Model::rotateX(float degrees) {
-    //todo move to component
     this->localTransform.rotateX(degrees);
     updateCombinedTransform();
     // update local positions to rotate around parent
@@ -155,13 +155,21 @@ void Model::rotateX(float degrees) {
 }
 
 void Model::rotateY(float degrees) {
-//    this->localTransform.rotateY(degrees);
+    this->localTransform.rotateY(degrees);
+    updateCombinedTransform();
 }
 
 void Model::rotateZ(float degrees) {
-//    this->localTransform.rotateZ(degrees);
+    this->localTransform.rotateZ(degrees);
+    updateCombinedTransform();
 }
 
-glm::vec3 Model::getLocalPosition() {
-    return this->rootMesh->getLocalPosition();
+void Model::addChild(Component *child) {
+    // if were adding a mesh, then we'll need to nest it under the root mesh
+    if (child->getType()==ObjectType::OT_Mesh){
+        rootMesh->addChild(child);
+    } else {
+        Component::addChild(child);
+    }
 }
+

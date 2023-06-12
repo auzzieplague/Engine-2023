@@ -62,9 +62,9 @@ struct PxQueryFlag
 
 		eDYNAMIC			= (1<<1),	//!< Traverse dynamic shapes
 
-		ePREFILTER			= (1<<2),	//!< Run the pre-intersection-test filter (see #PxQueryFilterCallback::preFilter())
+		ePREFILTER			= (1<<2),	//!< Run the pre-intersection-tests filter (see #PxQueryFilterCallback::preFilter())
 
-		ePOSTFILTER			= (1<<3),	//!< Run the post-intersection-test filter (see #PxQueryFilterCallback::postFilter())
+		ePOSTFILTER			= (1<<3),	//!< Run the post-intersection-tests filter (see #PxQueryFilterCallback::postFilter())
 
 		eANY_HIT			= (1<<4),	//!< Abort traversal as soon as any hit is found and return it via callback.block.
 										//!< Helps query performance. Both eTOUCH and eBLOCK hitTypes are considered hits with this flag.
@@ -171,10 +171,10 @@ class PxQueryFilterCallback
 public:
 
 	/**
-	\brief This filter callback is executed before the exact intersection test if PxQueryFlag::ePREFILTER flag was set.
+	\brief This filter callback is executed before the exact intersection tests if PxQueryFlag::ePREFILTER flag was set.
 
 	\param[in] filterData custom filter data specified as the query's filterData.data parameter.
-	\param[in] shape A shape that has not yet passed the exact intersection test.
+	\param[in] shape A shape that has not yet passed the exact intersection tests.
 	\param[in] actor The shape's actor.
 	\param[in,out] queryFlags scene query flags from the query's function call (only flags from PxHitFlag::eMODIFIABLE_FLAGS bitmask can be modified)
 	\return the updated type for this hit  (see #PxQueryHitType)
@@ -183,7 +183,7 @@ public:
 		const PxFilterData& filterData, const PxShape* shape, const PxRigidActor* actor, PxHitFlags& queryFlags) = 0;
 
 	/**
-	\brief This filter callback is executed if the exact intersection test returned true and PxQueryFlag::ePOSTFILTER flag was set.
+	\brief This filter callback is executed if the exact intersection tests returned true and PxQueryFlag::ePOSTFILTER flag was set.
 
 	\param[in] filterData custom filter data of the query
 	\param[in] hit Scene query hit information. faceIndex member is not valid for overlap queries. For sweep and raycast queries the hit information can be cast to #PxSweepHit and #PxRaycastHit respectively.
@@ -257,7 +257,7 @@ candidate shapes for testing are found by PhysX' scene traversal algorithms.
 \param[in] objectFilterData Object filter data
 \param[in] constantBlock Global constant filter data (see #PxBatchQuery)
 \param[in] constantBlockSize Size of global filter data (see #PxBatchQuery)
-\param[in] hit Hit data from the prior exact intersection test.
+\param[in] hit Hit data from the prior exact intersection tests.
 \return the new hit type for this hit (see #PxQueryHitType)
 
 @see PxBatchQueryPreFilterShader

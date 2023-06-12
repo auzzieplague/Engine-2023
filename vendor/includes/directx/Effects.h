@@ -252,7 +252,7 @@ namespace DirectX
             // Texture setting.
             void __cdecl SetTexture(_In_opt_ ID3D11ShaderResourceView* value);
 
-            // Alpha test settings.
+            // Alpha tests settings.
             void __cdecl SetAlphaFunction(D3D11_COMPARISON_FUNC value);
             void __cdecl SetReferenceAlpha(int value);
 

@@ -154,7 +154,7 @@ class PX_DEPRECATED PxBatchQuery
 
 
 	/**
-	\brief Performs an overlap test of a given geometry against objects in the scene, returns results in PxBatchQueryMemory::userOverlapResultBuffer
+	\brief Performs an overlap tests of a given geometry against objects in the scene, returns results in PxBatchQueryMemory::userOverlapResultBuffer
 	specified at PxBatchQuery creation time or via PxBatchQuery::setUserMemory call.
 	
 	\note Filtering: returning eBLOCK from user filter for overlap queries will cause a warning (see #PxQueryHitType).
@@ -180,7 +180,7 @@ class PX_DEPRECATED PxBatchQuery
 		const PxQueryFilterData& filterData = PxQueryFilterData(), void* userData=NULL, const PxQueryCache* cache = NULL) = 0;
 
 	/**
-	\brief Performs a sweep test against objects in the scene, returns results in PxBatchQueryMemory::userSweepResultBuffer
+	\brief Performs a sweep tests against objects in the scene, returns results in PxBatchQueryMemory::userSweepResultBuffer
 	specified at PxBatchQuery creation time or via PxBatchQuery::setUserMemory call.
 	
 	\note	Touching hits are not ordered.
