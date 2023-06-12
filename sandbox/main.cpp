@@ -8,42 +8,42 @@ Model *playerObject;
 Model * modelWithSubMeshes () {
     Material material;
     material.loadFromAsset("mats_ground", "gray-bricks1");
-    material.setAmbientColor(glm::vec3(0.5,0,0));
 
     auto *root = Model::createFromGeometry(Geometry::ShapeType::Cube);
     root->setWorldPosition(glm::vec3(-1, 0, -25));
     root->setLocalRotation(glm::vec3(-30, 0, -25));
+    root->setMaterial(material);
+    root->rootMesh->setLocalScale(glm::vec3{0.5,0.5,0.5});
 //
-    auto subMesh = new Geometry();
-    subMesh->buildCube();
-    subMesh->setLocalPosition(glm::vec3(1, 0, -2)); // should be relative to parent mesh
-    subMesh->setMaterial(material);
-    root->rootMesh->addMesh(subMesh);
+//    auto subMesh = new Geometry();
+//    subMesh->buildCube();
+//    subMesh->setLocalPosition(glm::vec3(1, 0, -2)); // should be relative to parent mesh
+//    material.setAmbientColor(glm::vec3(0.5,0,0));
+//    subMesh->setMaterial(material);
+//    root->rootMesh->addMesh(subMesh);
+//
+//    auto subSubMesh = new Geometry();
+//    subSubMesh->buildCube();
+//    subSubMesh->setLocalPosition(glm::vec3(-1, 1, 0)); // should be relative to parent mesh
+//    material.setAmbientColor(glm::vec3(0,0.5,0));
+//    subSubMesh->setMaterial(material);
+//    subMesh->addMesh(subSubMesh);
 
-    auto subSubMesh = new Geometry();
-    subSubMesh->buildCube();
-    subSubMesh->setLocalPosition(glm::vec3(-1, 1, 0)); // should be relative to parent mesh
-    material.setAmbientColor(glm::vec3(0,0.5,0));
-    subSubMesh->setMaterial(material);
-    subMesh->addMesh(subSubMesh);
-//    root->rootMesh->addMesh(subSubMesh);
     return root;
 }
 
 void setupScene(Scene *scene) {
     ColliderConfig config{};
 
-//    playerObject = Model::createFromGeometry(Geometry::ShapeType::Cube);
     playerObject = modelWithSubMeshes();
 
     Material material;
     material.loadFromAsset("mats_ground", "gray-bricks1");
 
-
-    playerObject->setScale({1, 1, 1 });
-    playerObject->setMaterial(material);
-    playerObject->setLocalPosition({0, 0, -10});
-    playerObject->setLocalRotation({30, 0, 0});
+//    playerObject->setLocalScale({2, 2, 2 });
+//    playerObject->setMaterial(material);
+//    playerObject->setLocalPosition({0, 0, -10});
+//    playerObject->setLocalRotation({30, 0, 0});
 
 
 //    config.shape = config.Sphere;
@@ -57,7 +57,7 @@ void setupScene(Scene *scene) {
     terrain1->getMeshFromHeightMap("test_map_64");
     terrain1->setLocalPosition({0, -20, 0});
     terrain1->setLocalRotation({0, 0, 0});
-    terrain1->setScale({100, 10, 100});
+    terrain1->setLocalScale({100, 10, 100});
     terrain1->setMaterial(material);
     auto test = terrain1->getLocalMatrix();
     config = {.shape=config.Mesh, .type=config.Static};

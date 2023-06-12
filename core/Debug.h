@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+
 class Debug {
 private:
     static int m_iteration;
@@ -26,5 +27,6 @@ public:
     static void resetIteration() {
         m_iteration = 0;
     };
+
 };
 

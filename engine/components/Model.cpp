@@ -58,41 +58,43 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
         throw std::runtime_error("missing Normals for shape:" + shapeText);
     }
 
+    /// for geometry we're initially using the root mesh as the collision mesh
+    model->collisionMesh = model->rootMesh;
     return model;
 }
-
-void Model::setLocalPosition(glm::vec3 newPosition) {
-    // note: it's a prerequisite that you setCollider() before moving things around
-    if (this->mCollider) {
-        this->mCollider->updatePosition(localTransform.getPosition() - newPosition);
-    }
-    // set primary mesh location
-    Component::setLocalPosition(newPosition);
-//    this->rootMesh->setLocalPosition(newPosition);
-}
-
-void Model::setScale(glm::vec3 scale) {
-    Component::setScale(scale);
-    /* when scaling we will need to rebuild and reset m_vertices of colliders as centers
-     * and corners will have changed
-     */
-    if (this->mCollider) {
-        // physx setTransform can replace this - if physics is running
+//
+//void Model::setLocalPosition(glm::vec3 newPosition) {
+//    // note: it's a prerequisite that you setCollider() before moving things around
+//    if (this->mCollider) {
+//        this->mCollider->updatePosition(localTransform.getPosition() - newPosition);
+//    }
+//    // set primary mesh location
+//    Component::setLocalPosition(newPosition);
+////    this->rootMesh->setLocalPosition(newPosition);
+//}
+//
+//void Model::setLocalScale(glm::vec3 scale) {
+//    Component::setLocalScale(scale);
+//    /* when scaling we will need to rebuild and reset m_vertices of colliders as centers
+//     * and corners will have changed
+//     */
+//    if (this->mCollider) {
+//        // physx setTransform can replace this - if physics is running
+////        this->mCollider->rebuild(rootMesh);
+//    }
+//}
+//
+//void Model::setLocalRotation(glm::vec3 rotation) {
+//    Component::setLocalRotation(rotation);
+//    /*
+//     * when rotating we will need to rebuild and reset m_vertices of colliders as centers
+//     * and corners will have changed
+//     */
+//    if (this->mCollider) {
+//        // physx setTransform can replace this - if physics is running
 //        this->mCollider->rebuild(rootMesh);
-    }
-}
-
-void Model::setLocalRotation(glm::vec3 rotation) {
-    Component::setLocalRotation(rotation);
-    /*
-     * when rotating we will need to rebuild and reset m_vertices of colliders as centers
-     * and corners will have changed
-     */
-    if (this->mCollider) {
-        // physx setTransform can replace this - if physics is running
-        this->mCollider->rebuild(rootMesh);
-    }
-}
+//    }
+//}
 
 void Model::applyForce(glm::vec3 force) const {
     // todo: check if dynamic .. probably subclass dynamic and static models so no checking required
@@ -119,7 +121,7 @@ void Model::setCollider(ColliderConfig config) {
     mCollider = new Collider(config);
     mCollider->rebuild(rootMesh);
     this->mCollider->updatePosition(-localTransform.getPosition());
-    this->mCollider->updateSize(this->getScale());
+    this->mCollider->updateSize(this->getLocalScale());
 }
 
 void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
@@ -144,24 +146,6 @@ physx::PxTransform Model::getPxTransform() {
 
 void Model::setMaterial(Material material) {
     this->rootMesh->setMaterial(material);
-}
-
-void Model::rotateX(float degrees) {
-    this->localTransform.rotateX(degrees);
-    updateCombinedTransform();
-    // update local positions to rotate around parent
-
-    updateChildTransforms();
-}
-
-void Model::rotateY(float degrees) {
-    this->localTransform.rotateY(degrees);
-    updateCombinedTransform();
-}
-
-void Model::rotateZ(float degrees) {
-    this->localTransform.rotateZ(degrees);
-    updateCombinedTransform();
 }
 
 void Model::addChild(Component *child) {

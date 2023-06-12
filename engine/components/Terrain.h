@@ -42,7 +42,7 @@ public:
     explicit Terrain(const std::string &assetName, float scale = 1, float minHeight = 0, float maxHeight = 255)
             : Model() {
         // re-use the heightmap to store details before overriding them with the loaded heightmap data
-        this->setScale(glm::vec3{scale,scale,scale});
+        this->setLocalScale(glm::vec3{scale, scale, scale});
         this->mHeightMap.minHeight = minHeight;
         this->mHeightMap.maxHeight = maxHeight;
         this->mHeightMap.scale = scale;

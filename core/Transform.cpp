@@ -18,7 +18,6 @@ glm::vec3 Transform::getScale() const {
     return m_scale;
 }
 
-//// todo = rename, nothing to do with a model at this point
 glm::mat4 Transform::getMatrix()  {
     // if not dirty can probably return last result rather than recalc
     glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), m_position);

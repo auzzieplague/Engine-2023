@@ -9,8 +9,9 @@ class Model : public Component {
 
 public:
     Mesh *rootMesh{};
+    Mesh *collisionMesh{};
     Collider *mCollider{};
-    physx::PxRigidActor* mPhysicsBody{};
+    physx::PxRigidActor *mPhysicsBody{};
 
     ObjectType getType() override {
         return ObjectType::OT_Model;
@@ -22,22 +23,19 @@ public:
 
     // todo setCollider(level) radial, box, rootMesh
     virtual void setCollider(ColliderConfig config);
-
-    /**
-     * use model->setLocalPosition to correctly update colliders and underlying objects
-     * using rootMesh transform
-     */
-    void setLocalPosition(glm::vec3) override;
-
-    void setScale(glm::vec3) override;
-
-    void setLocalRotation(glm::vec3) override;
-    void rotateX(float degrees);
-    void rotateY(float degrees);
-    void rotateZ(float degrees);
+//
+//    /**
+//     * use model->setLocalPosition to correctly update colliders and underlying objects
+//     * using rootMesh transform
+//     */
+//    void setLocalPosition(glm::vec3) override;
+//
+//    void setLocalScale(glm::vec3) override;
+//
+//    void setLocalRotation(glm::vec3) override;
 
     // physics handlers
-    void applyPxTransform(const physx::PxTransform& pxTransform);
+    void applyPxTransform(const physx::PxTransform &pxTransform);
 
     physx::PxTransform getPxTransform();
 

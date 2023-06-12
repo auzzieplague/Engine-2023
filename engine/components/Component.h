@@ -29,28 +29,32 @@ public:
     virtual void setLocalPosition(glm::vec3 newPosition);
     virtual void setLocalRotation(glm::vec3 newRotation);
     virtual void setLocalRotation(glm::quat rotation);
+    virtual void setLocalScale(glm::vec3 newScale);
     virtual void setLocalTransform(Transform transform);
+
     [[nodiscard]] virtual glm::vec3 getLocalPosition();
     [[nodiscard]] virtual glm::quat getLocalRotation();
+    [[nodiscard]] virtual glm::vec3 getLocalScale();
     [[nodiscard]] virtual glm::mat4 getLocalMatrix();
-    [[nodiscard]] Transform getLocalTransform() const;
+    [[nodiscard]] virtual Transform getLocalTransform() const;
 
     virtual void setWorldPosition(glm::vec3 newPosition);
     virtual void setWorldRotation(glm::vec3 newRotation);
     virtual void setWorldRotation(glm::quat rotation);
     [[nodiscard]] virtual glm::vec3 getWorldPosition();
     [[nodiscard]] virtual glm::quat getWorldRotation();
+    [[nodiscard]] virtual Transform getWorldTransform() const;
     [[nodiscard]] virtual glm::mat4 getTransformMatrix();
-    [[nodiscard]] Transform getWorldTransform() const;
     virtual void setWorldTransform(Transform transform);
 
-    void updateChildTransforms();
+    virtual void updateChildTransforms();
+    virtual void updateCombinedTransform();
 
-    void updateCombinedTransform();
 
-    virtual void setScale(glm::vec3 newScale);
-    [[nodiscard]] virtual glm::vec3 getScale();
 
+    virtual void rotateX(float degrees);
+    virtual void rotateY(float degrees);
+    virtual void rotateZ(float degrees);
 
     /**
      *  create a game object that represents the 3D model in the game world.
@@ -75,7 +79,4 @@ public:
     virtual void update() {
         std::cout << "update not implemented for component\n";
     };
-
-    void rotateAround(glm::vec3 pivotPoint,glm::quat rotation);
-
 };

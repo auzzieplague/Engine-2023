@@ -58,8 +58,8 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
     auto indices = model->rootMesh->getIndices();
 
     // Get the scale matrix of the model
-//    glm::vec3 scale = model->getScale();
-    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), model->getScale());
+//    glm::vec3 scale = model->getLocalScale();
+    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), model->getLocalScale());
 
     // Scale the vertices of the mesh
     for (auto &vertex: vertices) {
