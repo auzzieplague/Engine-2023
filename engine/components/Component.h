@@ -30,6 +30,7 @@ public:
     virtual void setLocalRotation(glm::vec3 newRotation);
     virtual void setLocalRotation(glm::quat rotation);
     virtual void setLocalScale(glm::vec3 newScale);
+    virtual void setLocalScale(float newScale);
     virtual void setLocalTransform(Transform transform);
 
     [[nodiscard]] virtual glm::vec3 getLocalPosition();
@@ -41,6 +42,7 @@ public:
     virtual void setWorldPosition(glm::vec3 newPosition);
     virtual void setWorldRotation(glm::vec3 newRotation);
     virtual void setWorldRotation(glm::quat rotation);
+    virtual void setWorldScale(glm::vec3 newPosition);
     [[nodiscard]] virtual glm::vec3 getWorldPosition();
     [[nodiscard]] virtual glm::quat getWorldRotation();
     [[nodiscard]] virtual Transform getWorldTransform() const;
@@ -49,8 +51,6 @@ public:
 
     virtual void updateChildTransforms();
     virtual void updateCombinedTransform();
-
-
 
     virtual void rotateX(float degrees);
     virtual void rotateY(float degrees);
@@ -79,4 +79,6 @@ public:
     virtual void update() {
         std::cout << "update not implemented for component\n";
     };
+
+
 };

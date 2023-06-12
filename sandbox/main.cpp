@@ -13,21 +13,20 @@ Model * modelWithSubMeshes () {
     root->setWorldPosition(glm::vec3(-1, 0, -25));
     root->setLocalRotation(glm::vec3(-30, 0, -25));
     root->setMaterial(material);
-    root->rootMesh->setLocalScale(glm::vec3{0.5,0.5,0.5});
-//
-//    auto subMesh = new Geometry();
-//    subMesh->buildCube();
-//    subMesh->setLocalPosition(glm::vec3(1, 0, -2)); // should be relative to parent mesh
-//    material.setAmbientColor(glm::vec3(0.5,0,0));
-//    subMesh->setMaterial(material);
-//    root->rootMesh->addMesh(subMesh);
-//
-//    auto subSubMesh = new Geometry();
-//    subSubMesh->buildCube();
-//    subSubMesh->setLocalPosition(glm::vec3(-1, 1, 0)); // should be relative to parent mesh
-//    material.setAmbientColor(glm::vec3(0,0.5,0));
-//    subSubMesh->setMaterial(material);
-//    subMesh->addMesh(subSubMesh);
+
+    auto subMesh = new Geometry();
+    subMesh->buildCube();
+    subMesh->setLocalPosition(glm::vec3(1, 0, -2)); // should be relative to parent mesh
+    material.setAmbientColor(glm::vec3(0.5,0,0));
+    subMesh->setMaterial(material);
+    root->rootMesh->addMesh(subMesh);
+
+    auto subSubMesh = new Geometry();
+    subSubMesh->buildCube();
+    subSubMesh->setLocalPosition(glm::vec3(-1, 1, 0)); // should be relative to parent mesh
+    material.setAmbientColor(glm::vec3(0,0.5,0));
+    subSubMesh->setMaterial(material);
+    subMesh->addMesh(subSubMesh);
 
     return root;
 }
@@ -40,7 +39,7 @@ void setupScene(Scene *scene) {
     Material material;
     material.loadFromAsset("mats_ground", "gray-bricks1");
 
-//    playerObject->setLocalScale({2, 2, 2 });
+    playerObject->setLocalScale(5);
 //    playerObject->setMaterial(material);
 //    playerObject->setLocalPosition({0, 0, -10});
 //    playerObject->setLocalRotation({30, 0, 0});

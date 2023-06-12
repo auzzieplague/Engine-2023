@@ -68,9 +68,13 @@ physx::PxTransform Transform::getPxTransform() const {
             physx::PxVec3(m_position.x,m_position.y,m_position.z),
     physx::PxQuat(m_rotation.x,m_rotation.y,m_rotation.z,m_rotation.w)
             );
-
-//   /
     return t;
 
+}
+
+void Transform::setFromMatrix(const glm::mat4 &matrix) {
+    glm::vec3 skew;
+    glm::vec4 perspective;
+    glm::decompose(matrix, m_scale, m_rotation, m_position, skew, perspective);
 }
 

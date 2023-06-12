@@ -5,6 +5,7 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
 #include <physx/PxPhysicsAPI.h>
 
 class Transform {
@@ -22,6 +23,8 @@ public:
     [[nodiscard]] glm::vec3 getScale() const;
 
     [[nodiscard]] glm::mat4 getMatrix();
+
+    void setFromMatrix(const glm::mat4& matrix);
 
     void setPosition(glm::vec3 position);
     void setRotation(glm::vec3 rotation);

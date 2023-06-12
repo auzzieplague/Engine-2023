@@ -56,15 +56,24 @@ void Component::updateChildTransforms() {
  * updates combined transform of this component
  */
 void Component::updateCombinedTransform() {
-    glm::mat4 preTransform = this->worldTransform.getMatrix() * this->localTransform.getMatrix();
-    this->combinedTransform.setPosition(glm::vec3(preTransform[3]));
-    this->combinedTransform.setRotation(glm::quat_cast(preTransform));
+
+    combinedTransform.setFromMatrix(worldTransform.getMatrix() * localTransform.getMatrix());
+
+//    glm::mat4 preTransform = this->worldTransform.getMatrix() * this->localTransform.getMatrix();
+//    this->combinedTransform.setPosition(glm::vec3(preTransform[3]));
+//    this->combinedTransform.setRotation(glm::quat_cast(preTransform));
+    // todo - fix scale
 //    this->combinedTransform.setScale(this->worldTransform.getScale()*this->getLocalScale());
     this->updateChildTransforms();
 }
 
 void Component::setWorldPosition(glm::vec3 newPosition) {
     this->worldTransform.setPosition(newPosition);
+    this->updateCombinedTransform();
+}
+
+void Component::setWorldScale(glm::vec3 newScale) {
+    this->worldTransform.setScale(newScale);
     this->updateCombinedTransform();
 }
 
@@ -134,6 +143,10 @@ void Component::rotateY(float degrees) {
 void Component::rotateZ(float degrees) {
     this->localTransform.rotateZ(degrees);
     updateCombinedTransform();
+}
+
+void Component::setLocalScale(float scale) {
+    this->setLocalScale(glm::vec3(scale));
 }
 
 
