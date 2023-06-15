@@ -30,6 +30,7 @@ public:
     void setRotation(glm::vec3 rotation);
     void setRotation(glm::quat rotation);
 
+
     void setScale(glm::vec3 scale);
 
     [[maybe_unused]] [[maybe_unused]] void translate(glm::vec3 translation);
@@ -72,6 +73,21 @@ public:
     void rotateZ(float degrees) {
         float radians = glm::radians(degrees);
         glm::quat rotation = glm::angleAxis(radians, glm::vec3(0, 0, 1));
+        m_rotation = rotation * m_rotation;
+    }
+
+    void roll(float degrees) {
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), m_rotation * glm::vec3(1.0f, 0.0f, 0.0f));
+        m_rotation = rotation * m_rotation;
+    }
+
+    void pitch(float degrees) {
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), m_rotation * glm::vec3(0.0f, 1.0f, 0.0f));
+        m_rotation = rotation * m_rotation;
+    }
+
+    void yaw(float degrees) {
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), m_rotation * glm::vec3(0.0f, 0.0f, 1.0f));
         m_rotation = rotation * m_rotation;
     }
 

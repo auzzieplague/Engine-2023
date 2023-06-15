@@ -29,50 +29,62 @@ void InteractionLayer::processInput(Scene *scene) {
 }
 
 void InteractionLayer::handleCharacterKeys(float movement) {
-    if (input->isKeyPressed(GLFW_KEY_I) | input->isKeyPressed(GLFW_KEY_KP_8)) {
+    if (input->isKeyPressed(GLFW_KEY_UP) | input->isKeyPressed(GLFW_KEY_KP_8)) {
         glm::vec3 pos = selectedModel->getWorldPosition();
         pos.y += movement / 2;
         selectedModel->setWorldPosition(pos);
 
     };
-    if (input->isKeyPressed(GLFW_KEY_K) | input->isKeyPressed(GLFW_KEY_KP_2)) {
+    if (input->isKeyPressed(GLFW_KEY_DOWN) | input->isKeyPressed(GLFW_KEY_KP_2)) {
         glm::vec3 pos = selectedModel->getWorldPosition();
         pos.y -= movement / 2;
         selectedModel->setWorldPosition(pos);
 
     };
-    if (input->isKeyPressed(GLFW_KEY_L) | input->isKeyPressed(GLFW_KEY_KP_ADD)) {
+    if (input->isKeyPressed(GLFW_KEY_PAGE_DOWN) | input->isKeyPressed(GLFW_KEY_KP_ADD)) {
         glm::vec3 pos = selectedModel->getWorldPosition();
         pos.z += movement / 2;
         selectedModel->setWorldPosition(pos);
 
     };
-    if (input->isKeyPressed(GLFW_KEY_O) | input->isKeyPressed(GLFW_KEY_KP_SUBTRACT)) {
+    if (input->isKeyPressed(GLFW_KEY_PAGE_UP) | input->isKeyPressed(GLFW_KEY_KP_SUBTRACT)) {
         glm::vec3 pos = selectedModel->getWorldPosition();
         pos.z -= movement / 2;
         selectedModel->setWorldPosition(pos);
     };
-    if (input->isKeyPressed(GLFW_KEY_PERIOD) | input->isKeyPressed(GLFW_KEY_KP_6)) {
+    if (input->isKeyPressed(GLFW_KEY_RIGHT) | input->isKeyPressed(GLFW_KEY_KP_6)) {
         glm::vec3 pos = selectedModel->getWorldPosition();
         pos.x += movement / 2;
         selectedModel->setWorldPosition(pos);
     };
-    if (input->isKeyPressed(GLFW_KEY_COMMA) | input->isKeyPressed(GLFW_KEY_KP_4)) {
+    if (input->isKeyPressed(GLFW_KEY_LEFT) | input->isKeyPressed(GLFW_KEY_KP_4)) {
         glm::vec3 pos = selectedModel->getWorldPosition();
         pos.x -= movement / 2;
         selectedModel->setWorldPosition(pos);
     };
 
-    if (input->isKeyPressed(GLFW_KEY_T)) {
+    if (input->isKeyPressed(GLFW_KEY_U)) {
         selectedModel->rotateX(0.1);
     }
 
-    if (input->isKeyPressed(GLFW_KEY_Y)) {
+    if (input->isKeyPressed(GLFW_KEY_I)) {
         selectedModel->rotateY(0.1);
     }
 
-    if (input->isKeyPressed(GLFW_KEY_U)) {
+    if (input->isKeyPressed(GLFW_KEY_O)) {
         selectedModel->rotateZ(0.1);
+    }
+
+    if (input->isKeyPressed(GLFW_KEY_R)) {
+        selectedModel->roll(0.1);
+    }
+
+    if (input->isKeyPressed(GLFW_KEY_P)) {
+        selectedModel->pitch(0.1);
+    }
+
+    if (input->isKeyPressed(GLFW_KEY_Y)) {
+        selectedModel->yaw(0.1);
     }
 }
 

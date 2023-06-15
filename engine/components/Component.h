@@ -57,6 +57,11 @@ public:
     virtual void rotateX(float degrees);
     virtual void rotateY(float degrees);
     virtual void rotateZ(float degrees);
+    virtual void roll(float degrees);
+    virtual void pitch(float degrees);
+    virtual void yaw(float degrees);
+
+
 
     /**
      *  create a game object that represents the 3D model in the game world.

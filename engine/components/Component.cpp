@@ -153,6 +153,22 @@ Transform Component::getFinalTransform() {
     return this->finalTransform;
 }
 
+void Component::roll(float degrees) {
+    this->localTransform.roll(degrees);
+    updateFinalTransform();
+}
+
+void Component::yaw(float degrees) {
+    this->localTransform.yaw(degrees);
+    updateFinalTransform();
+}
+
+void Component::pitch(float degrees) {
+    this->localTransform.pitch(degrees);
+    updateFinalTransform();
+}
+
+
 
 
 

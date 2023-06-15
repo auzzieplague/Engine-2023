@@ -5,7 +5,7 @@
 
 Model *playerObject;
 
-Model *modelWithSubMeshes() {
+Model *modelWithSubMeshes(bool physics = true) {
     ColliderConfig config{};
     Material material;
 
@@ -16,15 +16,16 @@ Model *modelWithSubMeshes() {
     root->setLocalRotation(glm::vec3(-30, 0, -25));
     root->setMaterial(material);
     root->setLocalScale(1);
-    root->setWorldPosition(glm::vec3(0,0,-20));
+    root->setWorldPosition(glm::vec3(0, 0, -20));
 
-    auto * collisionMesh = new Geometry();
-    collisionMesh->buildCube(GeometryConfig{.cube{.size=1},.sphere{.radius=2}});
-    root->setCollisionMesh(collisionMesh);
-
-    config.shape = config.Box;
-    config.type = config.Dynamic;
-    root->setCollider(config);
+    if (physics) {
+        auto *collisionMesh = new Geometry();
+        collisionMesh->buildCube(GeometryConfig{.cube{.size=1}, .sphere{.radius=2}});
+        root->setCollisionMesh(collisionMesh);
+        config.shape = config.Box;
+        config.type = config.Dynamic;
+        root->setCollider(config);
+    }
 
     float offset = 1;
     glm::vec3 positions[] = {
@@ -43,7 +44,7 @@ Model *modelWithSubMeshes() {
         auto subMesh = new Geometry();
         subMesh->buildSphere();
         subMesh->setLocalPosition(positions[n]); // should be relative to parent mesh
-        material.setAmbientColor(glm::vec3(n*(1/count), 0, 0));
+        material.setAmbientColor(glm::vec3(n * (1 / count), 0, 0));
         subMesh->setMaterial(material);
         subMesh->getMaterial().randomAmbientColor();
         root->mRootMesh->addMesh(subMesh);
@@ -53,7 +54,7 @@ Model *modelWithSubMeshes() {
     return root;
 }
 
-Model *terrainModel(){
+Model *terrainModel() {
     ColliderConfig config{};
     Material material;
     material.loadFromAsset("mats_ground", "grass1");
@@ -70,14 +71,15 @@ Model *terrainModel(){
 
 void setupScene(Scene *scene) {
 
-    playerObject = modelWithSubMeshes();
+    playerObject = modelWithSubMeshes(false);
     scene->addComponent(playerObject);
 
     auto terrain = terrainModel();
     scene->addComponent(terrain);
 
     Debug::show("[->] Use 'R' to generate collision report");
-    Debug::show("[->] Use NumPad 4862+- to navigate tests");
+    Debug::show("[->] Use NumPad 4862+- to navigate test Model");
+    Debug::show("[->] RPY (roll, pitch, yaw) UIO (world xyz) rotations ");
 }
 
 void outputExecutionMode() {
