@@ -41,7 +41,7 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
     }
 
     if (!mesh->isReady()) {
-        Debug::show("rootMesh not m_ready");
+        Debug::show("mRootMesh not m_ready");
         return;
     }
 
@@ -49,7 +49,7 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
 //    glDrawArrays(GL_TRIANGLES, 0, 6);
 //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     glDrawElements(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, 0);
-//    glDrawElements(GL_LINES, rootMesh->m_indices.size(), GL_UNSIGNED_INT, 0);
+//    glDrawElements(GL_LINES, mRootMesh->m_indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0); // no need to unbind it every time
 }
 
@@ -60,7 +60,7 @@ void API_OpenGL::renderTerrain(Terrain *terrain) {
     }
 
     if (!terrain->isReady()) {
-        Debug::show("rootMesh not m_ready");
+        Debug::show("mRootMesh not m_ready");
         return;
     }
 
@@ -137,7 +137,7 @@ unsigned int API_OpenGL::loadShader(std::string vertex, std::string fragment) {
 
 unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     if (mesh->getIndices().empty()) {
-        Debug::show("rootMesh object has no indices");
+        Debug::show("mRootMesh object has no indices");
         return 0;
     }
     unsigned int VBO, VAO, EBO;

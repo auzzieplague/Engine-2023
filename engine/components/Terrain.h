@@ -50,7 +50,7 @@ public:
         this->mHeightMap = loadHeightMap(assetName);
 
         // mesh used for rendering - can also be used for physics but not as performant
-//        this->rootMesh = loadTerrain(assetName);
+//        this->mRootMesh = loadTerrain(assetName);
 
     }
 

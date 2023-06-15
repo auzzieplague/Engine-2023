@@ -5,7 +5,7 @@
 
 Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig config) {
     auto *model = new Model();
-    model->rootMesh = new Geometry();
+    model->mRootMesh = new Geometry();
 
     std::string shapeText = "";
     switch (shape) {
@@ -14,52 +14,52 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
             break;
         case Geometry::ShapeType::Cube :
             shapeText = "Cube";
-            dynamic_cast<Geometry *>(model->rootMesh)->buildCube(config);
+            dynamic_cast<Geometry *>(model->mRootMesh)->buildCube(config);
             break;
         case Geometry::ShapeType::Sphere :
             shapeText = "Sphere";
-            dynamic_cast<Geometry *>(model->rootMesh)->buildSphere(config);
+            dynamic_cast<Geometry *>(model->mRootMesh)->buildSphere(config);
             break;
         case Geometry::ShapeType::Terrain :
             shapeText = "Terrain";
             // here we're treating terrain as a model just for testing purposes
-            dynamic_cast<Geometry *>(model->rootMesh)->buildTerrain(config);
+            dynamic_cast<Geometry *>(model->mRootMesh)->buildTerrain(config);
             break;
         case Geometry::ShapeType::Dome :
             shapeText = "Dome";
-            dynamic_cast<Geometry *>(model->rootMesh)->buildDome(config);
+            dynamic_cast<Geometry *>(model->mRootMesh)->buildDome(config);
             break;
         case Geometry::ShapeType::Torus :
             shapeText = "Torus";
-            dynamic_cast<Geometry *>(model->rootMesh)->buildTorus(config);
+            dynamic_cast<Geometry *>(model->mRootMesh)->buildTorus(config);
             break;
         case Geometry::ShapeType::Capsule :
             shapeText = "Capsule";
-            dynamic_cast<Geometry *>(model->rootMesh)->buildCapsule(config);
+            dynamic_cast<Geometry *>(model->mRootMesh)->buildCapsule(config);
             break;
         case Geometry::ShapeType::Cone :
             shapeText = "Cone";
-            dynamic_cast<Geometry *>(model->rootMesh)->buildCone(config);
+            dynamic_cast<Geometry *>(model->mRootMesh)->buildCone(config);
             break;
         case Geometry::ShapeType::Quad :
             shapeText = "Quad";
-            dynamic_cast<Geometry *>(model->rootMesh)->buildQuad(config);
+            dynamic_cast<Geometry *>(model->mRootMesh)->buildQuad(config);
             break;
     }
 
-//    model->rootMesh->calculateNormals();
-    model->childComponents.push_back(model->rootMesh);
-//    model->addChild(model->rootMesh);
+//    model->mRootMesh->calculateNormals();
+    model->childComponents.push_back(model->mRootMesh);
+//    model->addChild(model->mRootMesh);
     // check if model has UVs and Normals, if not, build them
-    if (model->rootMesh->getUVs().size() == 0) {
+    if (model->mRootMesh->getUVs().size() == 0) {
         throw std::runtime_error("missing UVs for shape:" + shapeText);
     }
-    if (model->rootMesh->getNormals().size() == 0) {
+    if (model->mRootMesh->getNormals().size() == 0) {
         throw std::runtime_error("missing Normals for shape:" + shapeText);
     }
 
     /// for geometry we're initially using the root mesh as the collision mesh
-    model->collisionMesh = model->rootMesh;
+    model->mCollisionMesh = model->mRootMesh;
     return model;
 }
 //
@@ -70,7 +70,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 //    }
 //    // set primary mesh location
 //    Component::setLocalPosition(newPosition);
-////    this->rootMesh->setLocalPosition(newPosition);
+////    this->mRootMesh->setLocalPosition(newPosition);
 //}
 //
 //void Model::setLocalScale(float scale) {
@@ -83,7 +83,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 //     */
 //    if (this->mCollider) {
 //        // physx setTransform can replace this - if physics is running
-//        this->mCollider->rebuild(rootMesh);
+//        this->mCollider->rebuild(mRootMesh);
 //    }
 //}
 //
@@ -95,7 +95,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 //     */
 //    if (this->mCollider) {
 //        // physx setTransform can replace this - if physics is running
-//        this->mCollider->rebuild(rootMesh);
+//        this->mCollider->rebuild(mRootMesh);
 //    }
 //}
 
@@ -120,9 +120,12 @@ void Model::applyImpulse(glm::vec3 force) const {
 }
 
 void Model::setCollider(ColliderConfig config) {
+    if (!mCollisionMesh) {
+        mCollisionMesh = mRootMesh;
+    }
     // note: model would need to be set collidable before adding to scene, to be added to correct <vector>
     mCollider = new Collider(config);
-    mCollider->rebuild(rootMesh);
+    mCollider->rebuild(mCollisionMesh);
     this->mCollider->updatePosition(-localTransform.getPosition());
     this->mCollider->updateSize(this->getLocalScale());
 }
@@ -134,7 +137,7 @@ void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
     // todo -
 
     //todo - will replace isColliding function with physX checks, but until then we will need to apply the position updates to the mCollider
-    mCollider->rebuild(rootMesh);
+    mCollider->rebuild(mCollisionMesh);
     this->mCollider->updatePosition(-worldTransform.getPosition());
 
     if (!mPhysicsBody) {
@@ -147,9 +150,9 @@ void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
 }
 
 void Model::getMeshFromHeightMap(std::string name) {
-    this->rootMesh = AssetManager::getMeshFromHeightMap(name, 1, 1);
-    this->collisionMesh = rootMesh;
-    this->childComponents.push_back(rootMesh);
+    this->mRootMesh = AssetManager::getMeshFromHeightMap(name, 1, 1);
+    this->mCollisionMesh = mRootMesh;
+    this->childComponents.push_back(mRootMesh);
     updateFinalTransform();
 }
 
@@ -158,15 +161,20 @@ physx::PxTransform Model::getPxTransform() {
 }
 
 void Model::setMaterial(Material material) {
-    this->rootMesh->setMaterial(material);
+    this->mRootMesh->setMaterial(material);
 }
 
 void Model::addChild(Component *child) {
     // if were adding a mesh, then we'll need to nest it under the root mesh
-    if (child->getType()==ObjectType::OT_Mesh){
-        rootMesh->addChild(child);
+    if (child->getType() == ObjectType::OT_Mesh) {
+        mRootMesh->addChild(child);
     } else {
         Component::addChild(child);
     }
+}
+
+void Model::setCollisionMesh(Mesh *mesh) {
+    this->mCollisionMesh = mesh;
+    this->childComponents.push_back(mCollisionMesh);
 }
 

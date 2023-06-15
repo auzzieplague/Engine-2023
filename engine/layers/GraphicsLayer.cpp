@@ -36,7 +36,7 @@ void GraphicsLayer::render(Scene *scene) {
     // collect meshes - todo: sort by shader
     std::vector<Mesh *> meshes;
     for (auto model: scene->modelsInScene) {
-        meshes.insert(meshes.end(), model->rootMesh->meshTree.begin(), model->rootMesh->meshTree.end());
+        meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
     }
 
     api->shaderSetCamera(scene->currentCamera);

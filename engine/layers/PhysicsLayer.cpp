@@ -20,8 +20,10 @@ void PhysicsLayer::update(Scene *scene) {
     //updatePosition positions of models
     for (auto model: scene->modelsWithPhysics) {
         transform = model->mPhysicsBody->getGlobalPose();
-        // todo is there a local pose ?
-        model->applyPxTransform(transform);
+        if (transform != model->previousGlobalPose) {
+            model->applyPxTransform(transform);
+            model->previousGlobalPose = transform;
+        }
     }
 
 }
@@ -54,9 +56,9 @@ void PhysicsLayer::initPhysicsWorld() {
 }
 
 physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
-// Create the triangle rootMesh descriptor
-    auto vertices = model->rootMesh->getVertices();
-    auto indices = model->rootMesh->getIndices();
+// Create the triangle mRootMesh descriptor
+    auto vertices = model->mCollisionMesh->getVertices();
+    auto indices = model->mCollisionMesh->getIndices();
 
     // Get the scale matrix of the model
 //    glm::vec3 scale = model->getLocalScale();
@@ -68,7 +70,7 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
         vertex = glm::vec3(scaledVertex);
     }
 
-    // Create the triangle rootMesh descriptor
+    // Create the triangle mRootMesh descriptor
     physx::PxTriangleMeshDesc meshDesc;
     meshDesc.points.count = vertices.size();
     meshDesc.points.stride = sizeof(glm::vec3);
@@ -85,7 +87,7 @@ physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
     physx::PxCookingParams params(scale);
     physx::PxCooking *cooking = PxCreateCooking(PX_PHYSICS_VERSION, mPhysics->getFoundation(), params);
 
-    // Create the triangle rootMesh in the PhysX SDK
+    // Create the triangle mRootMesh in the PhysX SDK
     physx::PxTriangleMesh *triangleMesh = nullptr;
     physx::PxDefaultMemoryOutputStream writeBuffer;
     if (cooking->cookTriangleMesh(meshDesc, writeBuffer)) {

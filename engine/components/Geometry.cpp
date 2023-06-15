@@ -33,7 +33,7 @@ void Geometry::buildQuad(GeometryConfig config) {
             glm::vec3(0.0f, 0.0f, 1.0f)
     };
 
-    // Assign the vertex m_vertices and m_indices to the rootMesh
+    // Assign the vertex m_vertices and m_indices to the mRootMesh
     this->m_vertices = vertices;
     this->m_indices = indices;
     this->m_normals = normals;
@@ -166,7 +166,7 @@ void Geometry::buildBox(GeometryConfig config) {
             glm::vec3(-1.0f, 0.0f, 0.0f),
     };
 
-    // Assign the vertex m_vertices and m_indices to the rootMesh
+    // Assign the vertex m_vertices and m_indices to the mRootMesh
     this->m_vertices = vertices;
     this->m_indices = indices;
     this->m_UVs = uvs;

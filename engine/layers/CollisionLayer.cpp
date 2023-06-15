@@ -46,10 +46,10 @@ void CollisionLayer::update(Scene *scene) {
                         std::cout  << " [" << collider1 << "-X-" << collider2 << "] ";
                     }
 
-                    scene->modelsInScene[collider1]->rootMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
+                    scene->modelsInScene[collider1]->mRootMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
                     colourOffset += 0.1f;
 
-                    scene->modelsInScene[collider2]->rootMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
+                    scene->modelsInScene[collider2]->mRootMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
                     colourOffset += 0.1f;
 
                     alreadyColliding[collider1] = true;
@@ -60,10 +60,10 @@ void CollisionLayer::update(Scene *scene) {
                         std::cout << collider1 << "<->" << collider2 << "  ";
                     }
                     if (!alreadyColliding[collider1]) {
-                        scene->modelsInScene[collider1]->rootMesh->restoreMaterial();
+                        scene->modelsInScene[collider1]->mRootMesh->restoreMaterial();
                     }
                     if (!alreadyColliding[collider2]) {
-                        scene->modelsInScene[collider2]->rootMesh->restoreMaterial();
+                        scene->modelsInScene[collider2]->mRootMesh->restoreMaterial();
                     }
                 }
             }

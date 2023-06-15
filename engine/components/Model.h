@@ -8,10 +8,11 @@
 class Model : public Component {
 
 public:
-    Mesh *rootMesh{};
-    Mesh *collisionMesh{};
+    Mesh *mRootMesh{};
+    Mesh *mCollisionMesh{};
     Collider *mCollider{};
     physx::PxRigidActor *mPhysicsBody{};
+    physx::PxTransform previousGlobalPose{};
 
     ObjectType getType() override {
         return ObjectType::OT_Model;
@@ -27,13 +28,15 @@ public:
 
     void addChild(Component *child) override; // need to add meshes to meshtree
 
-    // todo setCollider(level) radial, box, rootMesh
+    // todo setCollider(level) radial, box, mRootMesh
     virtual void setCollider(ColliderConfig config);
+
+    void setCollisionMesh(Mesh *mesh);
 //
 
 //    /**
 //     * use model->setLocalPosition to correctly update colliders and underlying objects
-//     * using rootMesh transform
+//     * using mRootMesh transform
 //     */
 //    void setLocalPosition(glm::vec3) override;
 //

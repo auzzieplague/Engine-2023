@@ -12,7 +12,7 @@ bool Mesh::isReady() {
     if (m_ready) return true;
 
     // not all meshes will need to be rendered, but at the moment only rendering is using readyCheckk
-    // we will need to subclass rootMesh into render and non render types
+    // we will need to subclass mRootMesh into render and non render types
     if (this->m_gID != 0) {
         m_ready = true;
     }
@@ -34,7 +34,7 @@ void Mesh::calculateNormals() {
         // Initialize the normal vector for each vertex to (0, 0, 0)
         std::vector<glm::vec3> vertexNormals(m_vertices.size(), glm::vec3(0.0f));
 
-        // Iterate over each face of the rootMesh
+        // Iterate over each face of the mRootMesh
         for (size_t i = 0; i < m_indices.size(); i += 3) {
             // Get the m_indices of the three m_vertices that make m_up the face
             unsigned int i1 = m_indices[i];
@@ -66,7 +66,7 @@ void Mesh::calculateTangents() {
     std::vector<glm::vec3> vertexTangents(m_vertices.size(), glm::vec3(0.0f));
     std::vector<glm::vec3> vertexBitangents(m_vertices.size(), glm::vec3(0.0f));
 
-    // Iterate over each face of the rootMesh
+    // Iterate over each face of the mRootMesh
     for (size_t i = 0; i < m_indices.size(); i += 3) {
         // Get the m_indices of the three m_vertices that make m_up the face
         unsigned int i1 = m_indices[i];
@@ -114,7 +114,7 @@ void Mesh::calculateTangents() {
         // Calculate the handedness of the tangent and bitangent vectors
         float handedness = glm::dot(glm::cross(normal, tangent), vertexBitangents[i]) < 0.0f ? -1.0f : 1.0f;
 
-        // Add the final tangent and bitangent vectors to the rootMesh
+        // Add the final tangent and bitangent vectors to the mRootMesh
         m_tangents.emplace_back(glm::vec4(tangent, handedness));
         m_biTangents.push_back(glm::vec3(vertexBitangents[i] * handedness));
     }
@@ -212,7 +212,7 @@ void Mesh::addMesh(Mesh *subMesh) {
     childComponents.push_back(subMesh);
     // each mesh should know its parent and root, and be added to the root mesh tree
 
-    // if this mesh has a parent mesh (is a child), update the rootMesh tree
+    // if this mesh has a parent mesh (is a child), update the mRootMesh tree
     if (this->parentMesh) {
         // update existing submesh meshtree parent, root values accordingly
         for (auto nestedMesh: subMesh->meshTree) {
@@ -227,7 +227,7 @@ void Mesh::addMesh(Mesh *subMesh) {
         //todo update all submeshtree items world transform
 
     } else {
-        // if this is the first child being added, make this the rootMesh
+        // if this is the first child being added, make this the mRootMesh
         subMesh->rootMesh = this;
         meshTree.push_back(subMesh);
 //        subMesh->updateFinalTransform();
