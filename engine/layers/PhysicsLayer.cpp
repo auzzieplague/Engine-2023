@@ -20,6 +20,7 @@ void PhysicsLayer::update(Scene *scene) {
     //updatePosition positions of models
     for (auto model: scene->modelsWithPhysics) {
         transform = model->mPhysicsBody->getGlobalPose();
+        // todo is there a local pose ?
         model->applyPxTransform(transform);
     }
 
@@ -122,7 +123,9 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
      * - sphere geometry doesnt accept rotational values so we need to pass different transform params based on shape
      */
     glm::vec3 size = model->mCollider->getSize();
+
     switch (config.shape) {
+
         case config.Box:
             //size will be based on aabb
             shape = mPhysics->createShape(physx::PxBoxGeometry(
@@ -137,6 +140,7 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
                 shape = mPhysics->createShape(physx::PxTriangleMeshGeometry(triangleMesh), *mMaterial);
             }
             break;
+
         case config.Sphere:
         default:
             // m_size based on scale and radius of X, no support for ellipses
@@ -150,12 +154,13 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
      * for example sphere geometry cannot have a rotational component.
      */
     physx::PxTransform buildTransform;  // different shapes have different transform properties
-    auto position = model->getLocalPosition();
+    auto position = model->getFinalTransform().getPosition();
     switch (config.shape) {
         case config.Mesh:
             buildTransform = model->getPxTransform();
             break;
         case config.Box:
+        case config.Sphere: // doesnt support orientation
         default:
             buildTransform = physx::PxTransform(physx::PxVec3(position.x, position.y, position.z));
             break;

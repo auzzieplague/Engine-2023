@@ -5,63 +5,58 @@
 
 Model *playerObject;
 
-Model * modelWithSubMeshes () {
+Model *modelWithSubMeshes() {
     Material material;
     material.loadFromAsset("mats_ground", "gray-bricks1");
 
-    auto *root = Model::createFromGeometry(Geometry::ShapeType::Cube);
+    auto *root = Model::createFromGeometry(Geometry::ShapeType::Sphere);
     root->setWorldPosition(glm::vec3(-1, 0, -25));
     root->setLocalRotation(glm::vec3(-30, 0, -25));
     root->setMaterial(material);
 
-    auto subMesh = new Geometry();
-    subMesh->buildCube();
-    subMesh->setLocalPosition(glm::vec3(1, 0, -2)); // should be relative to parent mesh
-    material.setAmbientColor(glm::vec3(0.5,0,0));
-    subMesh->setMaterial(material);
-    root->rootMesh->addMesh(subMesh);
+    glm::vec3 positions[] = {
+            glm::vec3(-1, 0, -2),
+            glm::vec3(1, 0, -2),
+            glm::vec3(0, 0, -2),
+    };
 
-    auto subSubMesh = new Geometry();
-    subSubMesh->buildCube();
-    subSubMesh->setLocalPosition(glm::vec3(-1, 1, 0)); // should be relative to parent mesh
-    material.setAmbientColor(glm::vec3(0,0.5,0));
-    subSubMesh->setMaterial(material);
-    subMesh->addMesh(subSubMesh);
+    int count = 3;
+    for (int n = count; n > 0; n--) {
+        auto subMesh = new Geometry();
+        subMesh->buildSphere();
+        subMesh->setLocalPosition(positions[n]); // should be relative to parent mesh
+        material.setAmbientColor(glm::vec3(n*(1/count), 0, 0));
+        subMesh->setMaterial(material);
+        root->rootMesh->addMesh(subMesh);
+    }
+
 
     return root;
 }
 
+
 void setupScene(Scene *scene) {
     ColliderConfig config{};
+    Material material;
 
     playerObject = modelWithSubMeshes();
+    playerObject->setLocalScale(1);
+    playerObject->setWorldPosition(glm::vec3(0,0,-20));
 
-    Material material;
-    material.loadFromAsset("mats_ground", "gray-bricks1");
-
-    playerObject->setLocalScale(5);
-//    playerObject->setMaterial(material);
-//    playerObject->setLocalPosition({0, 0, -10});
-//    playerObject->setLocalRotation({30, 0, 0});
-
-
-//    config.shape = config.Sphere;
-//    config.type = config.Static;
-//    playerObject->setCollider(config);
+    config.shape = config.Sphere;
+    config.type = config.Dynamic;
+    playerObject->setCollider(config);
     scene->addComponent(playerObject);
 
-    return;
     material.loadFromAsset("mats_ground", "grass1");
     auto *terrain1 = new Model();
     terrain1->getMeshFromHeightMap("test_map_64");
-    terrain1->setLocalPosition({0, -20, 0});
-    terrain1->setLocalRotation({0, 0, 0});
+//    terrain1->setLocalRotation({0, 0, 0});
     terrain1->setLocalScale({100, 10, 100});
+    terrain1->setWorldPosition({0, -20, -20});
     terrain1->setMaterial(material);
-    auto test = terrain1->getLocalMatrix();
     config = {.shape=config.Mesh, .type=config.Static};
     terrain1->setCollider(config);
-//    terrain1->rootMesh->switchIndexOrder();
     scene->addComponent(terrain1);
 
     Debug::show("[->] Use 'R' to generate collision report");
@@ -97,7 +92,7 @@ int main() {
 
     try {
         setupScene(engine->currentScene);
-    } catch(const std::exception& e) {
+    } catch (const std::exception &e) {
         Debug::show("[!] Scene Setup Error");
         Debug::show(e.what());
     }

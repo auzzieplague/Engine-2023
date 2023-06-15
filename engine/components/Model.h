@@ -17,6 +17,12 @@ public:
         return ObjectType::OT_Model;
     };
 
+    bool isDynamic() {
+        if (!this->mPhysicsBody) return false;
+        if (this->mCollider->m_config.type != ColliderConfig::Dynamic) return false;
+        return true;
+    }
+
     static Model *createFromGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
 
     void addChild(Component *child) override; // need to add meshes to meshtree
@@ -24,6 +30,7 @@ public:
     // todo setCollider(level) radial, box, rootMesh
     virtual void setCollider(ColliderConfig config);
 //
+
 //    /**
 //     * use model->setLocalPosition to correctly update colliders and underlying objects
 //     * using rootMesh transform
@@ -31,6 +38,7 @@ public:
 //    void setLocalPosition(glm::vec3) override;
 //
 //    void setLocalScale(glm::vec3) override;
+//    void setLocalScale(float) override;
 //
 //    void setLocalRotation(glm::vec3) override;
 

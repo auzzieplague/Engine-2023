@@ -16,7 +16,7 @@ void InteractionLayer::processInput(Scene *scene) {
     processCameraInput(scene, movement);
 
     if (selectedModel) {
-        if (selectedModel->mPhysicsBody) {
+        if (selectedModel->isDynamic()) {
             handleCharacterKeysWithPhysics();
         } else {
             handleCharacterKeys(movement);

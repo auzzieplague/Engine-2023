@@ -9,7 +9,7 @@ class Component : public Object {
 protected:
     Transform localTransform{};
     Transform worldTransform{};
-    Transform combinedTransform{};
+    Transform finalTransform{};
     bool m_dirty = true;
     bool m_ready = false;
 
@@ -46,11 +46,13 @@ public:
     [[nodiscard]] virtual glm::vec3 getWorldPosition();
     [[nodiscard]] virtual glm::quat getWorldRotation();
     [[nodiscard]] virtual Transform getWorldTransform() const;
-    [[nodiscard]] virtual glm::mat4 getTransformMatrix();
     virtual void setWorldTransform(Transform transform);
 
+
+    virtual void updateFinalTransform();
+    virtual Transform getFinalTransform();
+    [[nodiscard]] virtual glm::mat4 getTransformMatrix();
     virtual void updateChildTransforms();
-    virtual void updateCombinedTransform();
 
     virtual void rotateX(float degrees);
     virtual void rotateY(float degrees);

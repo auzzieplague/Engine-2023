@@ -73,6 +73,9 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 ////    this->rootMesh->setLocalPosition(newPosition);
 //}
 //
+//void Model::setLocalScale(float scale) {
+//    this->setLocalScale({scale});
+//}
 //void Model::setLocalScale(glm::vec3 scale) {
 //    Component::setLocalScale(scale);
 //    /* when scaling we will need to rebuild and reset m_vertices of colliders as centers
@@ -80,7 +83,7 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
 //     */
 //    if (this->mCollider) {
 //        // physx setTransform can replace this - if physics is running
-////        this->mCollider->rebuild(rootMesh);
+//        this->mCollider->rebuild(rootMesh);
 //    }
 //}
 //
@@ -126,22 +129,32 @@ void Model::setCollider(ColliderConfig config) {
 
 void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
 
+    // todo - update world coordinates not local coordinates
+    // todo - swap to collision mesh instead of root mesh
+    // todo -
+
     //todo - will replace isColliding function with physX checks, but until then we will need to apply the position updates to the mCollider
     mCollider->rebuild(rootMesh);
-    this->mCollider->updatePosition(-localTransform.getPosition());
+    this->mCollider->updatePosition(-worldTransform.getPosition());
 
     if (!mPhysicsBody) {
         return;
     }
-    this->localTransform.applyPxTransform(pxTransform);
+
+    // transform being handled by physics so just update the combined value ready for rendering
+    this->finalTransform.applyPxTransform(pxTransform);
+    updateChildTransforms();
 }
 
 void Model::getMeshFromHeightMap(std::string name) {
     this->rootMesh = AssetManager::getMeshFromHeightMap(name, 1, 1);
+    this->collisionMesh = rootMesh;
+    this->childComponents.push_back(rootMesh);
+    updateFinalTransform();
 }
 
 physx::PxTransform Model::getPxTransform() {
-    return this->localTransform.getPxTransform();
+    return this->finalTransform.getPxTransform();
 }
 
 void Model::setMaterial(Material material) {

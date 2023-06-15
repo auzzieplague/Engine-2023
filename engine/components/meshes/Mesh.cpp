@@ -220,7 +220,7 @@ void Mesh::addMesh(Mesh *subMesh) {
             nestedMesh->rootMesh = this->rootMesh;
 //                updateComponentWorldTransform(nestedMesh, this->getWorldTransform());
 //            nestedMesh->worldTransform.setPosition(this->worldTransform.getPosition()+nestedMesh->getLocalPosition());
-//            nestedMesh->updateCombinedTransform();
+//            nestedMesh->updateFinalTransform();
         }
         rootMesh->meshTree.insert(rootMesh->meshTree.end(), subMesh->meshTree.begin(), subMesh->meshTree.end());
 
@@ -230,7 +230,7 @@ void Mesh::addMesh(Mesh *subMesh) {
         // if this is the first child being added, make this the rootMesh
         subMesh->rootMesh = this;
         meshTree.push_back(subMesh);
-//        subMesh->updateCombinedTransform();
+//        subMesh->updateFinalTransform();
     }
 
     this->updateChildTransforms();
