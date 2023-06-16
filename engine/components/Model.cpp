@@ -62,42 +62,6 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
     model->mCollisionMesh = model->mRootMesh;
     return model;
 }
-//
-//void Model::setLocalPosition(glm::vec3 newPosition) {
-//    // note: it's a prerequisite that you setCollider() before moving things around
-//    if (this->mCollider) {
-//        this->mCollider->updatePosition(localTransform.getPosition() - newPosition);
-//    }
-//    // set primary mesh location
-//    Component::setLocalPosition(newPosition);
-////    this->mRootMesh->setLocalPosition(newPosition);
-//}
-//
-//void Model::setLocalScale(float scale) {
-//    this->setLocalScale({scale});
-//}
-//void Model::setLocalScale(glm::vec3 scale) {
-//    Component::setLocalScale(scale);
-//    /* when scaling we will need to rebuild and reset m_vertices of colliders as centers
-//     * and corners will have changed
-//     */
-//    if (this->mCollider) {
-//        // physx setTransform can replace this - if physics is running
-//        this->mCollider->rebuild(mRootMesh);
-//    }
-//}
-//
-//void Model::setLocalRotation(glm::vec3 rotation) {
-//    Component::setLocalRotation(rotation);
-//    /*
-//     * when rotating we will need to rebuild and reset m_vertices of colliders as centers
-//     * and corners will have changed
-//     */
-//    if (this->mCollider) {
-//        // physx setTransform can replace this - if physics is running
-//        this->mCollider->rebuild(mRootMesh);
-//    }
-//}
 
 void Model::applyForce(glm::vec3 force) const {
     // todo: check if dynamic .. probably subclass dynamic and static models so no checking required
@@ -178,3 +142,11 @@ void Model::setCollisionMesh(Mesh *mesh) {
     this->childComponents.push_back(mCollisionMesh);
 }
 
+Mesh *Model::getCollisionMesh() {
+    return this->mCollisionMesh;
+}
+
+
+Mesh *Model::getRootMesh() {
+    return this->mRootMesh;
+}

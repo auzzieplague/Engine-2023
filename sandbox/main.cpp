@@ -61,6 +61,13 @@ Model *terrainModel() {
 
     auto *terrain1 = new Model();
     terrain1->getMeshFromHeightMap("test_map_64");
+    Mesh * mesh = terrain1->getRootMesh();
+
+    Debug::show("Mesh Before and After");
+    Debug::show(mesh->getVertices().size());
+    terrain1->getRootMesh()->reduceMeshData();
+    Debug::show(mesh->getVertices().size());
+
     terrain1->setLocalScale({100, 10, 100});
     terrain1->setWorldPosition({0, -20, -20});
     terrain1->setMaterial(material);
@@ -71,7 +78,7 @@ Model *terrainModel() {
 
 void setupScene(Scene *scene) {
 
-    playerObject = modelWithSubMeshes(false);
+    playerObject = modelWithSubMeshes(true);
     scene->addComponent(playerObject);
 
     auto terrain = terrainModel();
@@ -120,7 +127,7 @@ int main() {
 
 
     /// kick-start the main loop
-    engine->start();
+//    engine->start();
 
     Debug::show("[>] Expected engine->stop()");
 }

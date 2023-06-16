@@ -13,32 +13,29 @@ protected:
     Material m_material_original;
     std::vector<glm::vec3> m_vertices;
     std::vector<glm::vec2> m_UVs;
-    std::vector<glm::vec3> m_normals;
     std::vector<unsigned int> m_indices;
+    std::vector<glm::vec3> m_normals;
 
     std::vector<glm::vec3> m_tangents;
     std::vector<glm::vec3> m_biTangents;
 
 public:
-    enum TOPOLOGY {
-        POINTS,
-        LINES,
-        LINE_STRIP,
-        TRIANGLES,
-        TRIANGLE_STRIP,
-        TRIANGLE_FAN,
-    };
 
     Mesh *parentMesh = nullptr;
     Mesh *rootMesh = nullptr;
+
     std::vector<Mesh *> meshTree;
+    /**
+     * meshLODTree contains other versions of the meshTree to use, we will need to apply current
+     * before switching the pointer we will need to update the transforms of the new LOD meshTree item
+     * to that of the current mesh tree.
+     */
+    std::vector<Mesh *> meshLODTree; // todo allow different meshes to have a different number of LODs,
+
 
     void addChild(Component *child) override;
 
     void addMesh(Mesh *subMesh);
-
-
-
 
     void setVertices(const std::vector<glm::vec3> &mVertices);
 
@@ -48,8 +45,6 @@ public:
 
     void setNormals(const std::vector<glm::vec3> &mNormals);
 
-    TOPOLOGY m_topology = TRIANGLES;
-    unsigned int m_topologyID = 0; // updated in initMesh()
     unsigned int m_gID = 0;
     static GraphicsAPI *m_api;
 
@@ -102,6 +97,14 @@ public:
     void calculateTangents();
 
     void applyPxTransform(const physx::PxTransform &pxTransform);
+
+    void reduceMeshData(int iterations);
+    void reduceMeshData();
+    static glm::vec3 calculateMidpoint(const glm::vec3& v1, const glm::vec3& v2);
+    static glm::vec2 calculateMidpoint(const glm::vec2& uv1, const glm::vec2& uv2);
+    glm::mat4 calculateFaceQEM(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2) ;
+
+    glm::vec3 calculateOptimalPosition(const glm::mat4& qem) ;
 
     void switchIndexOrder(bool clockwise = true);
 };

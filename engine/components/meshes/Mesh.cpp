@@ -234,4 +234,90 @@ void Mesh::addMesh(Mesh *subMesh) {
     }
 
     this->updateChildTransforms();
-};
+}
+
+void Mesh::reduceMeshData(int iterations) {
+    for (int i = 0; i < iterations; i++) {
+        this->reduceMeshData();
+    }
+}
+
+void Mesh::reduceMeshData() {
+    // Initialize QEM data for each vertex
+    std::vector<glm::mat4> vertexQEMs(m_vertices.size(), glm::mat4(0.0f));
+
+    // Iterate over each face to compute QEMs
+    for (size_t i = 0; i < m_indices.size(); i += 3) {
+        glm::vec3 v0 = m_vertices[m_indices[i]];
+        glm::vec3 v1 = m_vertices[m_indices[i + 1]];
+        glm::vec3 v2 = m_vertices[m_indices[i + 2]];
+
+        glm::mat4 faceQEM = calculateFaceQEM(v0, v1, v2);
+
+        // Accumulate the face QEMs for each vertex
+        vertexQEMs[m_indices[i]] += faceQEM;
+        vertexQEMs[m_indices[i + 1]] += faceQEM;
+        vertexQEMs[m_indices[i + 2]] += faceQEM;
+    }
+
+    // Simplify the mesh by collapsing vertices
+    std::vector<unsigned int> reducedIndices;
+    std::vector<glm::vec3> reducedVertices;
+    std::vector<glm::vec2> reducedUVs;
+
+    for (size_t i = 0; i < m_vertices.size(); i++) {
+        if (vertexQEMs[i] == glm::mat4(0.0f)) {
+            // Skip vertices that are already removed
+            continue;
+        }
+
+        // Calculate the optimal position for vertex collapse
+        glm::vec3 optimalPosition = calculateOptimalPosition(vertexQEMs[i]);
+
+        // Update the indices and vertex data
+        auto reducedIndex = static_cast<unsigned int>(reducedVertices.size());
+        reducedIndices.push_back(reducedIndex);
+        reducedVertices.push_back(optimalPosition);
+        reducedUVs.push_back(m_UVs[i]);
+
+        // Update QEMs for affected vertices
+        for (size_t j = 0; j < m_indices.size(); j++) {
+            if (m_indices[j] == i) {
+                reducedIndices.push_back(reducedIndex);
+            } else if (m_indices[j] > i) {
+                m_indices[j]--;
+            }
+        }
+
+        // Mark the collapsed vertex as removed
+        vertexQEMs[i] = glm::mat4(0.0f);
+    }
+
+    // Update the mesh data with the reduced sets
+    m_vertices = std::move(reducedVertices);
+    m_UVs = std::move(reducedUVs);
+    m_indices = std::move(reducedIndices);
+}
+
+glm::vec3 Mesh::calculateMidpoint(const glm::vec3 &v1, const glm::vec3 &v2) {
+    return (v1 + v2) * 0.5f;
+}
+
+glm::vec2 Mesh::calculateMidpoint(const glm::vec2 &uv1, const glm::vec2 &uv2) {
+    return (uv1 + uv2) * 0.5f;
+}
+
+glm::mat4 Mesh::calculateFaceQEM(const glm::vec3 &v0, const glm::vec3 &v1, const glm::vec3 &v2) {
+    glm::vec3 n = glm::normalize(glm::cross(v1 - v0, v2 - v0));
+    glm::vec4 plane(n, -glm::dot(n, v0));
+    glm::mat4 qem = glm::outerProduct(plane, plane);
+    return qem;
+}
+
+glm::vec3 Mesh::calculateOptimalPosition(const glm::mat4 &qem) {
+    // Compute the optimal position as the minimum eigenvector of the QEM matrix
+    glm::mat3 qem3 = glm::mat3(qem);
+    glm::mat3 invQEM3 = glm::inverse(qem3);
+    glm::vec3 optimalPosition = -glm::vec3(invQEM3[0][2], invQEM3[1][2], invQEM3[2][2]) / invQEM3[2][2];
+    return optimalPosition;
+}
