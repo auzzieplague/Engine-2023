@@ -9,6 +9,7 @@
 #include "../../vendor/imgui/imgui_impl_glfw.h"
 #include "../../vendor/imgui/imgui_impl_opengl3.h"
 #include "../../vendor/ImGuizmo/ImGuizmo.h"
+#include <glm/gtc/type_ptr.hpp>
 #include "../Engine.h"
 
 class IMGuiLayer :

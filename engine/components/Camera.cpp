@@ -2,7 +2,7 @@
 #include "Camera.h"
 
 Camera::Camera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) :
-        m_position(pos), m_worldUp(up), m_yaw(yaw), m_pitch(pitch), m_fov(45.0f), m_aspectRatio(1.0f), m_nearClip(0.1f),
+        mPosition(pos), m_worldUp(up), m_yaw(yaw), m_pitch(pitch), m_fov(45.0f), m_aspectRatio(1.0f), m_nearClip(0.1f),
         m_farClip(100.0f) {
     updateCameraVectors();
     updateProjectionMatrix();
@@ -11,18 +11,18 @@ Camera::Camera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) :
 
 glm::mat4 Camera::getViewMatrix() {
     if (m_dirty) {
-        m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
+        mViewMatrix = glm::lookAt(mPosition, mPosition + m_front, m_up);
         m_dirty = false;
     }
-    return m_viewMatrix;
+    return mViewMatrix;
 }
 
 void Camera::updateProjectionMatrix() {
-    m_projectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_nearClip, m_farClip);
+    mProjectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_nearClip, m_farClip);
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
-    return m_projectionMatrix;
+    return mProjectionMatrix;
 }
 
 [[maybe_unused]] void Camera::setAspectRatio(float aspectRatio) {
@@ -42,32 +42,32 @@ glm::mat4 Camera::getProjectionMatrix() {
 }
 
 void Camera::moveForward(float deltaTime) {
-    m_position += m_front * deltaTime;
+    mPosition += m_front * deltaTime;
     m_dirty = true;
 }
 
 void Camera::moveBackward(float deltaTime) {
-    m_position -= m_front * deltaTime;
+    mPosition -= m_front * deltaTime;
     m_dirty = true;
 }
 
 void Camera::moveRight(float deltaTime) {
-    m_position += m_right * deltaTime;
+    mPosition += m_right * deltaTime;
     m_dirty = true;
 }
 
 void Camera::moveLeft(float deltaTime) {
-    m_position -= m_right * deltaTime;
+    mPosition -= m_right * deltaTime;
     m_dirty = true;
 }
 
 void Camera::moveUp(float deltaTime) {
-    m_position += m_up * deltaTime;
+    mPosition += m_up * deltaTime;
     m_dirty = true;
 }
 
 void Camera::moveDown(float deltaTime) {
-    m_position -= m_up * deltaTime;
+    mPosition -= m_up * deltaTime;
     m_dirty = true;
 }
 
@@ -106,5 +106,5 @@ void Camera::updateCameraVectors() {
 }
 
 glm::vec3 Camera::getLocalPosition() {
-    return m_position;
+    return mPosition;
 }

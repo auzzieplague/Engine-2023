@@ -2,32 +2,32 @@
 #include "Transform.h"
 
 Transform::Transform() :
-        m_position(glm::vec3(0.0f)),
-        m_rotation(glm::quat()),
-        m_scale(glm::vec3(1.0f)) {}
+        mPosition(glm::vec3(0.0f)),
+        mRotation(glm::quat()),
+        mScale(glm::vec3(1.0f)) {}
 
 glm::vec3 Transform::getPosition() const {
-    return m_position;
+    return mPosition;
 }
 
 glm::quat Transform::getRotation() const {
-    return m_rotation;
+    return mRotation;
 }
 
 glm::vec3 Transform::getScale() const {
-    return m_scale;
+    return mScale;
 }
 
 glm::mat4 Transform::getMatrix()  {
     // if not dirty can probably return last result rather than recalc
-    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), m_position);
-    glm::mat4 rotationMatrix = glm::mat4_cast(m_rotation);
-    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), m_scale);
+    glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), mPosition);
+    glm::mat4 rotationMatrix = glm::mat4_cast(mRotation);
+    glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), mScale);
     return translationMatrix * rotationMatrix * scaleMatrix;
 }
 
 void Transform::setPosition(glm::vec3 position) {
-    this->m_position = position;
+    this->mPosition = position;
 }
 
 glm::quat toQuaternion(const glm::vec3& euler) {
@@ -39,34 +39,34 @@ glm::quat toQuaternion(const glm::vec3& euler) {
 }
 
 void Transform::setRotation(glm::vec3 rotation) {
-    this->m_rotation = toQuaternion(rotation);
+    this->mRotation = toQuaternion(rotation);
 }
 
 void Transform::setRotation(glm::quat rotation) {
-    this->m_rotation = rotation;
+    this->mRotation = rotation;
 }
 
 void Transform::setScale(glm::vec3 scale) {
-    this->m_scale = scale;
+    this->mScale = scale;
 }
 
 [[maybe_unused]] void Transform::translate(glm::vec3 translation) {
-    m_position += translation;
+    mPosition += translation;
 }
 
 void Transform::rotate(glm::vec3 axis, float angle) {
-    m_rotation = glm::rotate(m_rotation, angle, axis);
+    mRotation = glm::rotate(mRotation, angle, axis);
 }
 
 void Transform::scale(glm::vec3 scale) {
-    this->m_scale *= scale;
+    this->mScale *= scale;
 }
 
 physx::PxTransform Transform::getPxTransform() const {
 // Scale is not supported - has to be adjusted when creating shape / mesh
     physx::PxTransform t(
-            physx::PxVec3(m_position.x,m_position.y,m_position.z),
-    physx::PxQuat(m_rotation.x,m_rotation.y,m_rotation.z,m_rotation.w)
+            physx::PxVec3(mPosition.x, mPosition.y, mPosition.z),
+    physx::PxQuat(mRotation.x, mRotation.y, mRotation.z, mRotation.w)
             );
     return t;
 
@@ -75,6 +75,6 @@ physx::PxTransform Transform::getPxTransform() const {
 void Transform::setFromMatrix(const glm::mat4 &matrix) {
     glm::vec3 skew;
     glm::vec4 perspective;
-    glm::decompose(matrix, m_scale, m_rotation, m_position, skew, perspective);
+    glm::decompose(matrix, mScale, mRotation, mPosition, skew, perspective);
 }
 

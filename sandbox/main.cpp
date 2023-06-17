@@ -79,11 +79,13 @@ Model *terrainModel() {
 
 void setupScene(Scene *scene) {
 
-    playerObject = modelWithSubMeshes(true);
+    playerObject = modelWithSubMeshes(false);
     scene->addComponent(playerObject);
 
     auto terrain = terrainModel();
     scene->addComponent(terrain);
+
+    scene->selectedComponent = playerObject;
 
     Debug::show("[->] Use 'R' to generate collision report");
     Debug::show("[->] Use NumPad 4862+- to navigate test Model");

@@ -153,34 +153,57 @@ void InteractionLayer::selectedObjectGui(Scene *scene) {
         if (ImGui::SmallButton("Move Forward")) {
 //            scene->selectedComponent->moveForward(1);
         }
-//
-//        Transform transform = scene->selectedComponent->getLocalTransform();
-//        ImGui::PushItemWidth(80);
-//        {
-//            ImGui::DragFloat("px", &scene->selectedComponent->position.x, 0.5f);
-//            ImGui::SameLine();
-//            ImGui::DragFloat("py", &scene->selectedComponent->position.y, 0.5f);
-//            ImGui::SameLine();
-//            ImGui::DragFloat("pz", &scene->selectedComponent->position.z, 0.5f);
-//        }
-//        {
-//            ImGui::DragFloat("rx", &scene->selectedComponent->rotation.x, 0.5f);
-//            ImGui::SameLine();
-//            ImGui::DragFloat("ry", &scene->selectedComponent->rotation.y, 0.5f);
-//            ImGui::SameLine();
-//            ImGui::DragFloat("rz", &scene->selectedComponent->rotation.z, 0.5f);
-//        }
-//        {
-//            ImGui::DragFloat("sx", &scene->selectedComponent->scale.x, 0.5f);
-//            ImGui::SameLine();
-//            ImGui::DragFloat("sy", &scene->selectedComponent->scale.y, 0.5f);
-//            ImGui::SameLine();
-//            ImGui::DragFloat("sz", &scene->selectedComponent->scale.z, 0.5f);
-//        }
-//
-//        ImGui::Checkbox("Dynamic", &scene->selectedComponent->isDynamic);
 
+        ImGui::Text("Local Transform");
+        ImGui::PushItemWidth(80);
+        {
+            ImGui::DragFloat("lpx", &scene->selectedComponent->localTransform.mPosition.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lpy", &scene->selectedComponent->localTransform.mPosition.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lpz", &scene->selectedComponent->localTransform.mPosition.z, 0.5f);
+        }
+        {
+            ImGui::DragFloat("lrx", &scene->selectedComponent->localTransform.mRotation.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lry", &scene->selectedComponent->localTransform.mRotation.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lrz", &scene->selectedComponent->localTransform.mRotation.z, 0.5f);
+        }
+        {
+            ImGui::DragFloat("lsx", &scene->selectedComponent->localTransform.mScale.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lsy", &scene->selectedComponent->localTransform.mScale.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lsz", &scene->selectedComponent->localTransform.mScale.z, 0.5f);
+        }
+
+        ImGui::Text("World Transform");
+        ImGui::PushItemWidth(80);
+        {
+            ImGui::DragFloat("wpx", &scene->selectedComponent->worldTransform.mPosition.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("wpy", &scene->selectedComponent->worldTransform.mPosition.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("wpz", &scene->selectedComponent->worldTransform.mPosition.z, 0.5f);
+        }
+        {
+            ImGui::DragFloat("wrx", &scene->selectedComponent->worldTransform.mRotation.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("wry", &scene->selectedComponent->worldTransform.mRotation.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("wrz", &scene->selectedComponent->worldTransform.mRotation.z, 0.5f);
+        }
+        {
+            ImGui::DragFloat("wsx", &scene->selectedComponent->worldTransform.mScale.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("wsy", &scene->selectedComponent->worldTransform.mScale.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("wsz", &scene->selectedComponent->worldTransform.mScale.z, 0.5f);
+        }
         ImGui::PopItemWidth();
+
+        scene->selectedComponent->updateFinalTransform();
     }
     ImGui::End();
 }

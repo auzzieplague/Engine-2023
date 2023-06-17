@@ -32,7 +32,7 @@ struct ColliderConfig {
 class Collider {
 
 private:
-    BoundingSphere m_sphere; // m_center is world m_position
+    BoundingSphere m_sphere; // m_center is world mPosition
     BoundingBox m_aabb;// world coordinate comparison
     std::vector<glm::vec3> m_vertices; // the hull needs to contain all model sub meshes
     glm::vec3 m_size{}; // used for physx objects
@@ -75,7 +75,7 @@ public:
      */
     virtual void updatePosition(glm::vec3 offsetChange) {
         /**
-         * shift m_position of m_sphere m_center ... note m_center is not origin of model so we can just set m_position
+         * shift mPosition of m_sphere m_center ... note m_center is not origin of model so we can just set mPosition
          * similarly we need to shift the min and max corners of the bounding box
          *
          * where the object scales, we will need to recalculate the whole volume as corners and
@@ -87,7 +87,7 @@ public:
 
     virtual void rebuild(Mesh *mesh) {
         /**
-         * todo shift m_position of m_sphere m_center ... note m_center is not origin of model so we can just set m_position
+         * todo shift mPosition of m_sphere m_center ... note m_center is not origin of model so we can just set mPosition
          * similarly we need to shift the min and max corners of the bounding box
          *
          * where the object scales, we will need to recalculate the whole volume as corners and

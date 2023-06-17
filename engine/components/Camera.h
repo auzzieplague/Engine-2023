@@ -6,7 +6,7 @@
 
 class Camera : public Component {
 private:
-    glm::vec3 m_position;
+
     glm::vec3 m_front;
     glm::vec3 m_up;
     glm::vec3 m_right;
@@ -18,12 +18,13 @@ private:
     float m_nearClip;
     float m_farClip;
 
-    glm::mat4 m_viewMatrix;
-    glm::mat4 m_projectionMatrix;
-
     void updateCameraVectors();
 
 public:
+    glm::mat4 mViewMatrix;
+    glm::mat4 mProjectionMatrix;
+    glm::vec3 mPosition;
+
     explicit Camera(glm::vec3 pos = glm::vec3(0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = -90.0f,
                     float pitch = 0.0f);
 

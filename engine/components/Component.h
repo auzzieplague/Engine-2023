@@ -7,13 +7,17 @@
 
 class Component : public Object {
 protected:
-    Transform localTransform{};
-    Transform worldTransform{};
-    Transform finalTransform{};
+
     bool m_dirty = true;
     bool m_ready = false;
 
 public:
+
+    // for editor direct access - might be able to friend class / protected access these
+    Transform localTransform{};
+    Transform worldTransform{};
+    Transform finalTransform{};
+
     ObjectType getType() override {
         return ObjectType::OT_Component;
     };
@@ -66,7 +70,7 @@ public:
     /**
      *  create a game object that represents the 3D model in the game world.
      *  The game object should contain the mRootMesh and m_material objects,
-     *  as well as any other relevant information such as the object's m_position, m_rotation, and scale.
+     *  as well as any other relevant information such as the object's mPosition, mRotation, and scale.
      */
     virtual void init() {
         std::cout << "render not implemented for component\n";

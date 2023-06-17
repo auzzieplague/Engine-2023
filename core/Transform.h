@@ -9,11 +9,14 @@
 #include <physx/PxPhysicsAPI.h>
 
 class Transform {
-private:
-    glm::vec3 m_position{};
-    glm::quat m_rotation{0.01f,0.01f,0.01f,0.01f};
-    glm::vec3 m_scale{1,1,1};
+protected:
+
 public:
+    // for editor direct access - might be able to friend class / protected access these
+    glm::vec3 mPosition{};
+    glm::quat mRotation{0.01f, 0.01f, 0.01f, 0.01f};
+    glm::vec3 mScale{1, 1, 1};
+
     Transform();
 
     [[nodiscard]] glm::vec3 getPosition() const;
@@ -52,49 +55,49 @@ public:
 //        glm::vec3 scale = glm::vec3(pxScale.x, pxScale.y, pxScale.z);
 
         // Update the position, rotation, and scale properties of the Transform object
-        m_position = position;
-        m_rotation = rotation;
-//        m_scale = scale;
+        mPosition = position;
+        mRotation = rotation;
+//        mScale = scale;
     }
 
 
     void rotateX(float degrees) {
         float radians = glm::radians(degrees);
         glm::quat rotation = glm::angleAxis(radians, glm::vec3(1, 0, 0));
-        m_rotation = rotation * m_rotation;
+        mRotation = rotation * mRotation;
     }
 
     void rotateY(float degrees) {
         float radians = glm::radians(degrees);
         glm::quat rotation = glm::angleAxis(radians, glm::vec3(0, 1, 0));
-        m_rotation = rotation * m_rotation;
+        mRotation = rotation * mRotation;
     }
 
     void rotateZ(float degrees) {
         float radians = glm::radians(degrees);
         glm::quat rotation = glm::angleAxis(radians, glm::vec3(0, 0, 1));
-        m_rotation = rotation * m_rotation;
+        mRotation = rotation * mRotation;
     }
 
     void roll(float degrees) {
-        glm::quat rotation = glm::angleAxis(glm::radians(degrees), m_rotation * glm::vec3(1.0f, 0.0f, 0.0f));
-        m_rotation = rotation * m_rotation;
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), mRotation * glm::vec3(1.0f, 0.0f, 0.0f));
+        mRotation = rotation * mRotation;
     }
 
     void pitch(float degrees) {
-        glm::quat rotation = glm::angleAxis(glm::radians(degrees), m_rotation * glm::vec3(0.0f, 1.0f, 0.0f));
-        m_rotation = rotation * m_rotation;
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), mRotation * glm::vec3(0.0f, 1.0f, 0.0f));
+        mRotation = rotation * mRotation;
     }
 
     void yaw(float degrees) {
-        glm::quat rotation = glm::angleAxis(glm::radians(degrees), m_rotation * glm::vec3(0.0f, 0.0f, 1.0f));
-        m_rotation = rotation * m_rotation;
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), mRotation * glm::vec3(0.0f, 0.0f, 1.0f));
+        mRotation = rotation * mRotation;
     }
 
     physx::PxTransform getPxTransform() const;
 
     glm::vec3 getRotationEuler() const {
-        glm::quat rotation = m_rotation;
+        glm::quat rotation = mRotation;
         glm::vec3 euler = glm::degrees(glm::eulerAngles(rotation));
         return euler;
     }
