@@ -2,6 +2,7 @@
 #include "../engine/Engine.h"
 #include "../engine/layers/CollisionLayer.h"
 #include "../engine/layers/PhysicsLayer.h"
+#include "../engine/layers/IMGuiLayer.h"
 
 Model *playerObject;
 
@@ -106,10 +107,10 @@ int main() {
     engine->setGraphicsApi(new API_OpenGL());
     engine->attachLayer(new WindowLayer());    // maintains the window interface & required for input processing
 
-
     /// optional layers
     engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene
     engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
+    engine->attachLayer(new IMGuiLayer());
 //    engine->attachLayer(new CollisionLayer()); // processes collisions effects
 
     // setup interaction layer and scene together to inject a tests model
@@ -124,7 +125,6 @@ int main() {
     }
 
     interactionLayer->selectedModel = playerObject;
-
 
     /// kick-start the main loop
     engine->start();

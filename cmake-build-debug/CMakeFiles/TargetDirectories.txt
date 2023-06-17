@@ -1,4 +1,6 @@
 C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug/CMakeFiles/componentLayout.dir
+C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug/CMakeFiles/imgui.dir
+C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug/CMakeFiles/imguizmo.dir
 C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug/CMakeFiles/glad.dir
 C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug/CMakeFiles/edit_cache.dir
 C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -31,11 +31,13 @@ void Engine::loopLayers()  {
                 layer->afterUpdate(this->currentScene);
             }
 
-            // passes layers and scene to gui modelRenderer (overridden method)
-            // Engine::processAppendedGUItems(this->layers, this->currentScene);
-
             for (Layer *layer: this->layers) {
                 layer->beforeRender(this->currentScene);
+            }
+
+            // todo loop through all the layers and call appendToGui
+            for (auto *layer: this->layers) {
+                layer->appendToGui(this->currentScene);
             }
 
             for (Layer *layer: this->layers) {

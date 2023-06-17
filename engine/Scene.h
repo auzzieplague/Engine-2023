@@ -11,9 +11,9 @@ class Scene : public Object {
     /// at a high level we just want to add components to the scene graph
 public:
     float currentFrameRate = 1.0f;
+    Component * selectedComponent = nullptr;
 
     std::vector<Component *> componentList;
-
     std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
     std::vector<Model *> modelsInScene;
     std::vector<Mesh *> meshesToRender;

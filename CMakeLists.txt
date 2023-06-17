@@ -12,8 +12,10 @@ set(CMAKE_CXX_STANDARD 20)
 #find_package(PhysX)
 
 include_directories(
+        "${VENDOR}"
         "${VENDOR}/includes"
         "${VENDOR}/includes/physx"
+        "${VENDOR}/imgui/"
 )
 
 link_directories(
@@ -37,6 +39,17 @@ file(GLOB_RECURSE VENDOR_HEADER_FILES
         ${VENDOR}/includes/*.h
         )
 
+
+#GUI
+file(GLOB_RECURSE IMGUI_SOURCE_FILES ${VENDOR}/imgui/*.cpp)
+file(GLOB_RECURSE IMGUI_HEADER_FILES ${VENDOR}/imgui/*.h)
+add_library(imgui  ${IMGUI_HEADER_FILES} ${IMGUI_SOURCE_FILES})
+
+#GUI
+file(GLOB_RECURSE IMGUI_GIZMO_SOURCE_FILES ${VENDOR}/ImGuizmo/*.cpp)
+file(GLOB_RECURSE IMGUI_GIZMO_HEADER_FILES ${VENDOR}/ImGuizmo/*.h)
+add_library(imguizmo  ${IMGUI_GIZMO_HEADER_FILES} ${IMGUI_GIZMO_SOURCE_FILES})
+
 #file(GLOB_RECURSE VENDOR_SOURCE_FILES
 #        ${VENDOR}/*.cpp
 #        ${VENDOR}/*.c
@@ -49,7 +62,10 @@ add_executable(componentLayout  ${ENGINE_HEADER_FILES} ${ENGINE_SOURCE_FILES} ${
 
 add_library(glad ${VENDOR}/includes/glad/glad.c)
 
-set(LIBS glfw3 glad opengl32 glad d3d11 DirectXTK)
+set(LIBS glfw3 glad opengl32
+        imgui imguizmo
+        d3d11 DirectXTK)
+
 set (PHYSX
         PhysX_32
         PhysXCommon_32

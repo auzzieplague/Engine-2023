@@ -27,6 +27,8 @@ GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::stri
     Window::m_currentWindow = window;
     this->m_ready = true;
 
+    this->width= width;
+    this->height = height;
     glfwSetFramebufferSizeCallback(m_glRef, Window::framebufferSizeCallback);
 
     return window;
@@ -65,4 +67,12 @@ GLFWwindow *Window::getCurrentWindow() {
 
 GraphicsAPI *Window::api() {
     return m_api;
+}
+
+int Window::getWidth() const {
+    return width;
+}
+
+int Window::getHeight() const {
+    return height;
 }

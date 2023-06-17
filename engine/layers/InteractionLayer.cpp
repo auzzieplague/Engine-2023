@@ -145,3 +145,46 @@ void InteractionLayer::processCameraInput(Scene *scene, float movement) {
         scene->currentCamera->rotate(delta.x * sensitivity, -delta.y * sensitivity, true);
     }
 };
+
+
+void InteractionLayer::selectedObjectGui(Scene *scene) {
+    ImGui::Begin("Selected Item");
+    if (scene->selectedComponent) {
+        if (ImGui::SmallButton("Move Forward")) {
+//            scene->selectedComponent->moveForward(1);
+        }
+//
+//        Transform transform = scene->selectedComponent->getLocalTransform();
+//        ImGui::PushItemWidth(80);
+//        {
+//            ImGui::DragFloat("px", &scene->selectedComponent->position.x, 0.5f);
+//            ImGui::SameLine();
+//            ImGui::DragFloat("py", &scene->selectedComponent->position.y, 0.5f);
+//            ImGui::SameLine();
+//            ImGui::DragFloat("pz", &scene->selectedComponent->position.z, 0.5f);
+//        }
+//        {
+//            ImGui::DragFloat("rx", &scene->selectedComponent->rotation.x, 0.5f);
+//            ImGui::SameLine();
+//            ImGui::DragFloat("ry", &scene->selectedComponent->rotation.y, 0.5f);
+//            ImGui::SameLine();
+//            ImGui::DragFloat("rz", &scene->selectedComponent->rotation.z, 0.5f);
+//        }
+//        {
+//            ImGui::DragFloat("sx", &scene->selectedComponent->scale.x, 0.5f);
+//            ImGui::SameLine();
+//            ImGui::DragFloat("sy", &scene->selectedComponent->scale.y, 0.5f);
+//            ImGui::SameLine();
+//            ImGui::DragFloat("sz", &scene->selectedComponent->scale.z, 0.5f);
+//        }
+//
+//        ImGui::Checkbox("Dynamic", &scene->selectedComponent->isDynamic);
+
+        ImGui::PopItemWidth();
+    }
+    ImGui::End();
+}
+
+void InteractionLayer::appendToGui(Scene *scene) {
+    selectedObjectGui(scene);
+}
