@@ -23,8 +23,7 @@ public:
     virtual unsigned int setupTerrain(HeightMap *heightmap);
 
     virtual void renderMesh(Mesh *);
-
-    virtual void renderTerrain(Terrain *terrain);
+    virtual void renderMesh(Mesh *, int);
 
     virtual void updateRendererConfig(RenderingConfig &);
 

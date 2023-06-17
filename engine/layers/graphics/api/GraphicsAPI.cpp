@@ -22,6 +22,10 @@ void GraphicsAPI::renderMesh(Mesh *) {
     Debug::show("missing override for renderMesh");
 }
 
+void GraphicsAPI::renderMesh(Mesh *, int) {
+    Debug::show("missing override for renderMesh instanced");
+}
+
 void GraphicsAPI::updateRendererConfig(RenderingConfig &) {
     Debug::show("missing override for updateRenderConfig");
 }
@@ -37,10 +41,6 @@ unsigned int GraphicsAPI::getFlag(GraphicsFlag flag) {
 unsigned int GraphicsAPI::setupTerrain(HeightMap * heightMap) {
     Debug::show("missing override for setupTerrain");
     return 0;
-}
-
-void GraphicsAPI::renderTerrain(Terrain *terrain) {
-    Debug::show("missing override for renderTerrain");
 }
 
 unsigned int GraphicsAPI::loadTexture(std::string filename) {

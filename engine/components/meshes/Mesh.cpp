@@ -1,6 +1,11 @@
 
 #include "../../layers/graphics/api/GraphicsAPI.h"
 #include "Mesh.h"
+#include <vector>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_inverse.hpp>
+#include <unordered_map>
+#include <algorithm>
 
 GraphicsAPI *Mesh::m_api;
 
@@ -29,35 +34,32 @@ unsigned int Mesh::generateMeshID() {
 }
 
 void Mesh::calculateNormals() {
-    {
-        m_normals.clear();
-        // Initialize the normal vector for each vertex to (0, 0, 0)
-        std::vector<glm::vec3> vertexNormals(m_vertices.size(), glm::vec3(0.0f));
+    m_normals.clear();
+    // Initialize the normal vector for each vertex to (0, 0, 0)
+    std::vector<glm::vec3> vertexNormals(m_vertices.size(), glm::vec3(0.0f));
 
-        // Iterate over each face of the mRootMesh
-        for (size_t i = 0; i < m_indices.size(); i += 3) {
-            // Get the m_indices of the three m_vertices that make m_up the face
-            unsigned int i1 = m_indices[i];
-            unsigned int i2 = m_indices[i + 1];
-            unsigned int i3 = m_indices[i + 2];
+    // Iterate over each face of the mRootMesh
+    for (size_t i = 0; i < m_indices.size(); i += 3) {
+        // Get the m_indices of the three m_vertices that make m_up the face
+        unsigned int i1 = m_indices[i];
+        unsigned int i2 = m_indices[i + 1];
+        unsigned int i3 = m_indices[i + 2];
 
-            // Calculate the normal vector of the face
-            glm::vec3 v1 = m_vertices[i2] - m_vertices[i1];
-            glm::vec3 v2 = m_vertices[i3] - m_vertices[i1];
-            glm::vec3 normal = glm::normalize(glm::cross(v1, v2));
+        // Calculate the normal vector of the face
+        glm::vec3 v1 = m_vertices[i2] - m_vertices[i1];
+        glm::vec3 v2 = m_vertices[i3] - m_vertices[i1];
+        glm::vec3 normal = glm::normalize(glm::cross(v1, v2));
 
-            // Add the normal vector of the face to the normal vector of each vertex
-            vertexNormals[i1] += normal;
-            vertexNormals[i2] += normal;
-            vertexNormals[i3] += normal;
-        }
-
-        // Normalize the normal vector for each vertex
-        for (size_t i = 0; i < m_vertices.size(); i++) {
-            m_normals.push_back(glm::normalize(vertexNormals[i]));
-        }
+        // Add the normal vector of the face to the normal vector of each vertex
+        vertexNormals[i1] += normal;
+        vertexNormals[i2] += normal;
+        vertexNormals[i3] += normal;
     }
 
+    // Normalize the normal vector for each vertex
+    for (size_t i = 0; i < m_vertices.size(); i++) {
+        m_normals.push_back(glm::normalize(vertexNormals[i]));
+    }
 
 }
 
@@ -243,60 +245,76 @@ void Mesh::reduceMeshData(int iterations) {
 }
 
 void Mesh::reduceMeshData() {
-    // Initialize QEM data for each vertex
-    std::vector<glm::mat4> vertexQEMs(m_vertices.size(), glm::mat4(0.0f));
+    int reductionRatio = 2;
+    // Compute the number of target faces based on the reduction ratio
+    size_t targetFaces = static_cast<size_t>(m_indices.size() * reductionRatio);
 
-    // Iterate over each face to compute QEMs
+    // Create a map to track vertex usage count
+    std::unordered_map<unsigned int, size_t> vertexUsage;
+
+    // Iterate over each face and count vertex usage
     for (size_t i = 0; i < m_indices.size(); i += 3) {
-        glm::vec3 v0 = m_vertices[m_indices[i]];
-        glm::vec3 v1 = m_vertices[m_indices[i + 1]];
-        glm::vec3 v2 = m_vertices[m_indices[i + 2]];
+        unsigned int v0 = m_indices[i];
+        unsigned int v1 = m_indices[i + 1];
+        unsigned int v2 = m_indices[i + 2];
 
-        glm::mat4 faceQEM = calculateFaceQEM(v0, v1, v2);
-
-        // Accumulate the face QEMs for each vertex
-        vertexQEMs[m_indices[i]] += faceQEM;
-        vertexQEMs[m_indices[i + 1]] += faceQEM;
-        vertexQEMs[m_indices[i + 2]] += faceQEM;
+        vertexUsage[v0]++;
+        vertexUsage[v1]++;
+        vertexUsage[v2]++;
     }
 
-    // Simplify the mesh by collapsing vertices
-    std::vector<unsigned int> reducedIndices;
-    std::vector<glm::vec3> reducedVertices;
-    std::vector<glm::vec2> reducedUVs;
+    // Create a copy of the original vertices and UVs
+    std::vector<glm::vec3> reducedVertices = m_vertices;
+    std::vector<glm::vec2> reducedUVs = m_UVs;
 
-    for (size_t i = 0; i < m_vertices.size(); i++) {
-        if (vertexQEMs[i] == glm::mat4(0.0f)) {
-            // Skip vertices that are already removed
-            continue;
+    // Sort the vertices based on usage count (from least used to most used)
+//    std::sort(reducedVertices.begin(), reducedVertices.end(), [&](const glm::vec3& v1, const glm::vec3& v2) {
+//        return vertexUsage[v1] < vertexUsage[v2];
+//    });
+
+    // Resize the vertices and UVs based on the target number of faces
+    reducedVertices.resize(targetFaces * 3);
+    reducedUVs.resize(targetFaces * 3);
+
+    // Create a mapping between original and reduced vertex m_indices
+    std::unordered_map<unsigned int, unsigned int> vertexMap;
+    unsigned int nextIndex = 0;
+
+    // Update the m_indices based on the reduced vertices
+    for (size_t i = 0; i < m_indices.size(); i += 3) {
+        unsigned int v0 = m_indices[i];
+        unsigned int v1 = m_indices[i + 1];
+        unsigned int v2 = m_indices[i + 2];
+
+        if (vertexMap.find(v0) == vertexMap.end()) {
+            vertexMap[v0] = nextIndex;
+            reducedVertices[nextIndex] = m_vertices[v0];
+            reducedUVs[nextIndex] = m_UVs[v0];
+            nextIndex++;
         }
 
-        // Calculate the optimal position for vertex collapse
-        glm::vec3 optimalPosition = calculateOptimalPosition(vertexQEMs[i]);
-
-        // Update the indices and vertex data
-        auto reducedIndex = static_cast<unsigned int>(reducedVertices.size());
-        reducedIndices.push_back(reducedIndex);
-        reducedVertices.push_back(optimalPosition);
-        reducedUVs.push_back(m_UVs[i]);
-
-        // Update QEMs for affected vertices
-        for (size_t j = 0; j < m_indices.size(); j++) {
-            if (m_indices[j] == i) {
-                reducedIndices.push_back(reducedIndex);
-            } else if (m_indices[j] > i) {
-                m_indices[j]--;
-            }
+        if (vertexMap.find(v1) == vertexMap.end()) {
+            vertexMap[v1] = nextIndex;
+            reducedVertices[nextIndex] = m_vertices[v1];
+            reducedUVs[nextIndex] = m_UVs[v1];
+            nextIndex++;
         }
 
-        // Mark the collapsed vertex as removed
-        vertexQEMs[i] = glm::mat4(0.0f);
+        if (vertexMap.find(v2) == vertexMap.end()) {
+            vertexMap[v2] = nextIndex;
+            reducedVertices[nextIndex] = m_vertices[v2];
+            reducedUVs[nextIndex] = m_UVs[v2];
+            nextIndex++;
+        }
+
+        m_indices[i] = vertexMap[v0];
+        m_indices[i + 1] = vertexMap[v1];
+        m_indices[i + 2] = vertexMap[v2];
     }
 
-    // Update the mesh data with the reduced sets
-    m_vertices = std::move(reducedVertices);
-    m_UVs = std::move(reducedUVs);
-    m_indices = std::move(reducedIndices);
+    // Update the original vertex and UV arrays with the reduced data
+    m_vertices = reducedVertices;
+    m_UVs = reducedUVs;
 }
 
 glm::vec3 Mesh::calculateMidpoint(const glm::vec3 &v1, const glm::vec3 &v2) {

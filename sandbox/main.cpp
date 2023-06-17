@@ -63,10 +63,10 @@ Model *terrainModel() {
     terrain1->getMeshFromHeightMap("test_map_64");
     Mesh * mesh = terrain1->getRootMesh();
 
-    Debug::show("Mesh Before and After");
-    Debug::show(mesh->getVertices().size());
-    terrain1->getRootMesh()->reduceMeshData();
-    Debug::show(mesh->getVertices().size());
+//    Debug::show("Mesh Before and After");
+//    Debug::show(mesh->getVertices().size());
+//    terrain1->getRootMesh()->reduceMeshData(); // todo find new algorithm
+//    Debug::show(mesh->getVertices().size());
 
     terrain1->setLocalScale({100, 10, 100});
     terrain1->setWorldPosition({0, -20, -20});
@@ -127,7 +127,7 @@ int main() {
 
 
     /// kick-start the main loop
-//    engine->start();
+    engine->start();
 
     Debug::show("[>] Expected engine->stop()");
 }

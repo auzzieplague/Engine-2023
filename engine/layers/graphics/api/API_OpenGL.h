@@ -25,8 +25,7 @@ public:
     unsigned int setupTerrain(HeightMap *heightmap) override;
 
     void renderMesh(Mesh *) override;
-
-    void renderTerrain(Terrain *terrain) override;
+    void renderMesh(Mesh *, int count) override;
 
     unsigned int getFlag(GraphicsFlag flag) override;
 

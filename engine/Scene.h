@@ -16,7 +16,7 @@ public:
 
     std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
     std::vector<Model *> modelsInScene;
-    std::vector<Model *> meshesToRender;
+    std::vector<Mesh *> meshesToRender;
 
     std::deque<Model *> modelsWithPhysicsQueue;
     std::vector<Model *> modelsWithPhysics;

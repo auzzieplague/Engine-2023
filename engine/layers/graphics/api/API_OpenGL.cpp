@@ -41,35 +41,26 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
     }
 
     if (!mesh->isReady()) {
-        Debug::show("mRootMesh not m_ready");
         return;
     }
 
     glBindVertexArray(mesh->getID());
-//    glDrawArrays(GL_TRIANGLES, 0, 6);
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    glDrawElements(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, 0);
-//    glDrawElements(GL_LINES, mRootMesh->m_indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0); // no need to unbind it every time
+    glDrawElements(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
 }
 
-void API_OpenGL::renderTerrain(Terrain *terrain) {
-    // if the Mesh hasn't been setup yet, we'll need to initialise it (lazy loading)
-    if (terrain->getID() == 0) {
-        terrain->generateMeshID();
+
+void API_OpenGL::renderMesh(Mesh *mesh, int count) {
+    if (mesh->getID() == 0) {
+        mesh->generateMeshID();
     }
 
-    if (!terrain->isReady()) {
-        Debug::show("mRootMesh not m_ready");
+    if (!mesh->isReady()) {
         return;
     }
 
-    glBindVertexArray(terrain->getID());
-//    glDrawArrays(GL_POINTS, 0, terrain->getHeightMap().vertices.size());
-    glDrawElements(GL_TRIANGLES, terrain->getIndices().size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0); // no need to unbind it every time
+    glBindVertexArray(mesh->getID());
+    glDrawElementsInstanced(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr, count);
 }
-
 
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -333,6 +324,7 @@ unsigned int API_OpenGL::loadTexture(std::string fileName) {
 
     return textureID;
 }
+
 
 
 
