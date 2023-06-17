@@ -8,6 +8,7 @@
 class Layer : public Object {
 public:
     GraphicsAPI *api;
+    Scene * currentScene = nullptr;
 
     virtual void setApi(GraphicsAPI *api) {
         this->api = api;
@@ -17,6 +18,8 @@ public:
     bool initialised = false;
 
     virtual uint32_t getFrequency() { return 0; };
+
+    virtual void init(Scene *) {}
 
     virtual void onAttach(Scene *) {}
 

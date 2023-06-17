@@ -13,6 +13,7 @@ Model *modelWithSubMeshes(bool physics = true) {
     material.loadFromAsset("mats_ground", "gray-bricks1");
 
     auto *root = Model::createFromGeometry(Geometry::ShapeType::Sphere);
+    root->setName("root");
     root->setWorldPosition(glm::vec3(-1, 0, -25));
     root->setLocalRotation(glm::vec3(-30, 0, -25));
     root->setMaterial(material);
@@ -44,6 +45,7 @@ Model *modelWithSubMeshes(bool physics = true) {
     for (int n = count; n >= 0; n--) {
         auto subMesh = new Geometry();
         subMesh->buildSphere();
+        subMesh->setName("sub mesh "+std::to_string(n));
         subMesh->setLocalPosition(positions[n]); // should be relative to parent mesh
         material.setAmbientColor(glm::vec3(n * (1 / count), 0, 0));
         subMesh->setMaterial(material);

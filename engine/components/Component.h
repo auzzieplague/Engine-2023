@@ -18,6 +18,8 @@ public:
     Transform worldTransform{};
     Transform finalTransform{};
 
+    Component *parentComponent = nullptr;
+
     ObjectType getType() override {
         return ObjectType::OT_Component;
     };

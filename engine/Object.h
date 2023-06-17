@@ -16,14 +16,19 @@ public:
         OT_Light6
     };
 
+    std::string objectName = "unknown";
+
     virtual ObjectType getType() {
         return ObjectType::OT_Object;
     };
 
     virtual std::string getName() {
-        return "unknown Object";
+        return objectName;
     };
 
+    virtual void setName(std::string name) {
+         objectName = name;
+    };
 
 };
 

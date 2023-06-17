@@ -48,28 +48,25 @@ void IMGuiLayer::buildDockSpace(Scene *scene) {
 }
 
 void IMGuiLayer::update(Scene *scene) {
-    static bool alreadyCapturedKeyPress = false;
-//
-//    if (Input::keyDown[GLFW_KEY_TAB]) {
-//        if (alreadyCapturedKeyPress == false) {
-//            alreadyCapturedKeyPress = true;
-//            switch (gizmoMode) {
-//                case ImGuizmo::TRANSLATE:
-//                    gizmoMode = ImGuizmo::ROTATE;
+    //todo add a last pressed time check
+    if (Input::isKeyPressed(GLFW_KEY_TAB)) {
+        switch (gizmoMode) {
+            case ImGuizmo::TRANSLATE:
+                gizmoMode = ImGuizmo::ROTATE;
+                Debug::show("->Rotate");
+                break;
+            case ImGuizmo::ROTATE:
+                gizmoMode = ImGuizmo::SCALE;
+                Debug::show("->Scale");
+                break;
+//                case ImGuizmo::SCALE:
+//                    gizmoMode = ImGuizmo::UNIVERSAL;
 //                    break;
-//                case ImGuizmo::ROTATE:
-//                    gizmoMode = ImGuizmo::SCALE;
-//                    break;
-////                case ImGuizmo::SCALE:
-////                    gizmoMode = ImGuizmo::UNIVERSAL;
-////                    break;
-//                default:
-//                    gizmoMode = ImGuizmo::TRANSLATE;
-//            }
-//        }
-//    } else {
-//        alreadyCapturedKeyPress = false;
-//    }
+            default:
+                gizmoMode = ImGuizmo::TRANSLATE;
+                Debug::show("->Translate");
+        }
+    }
 };
 
 void IMGuiLayer::afterUpdate(Scene *scene) {};
@@ -83,7 +80,7 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGui::GetIO().WantCaptureMouse = false;
     ImGuiIO &io = ImGui::GetIO();
 
-    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+    static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD); // currently, using mixed
 
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
     window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
@@ -110,20 +107,24 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
                                             glm::value_ptr(scene->selectedComponent->localTransform.mRotation),
                                             glm::value_ptr(scene->selectedComponent->localTransform.mScale), matrix);
     ImGuizmo::Manipulate(glm::value_ptr(scene->currentCamera->mViewMatrix),
-                         glm::value_ptr(scene->currentCamera->mProjectionMatrix), gizmoMode, mCurrentGizmoMode, matrix, NULL,
+                         glm::value_ptr(scene->currentCamera->mProjectionMatrix), gizmoMode, mCurrentGizmoMode, matrix,
+                         NULL,
                          NULL, NULL, NULL);
 
-    glm::vec3 position;
+    glm::vec3 position, rotation, scale;
     ImGuizmo::DecomposeMatrixToComponents(matrix, glm::value_ptr(position),
-                                          glm::value_ptr(scene->selectedComponent->localTransform.mRotation),
-                                          glm::value_ptr(scene->selectedComponent->localTransform.mScale));
-    scene->selectedComponent->worldTransform.setPosition(position);
+                                          glm::value_ptr(rotation),
+                                          glm::value_ptr(scale));
+
+    scene->selectedComponent->setWorldPosition(position);
+    scene->selectedComponent->setLocalRotation(rotation);
+    scene->selectedComponent->setWorldScale(scale);
     ImGui::End();
 }
 
 void IMGuiLayer::render(Scene *scene) {
 //    if (scene->config.editMode) {
-        drawGizmos(scene);
+    drawGizmos(scene);
 //    }
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -9,6 +9,8 @@ bool Input::m_leftMouseDragging = false;
 bool Input::m_rightMouseDragging = false;
 glm::vec2 Input::m_mousePos;
 glm::vec2 Input::m_lastMousePos;
+bool Input::m_keys[1024]{};
+bool Input::m_mouseButtons[8]{};
 
 Input::Input(GLFWwindow *window) {
     // Initialize key states to "not pressed"
@@ -120,14 +122,14 @@ void Input::setCallbacksOnWindow(GLFWwindow *window) {
     glfwSetCursorPosCallback(window, mouseMoveCallback);
 }
 
-bool Input::isKeyPressed(int key) const {
+bool Input::isKeyPressed(int key)  {
     if (key >= 0 && key < 1024) {
         return m_keys[key];
     }
     return false;
 }
 
-[[maybe_unused]] bool Input::isMouseButtonPressed(int button) const {
+[[maybe_unused]] bool Input::isMouseButtonPressed(int button) {
     if (button >= 0 && button < 8) {
         return m_mouseButtons[button];
     }

@@ -44,4 +44,5 @@ public:
     void start();               // kick-start engine
     void loopLayers();          // main loop
     void stop();          // cleanup
+    void initLayers();
 };

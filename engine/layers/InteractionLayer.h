@@ -31,6 +31,10 @@ public:
     void handleCharacterKeys(float movement);
 
     void selectedObjectGui(Scene *scene);
+
+    void displayComponents(Component * component);
+
+    void showTransform(std::string text, Transform transform);
 };
 
 

@@ -10,7 +10,14 @@ Engine::Engine(uint32_t width, uint32_t height, const std::string &title, Scene 
 }
 
 void Engine::start() {
+    this->initLayers();
     this->loopLayers();
+}
+void Engine::initLayers() {
+    for (Layer *layer: this->layers) {
+        layer->currentScene = this->currentScene;
+        layer->init(currentScene);
+    }
 }
 
 void Engine::loopLayers()  {

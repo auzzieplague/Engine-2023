@@ -205,20 +205,20 @@ void Mesh::addChild(Component *child) {
 }
 
 void Mesh::addMesh(Mesh *subMesh) {
-
+    Debug::show("added submesh "+subMesh->getName()+" to "+ this->getName()+"\n");
     /*
      * Note: on construction this mesh is added to mesh tree, so mesh tree always contains self
      *
      */
-    subMesh->parentMesh = this;
+    subMesh->parentComponent = this;
     childComponents.push_back(subMesh);
     // each mesh should know its parent and root, and be added to the root mesh tree
 
     // if this mesh has a parent mesh (is a child), update the mRootMesh tree
-    if (this->parentMesh) {
+    if (this->parentComponent) {
         // update existing submesh meshtree parent, root values accordingly
         for (auto nestedMesh: subMesh->meshTree) {
-            nestedMesh->parentMesh = this;
+            nestedMesh->parentComponent = this;
             nestedMesh->rootMesh = this->rootMesh;
 //                updateComponentWorldTransform(nestedMesh, this->getWorldTransform());
 //            nestedMesh->worldTransform.setPosition(this->worldTransform.getPosition()+nestedMesh->getLocalPosition());

@@ -11,8 +11,8 @@ private:
     static Input *m_instance;
 
     [[maybe_unused]] GLFWwindow *m_window{};
-    bool m_keys[1024]{};
-    bool m_mouseButtons[8]{};
+    static bool m_keys[1024];
+    static bool m_mouseButtons[8];
 
     static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods);
 
@@ -35,9 +35,9 @@ public:
 
     [[nodiscard]] static glm::vec2 getDragDistance();
 
-    [[nodiscard]] bool isKeyPressed(int key) const;
+    [[nodiscard]] static bool isKeyPressed(int key) ;
 
-    [[maybe_unused]] [[nodiscard]] bool isMouseButtonPressed(int button) const;
+    [[maybe_unused]] [[nodiscard]] static bool isMouseButtonPressed(int button) ;
 
     /// todo sub out glfw window with  window and switch callback assignment based on m_api
     explicit Input(GLFWwindow *window);

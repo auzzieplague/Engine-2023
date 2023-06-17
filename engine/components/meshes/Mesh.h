@@ -21,7 +21,6 @@ protected:
 
 public:
 
-    Mesh *parentMesh = nullptr;
     Mesh *rootMesh = nullptr;
 
     std::vector<Mesh *> meshTree;
@@ -50,10 +49,6 @@ public:
 
     ObjectType getType() override {
         return ObjectType::OT_Mesh;
-    };
-
-    std::string getName() override {
-        return "Mesh - name tbc";
     };
 
     bool isReady() override;

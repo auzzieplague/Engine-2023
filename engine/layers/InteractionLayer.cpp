@@ -146,68 +146,73 @@ void InteractionLayer::processCameraInput(Scene *scene, float movement) {
     }
 };
 
+void InteractionLayer::appendToGui(Scene *scene) {
+    selectedObjectGui(scene);
+}
+
+void InteractionLayer::showTransform (std::string text, Transform transform) {
+    if (ImGui::CollapsingHeader(text.c_str())) {
+
+//    ImGui::Text("%s", text.c_str());
+        ImGui::PushItemWidth(80);
+        {
+            ImGui::DragFloat("lpx", &transform.mPosition.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lpy", &transform.mPosition.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lpz", &transform.mPosition.z, 0.5f);
+        }
+        {
+            ImGui::DragFloat("lrx", &transform.mRotation.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lry", &transform.mRotation.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lrz", &transform.mRotation.z, 0.5f);
+        }
+        {
+            ImGui::DragFloat("lsx", &transform.mScale.x, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lsy", &transform.mScale.y, 0.5f);
+            ImGui::SameLine();
+            ImGui::DragFloat("lsz", &transform.mScale.z, 0.5f);
+        }
+    }
+}
+
+void InteractionLayer::displayComponents(Component * component)
+{
+    //todo add a static queue of object references, right click go
+
+    // Display the component name and create a collapsible section
+    if (ImGui::CollapsingHeader(component->getName().c_str()))
+    {
+        // Check if the right mouse button is clicked on the child component
+
+
+        showTransform("Local xform", currentScene->selectedComponent->localTransform);
+        showTransform("World xform", currentScene->selectedComponent->worldTransform);
+        ImGui::Indent(); // Indent to represent nesting
+        // Display child components recursively
+        for (auto* child : component->childComponents)
+        {
+            displayComponents(child);
+
+            // Check if the child component is clicked
+            if (ImGui::IsItemClicked(0))
+            {
+                currentScene->selectedComponent = child;
+            }
+        }
+
+        ImGui::Unindent(); // Remove the indent
+    }
+}
 
 void InteractionLayer::selectedObjectGui(Scene *scene) {
     ImGui::Begin("Selected Item");
+    if (ImGui::IsItemClicked(1))
     if (scene->selectedComponent) {
-        if (ImGui::SmallButton("Move Forward")) {
-//            scene->selectedComponent->moveForward(1);
-        }
-
-        ImGui::Text("Local Transform");
-        ImGui::PushItemWidth(80);
-        {
-            ImGui::DragFloat("lpx", &scene->selectedComponent->localTransform.mPosition.x, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("lpy", &scene->selectedComponent->localTransform.mPosition.y, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("lpz", &scene->selectedComponent->localTransform.mPosition.z, 0.5f);
-        }
-        {
-            ImGui::DragFloat("lrx", &scene->selectedComponent->localTransform.mRotation.x, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("lry", &scene->selectedComponent->localTransform.mRotation.y, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("lrz", &scene->selectedComponent->localTransform.mRotation.z, 0.5f);
-        }
-        {
-            ImGui::DragFloat("lsx", &scene->selectedComponent->localTransform.mScale.x, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("lsy", &scene->selectedComponent->localTransform.mScale.y, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("lsz", &scene->selectedComponent->localTransform.mScale.z, 0.5f);
-        }
-
-        ImGui::Text("World Transform");
-        ImGui::PushItemWidth(80);
-        {
-            ImGui::DragFloat("wpx", &scene->selectedComponent->worldTransform.mPosition.x, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("wpy", &scene->selectedComponent->worldTransform.mPosition.y, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("wpz", &scene->selectedComponent->worldTransform.mPosition.z, 0.5f);
-        }
-        {
-            ImGui::DragFloat("wrx", &scene->selectedComponent->worldTransform.mRotation.x, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("wry", &scene->selectedComponent->worldTransform.mRotation.y, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("wrz", &scene->selectedComponent->worldTransform.mRotation.z, 0.5f);
-        }
-        {
-            ImGui::DragFloat("wsx", &scene->selectedComponent->worldTransform.mScale.x, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("wsy", &scene->selectedComponent->worldTransform.mScale.y, 0.5f);
-            ImGui::SameLine();
-            ImGui::DragFloat("wsz", &scene->selectedComponent->worldTransform.mScale.z, 0.5f);
-        }
-        ImGui::PopItemWidth();
-
-        scene->selectedComponent->updateFinalTransform();
+        displayComponents(scene->selectedComponent);
     }
     ImGui::End();
-}
-
-void InteractionLayer::appendToGui(Scene *scene) {
-    selectedObjectGui(scene);
 }
