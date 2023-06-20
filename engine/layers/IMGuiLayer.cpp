@@ -48,26 +48,26 @@ void IMGuiLayer::buildDockSpace(Scene *scene) {
 }
 
 void IMGuiLayer::update(Scene *scene) {
-    //todo add a last pressed time check
-    if (Input::isKeyPressed(GLFW_KEY_TAB)) {
+    static bool keyReleased = true;
+
+    if (!keyReleased && !Input::isKeyPressed(GLFW_KEY_TAB) ) {
+        keyReleased = true;
+    }
+
+    if (Input::isKeyPressed(GLFW_KEY_TAB) && keyReleased) {
+        keyReleased = false;
         switch (gizmoMode) {
             case ImGuizmo::TRANSLATE:
-                gizmoMode = ImGuizmo::ROTATE;
-                Debug::show("->Rotate");
+                gizmoMode = ImGuizmo::ROTATE;;
                 break;
             case ImGuizmo::ROTATE:
                 gizmoMode = ImGuizmo::SCALE;
-                Debug::show("->Scale");
                 break;
-//                case ImGuizmo::SCALE:
-//                    gizmoMode = ImGuizmo::UNIVERSAL;
-//                    break;
             default:
                 gizmoMode = ImGuizmo::TRANSLATE;
-                Debug::show("->Translate");
         }
     }
-};
+}
 
 void IMGuiLayer::afterUpdate(Scene *scene) {};
 
@@ -76,16 +76,14 @@ void IMGuiLayer::beforeRender(Scene *) {}
 void IMGuiLayer::appendToGui(Scene *scene) {}
 
 void IMGuiLayer::drawGizmos(Scene *scene) {
-
-    gizmoMode = ImGuizmo::ROTATE;
-
     if (!scene->selectedComponent) return;
     ImGui::GetIO().WantCaptureMouse = false;
     ImGuiIO &io = ImGui::GetIO();
 
     static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD); // currently, using mixed
 
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
+    ImGuiWindowFlags window_flags =
+            ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
             | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus
             | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
     ImGui::SetNextWindowPos(ImVec2(0, 0));
@@ -100,7 +98,7 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 
     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
-    auto * selectedWTransform = &scene->selectedComponent->worldTransform;
+    auto *selectedWTransform = &scene->selectedComponent->worldTransform;
 
     float matrix[16];
     ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(selectedWTransform->mPosition),
