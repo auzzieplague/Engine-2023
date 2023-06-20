@@ -76,17 +76,18 @@ void IMGuiLayer::beforeRender(Scene *) {}
 void IMGuiLayer::appendToGui(Scene *scene) {}
 
 void IMGuiLayer::drawGizmos(Scene *scene) {
-//    if (!scene->selectedComponent) return;
+
+    gizmoMode = ImGuizmo::ROTATE;
+
+    if (!scene->selectedComponent) return;
     ImGui::GetIO().WantCaptureMouse = false;
     ImGuiIO &io = ImGui::GetIO();
 
     static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD); // currently, using mixed
 
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking;
-    window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize |
-                    ImGuiWindowFlags_NoMove;
-    window_flags |=
-            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse
+            | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBringToFrontOnFocus
+            | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImVec2(scene->currentWindow->getWidth(), scene->currentWindow->getHeight()));
     bool show_viewport = true;
@@ -99,13 +100,13 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 
     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
-    /// needed couple or workarounds to be able to use the gui widgets
-    /// position needs to be set using setter to allow for dynamic targetPosition overrides
-    /// rotation extracted from a matrix doesn't work correctly, might need converting back to Euler angles and setting manually (gimbal lock issues)
+    auto * selectedWTransform = &scene->selectedComponent->worldTransform;
+
     float matrix[16];
-    ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(scene->selectedComponent->worldTransform.mPosition),
-                                            glm::value_ptr(scene->selectedComponent->localTransform.mRotation),
-                                            glm::value_ptr(scene->selectedComponent->localTransform.mScale), matrix);
+    ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(selectedWTransform->mPosition),
+                                            glm::value_ptr(selectedWTransform->mRotation),
+                                            glm::value_ptr(selectedWTransform->mScale), matrix);
+
     ImGuizmo::Manipulate(glm::value_ptr(scene->currentCamera->mViewMatrix),
                          glm::value_ptr(scene->currentCamera->mProjectionMatrix), gizmoMode, mCurrentGizmoMode, matrix,
                          NULL,
@@ -117,8 +118,9 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
                                           glm::value_ptr(scale));
 
     scene->selectedComponent->setWorldPosition(position);
-    scene->selectedComponent->setLocalRotation(rotation);
+    scene->selectedComponent->rotate(rotation);
     scene->selectedComponent->setWorldScale(scale);
+
     ImGui::End();
 }
 

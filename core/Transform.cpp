@@ -54,7 +54,7 @@ void Transform::setScale(glm::vec3 scale) {
     mPosition += translation;
 }
 
-void Transform::rotate(glm::vec3 axis, float angle) {
+void Transform::rotateAxis(glm::vec3 axis, float angle) {
     mRotation = glm::rotate(mRotation, angle, axis);
 }
 

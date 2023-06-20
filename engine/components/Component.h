@@ -66,8 +66,9 @@ public:
     virtual void roll(float degrees);
     virtual void pitch(float degrees);
     virtual void yaw(float degrees);
-
-
+    void rotate(glm::vec3 newRotation);
+    void move(glm::vec3 newRotation){};
+    void moveForward(float amount){};
 
     /**
      *  create a game object that represents the 3D model in the game world.

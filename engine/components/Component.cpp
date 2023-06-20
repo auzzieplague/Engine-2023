@@ -10,6 +10,11 @@ void Component::setLocalRotation(glm::vec3 newRotation) {
     updateFinalTransform();
 }
 
+void Component::rotate(glm::vec3 newRotation) {
+    this->localTransform.rotate(newRotation);
+    updateFinalTransform();
+}
+
 void Component::setLocalScale(glm::vec3 newScale) {
     this->localTransform.setScale(newScale);
     updateFinalTransform();
@@ -80,10 +85,12 @@ void Component::setWorldScale(glm::vec3 newScale) {
 void Component::setWorldRotation(glm::vec3 newRotation) {
     // convert degrees to quaternion
     this->worldTransform.setRotation(newRotation);
+    this->updateFinalTransform();
 }
 
 void Component::setWorldRotation(glm::quat rotation) {
     this->worldTransform.setRotation(rotation);
+    this->updateFinalTransform();
 }
 
 glm::vec3 Component::getWorldPosition() {

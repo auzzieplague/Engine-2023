@@ -38,7 +38,7 @@ public:
 
     [[maybe_unused]] [[maybe_unused]] void translate(glm::vec3 translation);
 
-    void rotate(glm::vec3 axis, float angle);
+    void rotateAxis(glm::vec3 axis, float angle);
 
     void scale(glm::vec3 scaleFactor);
 
@@ -60,22 +60,27 @@ public:
 //        mScale = scale;
     }
 
+    void rotate(glm::vec3 rotation) {
+        glm::quat xRotation = glm::angleAxis(glm::radians(rotation.x), glm::vec3(1, 0, 0));
+        glm::quat yRotation = glm::angleAxis(glm::radians(rotation.y), glm::vec3(0, 1, 0));
+        glm::quat zRotation = glm::angleAxis(glm::radians(rotation.z), glm::vec3(0, 0, 1));
+
+        glm::quat rotationQuaternion = xRotation * yRotation * zRotation;
+        mRotation = rotationQuaternion * mRotation;
+    }
 
     void rotateX(float degrees) {
-        float radians = glm::radians(degrees);
-        glm::quat rotation = glm::angleAxis(radians, glm::vec3(1, 0, 0));
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), glm::vec3(1, 0, 0));
         mRotation = rotation * mRotation;
     }
 
     void rotateY(float degrees) {
-        float radians = glm::radians(degrees);
-        glm::quat rotation = glm::angleAxis(radians, glm::vec3(0, 1, 0));
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), glm::vec3(0, 1, 0));
         mRotation = rotation * mRotation;
     }
 
     void rotateZ(float degrees) {
-        float radians = glm::radians(degrees);
-        glm::quat rotation = glm::angleAxis(radians, glm::vec3(0, 0, 1));
+        glm::quat rotation = glm::angleAxis(glm::radians(degrees), glm::vec3(0, 0, 1));
         mRotation = rotation * mRotation;
     }
 
