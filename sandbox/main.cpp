@@ -41,13 +41,13 @@ Model *modelWithSubMeshes(bool physics = true) {
             glm::vec3(offset, offset, offset),
     };
 
-    int count = 8;
+    int count = 0;
     for (int n = count; n >= 0; n--) {
         auto subMesh = new Geometry();
         subMesh->buildSphere();
         subMesh->setName("sub mesh "+std::to_string(n));
         subMesh->setLocalPosition(positions[n]); // should be relative to parent mesh
-        material.setAmbientColor(glm::vec3(n * (1 / count), 0, 0));
+        material.setAmbientColor(glm::vec3(n * (1 / (count?count:1)), 0, 0));
         subMesh->setMaterial(material);
         subMesh->getMaterial().randomAmbientColor();
         root->mRootMesh->addMesh(subMesh);
