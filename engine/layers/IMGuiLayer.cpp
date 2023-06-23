@@ -99,25 +99,32 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
     auto *selectedWTransform = &scene->selectedComponent->worldTransform;
+    auto *selectedLTransform = &scene->selectedComponent->localTransform;
 
     float matrix[16];
+    float delta[16];
     ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(selectedWTransform->mPosition),
                                             glm::value_ptr(selectedWTransform->mRotation),
-                                            glm::value_ptr(selectedWTransform->mScale), matrix);
+                                            glm::value_ptr(selectedLTransform->mScale), matrix);
 
     ImGuizmo::Manipulate(glm::value_ptr(scene->currentCamera->mViewMatrix),
                          glm::value_ptr(scene->currentCamera->mProjectionMatrix), gizmoMode, mCurrentGizmoMode, matrix,
-                         NULL,
+                         delta,
                          NULL, NULL, NULL);
 
-    glm::vec3 position, rotation, scale;
+    glm::vec3 position, rotation, scale,  dPosition, dRotation, dScale;
+
     ImGuizmo::DecomposeMatrixToComponents(matrix, glm::value_ptr(position),
                                           glm::value_ptr(rotation),
                                           glm::value_ptr(scale));
 
-    scene->selectedComponent->setWorldPosition(position);
+    ImGuizmo::DecomposeMatrixToComponents(delta, glm::value_ptr(dPosition),
+                                          glm::value_ptr(dRotation),
+                                          glm::value_ptr(dScale));
+
+    scene->selectedComponent->setWorldPosition(position); // or move if has parent ???
     scene->selectedComponent->rotate(rotation);
-    scene->selectedComponent->setWorldScale(scale);
+    scene->selectedComponent->scale(dScale);
 
     ImGui::End();
 }

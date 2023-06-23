@@ -69,6 +69,8 @@ public:
     void rotate(glm::vec3 newRotation);
     void move(glm::vec3 newRotation){};
     void moveForward(float amount){};
+    void scale(glm::vec3 scale);
+    void scale(float scale);
 
     /**
      *  create a game object that represents the 3D model in the game world.
@@ -93,6 +95,7 @@ public:
     virtual void update() {
         std::cout << "update not implemented for component\n";
     };
+
 
 
 };

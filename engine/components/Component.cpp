@@ -15,6 +15,14 @@ void Component::rotate(glm::vec3 newRotation) {
     updateFinalTransform();
 }
 
+void Component::scale(float scale) {
+    this->scale(glm::vec3(scale));
+}
+void Component::scale(glm::vec3 scale) {
+    this->localTransform.scale(scale);
+    updateFinalTransform();
+}
+
 void Component::setLocalScale(glm::vec3 newScale) {
     this->localTransform.setScale(newScale);
     updateFinalTransform();

@@ -10,105 +10,118 @@ void InteractionLayer::onAttach(Scene *scene) {
 
 void InteractionLayer::processInput(Scene *scene) {
 
+    this->currentComponent = scene->selectedComponent;
+
     float speed = 10; // travel speed
     float movement = speed / scene->currentFrameRate;
 
+    if (Input::isKeyPressed(GLFW_KEY_R)) {
+        Debug::resetIteration();
+    }
+
     processCameraInput(scene, movement);
 
-    if (selectedModel) {
-        if (selectedModel->isDynamic()) {
+    if (this->currentComponent->getType() == ObjectType::OT_Model) {
+        if (dynamic_cast<Model *>(currentComponent)->isDynamic()) {
             handleCharacterKeysWithPhysics();
-        } else {
-            handleCharacterKeys(movement);
+            return;
         }
     }
 
-    if (Input::isKeyPressed(GLFW_KEY_R)) {
-        Debug::resetIteration();
-    };
+    handleCharacterKeys(movement);
+
 }
 
 void InteractionLayer::handleCharacterKeys(float movement) {
     if (Input::isKeyPressed(GLFW_KEY_UP) | Input::isKeyPressed(GLFW_KEY_KP_8)) {
-        glm::vec3 pos = selectedModel->getWorldPosition();
+        glm::vec3 pos = currentComponent->getWorldPosition();
         pos.y += movement / 2;
-        selectedModel->setWorldPosition(pos);
+        currentComponent->setWorldPosition(pos);
 
     };
     if (Input::isKeyPressed(GLFW_KEY_DOWN) | Input::isKeyPressed(GLFW_KEY_KP_2)) {
-        glm::vec3 pos = selectedModel->getWorldPosition();
+        glm::vec3 pos = currentComponent->getWorldPosition();
         pos.y -= movement / 2;
-        selectedModel->setWorldPosition(pos);
+        currentComponent->setWorldPosition(pos);
 
     };
     if (Input::isKeyPressed(GLFW_KEY_PAGE_DOWN) | Input::isKeyPressed(GLFW_KEY_KP_ADD)) {
-        glm::vec3 pos = selectedModel->getWorldPosition();
+        glm::vec3 pos = currentComponent->getWorldPosition();
         pos.z += movement / 2;
-        selectedModel->setWorldPosition(pos);
+        currentComponent->setWorldPosition(pos);
 
     };
     if (Input::isKeyPressed(GLFW_KEY_PAGE_UP) | Input::isKeyPressed(GLFW_KEY_KP_SUBTRACT)) {
-        glm::vec3 pos = selectedModel->getWorldPosition();
+        glm::vec3 pos = currentComponent->getWorldPosition();
         pos.z -= movement / 2;
-        selectedModel->setWorldPosition(pos);
+        currentComponent->setWorldPosition(pos);
     };
     if (Input::isKeyPressed(GLFW_KEY_RIGHT) | Input::isKeyPressed(GLFW_KEY_KP_6)) {
-        glm::vec3 pos = selectedModel->getWorldPosition();
+        glm::vec3 pos = currentComponent->getWorldPosition();
         pos.x += movement / 2;
-        selectedModel->setWorldPosition(pos);
+        currentComponent->setWorldPosition(pos);
     };
     if (Input::isKeyPressed(GLFW_KEY_LEFT) | Input::isKeyPressed(GLFW_KEY_KP_4)) {
-        glm::vec3 pos = selectedModel->getWorldPosition();
+        glm::vec3 pos = currentComponent->getWorldPosition();
         pos.x -= movement / 2;
-        selectedModel->setWorldPosition(pos);
+        currentComponent->setWorldPosition(pos);
     };
 
     if (Input::isKeyPressed(GLFW_KEY_U)) {
-        selectedModel->rotateX(0.1);
+        currentComponent->rotateX(0.1);
     }
 
     if (Input::isKeyPressed(GLFW_KEY_I)) {
-        selectedModel->rotateY(0.1);
+        currentComponent->rotateY(0.1);
     }
 
     if (Input::isKeyPressed(GLFW_KEY_O)) {
-        selectedModel->rotateZ(0.1);
+        currentComponent->rotateZ(0.1);
     }
 
     if (Input::isKeyPressed(GLFW_KEY_R)) {
-        selectedModel->roll(0.1);
+        currentComponent->roll(0.1);
     }
 
     if (Input::isKeyPressed(GLFW_KEY_P)) {
-        selectedModel->pitch(0.1);
+        currentComponent->pitch(0.1);
     }
 
     if (Input::isKeyPressed(GLFW_KEY_Y)) {
-        selectedModel->yaw(0.1);
+        currentComponent->yaw(0.1);
+    }
+
+    float scaleSpeed = 0.001;
+    if (Input::isKeyPressed(GLFW_KEY_V)) {
+        currentComponent->scale(1 + scaleSpeed);
+    }
+
+    if (Input::isKeyPressed(GLFW_KEY_B)) {
+        currentComponent->scale(1 - scaleSpeed);
     }
 }
 
 void InteractionLayer::handleCharacterKeysWithPhysics() {
     float force = .01; // the force to apply to objects
-
+    Model * model = dynamic_cast<Model *>(currentComponent);
     if (Input::isKeyPressed(GLFW_KEY_I) | Input::isKeyPressed(GLFW_KEY_KP_8)) {
-        selectedModel->applyImpulse(glm::vec3{0, 0, -force});
+        model->applyImpulse(glm::vec3{0, 0, -force});
     }
     if (Input::isKeyPressed(GLFW_KEY_K) | Input::isKeyPressed(GLFW_KEY_KP_2)) {
 
-        selectedModel->applyImpulse(glm::vec3{0, 0, +force});
+        model->applyImpulse(glm::vec3{0, 0, +force});
     }
     if (Input::isKeyPressed(GLFW_KEY_L) | Input::isKeyPressed(GLFW_KEY_KP_ADD)) {
-        selectedModel->applyImpulse(glm::vec3{0, force+.2, 0});
+        model->applyImpulse(glm::vec3{0, force + .2, 0});
     }
     if (Input::isKeyPressed(GLFW_KEY_O) | Input::isKeyPressed(GLFW_KEY_KP_SUBTRACT)) {
-        selectedModel->applyImpulse(glm::vec3{0, -force, 0});
+        model->applyImpulse(glm::vec3{0, -force, 0});
     }
     if (Input::isKeyPressed(GLFW_KEY_PERIOD) | Input::isKeyPressed(GLFW_KEY_KP_6)) {
-        selectedModel->applyImpulse(glm::vec3{force, 0, 0});
+        model->applyImpulse(glm::vec3{force, 0, 0});
     }
     if (Input::isKeyPressed(GLFW_KEY_COMMA) | Input::isKeyPressed(GLFW_KEY_KP_4)) {
-        selectedModel->applyImpulse(glm::vec3{-force, 0, 0});
+        model->applyImpulse(glm::vec3{-force, 0, 0});
     }
 }
 
@@ -150,7 +163,7 @@ void InteractionLayer::appendToGui(Scene *scene) {
     selectedObjectGui(scene);
 }
 
-void InteractionLayer::showTransform (std::string text, Transform transform) {
+void InteractionLayer::showTransform(std::string text, Transform transform) {
     if (ImGui::CollapsingHeader(text.c_str())) {
         ImGui::PushItemWidth(80);
         {
@@ -177,24 +190,19 @@ void InteractionLayer::showTransform (std::string text, Transform transform) {
     }
 }
 
-void InteractionLayer::displayComponents(Component * component)
-{
+void InteractionLayer::displayComponents(Component *component) {
     //todo add a static queue of object references, right click go
     // Display the component name and create a collapsible section
-    if (ImGui::CollapsingHeader(component->getName().c_str()))
-    {
+    if (ImGui::CollapsingHeader(component->getName().c_str())) {
         // Check if the right mouse button is clicked on the child component
         showTransform("Local xform", currentScene->selectedComponent->localTransform);
         showTransform("World xform", currentScene->selectedComponent->worldTransform);
         ImGui::Indent(); // Indent to represent nesting
         // Display child components recursively
-        for (auto* child : component->childComponents)
-        {
+        for (auto *child: component->childComponents) {
             displayComponents(child);
-
             // Check if the child component is clicked
-            if (ImGui::IsItemClicked(0))
-            {
+            if (ImGui::IsItemClicked(0)) {
                 currentScene->selectedComponent = child;
             }
         }
@@ -205,9 +213,8 @@ void InteractionLayer::displayComponents(Component * component)
 
 void InteractionLayer::selectedObjectGui(Scene *scene) {
     ImGui::Begin("Selected Item");
-    if (currentScene->selectedComponent->parentComponent && ImGui::Button("..Back"))
-    {
-        currentScene->selectedComponent =  currentScene->selectedComponent->parentComponent;
+    if (currentScene->selectedComponent->parentComponent && ImGui::Button("..Back")) {
+        currentScene->selectedComponent = currentScene->selectedComponent->parentComponent;
     }
 
     if (scene->selectedComponent) {

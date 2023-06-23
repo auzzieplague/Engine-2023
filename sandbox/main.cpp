@@ -128,7 +128,7 @@ int main() {
         Debug::show(e.what());
     }
 
-    interactionLayer->selectedModel = playerObject;
+    interactionLayer->currentComponent = playerObject;
 
     /// kick-start the main loop
     engine->start();

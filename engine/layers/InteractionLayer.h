@@ -17,7 +17,7 @@ private:
     Input *input;
 
 public:
-    Model *selectedModel = nullptr;
+    Component *currentComponent = nullptr;
 
     void onAttach(Scene *scene) override;
     void appendToGui(Scene *scene) override;
