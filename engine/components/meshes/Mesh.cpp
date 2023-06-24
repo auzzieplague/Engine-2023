@@ -215,7 +215,7 @@ void Mesh::addMesh(Mesh *subMesh) {
     // each mesh should know its parent and root, and be added to the root mesh tree
 
     // if this mesh has a parent mesh (is a child), update the mRootMesh tree
-    if (this->parentComponent) {
+    if (this->parentComponent && this->parentComponent->getType() == Object::ObjectType::OT_Mesh) {
         // update existing submesh meshtree parent, root values accordingly
         for (auto nestedMesh: subMesh->meshTree) {
             nestedMesh->parentComponent = this;

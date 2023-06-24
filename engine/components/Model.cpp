@@ -3,9 +3,9 @@
 #include "Model.h"
 #include "Terrain.h"
 
-Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig config) {
+Model *Model::createWithGeometry(Geometry::ShapeType shape, GeometryConfig config) {
     auto *model = new Model();
-    model->mRootMesh = new Geometry();
+    Mesh * newMesh = new Geometry();
 
     std::string shapeText = "";
     switch (shape) {
@@ -14,52 +14,56 @@ Model *Model::createFromGeometry(Geometry::ShapeType shape, GeometryConfig confi
             break;
         case Geometry::ShapeType::Cube :
             shapeText = "Cube";
-            dynamic_cast<Geometry *>(model->mRootMesh)->buildCube(config);
+            dynamic_cast<Geometry *>(newMesh)->buildCube(config);
             break;
         case Geometry::ShapeType::Sphere :
             shapeText = "Sphere";
-            dynamic_cast<Geometry *>(model->mRootMesh)->buildSphere(config);
+            dynamic_cast<Geometry *>(newMesh)->buildSphere(config);
             break;
         case Geometry::ShapeType::Terrain :
             shapeText = "Terrain";
             // here we're treating terrain as a model just for testing purposes
-            dynamic_cast<Geometry *>(model->mRootMesh)->buildTerrain(config);
+            dynamic_cast<Geometry *>(newMesh)->buildTerrain(config);
             break;
         case Geometry::ShapeType::Dome :
             shapeText = "Dome";
-            dynamic_cast<Geometry *>(model->mRootMesh)->buildDome(config);
+            dynamic_cast<Geometry *>(newMesh)->buildDome(config);
             break;
         case Geometry::ShapeType::Torus :
             shapeText = "Torus";
-            dynamic_cast<Geometry *>(model->mRootMesh)->buildTorus(config);
+            dynamic_cast<Geometry *>(newMesh)->buildTorus(config);
             break;
         case Geometry::ShapeType::Capsule :
             shapeText = "Capsule";
-            dynamic_cast<Geometry *>(model->mRootMesh)->buildCapsule(config);
+            dynamic_cast<Geometry *>(newMesh)->buildCapsule(config);
             break;
         case Geometry::ShapeType::Cone :
             shapeText = "Cone";
-            dynamic_cast<Geometry *>(model->mRootMesh)->buildCone(config);
+            dynamic_cast<Geometry *>(newMesh)->buildCone(config);
             break;
         case Geometry::ShapeType::Quad :
             shapeText = "Quad";
-            dynamic_cast<Geometry *>(model->mRootMesh)->buildQuad(config);
+            dynamic_cast<Geometry *>(newMesh)->buildQuad(config);
             break;
     }
 
-//    model->mRootMesh->calculateNormals();
-    model->childComponents.push_back(model->mRootMesh);
-//    model->addChild(model->mRootMesh);
+    newMesh->setName(shapeText);
+//    newMesh->calculateNormals();
+//    model->childComponents.push_back(newMesh);
+//    model->addChild(newMesh);
     // check if model has UVs and Normals, if not, build them
-    if (model->mRootMesh->getUVs().size() == 0) {
+    if (newMesh->getUVs().size() == 0) {
         throw std::runtime_error("missing UVs for shape:" + shapeText);
     }
-    if (model->mRootMesh->getNormals().size() == 0) {
+    if (newMesh->getNormals().size() == 0) {
         throw std::runtime_error("missing Normals for shape:" + shapeText);
     }
 
     /// for geometry we're initially using the root mesh as the collision mesh
-    model->mCollisionMesh = model->mRootMesh;
+    model->mCollisionMesh = newMesh;
+    model->mRootMesh = newMesh;
+    newMesh->parentComponent = model;
+    model->addChild(newMesh);
     return model;
 }
 
@@ -128,14 +132,14 @@ void Model::setMaterial(Material material) {
     this->mRootMesh->setMaterial(material);
 }
 
-void Model::addChild(Component *child) {
-    // if were adding a mesh, then we'll need to nest it under the root mesh
-    if (child->getType() == ObjectType::OT_Mesh) {
-        mRootMesh->addChild(child);
-    } else {
-        Component::addChild(child);
-    }
-}
+//void Model::addChild(Component *child) {
+//    // if were adding a mesh, then we'll need to nest it under the root mesh
+//    if (child->getType() == ObjectType::OT_Mesh) {
+//        mRootMesh->addChild(child);
+//    } else {
+//        Component::addChild(child);
+//    }
+//}
 
 void Model::setCollisionMesh(Mesh *mesh) {
     this->mCollisionMesh = mesh;
@@ -145,7 +149,6 @@ void Model::setCollisionMesh(Mesh *mesh) {
 Mesh *Model::getCollisionMesh() {
     return this->mCollisionMesh;
 }
-
 
 Mesh *Model::getRootMesh() {
     return this->mRootMesh;

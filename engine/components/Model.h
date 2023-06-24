@@ -19,7 +19,7 @@ public:
         return ObjectType::OT_Model;
     };
 
-    void addChild(Component *child) override; // need to add meshes to mesh tree
+//    void addChild(Component *child) override; // need to add meshes to mesh tree
 
     [[nodiscard]] bool isDynamic() const {
         if (!this->mPhysicsBody) return false;
@@ -27,7 +27,7 @@ public:
         return true;
     }
 
-    static Model *createFromGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
+    static Model *createWithGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
     virtual void setCollider(ColliderConfig config);
     void setCollisionMesh(Mesh *mesh);
     Mesh * getCollisionMesh();

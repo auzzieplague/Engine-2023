@@ -12,21 +12,21 @@ Model *modelWithSubMeshes(bool physics = true) {
 
     material.loadFromAsset("mats_ground", "gray-bricks1");
 
-    auto *root = Model::createFromGeometry(Geometry::ShapeType::Sphere);
-    root->setName("root");
-    root->setWorldPosition(glm::vec3(-1, 0, -25));
-    root->setLocalRotation(glm::vec3(-30, 0, -25));
-    root->setMaterial(material);
-    root->setLocalScale(1);
-    root->setWorldPosition(glm::vec3(0, 0, -20));
+    auto *model = Model::createWithGeometry(Geometry::ShapeType::Sphere);
+    model->setName("model");
+    model->setWorldPosition(glm::vec3(-1, 0, -25));
+    model->setLocalRotation(glm::vec3(-30, 0, -25));
+    model->setMaterial(material);
+    model->setLocalScale(1);
+    model->setWorldPosition(glm::vec3(0, 0, -20));
 
     if (physics) {
         auto *collisionMesh = new Geometry();
         collisionMesh->buildCube(GeometryConfig{.cube{.size=1}, .sphere{.radius=2}});
-        root->setCollisionMesh(collisionMesh);
+        model->setCollisionMesh(collisionMesh);
         config.shape = config.Box;
         config.type = config.Dynamic;
-        root->setCollider(config);
+        model->setCollider(config);
     }
 
     float offset = 1;
@@ -50,11 +50,11 @@ Model *modelWithSubMeshes(bool physics = true) {
         material.setAmbientColor(glm::vec3(n * (1 / (count?count:1)), 0, 0));
         subMesh->setMaterial(material);
         subMesh->getMaterial().randomAmbientColor();
-        root->mRootMesh->addMesh(subMesh);
+        model->mRootMesh->addMesh(subMesh);
     }
 
     //todo make box same size as demo corners
-    return root;
+    return model;
 }
 
 Model *terrainModel() {
