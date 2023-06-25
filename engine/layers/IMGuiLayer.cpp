@@ -1,7 +1,15 @@
 #include "IMGuiLayer.h"
 
+
+void IMGuiLayer::loadAssets(Scene *scene) {
+    this->iconAtlas = this->api->loadTexture(AssetManager::getRelativePath("icons", "editor.png"));
+}
+
 // note : require openGL attached first
 void IMGuiLayer::onAttach(Scene *scene) {
+
+    loadAssets(scene);
+
     const char *glsl_version = "#version 130";
     gladLoadGL();
 
@@ -50,7 +58,7 @@ void IMGuiLayer::buildDockSpace(Scene *scene) {
 void IMGuiLayer::update(Scene *scene) {
     static bool keyReleased = true;
 
-    if (!keyReleased && !Input::isKeyPressed(GLFW_KEY_TAB) ) {
+    if (!keyReleased && !Input::isKeyPressed(GLFW_KEY_TAB)) {
         keyReleased = true;
     }
 
@@ -112,7 +120,7 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
                          delta,
                          NULL, NULL, NULL);
 
-    glm::vec3 position, rotation, scale,  dPosition, dRotation, dScale;
+    glm::vec3 position, rotation, scale, dPosition, dRotation, dScale;
 
     ImGuizmo::DecomposeMatrixToComponents(matrix, glm::value_ptr(position),
                                           glm::value_ptr(rotation),
@@ -129,10 +137,35 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGui::End();
 }
 
+void IMGuiLayer::drawIcons(Scene *scene) {
+    ImageButton button;
+    button.uvMin = ImVec2(0.0f, 0.0f);
+    button.uvMax = ImVec2(0.25f, 0.25f);
+    button.size = ImVec2(50, 50);
+    button.title = "Add Sphere";
+    button.onClick = [scene]() {
+        auto *model = Model::createWithGeometry(Geometry::ShapeType::Sphere);
+        scene->addComponent(model);
+
+        if (scene->selectedComponent) {
+            model->setWorldPosition(scene->selectedComponent->getWorldPosition()+glm::vec3(0.1));
+        }
+
+        Material material;
+//        material.loadFromAsset("defaults", "default.png");
+        material.loadFromAsset("mats_ground", "gray-bricks1");
+        model->setMaterial(material);
+        scene->selectedComponent = model;
+    };
+    button.textureID = reinterpret_cast<ImTextureID>(this->iconAtlas);
+    button.Render(scene);
+}
+
 void IMGuiLayer::render(Scene *scene) {
 //    if (scene->config.editMode) {
     drawGizmos(scene);
 //    }
+    drawIcons(scene);
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -158,5 +191,21 @@ void IMGuiLayer::onDetach(Scene *scene) {
 }
 
 
+void ImageButton::Render(Scene *scene) {
 
+    if (ImGui::ImageButton(textureID, size, uvMin, uvMax))
+    {
+        if (onClick)
+        {
+            onClick();
+        }
+    }
+
+    ImGui::SameLine();
+
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::SetTooltip("%s", title.c_str());
+    }
+}
 

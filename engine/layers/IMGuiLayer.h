@@ -11,10 +11,25 @@
 #include "../../vendor/ImGuizmo/ImGuizmo.h"
 #include <glm/gtc/type_ptr.hpp>
 #include "../Engine.h"
+#include <functional>
+#include <string>
+
+struct ImageButton
+{
+    ImVec2 uvMin; // Top-left UV coordinate
+    ImVec2 uvMax; // Bottom-right UV coordinate
+    ImVec2 size;  // Size of the button
+    std::string title;
+    std::function<void()> onClick;
+    ImTextureID textureID;
+
+    void Render(Scene *scene);
+};
 
 class IMGuiLayer :
         public Layer
 {
+    unsigned int iconAtlas;
 
     uint32_t getFrequency() override { return 10; };
 
@@ -38,6 +53,10 @@ class IMGuiLayer :
     void processInput(Scene* scene);
 
     void buildDockSpace(Scene* scene);
+
+    void loadAssets(Scene *scene);
+
+    void drawIcons(Scene *scene);
 };
 
 

@@ -10,8 +10,10 @@
 std::map<std::string, std::string> AssetManager::category_path = {
         {"shaders_opengl", "shaders/glsl"},
         {"heightmap",      "heightmaps"},
+        {"defaults",       "materials/defaults"},
         {"material",       "materials"},
-        {"mats_ground",          "materials/ground"},
+        {"mats_ground",    "materials/ground"},
+        {"icons",    "icons"},
 };
 #else
 /// should be pulling from packages in live mode anyway
@@ -22,7 +24,7 @@ std::map<std::string, std::string> AssetManager::category_path = {
 };
 #endif
 
-std::string AssetManager::getPath(const std::string& category) {
+std::string AssetManager::getPath(const std::string &category) {
     auto assetPathPrefix = "../assets/";
     auto it = category_path.find(category);
     // if there's no match for category then reference in code is an error
