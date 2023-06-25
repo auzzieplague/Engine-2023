@@ -72,11 +72,6 @@ void Component::updateFinalTransform() {
 
     finalTransform.setFromMatrix(worldTransform.getMatrix() * localTransform.getMatrix());
 
-//    glm::mat4 preTransform = this->worldTransform.getMatrix() * this->localTransform.getMatrix();
-//    this->finalTransform.setPosition(glm::vec3(preTransform[3]));
-//    this->finalTransform.setRotation(glm::quat_cast(preTransform));
-    // todo - fix scale
-//    this->finalTransform.setScale(this->worldTransform.getScale()*this->getLocalScale());
     this->updateChildTransforms();
 }
 
@@ -118,12 +113,9 @@ Transform Component::getWorldTransform() const {
     return worldTransform;
 }
 
-
 glm::vec3 Component::getLocalScale() {
     return this->localTransform.getScale();
 }
-
-
 
 bool Component::isDirty() const {
     return m_dirty;

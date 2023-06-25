@@ -195,8 +195,6 @@ void InteractionLayer::displayComponents(Component *component) {
     // Display the component name and create a collapsible section
     if (ImGui::CollapsingHeader(component->getName().c_str())) {
         // Check if the right mouse button is clicked on the child component
-        showTransform("Local xform", currentScene->selectedComponent->localTransform);
-        showTransform("World xform", currentScene->selectedComponent->worldTransform);
         ImGui::Indent(); // Indent to represent nesting
         // Display child components recursively
         for (auto *child: component->childComponents) {
@@ -213,9 +211,13 @@ void InteractionLayer::displayComponents(Component *component) {
 
 void InteractionLayer::selectedObjectGui(Scene *scene) {
     ImGui::Begin("Selected Item");
-    if (currentScene->selectedComponent->parentComponent && ImGui::Button("..Back")) {
+
+    if (currentScene->selectedComponent->parentComponent && ImGui::Button("..Parent")) {
         currentScene->selectedComponent = currentScene->selectedComponent->parentComponent;
     }
+
+    showTransform("Local xform", currentScene->selectedComponent->localTransform);
+    showTransform("World xform", currentScene->selectedComponent->worldTransform);
 
     if (scene->selectedComponent) {
         displayComponents(scene->selectedComponent);

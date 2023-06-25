@@ -41,7 +41,7 @@ Model *modelWithSubMeshes(bool physics = true) {
             glm::vec3(offset, offset, offset),
     };
 
-    int count = 0;
+    int count = 7;
     for (int n = count; n >= 0; n--) {
         auto subMesh = new Geometry();
         subMesh->buildSphere();

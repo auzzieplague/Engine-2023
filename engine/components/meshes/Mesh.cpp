@@ -197,22 +197,16 @@ void Mesh::switchIndexOrder(bool clockwise) {
 void Mesh::addChild(Component *child) {
     if (child->getType() == ObjectType::OT_Mesh) {
         addMesh(dynamic_cast<Mesh *>(child));
-//        this->meshTree.push_back(dynamic_cast<Mesh *>(child));
-
     }
-
     Component::addChild(child);
 }
 
 void Mesh::addMesh(Mesh *subMesh) {
-    Debug::show("added submesh "+subMesh->getName()+" to "+ this->getName()+"\n");
     /*
      * Note: on construction this mesh is added to mesh tree, so mesh tree always contains self
-     *
      */
     subMesh->parentComponent = this;
     childComponents.push_back(subMesh);
-    // each mesh should know its parent and root, and be added to the root mesh tree
 
     // if this mesh has a parent mesh (is a child), update the mRootMesh tree
     if (this->parentComponent && this->parentComponent->getType() == Object::ObjectType::OT_Mesh) {
@@ -220,9 +214,6 @@ void Mesh::addMesh(Mesh *subMesh) {
         for (auto nestedMesh: subMesh->meshTree) {
             nestedMesh->parentComponent = this;
             nestedMesh->rootMesh = this->rootMesh;
-//                updateComponentWorldTransform(nestedMesh, this->getWorldTransform());
-//            nestedMesh->worldTransform.setPosition(this->worldTransform.getPosition()+nestedMesh->getLocalPosition());
-//            nestedMesh->updateFinalTransform();
         }
         rootMesh->meshTree.insert(rootMesh->meshTree.end(), subMesh->meshTree.begin(), subMesh->meshTree.end());
 
@@ -232,7 +223,6 @@ void Mesh::addMesh(Mesh *subMesh) {
         // if this is the first child being added, make this the mRootMesh
         subMesh->rootMesh = this;
         meshTree.push_back(subMesh);
-//        subMesh->updateFinalTransform();
     }
 
     this->updateChildTransforms();
