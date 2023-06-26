@@ -21,8 +21,9 @@ struct ImageButton
     ImVec2 size;  // Size of the button
     std::string title;
     std::function<void()> onClick;
+    std::function<void(int)> onDrop;
     ImTextureID textureID;
-
+    int dropFrameCount = -1;
     void Render(Scene *scene);
 };
 

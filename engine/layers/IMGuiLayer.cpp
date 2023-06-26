@@ -138,6 +138,7 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 }
 
 void IMGuiLayer::drawIcons(Scene *scene) {
+    ImGui::Begin("Icons Item");
     ImageButton button;
     button.uvMin = ImVec2(0.0f, 0.0f);
     button.uvMax = ImVec2(0.25f, 0.25f);
@@ -152,13 +153,18 @@ void IMGuiLayer::drawIcons(Scene *scene) {
         }
 
         Material material;
-//        material.loadFromAsset("defaults", "default.png");
+//        material.loadFromAsset("defaults", "default.png"); // couldnt select this material
         material.loadFromAsset("mats_ground", "gray-bricks1");
         model->setMaterial(material);
         scene->selectedComponent = model;
     };
+    button.onDrop = [](int frameCount) {
+        std::cout<<"Not functioning :[ " << frameCount << '\n';
+    };
     button.textureID = reinterpret_cast<ImTextureID>(this->iconAtlas);
     button.Render(scene);
+
+    ImGui::End();
 }
 
 void IMGuiLayer::render(Scene *scene) {
@@ -206,6 +212,22 @@ void ImageButton::Render(Scene *scene) {
     if (ImGui::IsItemHovered())
     {
         ImGui::SetTooltip("%s", title.c_str());
+    }
+
+
+    if (ImGui::BeginDragDropSource())
+    {
+        ImGui::SetDragDropPayload("BUTTON_PAYLOAD", this, sizeof(ImageButton));
+        ImGui::Text("Drag and drop me!");
+
+        ImGui::EndDragDropSource();
+    }
+
+    if (ImGui::BeginDragDropTarget()) {
+            dropFrameCount = ImGui::GetFrameCount(); // Store the current frame count
+        if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("BUTTON_PAYLOAD")) {
+        }
+        ImGui::EndDragDropTarget();
     }
 }
 
