@@ -21,7 +21,7 @@ void InteractionLayer::processInput(Scene *scene) {
 
     processCameraInput(scene, movement);
 
-    if (this->currentComponent->getType() == ObjectType::OT_Model) {
+    if (this->currentComponent && this->currentComponent->getType() == ObjectType::OT_Model) {
         if (dynamic_cast<Model *>(currentComponent)->isDynamic()) {
             handleCharacterKeysWithPhysics();
             return;
@@ -210,6 +210,11 @@ void InteractionLayer::displayComponents(Component *component) {
 }
 
 void InteractionLayer::selectedObjectGui(Scene *scene) {
+
+    if (!scene->selectedComponent) {
+        return;
+    }
+
     ImGui::Begin("Selected Item");
 
     if (currentScene->selectedComponent->parentComponent && ImGui::Button("..Parent")) {
@@ -219,9 +224,9 @@ void InteractionLayer::selectedObjectGui(Scene *scene) {
     showTransform("Local xform", currentScene->selectedComponent->localTransform);
     showTransform("World xform", currentScene->selectedComponent->worldTransform);
 
-    if (scene->selectedComponent) {
-        displayComponents(scene->selectedComponent);
-    }
+
+    displayComponents(scene->selectedComponent);
+
 
     ImGui::End();
 }

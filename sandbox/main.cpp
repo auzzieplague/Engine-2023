@@ -71,6 +71,8 @@ Model *terrainModel() {
 
     terrain1->setLocalScale({100, 10, 100});
     terrain1->setPosition({0, -20, -20});
+    // todo 0 rotations cause build issues
+    terrain1->setLocalRotation({1, 1, 1});
     terrain1->setMaterial(material);
     config = {.shape=config.Mesh, .type=config.Static};
     terrain1->setCollider(config);
@@ -79,11 +81,11 @@ Model *terrainModel() {
 
 void setupScene(Scene *scene) {
 
-    playerObject = modelWithSubMeshes(false);
+    playerObject = modelWithSubMeshes(true);
     scene->addComponent(playerObject);
 
     auto terrain = terrainModel();
-//    scene->addComponent(terrain);
+    scene->addComponent(terrain);
 
     scene->selectedComponent = playerObject;
 

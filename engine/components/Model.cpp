@@ -125,7 +125,7 @@ void Model::getMeshFromHeightMap(std::string name) {
 }
 
 physx::PxTransform Model::getPxTransform() {
-    return this->worldTransform.getPxTransform();
+    return this->localTransform.getPxTransform();
 }
 
 void Model::setMaterial(Material material) {
