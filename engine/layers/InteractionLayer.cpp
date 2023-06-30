@@ -34,37 +34,37 @@ void InteractionLayer::processInput(Scene *scene) {
 
 void InteractionLayer::handleCharacterKeys(float movement) {
     if (Input::isKeyPressed(GLFW_KEY_UP) | Input::isKeyPressed(GLFW_KEY_KP_8)) {
-        glm::vec3 pos = currentComponent->getWorldPosition();
+        glm::vec3 pos = currentComponent->getLocalPosition();
         pos.y += movement / 2;
-        currentComponent->setWorldPosition(pos);
+        currentComponent->setPosition(pos);
 
     };
     if (Input::isKeyPressed(GLFW_KEY_DOWN) | Input::isKeyPressed(GLFW_KEY_KP_2)) {
-        glm::vec3 pos = currentComponent->getWorldPosition();
+        glm::vec3 pos = currentComponent->getLocalPosition();
         pos.y -= movement / 2;
-        currentComponent->setWorldPosition(pos);
+        currentComponent->setPosition(pos);
 
     };
     if (Input::isKeyPressed(GLFW_KEY_PAGE_DOWN) | Input::isKeyPressed(GLFW_KEY_KP_ADD)) {
-        glm::vec3 pos = currentComponent->getWorldPosition();
+        glm::vec3 pos = currentComponent->getLocalPosition();
         pos.z += movement / 2;
-        currentComponent->setWorldPosition(pos);
+        currentComponent->setPosition(pos);
 
     };
     if (Input::isKeyPressed(GLFW_KEY_PAGE_UP) | Input::isKeyPressed(GLFW_KEY_KP_SUBTRACT)) {
-        glm::vec3 pos = currentComponent->getWorldPosition();
+        glm::vec3 pos = currentComponent->getLocalPosition();
         pos.z -= movement / 2;
-        currentComponent->setWorldPosition(pos);
+        currentComponent->setPosition(pos);
     };
     if (Input::isKeyPressed(GLFW_KEY_RIGHT) | Input::isKeyPressed(GLFW_KEY_KP_6)) {
-        glm::vec3 pos = currentComponent->getWorldPosition();
+        glm::vec3 pos = currentComponent->getLocalPosition();
         pos.x += movement / 2;
-        currentComponent->setWorldPosition(pos);
+        currentComponent->setPosition(pos);
     };
     if (Input::isKeyPressed(GLFW_KEY_LEFT) | Input::isKeyPressed(GLFW_KEY_KP_4)) {
-        glm::vec3 pos = currentComponent->getWorldPosition();
+        glm::vec3 pos = currentComponent->getLocalPosition();
         pos.x -= movement / 2;
-        currentComponent->setWorldPosition(pos);
+        currentComponent->setPosition(pos);
     };
 
     if (Input::isKeyPressed(GLFW_KEY_U)) {

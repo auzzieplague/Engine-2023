@@ -85,6 +85,9 @@ void IMGuiLayer::appendToGui(Scene *scene) {}
 
 void IMGuiLayer::drawGizmos(Scene *scene) {
     if (!scene->selectedComponent) return;
+    // child manipulation not supported atm
+    if (scene->selectedComponent->parentComponent) return;
+
     ImGui::GetIO().WantCaptureMouse = false;
     ImGuiIO &io = ImGui::GetIO();
 
@@ -128,20 +131,15 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGuizmo::DecomposeMatrixToComponents(matrix, glm::value_ptr(position),
                                           glm::value_ptr(rotation),
                                           glm::value_ptr(scale));
-//
+
     ImGuizmo::DecomposeMatrixToComponents(delta, glm::value_ptr(dPosition),
                                           glm::value_ptr(dRotation),
                                           glm::value_ptr(dScale));
-//
-if (parent ) {
-    scene->selectedComponent->setLocalPosition(position - parent->worldTransform.mPosition);
-} else {
-    scene->selectedComponent->setLocalPosition(position);
+
+    scene->selectedComponent->setPosition(position);
     scene->selectedComponent->rotate(dRotation);
     scene->selectedComponent->scale(dScale);
-}
 
-//
     ImGui::End();
 }
 
@@ -157,7 +155,7 @@ void IMGuiLayer::drawIcons(Scene *scene) {
         scene->addComponent(model);
 
         if (scene->selectedComponent) {
-            model->setWorldPosition(scene->selectedComponent->getWorldPosition()+glm::vec3(0.1));
+            model->setPosition(scene->selectedComponent->getLocalPosition() + glm::vec3(0.1));
         }
 
         Material material;

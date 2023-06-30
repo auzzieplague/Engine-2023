@@ -31,7 +31,7 @@ public:
     [[nodiscard]] virtual bool isReady();
     void setReady(bool ready = true);
 
-    virtual void setLocalPosition(glm::vec3 newPosition);
+    virtual void setPosition(glm::vec3 newPosition);
     virtual void setLocalRotation(glm::vec3 newRotation);
     virtual void setLocalRotation(glm::quat rotation);
     virtual void setLocalScale(glm::vec3 newScale);
@@ -44,20 +44,10 @@ public:
     [[nodiscard]] virtual glm::mat4 getLocalMatrix();
     [[nodiscard]] virtual Transform getLocalTransform() const;
 
-
-    virtual void setWorldPosition(glm::vec3 newPosition);
-    virtual void setWorldRotation(glm::vec3 newRotation);
-    virtual void setWorldRotation(glm::quat rotation);
-    virtual void setWorldScale(glm::vec3 newPosition);
     [[nodiscard]] virtual glm::mat4 getWorldMatrix();
-    [[nodiscard]] virtual glm::vec3 getWorldPosition();
-    [[nodiscard]] virtual glm::quat getWorldRotation();
     [[nodiscard]] virtual Transform getWorldTransform() const;
     virtual void setWorldTransform(Transform transform);
 
-    virtual void updateWorldTransform(){};
-    [[nodiscard]] virtual glm::mat4 getTransformMatrix();
-//    virtual void updateChildTransforms();
 
     virtual void rotateX(float degrees);
     virtual void rotateY(float degrees);

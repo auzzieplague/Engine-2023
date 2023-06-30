@@ -1,6 +1,6 @@
 #include "Component.h"
 
-void Component::setLocalPosition(glm::vec3 newPosition) {
+void Component::setPosition(glm::vec3 newPosition) {
     this->localTransform.setPosition(newPosition);
 }
 
@@ -58,37 +58,6 @@ void Component::setLocalTransform(Transform transform) {
 void Component::setWorldTransform(Transform transform) {
     this->worldTransform = transform;
 };
-
-
-void Component::setWorldPosition(glm::vec3 newPosition) {
-    this->worldTransform.setPosition(newPosition);
-}
-
-void Component::setWorldScale(glm::vec3 newScale) {
-    this->worldTransform.setScale(newScale);
-}
-
-void Component::setWorldRotation(glm::vec3 newRotation) {
-    // convert degrees to quaternion
-    this->worldTransform.setRotation(newRotation);
-}
-
-void Component::setWorldRotation(glm::quat rotation) {
-    this->worldTransform.setRotation(rotation);
-}
-
-glm::vec3 Component::getWorldPosition() {
-    return this->worldTransform.getPosition();
-}
-
-
-glm::quat Component::getWorldRotation() {
-    return this->worldTransform.getRotation();
-}
-
-glm::mat4 Component::getTransformMatrix() {
-    return this->worldTransform.getMatrix();
-}
 
 Transform Component::getWorldTransform() const {
     return worldTransform;

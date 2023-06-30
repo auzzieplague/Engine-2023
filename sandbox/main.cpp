@@ -17,7 +17,7 @@ Model *modelWithSubMeshes(bool physics = true) {
     model->setLocalRotation(glm::vec3(-30, 0, -25));
     model->setMaterial(material);
     model->setLocalScale(1);
-    model->setLocalPosition(glm::vec3(0, 0, -20));
+    model->setPosition(glm::vec3(0, 0, -20));
 
     if (physics) {
         auto *collisionMesh = new Geometry();
@@ -45,7 +45,7 @@ Model *modelWithSubMeshes(bool physics = true) {
         auto subMesh = new Geometry();
         subMesh->buildSphere();
         subMesh->setName("sub mesh "+std::to_string(n));
-        subMesh->setLocalPosition(positions[n]); // should be relative to parent mesh
+        subMesh->setPosition(positions[n]); // should be relative to parent mesh
         material.setAmbientColor(glm::vec3(n * (1 / (count?count:1)), 0, 0));
         subMesh->setMaterial(material);
         subMesh->getMaterial().randomAmbientColor();
@@ -70,7 +70,7 @@ Model *terrainModel() {
 //    Debug::show(mesh->getVertices().size());
 
     terrain1->setLocalScale({100, 10, 100});
-    terrain1->setWorldPosition({0, -20, -20});
+    terrain1->setPosition({0, -20, -20});
     terrain1->setMaterial(material);
     config = {.shape=config.Mesh, .type=config.Static};
     terrain1->setCollider(config);
@@ -82,12 +82,11 @@ void setupScene(Scene *scene) {
     playerObject = modelWithSubMeshes(false);
     scene->addComponent(playerObject);
 
-//    auto terrain = terrainModel();
+    auto terrain = terrainModel();
 //    scene->addComponent(terrain);
 
     scene->selectedComponent = playerObject;
 
-    Debug::show("[->] Use 'R' to generate collision report");
     Debug::show("[->] Use NumPad 4862+- to navigate test Model");
     Debug::show("[->] RPY (roll, pitch, yaw) UIO (world xyz) rotations ");
 }
@@ -111,7 +110,7 @@ int main() {
 
     /// optional layers
     engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene
-//    engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
+    engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
     engine->attachLayer(new IMGuiLayer());
 //    engine->attachLayer(new CollisionLayer()); // processes collisions effects
 
