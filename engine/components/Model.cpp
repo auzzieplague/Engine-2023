@@ -113,19 +113,18 @@ void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
     }
 
     // transform being handled by physics so just update the combined value ready for rendering
-    this->finalTransform.applyPxTransform(pxTransform);
-    updateChildTransforms();
+    this->worldTransform.applyPxTransform(pxTransform);
+//    updateChildTransforms();
 }
 
 void Model::getMeshFromHeightMap(std::string name) {
     this->mRootMesh = AssetManager::getMeshFromHeightMap(name, 1, 1);
     this->mCollisionMesh = mRootMesh;
     this->childComponents.push_back(mRootMesh);
-    updateFinalTransform();
 }
 
 physx::PxTransform Model::getPxTransform() {
-    return this->finalTransform.getPxTransform();
+    return this->worldTransform.getPxTransform();
 }
 
 void Model::setMaterial(Material material) {

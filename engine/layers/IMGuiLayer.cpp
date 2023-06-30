@@ -106,14 +106,17 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 
     ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
-    auto *selectedWTransform = &scene->selectedComponent->worldTransform;
-    auto *selectedLTransform = &scene->selectedComponent->localTransform;
+    auto parent = scene->selectedComponent->parentComponent;
+
+    auto *selectedTransform = parent ?
+            &scene->selectedComponent->worldTransform :
+            &scene->selectedComponent->localTransform;
 
     float matrix[16];
     float delta[16];
-    ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(selectedWTransform->mPosition),
-                                            glm::value_ptr(selectedWTransform->mRotation),
-                                            glm::value_ptr(selectedLTransform->mScale), matrix);
+    ImGuizmo::RecomposeMatrixFromComponents(glm::value_ptr(selectedTransform->mPosition),
+                                            glm::value_ptr(selectedTransform->mRotation),
+                                            glm::value_ptr(selectedTransform->mScale), matrix);
 
     ImGuizmo::Manipulate(glm::value_ptr(scene->currentCamera->mViewMatrix),
                          glm::value_ptr(scene->currentCamera->mProjectionMatrix), gizmoMode, mCurrentGizmoMode, matrix,
@@ -125,15 +128,20 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGuizmo::DecomposeMatrixToComponents(matrix, glm::value_ptr(position),
                                           glm::value_ptr(rotation),
                                           glm::value_ptr(scale));
-
+//
     ImGuizmo::DecomposeMatrixToComponents(delta, glm::value_ptr(dPosition),
                                           glm::value_ptr(dRotation),
                                           glm::value_ptr(dScale));
-
-    scene->selectedComponent->setWorldPosition(position); // or move if has parent ???
-    scene->selectedComponent->rotate(rotation);
+//
+if (parent ) {
+    scene->selectedComponent->setLocalPosition(position - parent->worldTransform.mPosition);
+} else {
+    scene->selectedComponent->setLocalPosition(position);
+    scene->selectedComponent->rotate(dRotation);
     scene->selectedComponent->scale(dScale);
+}
 
+//
     ImGui::End();
 }
 

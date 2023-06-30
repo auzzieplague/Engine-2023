@@ -14,11 +14,10 @@ Model *modelWithSubMeshes(bool physics = true) {
 
     auto *model = Model::createWithGeometry(Geometry::ShapeType::Sphere);
     model->setName("model");
-    model->setWorldPosition(glm::vec3(-1, 0, -25));
     model->setLocalRotation(glm::vec3(-30, 0, -25));
     model->setMaterial(material);
     model->setLocalScale(1);
-    model->setWorldPosition(glm::vec3(0, 0, -20));
+    model->setLocalPosition(glm::vec3(0, 0, -20));
 
     if (physics) {
         auto *collisionMesh = new Geometry();
@@ -41,7 +40,7 @@ Model *modelWithSubMeshes(bool physics = true) {
             glm::vec3(offset, offset, offset),
     };
 
-    int count = 0;
+    int count = 7;
     for (int n = count; n >= 0; n--) {
         auto subMesh = new Geometry();
         subMesh->buildSphere();
@@ -52,7 +51,6 @@ Model *modelWithSubMeshes(bool physics = true) {
         subMesh->getMaterial().randomAmbientColor();
         model->mRootMesh->addMesh(subMesh);
     }
-
     //todo make box same size as demo corners
     return model;
 }
@@ -84,8 +82,8 @@ void setupScene(Scene *scene) {
     playerObject = modelWithSubMeshes(false);
     scene->addComponent(playerObject);
 
-    auto terrain = terrainModel();
-    scene->addComponent(terrain);
+//    auto terrain = terrainModel();
+//    scene->addComponent(terrain);
 
     scene->selectedComponent = playerObject;
 
@@ -113,7 +111,7 @@ int main() {
 
     /// optional layers
     engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene
-    engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
+//    engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
     engine->attachLayer(new IMGuiLayer());
 //    engine->attachLayer(new CollisionLayer()); // processes collisions effects
 

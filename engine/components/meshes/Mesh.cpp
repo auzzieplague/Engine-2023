@@ -225,7 +225,7 @@ void Mesh::addMesh(Mesh *subMesh) {
         meshTree.push_back(subMesh);
     }
 
-    this->updateChildTransforms();
+//    this->updateChildTransforms();
 }
 
 void Mesh::reduceMeshData(int iterations) {

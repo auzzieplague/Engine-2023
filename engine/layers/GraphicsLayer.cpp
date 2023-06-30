@@ -42,7 +42,7 @@ void GraphicsLayer::render(Scene *scene) {
     api->shaderSetCamera(scene->currentCamera);
 
     for (auto mesh: meshes) {
-        api->shaderSetTransform(mesh->getTransformMatrix());
+        api->shaderSetTransform(mesh->getWorldMatrix());
         api->shaderSetMaterial(mesh->getMaterial());
         api->renderMesh(mesh);
     }

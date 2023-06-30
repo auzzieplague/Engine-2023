@@ -16,7 +16,6 @@ public:
     // for editor direct access - might be able to friend class / protected access these
     Transform localTransform{};
     Transform worldTransform{};
-    Transform finalTransform{};
 
     Component *parentComponent = nullptr;
 
@@ -45,20 +44,20 @@ public:
     [[nodiscard]] virtual glm::mat4 getLocalMatrix();
     [[nodiscard]] virtual Transform getLocalTransform() const;
 
+
     virtual void setWorldPosition(glm::vec3 newPosition);
     virtual void setWorldRotation(glm::vec3 newRotation);
     virtual void setWorldRotation(glm::quat rotation);
     virtual void setWorldScale(glm::vec3 newPosition);
+    [[nodiscard]] virtual glm::mat4 getWorldMatrix();
     [[nodiscard]] virtual glm::vec3 getWorldPosition();
     [[nodiscard]] virtual glm::quat getWorldRotation();
     [[nodiscard]] virtual Transform getWorldTransform() const;
     virtual void setWorldTransform(Transform transform);
 
-
-    virtual void updateFinalTransform();
-    virtual Transform getFinalTransform();
+    virtual void updateWorldTransform(){};
     [[nodiscard]] virtual glm::mat4 getTransformMatrix();
-    virtual void updateChildTransforms();
+//    virtual void updateChildTransforms();
 
     virtual void rotateX(float degrees);
     virtual void rotateY(float degrees);
@@ -67,7 +66,7 @@ public:
     virtual void pitch(float degrees);
     virtual void yaw(float degrees);
     void rotate(glm::vec3 newRotation);
-    void move(glm::vec3 newRotation){};
+    void move(glm::vec3 offset);
     void moveForward(float amount){};
     void scale(glm::vec3 scale);
     void scale(float scale);
