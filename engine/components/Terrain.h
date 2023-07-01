@@ -15,13 +15,13 @@ public:
 
 
     bool isReady() {
-        if (m_ready) return true;
+        if (mReady) return true;
 
         if (this->m_gID != 0) {
-            m_ready = true;
+            mReady = true;
         }
 
-        return m_ready;
+        return mReady;
     }
 
     ObjectType getType() override {

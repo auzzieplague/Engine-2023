@@ -82,6 +82,8 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     // child manipulation not supported atm
     if (scene->selectedComponent->parentComponent) return;
 
+    scene->selectedComponent->pause();
+
     ImGui::GetIO().WantCaptureMouse = false;
     ImGuiIO &io = ImGui::GetIO();
 
@@ -129,6 +131,9 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGuizmo::DecomposeMatrixToComponents(delta, glm::value_ptr(dPosition),
                                           glm::value_ptr(dRotation),
                                           glm::value_ptr(dScale));
+
+    // if there are any changes then we'll need to consider physx
+
 
     scene->selectedComponent->setPosition(position);
     scene->selectedComponent->rotate(dRotation);

@@ -9,15 +9,18 @@ class InteractionLayer; // forward declare friend class
 
 class Component : public Object {
 protected:
-    bool m_dirty = true;
-    bool m_ready = false;
+    bool mDirty = true;
+    bool mReady = false;
+    bool mPaused = false;
 
     // for editor direct access - might be able to friend class / protected access these
     Transform localTransform{};
     Transform worldTransform{};
 
     friend class IMGuiLayer;
+
     friend class InteractionLayer;
+
 public:
 
     Component *parentComponent = nullptr;
@@ -27,44 +30,74 @@ public:
     };
 
     std::vector<Component *> childComponents;
+
     virtual void addChild(Component *child);
 
     [[nodiscard]] virtual bool isDirty() const;
+
     void setDirty(bool dirty = true);
+
     [[nodiscard]] virtual bool isReady();
+
     void setReady(bool ready = true);
 
-   /**
-    * Transform hook, to be overridden in child classes such as Model, where
-    * additional functionality needs to be implemented
-    */
-    virtual void onTransformChange(){};
+    /**
+     * Transform hook, to be overridden in child classes such as Model, where
+     * additional functionality needs to be implemented
+     */
+    virtual void onTransformChange() {};
+
+    virtual void pause() { this->mPaused = true; };
+
+    virtual bool isPaused() { return this->mPaused; };
+
+    virtual void resume() { this->mPaused = false; };
 
     virtual void setPosition(glm::vec3 newPosition);
+
     virtual void setLocalRotation(glm::vec3 newRotation);
+
     virtual void setLocalRotation(glm::quat rotation);
+
     virtual void setLocalScale(glm::vec3 newScale);
+
     virtual void setLocalScale(float newScale);
+
     virtual void setLocalTransform(Transform transform);
 
     [[nodiscard]] virtual glm::vec3 getLocalPosition();
+
     [[nodiscard]] virtual glm::quat getLocalRotation();
+
     [[nodiscard]] virtual glm::vec3 getLocalScale();
+
     [[nodiscard]] virtual glm::mat4 getLocalMatrix();
+
     [[nodiscard]] virtual glm::mat4 getWorldMatrix();
+
     [[nodiscard]] virtual Transform getWorldTransform() const;
 
 
     virtual void rotateX(float degrees);
+
     virtual void rotateY(float degrees);
+
     virtual void rotateZ(float degrees);
+
     virtual void roll(float degrees);
+
     virtual void pitch(float degrees);
+
     virtual void yaw(float degrees);
+
     void rotate(glm::vec3 newRotation);
+
     void move(glm::vec3 offset);
-    void moveForward(float amount){};
+
+    void moveForward(float amount) {};
+
     void scale(glm::vec3 scale);
+
     void scale(float scale);
 
     /**
@@ -90,7 +123,6 @@ public:
     virtual void update() {
         std::cout << "update not implemented for component\n";
     };
-
 
 
 };

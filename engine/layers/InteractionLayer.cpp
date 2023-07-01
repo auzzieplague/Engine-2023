@@ -161,7 +161,9 @@ void InteractionLayer::processCameraInput(Scene *scene, float movement) {
 };
 
 void InteractionLayer::appendToGui(Scene *scene) {
-    selectedComponentGui(scene->selectedComponent);
+    if (scene->selectedComponent) {
+        selectedComponentGui(scene->selectedComponent);
+    }
     sceneComponentsGui(scene);
     toolboxGui(scene);
 }
@@ -238,6 +240,13 @@ void InteractionLayer::selectedComponentGui(Component *component) {
 
     if (component->parentComponent && ImGui::Button("Select Parent")) {
             currentScene->selectedComponent = component->parentComponent;
+    }
+
+    if (component->isPaused()){
+        if (ImGui::Button("Resume")){
+            currentScene->selectedComponent = nullptr;
+            component->resume();
+        }
     }
 
     ImGui::InputText("Component Name", &component->objectName[0], component->objectName.size() + 1);

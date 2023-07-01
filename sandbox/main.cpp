@@ -87,7 +87,7 @@ void setupScene(Scene *scene) {
     auto terrain = terrainModel();
     scene->addComponent(terrain);
 
-    scene->selectedComponent = playerObject;
+//    scene->selectedComponent = playerObject;
 
     Debug::show("[->] Use NumPad 4862+- to navigate test Model");
     Debug::show("[->] RPY (roll, pitch, yaw) UIO (world xyz) rotations ");

@@ -67,19 +67,19 @@ glm::vec3 Component::getLocalScale() {
 }
 
 bool Component::isDirty() const {
-    return m_dirty;
+    return mDirty;
 }
 
 void Component::setDirty(bool dirty) {
-    Component::m_dirty = dirty;
+    Component::mDirty = dirty;
 }
 
 bool Component::isReady() {
-    return m_ready;
+    return mReady;
 }
 
 void Component::setReady(bool ready) {
-    Component::m_ready = ready;
+    Component::mReady = ready;
 }
 
 void Component::addChild(Component *child) {

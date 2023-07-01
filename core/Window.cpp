@@ -38,7 +38,7 @@ GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::stri
     if (!this->m_ready) {
         setupWindow(1200, 720, "default window");
         if (!this->m_ready) {
-            throw std::runtime_error("the window could not be m_ready");
+            throw std::runtime_error("the window could not be mReady");
         }
     }
     return this->m_glRef;

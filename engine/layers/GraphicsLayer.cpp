@@ -30,7 +30,7 @@ void GraphicsLayer::initialRenderingSetup(Scene *scene) {
 void GraphicsLayer::render(Scene *scene) {
     // updatePosition shaders and set m_api properties
     api->updateRendererConfig(meshConfig);
-    // camera might be m_dirty
+    // camera might be mDirty
     checkDirtyCamera(scene);
 
     // collect meshes - todo: sort by shader

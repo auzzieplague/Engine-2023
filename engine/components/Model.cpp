@@ -132,15 +132,6 @@ void Model::setMaterial(Material material) {
     this->mRootMesh->setMaterial(material);
 }
 
-//void Model::addChild(Component *child) {
-//    // if were adding a mesh, then we'll need to nest it under the root mesh
-//    if (child->getType() == ObjectType::OT_Mesh) {
-//        mRootMesh->addChild(child);
-//    } else {
-//        Component::addChild(child);
-//    }
-//}
-
 void Model::setCollisionMesh(Mesh *mesh) {
     this->mCollisionMesh = mesh;
     this->childComponents.push_back(mCollisionMesh);
@@ -158,6 +149,24 @@ void Model::onTransformChange() {
     Component::onTransformChange();
     if (!this->mPhysicsBody) return;
 
-    // process physx changes
     this->mPhysicsBody->setGlobalPose(localTransform.getPxTransform());
 }
+
+void Model::pause() {
+    Component::pause();
+    if (!mPhysicsBody->is<physx::PxRigidDynamic>()) return;
+
+    auto *actor = dynamic_cast<physx::PxRigidDynamic *>(this->mPhysicsBody);
+    actor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);
+}
+
+void Model::resume() {
+    Component::resume();
+    if (!mPhysicsBody->is<physx::PxRigidDynamic>()) return;
+
+    auto *actor = dynamic_cast<physx::PxRigidDynamic *>(this->mPhysicsBody);
+    actor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+    Debug::show("resumed model physics");
+}
+
+

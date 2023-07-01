@@ -100,7 +100,7 @@ public:
 
 
     virtual bool isColliding(Collider *otherCollider) {
-        // m_aabb and m_sphere are m_ready in model constructor
+        // m_aabb and m_sphere are mReady in model constructor
 
         // waterfall logic to determine not colliding.
         if (!m_sphere.isCollidingWith(otherCollider->m_sphere)) {

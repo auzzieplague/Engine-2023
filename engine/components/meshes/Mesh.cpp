@@ -14,15 +14,15 @@ void Mesh::setApi(GraphicsAPI *api) {
 }
 
 bool Mesh::isReady() {
-    if (m_ready) return true;
+    if (mReady) return true;
 
     // not all meshes will need to be rendered, but at the moment only rendering is using readyCheckk
     // we will need to subclass mRootMesh into render and non render types
     if (this->m_gID != 0) {
-        m_ready = true;
+        mReady = true;
     }
 
-    return m_ready;
+    return mReady;
 }
 
 unsigned int Mesh::generateMeshID() {

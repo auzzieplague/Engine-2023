@@ -29,7 +29,7 @@ Input::Input(GLFWwindow *window) {
 
 Input *Input::getInstance() {
     if (Input::m_instance == nullptr) {
-        Debug::show("Input is not yet m_ready with a window");
+        Debug::show("Input is not yet mReady with a window");
     }
 
     return Input::m_instance;

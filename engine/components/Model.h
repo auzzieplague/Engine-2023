@@ -28,12 +28,18 @@ public:
     }
 
     void onTransformChange() override;
+    void pause() override;
+    void resume() override;
 
     static Model *createWithGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
+
     virtual void setCollider(ColliderConfig config);
+
     void setCollisionMesh(Mesh *mesh);
-    Mesh * getCollisionMesh();
-    Mesh * getRootMesh();
+
+    Mesh *getCollisionMesh();
+
+    Mesh *getRootMesh();
 
     // physics handlers
     void applyPxTransform(const physx::PxTransform &pxTransform);
@@ -47,6 +53,8 @@ public:
     void getMeshFromHeightMap(std::string);
 
     void setMaterial(Material material);
+
+
 };
 
 
