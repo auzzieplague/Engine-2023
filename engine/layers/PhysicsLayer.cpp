@@ -4,12 +4,15 @@
 #include "PhysicsLayer.h"
 #include "../components/Terrain.h"
 
-void PhysicsLayer::onAttach(Scene *) {
+void PhysicsLayer::onAttach(Scene *scene) {
     Debug::show("[>] Physics Attached");
     initPhysicsWorld();
+    // keep a reference of physics scene on main scene
+    scene->physicsScene = this->mScene;
 }
 
 void PhysicsLayer::update(Scene *scene) {
+
     // process spawn queues
     this->processModelSpawnQueue(scene);
 

@@ -11,7 +11,8 @@ class Scene : public Object {
     /// at a high level we just want to add components to the scene graph
 public:
     float currentFrameRate = 1.0f;
-    Component * selectedComponent = nullptr;
+    Component *selectedComponent = nullptr;
+    physx::PxScene *physicsScene = nullptr;
 
     std::vector<Component *> componentList;
     std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
@@ -29,6 +30,7 @@ public:
     Window *currentWindow{};
 
     void addModel(Model *model);
+
 
 };
 

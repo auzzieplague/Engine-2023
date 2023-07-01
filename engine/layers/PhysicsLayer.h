@@ -16,6 +16,8 @@ public:
     physx::PxScene*                mScene = nullptr;
     physx::PxPvd*                  mPvd = nullptr;
 
+    bool flush = false;
+
     void onAttach(Scene *) override;
 
     void update(Scene *) override;

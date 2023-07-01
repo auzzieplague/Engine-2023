@@ -166,6 +166,7 @@ void Model::resume() {
 
     auto *actor = dynamic_cast<physx::PxRigidDynamic *>(this->mPhysicsBody);
     actor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, false);
+    actor->wakeUp();
     Debug::show("resumed model physics");
 }
 
