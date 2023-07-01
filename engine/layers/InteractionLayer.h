@@ -5,9 +5,13 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
+#include "../components/IMGuiComponents.h"
+
 
 class InteractionLayer : public Layer {
 private:
+
+    unsigned int iconAtlas;
 
     enum UserInteractionMode {
         UI_PLAY,
@@ -30,11 +34,15 @@ public:
 
     void handleCharacterKeys(float movement);
 
-    void selectedObjectGui(Scene *scene);
+    void selectedComponentGui(Component *);
 
-    void displayComponents(Component * component);
+    void transformGui(std::string text, Transform transform);
 
-    void showTransform(std::string text, Transform transform);
+    void sceneComponentsGui(Scene *scene);
+
+    void toolboxGui(Scene *scene);
+
+    void componentTreeGui(Component *component);
 };
 
 

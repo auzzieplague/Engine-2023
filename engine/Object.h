@@ -16,7 +16,7 @@ public:
         OT_Light6
     };
 
-    std::string objectName = "unknown";
+    std::string objectName = "Un-named Object";
 
     virtual ObjectType getType() {
         return ObjectType::OT_Object;

@@ -1,15 +1,9 @@
 #include "IMGuiLayer.h"
 
 
-void IMGuiLayer::loadAssets(Scene *scene) {
-    this->iconAtlas = this->api->loadTexture(AssetManager::getRelativePath("icons", "editor.png"));
-}
 
 // note : require openGL attached first
 void IMGuiLayer::onAttach(Scene *scene) {
-
-    loadAssets(scene);
-
     const char *glsl_version = "#version 130";
     gladLoadGL();
 
@@ -143,41 +137,9 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGui::End();
 }
 
-void IMGuiLayer::drawIcons(Scene *scene) {
-    ImGui::Begin("Icons Item");
-    ImageButton button;
-    button.uvMin = ImVec2(0.0f, 0.0f);
-    button.uvMax = ImVec2(0.25f, 0.25f);
-    button.size = ImVec2(50, 50);
-    button.title = "Add Sphere";
-    button.onClick = [scene]() {
-        auto *model = Model::createWithGeometry(Geometry::ShapeType::Sphere);
-        scene->addComponent(model);
-
-        if (scene->selectedComponent) {
-            model->setPosition(scene->selectedComponent->getLocalPosition() + glm::vec3(0.1));
-        }
-
-        Material material;
-//        material.loadFromAsset("defaults", "default.png"); // couldnt select this material
-        material.loadFromAsset("mats_ground", "gray-bricks1");
-        model->setMaterial(material);
-        scene->selectedComponent = model;
-    };
-    button.onDrop = [](int frameCount) {
-        std::cout<<"Not functioning :[ " << frameCount << '\n';
-    };
-    button.textureID = reinterpret_cast<ImTextureID>(this->iconAtlas);
-    button.Render(scene);
-
-    ImGui::End();
-}
 
 void IMGuiLayer::render(Scene *scene) {
-//    if (scene->config.editMode) {
     drawGizmos(scene);
-//    }
-    drawIcons(scene);
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
@@ -200,40 +162,5 @@ void IMGuiLayer::onDetach(Scene *scene) {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
-}
-
-
-void ImageButton::Render(Scene *scene) {
-
-    if (ImGui::ImageButton(textureID, size, uvMin, uvMax))
-    {
-        if (onClick)
-        {
-            onClick();
-        }
-    }
-
-    ImGui::SameLine();
-
-    if (ImGui::IsItemHovered())
-    {
-        ImGui::SetTooltip("%s", title.c_str());
-    }
-
-
-    if (ImGui::BeginDragDropSource())
-    {
-        ImGui::SetDragDropPayload("BUTTON_PAYLOAD", this, sizeof(ImageButton));
-        ImGui::Text("Drag and drop me!");
-
-        ImGui::EndDragDropSource();
-    }
-
-    if (ImGui::BeginDragDropTarget()) {
-            dropFrameCount = ImGui::GetFrameCount(); // Store the current frame count
-        if (const ImGuiPayload *payload = ImGui::AcceptDragDropPayload("BUTTON_PAYLOAD")) {
-        }
-        ImGui::EndDragDropTarget();
-    }
 }
 

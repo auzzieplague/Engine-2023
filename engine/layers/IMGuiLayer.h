@@ -14,24 +14,10 @@
 #include <functional>
 #include <string>
 
-struct ImageButton
-{
-    ImVec2 uvMin; // Top-left UV coordinate
-    ImVec2 uvMax; // Bottom-right UV coordinate
-    ImVec2 size;  // Size of the button
-    std::string title;
-    std::function<void()> onClick;
-    std::function<void(int)> onDrop;
-    ImTextureID textureID;
-    int dropFrameCount = -1;
-    void Render(Scene *scene);
-};
 
 class IMGuiLayer :
         public Layer
 {
-    unsigned int iconAtlas;
-
     uint32_t getFrequency() override { return 10; };
 
     ImGuizmo::OPERATION gizmoMode = ImGuizmo::TRANSLATE;
@@ -55,9 +41,6 @@ class IMGuiLayer :
 
     void buildDockSpace(Scene* scene);
 
-    void loadAssets(Scene *scene);
-
-    void drawIcons(Scene *scene);
 };
 
 

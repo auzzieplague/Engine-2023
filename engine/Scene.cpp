@@ -22,9 +22,9 @@ void Scene::addComponent(Component *component) {
             this->addModel(dynamic_cast<Model *>(component));
             break;
         default:
-            this->componentList.push_back(component);
             break;
     }
+    this->componentList.push_back(component);
 }
 
 Scene::Scene() {
