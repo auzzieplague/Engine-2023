@@ -5,7 +5,7 @@
 
 Model *Model::createWithGeometry(Geometry::ShapeType shape, GeometryConfig config) {
     auto *model = new Model();
-    Mesh * newMesh = new Geometry();
+    Mesh *newMesh = new Geometry();
 
     std::string shapeText = "";
     switch (shape) {
@@ -152,4 +152,12 @@ Mesh *Model::getCollisionMesh() {
 
 Mesh *Model::getRootMesh() {
     return this->mRootMesh;
+}
+
+void Model::onTransformChange() {
+    Component::onTransformChange();
+    if (!this->mPhysicsBody) return;
+
+    // process physx changes
+    this->mPhysicsBody->setGlobalPose(localTransform.getPxTransform());
 }

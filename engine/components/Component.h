@@ -4,18 +4,21 @@
 #include "../Object.h"
 #include "../../core/Transform.h"
 
+class IMGuiLayer;       // forward declare friend class
+class InteractionLayer; // forward declare friend class
 
 class Component : public Object {
 protected:
-
     bool m_dirty = true;
     bool m_ready = false;
-
-public:
 
     // for editor direct access - might be able to friend class / protected access these
     Transform localTransform{};
     Transform worldTransform{};
+
+    friend class IMGuiLayer;
+    friend class InteractionLayer;
+public:
 
     Component *parentComponent = nullptr;
 
@@ -31,6 +34,12 @@ public:
     [[nodiscard]] virtual bool isReady();
     void setReady(bool ready = true);
 
+   /**
+    * Transform hook, to be overridden in child classes such as Model, where
+    * additional functionality needs to be implemented
+    */
+    virtual void onTransformChange(){};
+
     virtual void setPosition(glm::vec3 newPosition);
     virtual void setLocalRotation(glm::vec3 newRotation);
     virtual void setLocalRotation(glm::quat rotation);
@@ -42,11 +51,8 @@ public:
     [[nodiscard]] virtual glm::quat getLocalRotation();
     [[nodiscard]] virtual glm::vec3 getLocalScale();
     [[nodiscard]] virtual glm::mat4 getLocalMatrix();
-    [[nodiscard]] virtual Transform getLocalTransform() const;
-
     [[nodiscard]] virtual glm::mat4 getWorldMatrix();
     [[nodiscard]] virtual Transform getWorldTransform() const;
-    virtual void setWorldTransform(Transform transform);
 
 
     virtual void rotateX(float degrees);

@@ -27,6 +27,8 @@ public:
         return true;
     }
 
+    void onTransformChange() override;
+
     static Model *createWithGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
     virtual void setCollider(ColliderConfig config);
     void setCollisionMesh(Mesh *mesh);
