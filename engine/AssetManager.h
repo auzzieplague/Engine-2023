@@ -7,23 +7,78 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <filesystem>
-
+#include <imgui.h>
 
 namespace fs = std::filesystem;
+
+class FileSystemItem {
+public:
+    explicit FileSystemItem(const std::string& name, bool isDirectory = false)
+            : mName(name), mIsDirectory(isDirectory) {}
+
+    FileSystemItem()= default;
+    void AddChild(const FileSystemItem& child) {
+        mChildren.push_back(child);
+    }
+
+    void RenderImGuiTree() const {
+        RenderImGuiTreeRecursive(*this);
+    }
+
+protected:
+    friend class AssetManager;
+    std::string mName;
+    bool mIsDirectory = false;
+    std::vector<FileSystemItem> mChildren;
+
+    static FileSystemItem buildFileStructure(const std::string& path) {
+        FileSystemItem root(path, true);
+
+        for (const auto& entry : std::filesystem::directory_iterator(path)) {
+            std::string name = entry.path().filename().string();
+            bool isDirectory = std::filesystem::is_directory(entry.path());
+
+            if (isDirectory) {
+                FileSystemItem subdirectory = buildFileStructure(entry.path().string());
+                root.AddChild(subdirectory);
+            } else {
+                root.AddChild(FileSystemItem(name));
+            }
+        }
+
+        return root;
+    }
+
+    void RenderImGuiTreeRecursive(const FileSystemItem& item) const {
+        if (item.mIsDirectory) {
+            bool open = ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
+            if (open) {
+                for (const auto& child : item.mChildren) {
+                    RenderImGuiTreeRecursive(child);
+                }
+                ImGui::TreePop();
+            }
+        } else {
+            ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen);
+        }
+    }
+};
 
 /**
 * the function of this class is to load, cache, package (compress, decompress) assets
 * this layer of abstraction should allow dev to use dev folders while prod can use packaged assets
  * we will reference assets by category and name or reverse lookup by ID`
 */
-
 class AssetManager {
     //todo shader
 private:
     static std::map<std::string, std::string> category_path;
-    static std::vector<std::string> fileList;
+//    static std::vector<std::string> fileList;
+    static FileSystemItem assetStructure;
 public:
-    static const std::vector<std::string> &getFileList();
+    static const FileSystemItem &getAssetStructure();
+
+public:
 
 public:
 
@@ -46,35 +101,7 @@ public:
     }
 
     static void refreshAssets() {
-        fileList = buildDirectoryStructure("..\\assets");
-    }
-
-    static std::vector<std::string> buildDirectoryStructure(const std::string &directoryPath) {
-        std::vector<std::string> structure;
-        readDirectory(directoryPath, structure);
-        // Print the fileList
-        for (const auto &file: structure) {
-            std::cout << file << std::endl;
-        }
-        return structure;
-    }
-
-    static void readDirectory(const std::string &directoryPath, std::vector<std::string> &fileList) {
-        // Iterate over the directory
-        for (const auto &entry: fs::directory_iterator(directoryPath)) {
-            if (fs::is_directory(entry)) {
-                // If the entry is a directory, recursively read its contents
-                std::vector<std::string> subFileList;
-                readDirectory(entry.path().string(), subFileList);
-
-                // Add the subFileList as a single entry in the fileList vector
-                fileList.push_back(entry.path().string() + " (Directory)");
-                fileList.insert(fileList.end(), subFileList.begin(), subFileList.end());
-            } else if (fs::is_regular_file(entry)) {
-                // If the entry is a regular file, add its path to the fileList vector
-                fileList.push_back(entry.path().string());
-            }
-        }
+        assetStructure = FileSystemItem::buildFileStructure("..\\assets");
     }
 };
 

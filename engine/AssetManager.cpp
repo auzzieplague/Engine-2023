@@ -25,7 +25,7 @@ std::map<std::string, std::string> AssetManager::category_path = {
 };
 #endif
 
-std::vector<std::string> AssetManager::fileList;
+FileSystemItem AssetManager::assetStructure;
 
 std::string AssetManager::getPath(const std::string &category) {
     auto assetPathPrefix = "../assets/";
@@ -264,6 +264,7 @@ void AssetManager::testASSIMP() {
     }
 }
 
-const std::vector<std::string> &AssetManager::getFileList() {
-    return fileList;
+const FileSystemItem &AssetManager::getAssetStructure() {
+    return assetStructure;
 }
+

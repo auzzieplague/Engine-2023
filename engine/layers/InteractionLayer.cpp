@@ -222,7 +222,7 @@ void InteractionLayer::componentTreeGui(Component *component) {
 
 void InteractionLayer::assetsDirectoryGui() {
     ImGui::Begin("Assets Browser");
-    IMGuiHelper::buildTreeFromFileList(AssetManager::getFileList());
+    AssetManager::getAssetStructure().RenderImGuiTree();
     ImGui::End();
 }
 void InteractionLayer::sceneComponentsGui(Scene *scene) {
@@ -282,7 +282,7 @@ void InteractionLayer::toolboxGui(Scene *scene) {
         }
 
         Material material;
-//        material.loadFromAsset("defaults", "default.png"); // couldnt select this material
+//        material.loadFromAsset("defaults", "default.png"); // couldn't select this material
         material.loadFromAsset("mats_ground", "gray-bricks1");
         model->setMaterial(material);
         scene->selectedComponent = model;
