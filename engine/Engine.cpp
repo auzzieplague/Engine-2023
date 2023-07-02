@@ -10,6 +10,7 @@ Engine::Engine(uint32_t width, uint32_t height, const std::string &title, Scene 
 }
 
 void Engine::start() {
+    AssetManager::initialise();
     this->initLayers();
     this->loopLayers();
 }

@@ -8,12 +8,13 @@
 
 #ifdef DEV_MODE
 std::map<std::string, std::string> AssetManager::category_path = {
+        {"model",          "models"},
         {"shaders_opengl", "shaders/glsl"},
         {"heightmap",      "heightmaps"},
         {"defaults",       "materials/defaults"},
         {"material",       "materials"},
         {"mats_ground",    "materials/ground"},
-        {"icons",    "icons"},
+        {"icons",          "icons"},
 };
 #else
 /// should be pulling from packages in live mode anyway
@@ -23,6 +24,8 @@ std::map<std::string, std::string> AssetManager::category_path = {
         {"rocks",          "models/landscape/rocks"},
 };
 #endif
+
+std::vector<std::string> AssetManager::fileList;
 
 std::string AssetManager::getPath(const std::string &category) {
     auto assetPathPrefix = "../assets/";
@@ -249,4 +252,18 @@ AssetManager::getMeshFromHeightMap(const std::string &fileName, float heightScal
 //    mesh->setTangents(m_tangents);
 //    mesh->setBiTangents(m_biTangents);
     return mesh;
+}
+
+void AssetManager::testASSIMP() {
+    Assimp::Importer importer;
+    const aiScene *scene = importer.ReadFile(getRelativePath("model","testModel.obj"), aiProcess_Triangulate);
+    if (scene != nullptr && scene->HasMeshes()) {
+      Debug::show("[->] assimp load test passed");
+    } else {
+      Debug::show("[->] assimp failed to load testModel.obj");
+    }
+}
+
+const std::vector<std::string> &AssetManager::getFileList() {
+    return fileList;
 }

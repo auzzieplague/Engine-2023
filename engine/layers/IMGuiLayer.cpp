@@ -144,6 +144,7 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 
 
 void IMGuiLayer::render(Scene *scene) {
+    ImGui::ShowDemoWindow();
     drawGizmos(scene);
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -19,6 +19,7 @@ include_directories(
 )
 
 link_directories(
+        ${VENDOR}/libs
         ${VENDOR}/libs/debug
         ${VENDOR}/libs/debug/physx
         )
@@ -64,7 +65,8 @@ add_library(glad ${VENDOR}/includes/glad/glad.c)
 
 set(LIBS glfw3 glad opengl32
         imgui imguizmo
-        d3d11 DirectXTK)
+        d3d11 DirectXTK
+        assimp)
 
 set (PHYSX
         PhysX_32

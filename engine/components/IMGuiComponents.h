@@ -22,7 +22,8 @@ struct ImageButton
     void Render(Scene *scene);
 };
 
-class IMGuiComponents {
-
+class IMGuiHelper {
+public:
+    static void buildTreeFromFileList(const std::vector<std::string>& fileList);
 };
 

@@ -43,6 +43,8 @@ public:
     void toolboxGui(Scene *scene);
 
     void componentTreeGui(Component *component);
+
+    void assetsDirectoryGui();
 };
 
 

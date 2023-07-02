@@ -101,9 +101,12 @@ void outputExecutionMode() {
 #endif
 }
 
-
 int main() {
+    /// preflight tests
     outputExecutionMode();
+
+    AssetManager::testASSIMP();
+//    AssetManager::buildDirectoryStructure("..\\assets");
 
     /// Required Layers
     Engine *engine = Engine::getInstance();

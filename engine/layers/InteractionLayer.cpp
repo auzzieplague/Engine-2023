@@ -9,6 +9,15 @@ void InteractionLayer::onAttach(Scene *scene) {
     this->iconAtlas = this->api->loadTexture(AssetManager::getRelativePath("icons", "editor.png"));
 }
 
+void InteractionLayer::appendToGui(Scene *scene) {
+    if (scene->selectedComponent) {
+        selectedComponentGui(scene->selectedComponent);
+    }
+    sceneComponentsGui(scene);
+    toolboxGui(scene);
+    assetsDirectoryGui();
+}
+
 void InteractionLayer::processInput(Scene *scene) {
 
     this->currentComponent = scene->selectedComponent;
@@ -160,14 +169,6 @@ void InteractionLayer::processCameraInput(Scene *scene, float movement) {
     }
 };
 
-void InteractionLayer::appendToGui(Scene *scene) {
-    if (scene->selectedComponent) {
-        selectedComponentGui(scene->selectedComponent);
-    }
-    sceneComponentsGui(scene);
-    toolboxGui(scene);
-}
-
 void InteractionLayer::transformGui(std::string text, Transform transform) {
     if (ImGui::CollapsingHeader(text.c_str())) {
         ImGui::PushItemWidth(80);
@@ -219,6 +220,11 @@ void InteractionLayer::componentTreeGui(Component *component) {
     }
 }
 
+void InteractionLayer::assetsDirectoryGui() {
+    ImGui::Begin("Assets Browser");
+    IMGuiHelper::buildTreeFromFileList(AssetManager::getFileList());
+    ImGui::End();
+}
 void InteractionLayer::sceneComponentsGui(Scene *scene) {
     ImGui::Begin("Scene Layout");
 

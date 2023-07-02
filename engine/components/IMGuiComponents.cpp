@@ -2,6 +2,29 @@
 #include "IMGuiComponents.h"
 
 
+void IMGuiHelper::buildTreeFromFileList(const std::vector<std::string> &fileList) {
+    static int nodeID = 0;
+
+    for (const auto& file : fileList) {
+        bool isDirectory = file.find("(Directory)") != std::string::npos;
+        std::string nodeName = isDirectory ? file.substr(0, file.length() - 11) : file;
+
+        ImGui::PushID(nodeID++);
+
+        if (isDirectory) {
+            bool open = ImGui::TreeNodeEx(nodeName.c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
+            if (open) {
+                // Recursively build the tree for subdirectories
+                buildTreeFromFileList(fileList);
+                ImGui::TreePop();
+            }
+        } else {
+            ImGui::TreeNodeEx(nodeName.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen);
+        }
+
+        ImGui::PopID();
+    }
+}
 
 void ImageButton::Render(Scene *scene) {
 
