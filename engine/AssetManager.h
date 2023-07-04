@@ -3,6 +3,7 @@
 #include "../../core/Base.h"
 #include "stb_image.h"
 #include "components/meshes/Mesh.h"
+#include "components/Model.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -11,13 +12,22 @@
 
 namespace fs = std::filesystem;
 
-class FileSystemItem {
+class FileStructure {
 public:
-    explicit FileSystemItem(const std::string& name, bool isDirectory = false)
-            : mName(name), mIsDirectory(isDirectory) {}
+    explicit FileStructure(const std::string &name, bool isDirectory = false)
+            : mPath(name), mIsDirectory(isDirectory) {
+        mName = ExtractFilename(name);
+        //get file extension and set isLoadable
 
-    FileSystemItem()= default;
-    void AddChild(const FileSystemItem& child) {
+        auto extension = getFileExtension(mName);
+        if (extension == "obj") {
+            isLoadable = true;
+        }
+    }
+
+    FileStructure() = default;
+
+    void AddChild(const FileStructure &child) {
         mChildren.push_back(child);
     }
 
@@ -25,42 +35,71 @@ public:
         RenderImGuiTreeRecursive(*this);
     }
 
+    std::string getFileExtension(const std::string& fileName) {
+        size_t dotIndex = fileName.find_last_of('.');
+        if (dotIndex != std::string::npos && dotIndex < fileName.length() - 1) {
+            return fileName.substr(dotIndex + 1);
+        }
+        return "";  // No file extension found
+    }
+
 protected:
     friend class AssetManager;
+
+    std::string mPath;
     std::string mName;
+    bool isLoadable = false;
     bool mIsDirectory = false;
-    std::vector<FileSystemItem> mChildren;
+    std::vector<FileStructure> mChildren;
 
-    static FileSystemItem buildFileStructure(const std::string& path) {
-        FileSystemItem root(path, true);
+    static FileStructure buildFileStructure(const std::string &path) {
+        FileStructure root(path, true);
 
-        for (const auto& entry : std::filesystem::directory_iterator(path)) {
+        for (const auto &entry: std::filesystem::directory_iterator(path)) {
             std::string name = entry.path().filename().string();
             bool isDirectory = std::filesystem::is_directory(entry.path());
 
             if (isDirectory) {
-                FileSystemItem subdirectory = buildFileStructure(entry.path().string());
+                FileStructure subdirectory = buildFileStructure(entry.path().string());
                 root.AddChild(subdirectory);
             } else {
-                root.AddChild(FileSystemItem(name));
+                root.AddChild(FileStructure(name));
             }
         }
 
         return root;
     }
 
-    void RenderImGuiTreeRecursive(const FileSystemItem& item) const {
+    void RenderImGuiTreeRecursive(const FileStructure &item) const {
         if (item.mIsDirectory) {
+
             bool open = ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
             if (open) {
-                for (const auto& child : item.mChildren) {
+                for (const auto &child: item.mChildren) {
                     RenderImGuiTreeRecursive(child);
                 }
                 ImGui::TreePop();
             }
-        } else {
-            ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen);
+            return;
         }
+
+        ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen);
+        ImGui::SameLine();
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5f, 0.5f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 2.0f));
+        if (item.isLoadable && ImGui::Button("Load")) {
+            Debug::show("load model");
+        }
+        ImGui::PopStyleVar(2);
+    }
+
+
+    std::string ExtractFilename(const std::string &path) {
+        size_t lastSlashIndex = path.find_last_of("/\\");
+        if (lastSlashIndex != std::string::npos) {
+            return path.substr(lastSlashIndex + 1);
+        }
+        return path;
     }
 };
 
@@ -74,9 +113,9 @@ class AssetManager {
 private:
     static std::map<std::string, std::string> category_path;
 //    static std::vector<std::string> fileList;
-    static FileSystemItem assetStructure;
+    static FileStructure assetStructure;
 public:
-    static const FileSystemItem &getAssetStructure();
+    static const FileStructure &getAssetStructure();
 
 public:
 
@@ -96,12 +135,16 @@ public:
 
     static void testASSIMP();
 
+    static Model *loadModelFromFile (const std::string& filePath);
+
     static void initialise() {
         refreshAssets();
     }
 
     static void refreshAssets() {
-        assetStructure = FileSystemItem::buildFileStructure("..\\assets");
+        // manually add assets level
+        // then add multiple children for models, materials etc.
+        assetStructure = FileStructure::buildFileStructure("..\\assets");
     }
 };
 

@@ -34,6 +34,18 @@ void IMGuiHelper::buildTreeFromFileList(const std::vector<std::string> &fileList
         }
 }
 
+void IMGuiHelper::makePushButton(const std::string& text, const std::function<void()> &onClick) {
+    ImGui::SameLine();
+    ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5f, 0.5f));
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 2.0f));
+
+    if (ImGui::Button(text.c_str())) {
+        onClick();
+    }
+
+    ImGui::PopStyleVar(2);
+}
+
 void ImageButton::Render(Scene *scene) {
 
     if (ImGui::ImageButton(textureID, size, uvMin, uvMax))

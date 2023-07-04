@@ -206,11 +206,9 @@ void InteractionLayer::componentTreeGui(Component *component) {
         ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5f, 0.5f));
         ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 2.0f));
 
-
         if (ImGui::Button("Select")) {
             this->currentScene->selectedComponent = component;
         }
-
         ImGui::PopStyleVar(2);
 
         for (auto child: component->childComponents) {
@@ -225,6 +223,7 @@ void InteractionLayer::assetsDirectoryGui() {
     AssetManager::getAssetStructure().RenderImGuiTree();
     ImGui::End();
 }
+
 void InteractionLayer::sceneComponentsGui(Scene *scene) {
     ImGui::Begin("Scene Layout");
 

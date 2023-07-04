@@ -25,7 +25,7 @@ std::map<std::string, std::string> AssetManager::category_path = {
 };
 #endif
 
-FileSystemItem AssetManager::assetStructure;
+FileStructure AssetManager::assetStructure;
 
 std::string AssetManager::getPath(const std::string &category) {
     auto assetPathPrefix = "../assets/";
@@ -264,7 +264,57 @@ void AssetManager::testASSIMP() {
     }
 }
 
-const FileSystemItem &AssetManager::getAssetStructure() {
+const FileStructure &AssetManager::getAssetStructure() {
     return assetStructure;
 }
 
+Model *AssetManager::loadModelFromFile(const std::string &filePath) {
+    Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+        std::cout << "Error loading model file: " << importer.GetErrorString() << std::endl;
+        return nullptr;
+    }
+
+    auto* ourModel = new Model();
+    auto* ourMesh = new Mesh();
+    ourModel->addChild(ourMesh);
+    ourModel->mRootMesh=ourMesh;
+
+    //todo loop through all meshes and handle submeshes
+    aiMesh* mesh = scene->mMeshes[0];
+
+    // Populate the vertices
+    for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+        aiVector3D vertex = mesh->mVertices[i];
+        glm::vec3 glmVertex(vertex.x, vertex.y, vertex.z);
+        ourMesh->addVertex(glmVertex);
+    }
+
+    // Populate the UVs (Texture Coordinates)
+    if (mesh->HasTextureCoords(0)) {
+        for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+            aiVector3D uv = mesh->mTextureCoords[0][i];
+            glm::vec2 glmUV(uv.x, uv.y);
+            ourMesh->addUV(glmUV);
+        }
+    }
+
+    // Populate the normals
+    for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
+        aiVector3D normal = mesh->mNormals[i];
+        glm::vec3 glmNormal(normal.x, normal.y, normal.z);
+        ourMesh->addNormal(glmNormal);
+    }
+
+    // Populate the indices
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++) {
+        aiFace face = mesh->mFaces[i];
+        for (unsigned int j = 0; j < face.mNumIndices; j++) {
+            unsigned int index = face.mIndices[j];
+            ourMesh->addIndex(index);
+        }
+    }
+
+    return ourModel;
+}

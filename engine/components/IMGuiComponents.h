@@ -25,5 +25,7 @@ struct ImageButton
 class IMGuiHelper {
 public:
     static void buildTreeFromFileList(const std::vector<std::string>& fileList);
+
+    static void makePushButton(const std::string& text, const std::function<void()>& onClick);
 };
 

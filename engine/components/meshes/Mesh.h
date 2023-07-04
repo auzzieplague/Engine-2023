@@ -21,6 +21,21 @@ protected:
 
 public:
 
+    void addIndex(unsigned int index) {
+        this->m_indices.push_back(index);
+    }
+
+    void addNormal (glm::vec3 normal){
+        this->m_normals.push_back(normal);
+    }
+
+    void addVertex (glm::vec3 vertex){
+        this->m_vertices.push_back(vertex);
+    }
+
+    void addUV( glm::vec2 uv){
+        this->m_UVs.push_back(uv);
+    }
     Mesh *rootMesh = nullptr;
 
     std::vector<Mesh *> meshTree;
