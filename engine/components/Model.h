@@ -28,7 +28,9 @@ public:
     }
 
     void onTransformChange() override;
+
     void pause() override;
+
     void resume() override;
 
     static Model *createWithGeometry(Geometry::ShapeType shape, GeometryConfig config = {});
@@ -53,8 +55,6 @@ public:
     void getMeshFromHeightMap(std::string);
 
     void setMaterial(Material material);
-
-
 };
 
 

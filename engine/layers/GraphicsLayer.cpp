@@ -11,6 +11,7 @@ void GraphicsLayer::setApi(GraphicsAPI *api) {
 void GraphicsLayer::onAttach(Scene *scene) {
     Debug::show("[>] Graphics Attached");
     initialRenderingSetup(scene);
+    Material::initialise();
 }
 
 void GraphicsLayer::initialRenderingSetup(Scene *scene) {

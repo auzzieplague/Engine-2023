@@ -294,7 +294,7 @@ unsigned int API_OpenGL::loadTexture(std::string fileName) {
     glGenTextures(1, &textureID);
 
     int width, height, numChannels;
-    stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(false);
     unsigned char* data = stbi_load(fileName.c_str(), &width, &height, &numChannels, 0);
     if (data) {
         GLenum format;

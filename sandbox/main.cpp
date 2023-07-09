@@ -85,6 +85,7 @@ void setupScene(Scene *scene) {
     scene->addComponent(playerObject);
 
     auto assimpModel = AssetManager::loadModelFromFile("../assets/models/testModel.obj");
+    assimpModel->setPosition({1,1,-20});
     scene->addComponent(assimpModel);
 
     auto terrain = terrainModel();
@@ -114,8 +115,8 @@ int main() {
     /// Required Layers
     Engine *engine = Engine::getInstance();
     engine->setGraphicsApi(new API_OpenGL());
-    engine->attachLayer(new WindowLayer());    // maintains the window interface & required for input processing
 
+    engine->attachLayer(new WindowLayer());    // maintains the window interface & required for input processing
     /// optional layers
     engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene
     engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds

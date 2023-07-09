@@ -146,6 +146,8 @@ public:
         // then add multiple children for models, materials etc.
         assetStructure = FileStructure::buildFileStructure("..\\assets");
     }
+
+    static Mesh *convertMesh(aiMesh *mesh);
 };
 
 

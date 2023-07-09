@@ -11,7 +11,7 @@ std::map<std::string, std::string> AssetManager::category_path = {
         {"model",          "models"},
         {"shaders_opengl", "shaders/glsl"},
         {"heightmap",      "heightmaps"},
-        {"defaults",       "materials/defaults"},
+        {"default",       "materials/default"},
         {"material",       "materials"},
         {"mats_ground",    "materials/ground"},
         {"icons",          "icons"},
@@ -268,21 +268,8 @@ const FileStructure &AssetManager::getAssetStructure() {
     return assetStructure;
 }
 
-Model *AssetManager::loadModelFromFile(const std::string &filePath) {
-    Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
-        std::cout << "Error loading model file: " << importer.GetErrorString() << std::endl;
-        return nullptr;
-    }
-
-    auto* ourModel = new Model();
+Mesh *AssetManager::convertMesh(aiMesh* mesh) {
     auto* ourMesh = new Mesh();
-    ourModel->addChild(ourMesh);
-    ourModel->mRootMesh=ourMesh;
-
-    //todo loop through all meshes and handle submeshes
-    aiMesh* mesh = scene->mMeshes[0];
 
     // Populate the vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
@@ -315,6 +302,30 @@ Model *AssetManager::loadModelFromFile(const std::string &filePath) {
             ourMesh->addIndex(index);
         }
     }
+    return ourMesh;
+}
+
+Model *AssetManager::loadModelFromFile(const std::string &filePath) {
+
+    Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+        std::cout << "Error loading model file: " << importer.GetErrorString() << std::endl;
+        return nullptr;
+    }
+    // todo add model name and mesh names to a lookup, setup instanced rendering for multiples
+    auto* ourModel = new Model();
+    ourModel->setFilePath(filePath);
+
+    //todo loop through all meshes and handle submeshes
+    aiMesh *mesh = scene->mMeshes[0];
+    auto ourMesh = convertMesh(mesh);
+
+    ourModel->addChild(ourMesh);
+    ourModel->mRootMesh = ourMesh;
+    ourModel->mRootMesh->parentComponent = ourModel;
+    ourMesh->setMaterial(*Material::defaultMaterial);
+    // todo Materials - check for built in materials - use default material
 
     return ourModel;
 }

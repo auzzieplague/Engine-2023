@@ -154,7 +154,7 @@ void Model::onTransformChange() {
 
 void Model::pause() {
     Component::pause();
-    if (!mPhysicsBody->is<physx::PxRigidDynamic>()) return;
+    if (!isDynamic() || !mPhysicsBody->is<physx::PxRigidDynamic>()) return;
 
     auto *actor = dynamic_cast<physx::PxRigidDynamic *>(this->mPhysicsBody);
     actor->setActorFlag(physx::PxActorFlag::eDISABLE_SIMULATION, true);

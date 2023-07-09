@@ -4,7 +4,6 @@
 #include "../Scene.h"
 #include <imgui/imgui.h> // all layers require access to IMGUI for debugging windows
 
-
 class Layer : public Object {
 public:
     GraphicsAPI *api;

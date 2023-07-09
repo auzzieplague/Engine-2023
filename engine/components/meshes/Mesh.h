@@ -20,7 +20,6 @@ protected:
     std::vector<glm::vec3> m_biTangents;
 
 public:
-
     void addIndex(unsigned int index) {
         this->m_indices.push_back(index);
     }

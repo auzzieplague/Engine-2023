@@ -4,6 +4,7 @@
 #include "../layers/graphics/api/GraphicsAPI.h"
 
 GraphicsAPI *Material::m_api = nullptr;
+Material * Material::defaultMaterial;
 
 const glm::vec3 &Material::getAmbientColor() const {
     return m_ambientColor;
@@ -75,4 +76,9 @@ Material::SHADER_TYPE Material::getShaderType() {
     //todo: more PBR checks and more types
 
     return Material::SHADER_NORMAL;
+}
+
+void Material::initialise() {
+    defaultMaterial = new Material();
+    defaultMaterial->loadFromAsset("default", "model");
 }

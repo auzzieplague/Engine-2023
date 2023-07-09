@@ -1,12 +1,12 @@
 #pragma once
 
 #include "InteractionLayer.h"
-
 void InteractionLayer::onAttach(Scene *scene) {
     // bind this input to inputInstance
     Debug::show("[>] Interaction Attached");
     this->input = new Input(scene->currentWindow->glRef());
     this->iconAtlas = this->api->loadTexture(AssetManager::getRelativePath("icons", "editor.png"));
+    this->toolboxSetup(scene);
 }
 
 void InteractionLayer::appendToGui(Scene *scene) {
@@ -14,7 +14,7 @@ void InteractionLayer::appendToGui(Scene *scene) {
         selectedComponentGui(scene->selectedComponent);
     }
     sceneComponentsGui(scene);
-    toolboxGui(scene);
+    toolboxRender(scene);
     assetsDirectoryGui();
 }
 
@@ -244,11 +244,11 @@ void InteractionLayer::selectedComponentGui(Component *component) {
     }
 
     if (component->parentComponent && ImGui::Button("Select Parent")) {
-            currentScene->selectedComponent = component->parentComponent;
+        currentScene->selectedComponent = component->parentComponent;
     }
 
-    if (component->isPaused()){
-        if (ImGui::Button("Resume")){
+    if (component->isPaused()) {
+        if (ImGui::Button("Resume")) {
             currentScene->selectedComponent = nullptr;
             component->resume();
         }
@@ -262,15 +262,16 @@ void InteractionLayer::selectedComponentGui(Component *component) {
 
     ImGui::End();
 }
+// todo preload interface - create buttons on init
 
-void InteractionLayer::toolboxGui(Scene *scene) {
-    // scene might contain editor mode / play mode
-
-    ImGui::Begin("Icons Item");
+void InteractionLayer::toolboxSetup(Scene *scene) {
+    float textureSlice = 0.125f;
     ImageButton button;
     button.uvMin = ImVec2(0.0f, 0.0f);
-    button.uvMax = ImVec2(0.25f, 0.25f);
+    button.uvMax = ImVec2(textureSlice, textureSlice);
     button.size = ImVec2(50, 50);
+    button.textureID = reinterpret_cast<ImTextureID>(this->iconAtlas);
+
     button.title = "Add Sphere";
     button.onClick = [scene]() {
         auto *model = Model::createWithGeometry(Geometry::ShapeType::Sphere);
@@ -281,16 +282,33 @@ void InteractionLayer::toolboxGui(Scene *scene) {
         }
 
         Material material;
-//        material.loadFromAsset("defaults", "default.png"); // couldn't select this material
-        material.loadFromAsset("mats_ground", "gray-bricks1");
+        material.loadFromAsset("defaults", "gui"); // couldn't select this material
         model->setMaterial(material);
         scene->selectedComponent = model;
     };
     button.onDrop = [](int frameCount) {
         std::cout << "Not functioning :[ " << frameCount << '\n';
     };
-    button.textureID = reinterpret_cast<ImTextureID>(this->iconAtlas);
-    button.Render(scene);
+    toolboxButtons.push_back(button);
+
+    button.uvMin = ImVec2(textureSlice, 0.0f);
+    button.uvMax = ImVec2(textureSlice*2, textureSlice);
+    button.title = "Add Cube";
+    toolboxButtons.push_back(button);
+
+    button.uvMin = ImVec2(textureSlice*2, 0.0f);
+    button.uvMax = ImVec2(textureSlice*3, textureSlice);
+    button.title = "Add Terrain";
+    toolboxButtons.push_back(button);
+}
+
+void InteractionLayer::toolboxRender(Scene *scene) {
+    // scene might contain editor mode / play mode
+
+    ImGui::Begin("Icons Item");
+    for (auto button: toolboxButtons) {
+        button.drawButton(scene);
+    }
 
     ImGui::End();
 }

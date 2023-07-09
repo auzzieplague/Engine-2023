@@ -126,6 +126,29 @@ void Component::move(glm::vec3 offset) {
     onTransformChange();
 }
 
+void Component::setFilePath(const std::string &fullPath) {
+    size_t separatorPos = fullPath.find_last_of("/\\");
+    if (separatorPos != std::string::npos) {
+        filePath = fullPath.substr(0, separatorPos + 1);
+        fileName = fullPath.substr(separatorPos + 1);
+    } else {
+        filePath = "";
+        fileName = fullPath;
+    }
+
+    // set Name
+     separatorPos = fileName.find_last_of(".");
+     this->objectName = fileName.substr(0, separatorPos);
+}
+
+const std::string &Component::getFilePath() const {
+    return filePath;
+}
+
+const std::string &Component::getFileName() const {
+    return fileName;
+}
+
 
 
 

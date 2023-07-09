@@ -13,6 +13,15 @@ protected:
     bool mReady = false;
     bool mPaused = false;
 
+    std::string filePath;
+public:
+    const std::string &getFilePath() const;
+
+    const std::string &getFileName() const;
+
+protected:
+    std::string fileName;
+
     // for editor direct access - might be able to friend class / protected access these
     Transform localTransform{};
     Transform worldTransform{};
@@ -28,6 +37,8 @@ public:
     ObjectType getType() override {
         return ObjectType::OT_Component;
     };
+
+    void setFilePath(const std::string& fullPath) ;
 
     std::vector<Component *> childComponents;
 
@@ -123,6 +134,5 @@ public:
     virtual void update() {
         std::cout << "update not implemented for component\n";
     };
-
 
 };

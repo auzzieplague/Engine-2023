@@ -12,7 +12,8 @@ class Engine : public Object {
 private:
     Scene *nextScene{}; // for preloading
     std::vector<Layer *> layers;
-    GraphicsAPI *graphicsAPI;
+    GraphicsAPI *graphicsAPI = nullptr;
+    bool initialised = false;
 public:
     void setGraphicsApi(GraphicsAPI *api);
 
@@ -35,7 +36,7 @@ public:
     void initFrameTimer();
 
 // Call this function at the end of the render loop to calculate the current framerate
-    float getCurrentFramerate() ;
+    float getCurrentFramerate();
 
     void attachLayer(Layer *layer); // initialises layer
 
@@ -45,4 +46,5 @@ public:
     void loopLayers();          // main loop
     void stop();          // cleanup
     void initLayers();
+
 };

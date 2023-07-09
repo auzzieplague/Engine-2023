@@ -9,6 +9,7 @@ class GraphicsAPI;
 class Material : public Component {
 protected:
     static GraphicsAPI *m_api;
+
     // todo add a quality enum, to determine what level of shader to use
     // sort models to be rendered by shaderID before render
 
@@ -37,6 +38,9 @@ public:
         SHADER_NORMAL,
         SHADER_PBR,
     };
+
+
+    static Material * defaultMaterial;
 
     // Constructor with default values
     Material() {
@@ -73,5 +77,7 @@ public:
     static void setGraphicsAPI(GraphicsAPI *pApi);
 
     void loadFromAsset(std::string category, const std::string& materialName);
+
+    static void initialise();
 };
 

@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include "../components/IMGuiComponents.h"
-
+#include "../components/GUIEditor/ImageButton.h"
 
 class InteractionLayer : public Layer {
 private:
@@ -20,10 +20,13 @@ private:
     static unsigned int InteractionMode;
     Input *input;
 
+    std::vector<ImageButton> toolboxButtons;
+
 public:
     Component *currentComponent = nullptr;
 
     void onAttach(Scene *scene) override;
+
     void appendToGui(Scene *scene) override;
 
     void processInput(Scene *scene) override;
@@ -40,7 +43,9 @@ public:
 
     void sceneComponentsGui(Scene *scene);
 
-    void toolboxGui(Scene *scene);
+    void toolboxSetup(Scene *scene);
+
+    void toolboxRender(Scene *scene);
 
     void componentTreeGui(Component *component);
 
