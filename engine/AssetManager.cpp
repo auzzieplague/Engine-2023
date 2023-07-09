@@ -11,7 +11,7 @@ std::map<std::string, std::string> AssetManager::category_path = {
         {"model",          "models"},
         {"shaders_opengl", "shaders/glsl"},
         {"heightmap",      "heightmaps"},
-        {"default",       "materials/default"},
+        {"default",        "materials/default"},
         {"material",       "materials"},
         {"mats_ground",    "materials/ground"},
         {"icons",          "icons"},
@@ -256,11 +256,11 @@ AssetManager::getMeshFromHeightMap(const std::string &fileName, float heightScal
 
 void AssetManager::testASSIMP() {
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(getRelativePath("model","testModel.obj"), aiProcess_Triangulate);
+    const aiScene *scene = importer.ReadFile(getRelativePath("model", "testModel.obj"), aiProcess_Triangulate);
     if (scene != nullptr && scene->HasMeshes()) {
-      Debug::show("[->] assimp load test passed");
+        Debug::show("[->] assimp load test passed");
     } else {
-      Debug::show("[->] assimp failed to load testModel.obj");
+        Debug::show("[->] assimp failed to load testModel.obj");
     }
 }
 
@@ -268,8 +268,8 @@ const FileStructure &AssetManager::getAssetStructure() {
     return assetStructure;
 }
 
-Mesh *AssetManager::convertMesh(aiMesh* mesh) {
-    auto* ourMesh = new Mesh();
+Mesh *AssetManager::convertMesh(aiMesh *mesh) {
+    auto *ourMesh = new Mesh();
 
     // Populate the vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
@@ -308,13 +308,14 @@ Mesh *AssetManager::convertMesh(aiMesh* mesh) {
 Model *AssetManager::loadModelFromFile(const std::string &filePath) {
 
     Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(filePath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
+    const aiScene *scene = importer.ReadFile(filePath,
+                                             aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "Error loading model file: " << importer.GetErrorString() << std::endl;
         return nullptr;
     }
     // todo add model name and mesh names to a lookup, setup instanced rendering for multiples
-    auto* ourModel = new Model();
+    auto *ourModel = new Model();
     ourModel->setFilePath(filePath);
 
     //todo loop through all meshes and handle submeshes
@@ -328,4 +329,14 @@ Model *AssetManager::loadModelFromFile(const std::string &filePath) {
     // todo Materials - check for built in materials - use default material
 
     return ourModel;
+}
+
+void AssetManager::initialise() {
+    refreshAssets();
+}
+
+void AssetManager::refreshAssets() {
+    // manually add assets level
+    // then add multiple children for models, materials etc.
+    assetStructure = FileStructure::buildFileStructure("..\\assets");
 }
