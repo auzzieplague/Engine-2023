@@ -50,6 +50,8 @@ public:
     void componentTreeGui(Component *component);
 
     void assetsDirectoryGui();
+
+    void RenderImGuiTreeRecursive(const FileStructure &item) const;
 };
 
 

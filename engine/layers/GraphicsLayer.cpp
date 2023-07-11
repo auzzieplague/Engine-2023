@@ -62,3 +62,8 @@ unsigned int GraphicsLayer::flag(GraphicsFlag graphicsFlag) {
     // grab mapping from m_api for our enumerations
     return api->getFlag(graphicsFlag);
 }
+
+void GraphicsLayer::update(Scene *) {
+    // pickup and exchange any modelsInSceneQueue that are ready
+
+}

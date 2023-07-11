@@ -220,7 +220,8 @@ void InteractionLayer::componentTreeGui(Component *component) {
 
 void InteractionLayer::assetsDirectoryGui() {
     ImGui::Begin("Assets Browser");
-    AssetManager::getAssetStructure().RenderImGuiTree();
+//    AssetManager::getAssetStructure().RenderImGuiTree();
+    RenderImGuiTreeRecursive(AssetManager::getAssetStructure());
     ImGui::End();
 }
 
@@ -311,4 +312,35 @@ void InteractionLayer::toolboxRender(Scene *scene) {
     }
 
     ImGui::End();
+}
+
+
+void InteractionLayer::RenderImGuiTreeRecursive(const FileStructure &item) const {
+    if (item.mIsDirectory) {
+
+        bool open = ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
+        if (open) {
+            for (const auto &child: item.mChildren) {
+                RenderImGuiTreeRecursive(child);
+            }
+            ImGui::TreePop();
+        }
+        return;
+    }
+
+    ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen);
+    if (item.isLoadable) {
+        ImGui::SameLine();
+        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5f, 0.5f));
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 2.0f));
+        if (ImGui::Button("Load")) {
+            auto component = AssetManager::loadModelFromFile(item.mFullPath);
+            currentScene->addComponent(component);
+            auto pos = currentScene->currentCamera->mPosition;
+            component->setPosition({pos.x,pos.y,pos.z-1});
+            // todo add item into a list of items to be loaded on a queue to be picked up by a layer.
+            Debug::show("load model");
+        }
+        ImGui::PopStyleVar(2);
+    }
 }

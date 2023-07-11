@@ -6,6 +6,7 @@ void Scene::addModel(Model *model) {
     // might have to change vector to dequeue or something
     auto shaderType = model->mRootMesh->getMaterial().getShaderType();
 
+//    this->modelsInSceneQueue.push_back(model);
     this->modelsInScene.push_back(model);
     if (model->mCollider) {
         // do some physics assigment

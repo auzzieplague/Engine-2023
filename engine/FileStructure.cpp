@@ -1,12 +1,11 @@
-
 #include "FileStructure.h"
 
-
-FileStructure::FileStructure(const std::string &name, bool isDirectory) {
-    mPath = name;
+FileStructure::FileStructure(const std::string &name, const std::string &fullPath, bool isDirectory) {
+    mFileName = name;
+    mFullPath = fullPath;
     mIsDirectory = isDirectory;
     mName = ExtractFilename(name);
-    //get file extension and set isLoadable
+    // get file extension and set isLoadable
 
     auto extension = getFileExtension(mName);
     if (extension == "obj") {
@@ -19,7 +18,7 @@ void FileStructure::AddChild(const FileStructure &child) {
 }
 
 void FileStructure::RenderImGuiTree() const {
-    RenderImGuiTreeRecursive(*this);
+//    RenderImGuiTreeRecursive(*this);
 }
 
 std::string FileStructure::getFileExtension(const std::string &fileName) {
@@ -31,7 +30,7 @@ std::string FileStructure::getFileExtension(const std::string &fileName) {
 }
 
 FileStructure FileStructure::buildFileStructure(const std::string &path) {
-    FileStructure root(path, true);
+    FileStructure root(path,path, true);
 
     for (const auto &entry: std::filesystem::directory_iterator(path)) {
         std::string name = entry.path().filename().string();
@@ -41,38 +40,13 @@ FileStructure FileStructure::buildFileStructure(const std::string &path) {
             FileStructure subdirectory = buildFileStructure(entry.path().string());
             root.AddChild(subdirectory);
         } else {
-            root.AddChild(FileStructure(name));
+            root.AddChild(FileStructure(name,entry.path().string()));
         }
     }
 
     return root;
 }
 
-void FileStructure::RenderImGuiTreeRecursive(const FileStructure &item) const {
-    if (item.mIsDirectory) {
-
-        bool open = ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_OpenOnArrow);
-        if (open) {
-            for (const auto &child: item.mChildren) {
-                RenderImGuiTreeRecursive(child);
-            }
-            ImGui::TreePop();
-        }
-        return;
-    }
-
-    ImGui::TreeNodeEx(item.mName.c_str(), ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen);
-    if (item.isLoadable) {
-        ImGui::SameLine();
-        ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0.5f, 0.5f));
-        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 2.0f));
-        if (ImGui::Button("Load")) {
-            // todo add item into a list of items to be loaded on a queue to be picked up by a layer.
-            Debug::show("load model");
-        }
-        ImGui::PopStyleVar(2);
-    }
-}
 
 std::string FileStructure::ExtractFilename(const std::string &path) {
     size_t lastSlashIndex = path.find_last_of("/\\");
