@@ -84,9 +84,9 @@ void setupScene(Scene *scene) {
     playerObject = modelWithSubMeshes(true);
     scene->addComponent(playerObject);
 
-    auto assimpModel = AssetManager::loadModelFromFile("../assets/models/testModel.obj");
-    assimpModel->setPosition({1,1,-20});
-    scene->addComponent(assimpModel);
+//    auto assimpModel = AssetManager::loadModelFromFile("../assets/models/testModel.obj");
+//    assimpModel->setPosition({1,1,-20});
+//    scene->addComponent(assimpModel);
 
     auto terrain = terrainModel();
     scene->addComponent(terrain);

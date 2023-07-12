@@ -198,7 +198,7 @@ void InteractionLayer::transformGui(std::string text, Transform transform) {
 
 void InteractionLayer::componentTreeGui(Component *component) {
     ImGui::PushStyleColor(ImGuiCol_HeaderHovered, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-    bool open = ImGui::TreeNode(component->getName().c_str());
+    bool open = ImGui::TreeNode(component->getIdentifier().c_str());
     ImGui::PopStyleColor();
 
     if (open) {

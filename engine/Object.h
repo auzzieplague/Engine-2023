@@ -5,6 +5,8 @@
 class Object {
 public:
 
+    static unsigned int counter;
+    unsigned int objectID;
     enum class ObjectType {
         OT_Unknown,
         OT_Object,
@@ -30,5 +32,10 @@ public:
          objectName = name;
     };
 
+    Object() {
+        counter++;
+        objectID = counter;
+        std::cout << "created object " << counter << "\n";
+    }
 };
 

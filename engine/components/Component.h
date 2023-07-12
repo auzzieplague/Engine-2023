@@ -15,10 +15,14 @@ protected:
 
     std::string filePath;
 public:
+
     const std::string &getFilePath() const;
 
     const std::string &getFileName() const;
 
+    std::string getIdentifier(){
+        return this->getName() + std::to_string(this->objectID);
+    }
 protected:
     std::string fileName;
 
