@@ -14,7 +14,7 @@ protected:
 public:
     // for editor direct access - might be able to friend class / protected access these
     glm::vec3 mPosition{};
-    glm::quat mRotation{0.01f, 0.01f, 0.01f, 0.01f};
+    glm::quat mRotation{1.0f, 0.0f, 0.0f, 0.0f};
     glm::vec3 mScale{1, 1, 1};
 
     Transform();

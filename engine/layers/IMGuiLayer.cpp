@@ -1,7 +1,6 @@
 #include "IMGuiLayer.h"
 
 
-
 // note : require openGL attached first
 void IMGuiLayer::onAttach(Scene *scene) {
     const char *glsl_version = "#version 130";
@@ -108,8 +107,8 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     auto parent = scene->selectedComponent->parentComponent;
 
     auto *selectedTransform = parent ?
-            &scene->selectedComponent->worldTransform :
-            &scene->selectedComponent->localTransform;
+                              &scene->selectedComponent->worldTransform :
+                              &scene->selectedComponent->localTransform;
 
     float matrix[16];
     float delta[16];
@@ -134,6 +133,11 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 
     // if there are any changes then we'll need to consider physx
 
+    // todo model rotation is not updating the underlying mesh, that shouldn't matter
+    // because when the mesh gets rendered with api->shaderSetTransform(mesh->getWorldMatrix());
+    // which in turn combines local and parent ... where parent->getWorldMatrix() will resolve to its local
+    // view_video.php?viewkey=642285900a841
+    // the rotate works when we have children but not shen we dont
 
     scene->selectedComponent->setPosition(position);
     scene->selectedComponent->rotate(dRotation);

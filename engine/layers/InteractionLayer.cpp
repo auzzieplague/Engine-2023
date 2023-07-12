@@ -339,7 +339,7 @@ void InteractionLayer::RenderImGuiTreeRecursive(const FileStructure &item) const
             auto pos = currentScene->currentCamera->mPosition;
             component->setPosition({pos.x,pos.y,pos.z-1});
             // todo add item into a list of items to be loaded on a queue to be picked up by a layer.
-            Debug::show("load model");
+            Debug::show("loaded component "+component->getIdentifier());
         }
         ImGui::PopStyleVar(2);
     }
