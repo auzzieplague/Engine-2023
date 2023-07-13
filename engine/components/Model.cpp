@@ -170,4 +170,23 @@ void Model::resume() {
     Debug::show("resumed model physics");
 }
 
+void Model::autoScale() {
+    // setup a collider
+    auto collider = new Collider(ColliderConfig{});
+
+    collider->rebuild(this->mRootMesh);
+    collider->updateSize();
+    auto size = collider->getSize();
+    std::cout << "size "
+            << size.x << ","
+            << size.y << ","
+            << size.z << "\n";
+    this->scale({1/size.x,1/size.y,1/size.z});
+    // get the bounding box
+    // needs a collider for that
+    // destroy collider
+}
+
+// todo autophysics similar to above use collider mechanics
+// need better simplify mesh algorithm - can use box or circle for now
 

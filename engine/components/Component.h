@@ -78,6 +78,8 @@ public:
 
     virtual void setLocalScale(float newScale);
 
+    virtual void autoScale();
+
     virtual void setLocalTransform(Transform transform);
 
     [[nodiscard]] virtual glm::vec3 getLocalPosition();

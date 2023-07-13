@@ -149,6 +149,10 @@ const std::string &Component::getFileName() const {
     return fileName;
 }
 
+void Component::autoScale() {
+    Debug::show("Auto scale not supported for component "+this->getIdentifier());
+}
+
 
 
 

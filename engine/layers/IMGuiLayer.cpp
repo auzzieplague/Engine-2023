@@ -133,12 +133,6 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 
     // if there are any changes then we'll need to consider physx
 
-    // todo model rotation is not updating the underlying mesh, that shouldn't matter
-    // because when the mesh gets rendered with api->shaderSetTransform(mesh->getWorldMatrix());
-    // which in turn combines local and parent ... where parent->getWorldMatrix() will resolve to its local
-    // view_video.php?viewkey=642285900a841
-    // the rotate works when we have children but not shen we dont
-
     scene->selectedComponent->setPosition(position);
     scene->selectedComponent->rotate(dRotation);
     scene->selectedComponent->scale(dScale);

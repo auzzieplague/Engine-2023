@@ -338,6 +338,7 @@ void InteractionLayer::RenderImGuiTreeRecursive(const FileStructure &item) const
             currentScene->addComponent(component);
             auto pos = currentScene->currentCamera->mPosition;
             component->setPosition({pos.x,pos.y,pos.z-1});
+            component->autoScale();
             // todo add item into a list of items to be loaded on a queue to be picked up by a layer.
             Debug::show("loaded component "+component->getIdentifier());
         }

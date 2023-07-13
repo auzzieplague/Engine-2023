@@ -55,6 +55,8 @@ public:
     void getMeshFromHeightMap(std::string);
 
     void setMaterial(Material material);
+
+    void autoScale();
 };
 
 

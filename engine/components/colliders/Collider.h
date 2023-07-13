@@ -91,6 +91,9 @@ public:
          * similarly we need to shift the min and max corners of the bounding box
          *
          * where the object scales, we will need to recalculate the whole volume as corners and
+         *
+         * also need to consider all mesh submeshes
+         *  - probably just collect all their min max values and take the min max from the whole collection
          */
         if (mesh){
             m_sphere.findRadiusAndCenter(mesh->m_vertices);
