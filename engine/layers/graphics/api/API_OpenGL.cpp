@@ -4,7 +4,7 @@
 
 // unsigned int API_OpenGL::shaderProgram;
 
-void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
+void API_OpenGL::beginRender(RenderingConfig &config) {
     currentRenderingConfig = &config;
 
     for (auto enable : config.toEnable){
@@ -26,12 +26,17 @@ void API_OpenGL::updateRendererConfig(RenderingConfig &config) {
     if (config.debugMode) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
-
+    glUseProgram(config.shaderID);
     glClearColor(config.clearColour.x, config.clearColour.y, config.clearColour.z, config.clearColour.w);
     glClear(config.clearFlags);
-
-    glUseProgram(config.shaderID);
 }
+
+void API_OpenGL::endRender(RenderingConfig &config) {
+//    glClear(config.clearFlags);
+//    glfwSwapBuffers(scene->currentWindow->glRef());
+}
+
+
 
 // unsigned int GraphicsLayerOpenGL::testMeshVAO;
 void API_OpenGL::renderMesh(Mesh *mesh) {
@@ -125,6 +130,41 @@ unsigned int API_OpenGL::loadShader(std::string vertex, std::string fragment) {
     return program;
 }
 
+unsigned int API_OpenGL::loadTexture(std::string fileName) {
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+
+    int width, height, numChannels;
+    stbi_set_flip_vertically_on_load(false);
+    unsigned char* data = stbi_load(fileName.c_str(), &width, &height, &numChannels, 0);
+    if (data) {
+        GLenum format;
+        if (numChannels == 1)
+            format = GL_RED;
+        else if (numChannels == 3)
+            format = GL_RGB;
+        else if (numChannels == 4)
+            format = GL_RGBA;
+
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        stbi_image_free(data);
+    }
+    else {
+        // Failed to load texture
+        stbi_image_free(data);
+        return 0;
+    }
+
+    return textureID;
+}
 
 unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     if (mesh->getIndices().empty()) {
@@ -196,7 +236,6 @@ GLuint API_OpenGL::setupTerrain(HeightMap *heightmap) {
     return VAO;
 }
 
-
 unsigned int API_OpenGL::getFlag(GraphicsFlag flag) {
     switch (flag) {
         case CULL_FACE:
@@ -243,7 +282,6 @@ void API_OpenGL::shaderSetVec2(const std::string &name, const glm::vec2 &value) 
     glUniform2f(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), value.x, value.y);
 }
 
-
 void API_OpenGL::shaderSetMat2(const std::string &name, const glm::mat2 &mat) const {
     glUniformMatrix2fv(glGetUniformLocation(currentRenderingConfig->shaderID, name.c_str()), 1, GL_FALSE,
                        glm::value_ptr(mat));
@@ -286,43 +324,6 @@ void API_OpenGL::shaderSetProjection(const glm::mat4 &mat) const {
 
 void API_OpenGL::shaderSetCamera(Camera *camera) {
     shaderSetVec3("camera", camera->getLocalPosition());
-}
-
-
-unsigned int API_OpenGL::loadTexture(std::string fileName) {
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-
-    int width, height, numChannels;
-    stbi_set_flip_vertically_on_load(false);
-    unsigned char* data = stbi_load(fileName.c_str(), &width, &height, &numChannels, 0);
-    if (data) {
-        GLenum format;
-        if (numChannels == 1)
-            format = GL_RED;
-        else if (numChannels == 3)
-            format = GL_RGB;
-        else if (numChannels == 4)
-            format = GL_RGBA;
-
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        stbi_image_free(data);
-    }
-    else {
-        // Failed to load texture
-        stbi_image_free(data);
-        return 0;
-    }
-
-    return textureID;
 }
 
 

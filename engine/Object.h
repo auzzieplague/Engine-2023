@@ -4,7 +4,6 @@
 
 class Object {
 public:
-
     static unsigned int counter;
     unsigned int objectID;
     enum class ObjectType {
@@ -19,6 +18,7 @@ public:
     };
 
     std::string objectName = "Un-named Object";
+    glm::vec3 colourID;
 
     virtual ObjectType getType() {
         return ObjectType::OT_Object;
@@ -35,7 +35,14 @@ public:
     Object() {
         counter++;
         objectID = counter;
+        setColourID();
         std::cout << "created object " << counter << "\n";
+    }
+
+    void setColourID(){
+        this->colourID.r = (this->counter & 0x000000FF) / 255.0f;
+        this->colourID.g = ((this->counter & 0x0000FF00) >>  8) / 255.0f;
+        this->colourID.b = ((this->counter & 0x00FF0000) >> 16) / 255.0f;
     }
 };
 

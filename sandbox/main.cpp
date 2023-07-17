@@ -120,8 +120,8 @@ int main() {
     /// optional layers
     engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene
     engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
+    engine->attachLayer(new CollisionLayer()); // processes collisions effects
     engine->attachLayer(new IMGuiLayer());
-//    engine->attachLayer(new CollisionLayer()); // processes collisions effects
 
     // setup interaction layer and scene together to inject a tests model
     auto *interactionLayer = new InteractionLayer();

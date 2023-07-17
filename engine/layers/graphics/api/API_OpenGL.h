@@ -18,7 +18,8 @@ public:
 
     unsigned int compileShader(std::string &source, unsigned int type) override;
 
-    void updateRendererConfig(RenderingConfig &) override;
+    void beginRender(RenderingConfig &) override;
+    void endRender(RenderingConfig &) override;
 
     unsigned int setupMesh(Mesh *mesh) override;
 

@@ -177,6 +177,10 @@ void Model::autoScale() {
     collider->rebuild(this->mRootMesh);
     collider->updateSize();
     auto size = collider->getSize();
+    float xscale, yscale, zscale;
+    xscale = 1/size.x;
+
+
     std::cout << "size "
             << size.x << ","
             << size.y << ","
@@ -185,6 +189,7 @@ void Model::autoScale() {
     // get the bounding box
     // needs a collider for that
     // destroy collider
+    delete collider;
 }
 
 // todo autophysics similar to above use collider mechanics

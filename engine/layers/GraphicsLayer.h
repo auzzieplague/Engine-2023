@@ -16,14 +16,14 @@ public:
     /// testing
     unsigned int testMeshVAO{};
     Mesh *testMesh{};
-    RenderingConfig meshConfig;
+    RenderingConfig renderConfig;
 
     void setApi(GraphicsAPI *api) override;
-    unsigned int flag(GraphicsFlag graphicsFlag);
 
     void onAttach(Scene *) override;
 
     void render(Scene *) override;
+
     void update(Scene *) override;
 
     void checkDirtyCamera(Scene *scene) const;

@@ -12,12 +12,11 @@ class Scene : public Object {
 public:
     float currentFrameRate = 1.0f;
     Component *selectedComponent = nullptr;
-    physx::PxScene *physicsScene = nullptr;
+    physx::PxScene *physicsScene = nullptr; // set on initphysics
 
     std::vector<Component *> componentList;
     std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
     std::vector<Model *> modelsInScene;
-    std::vector<Mesh *> meshesToRender;
 
     std::deque<Model *> modelsWithPhysicsQueue;
     std::vector<Model *> modelsWithPhysics;

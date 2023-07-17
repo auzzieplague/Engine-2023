@@ -1,18 +1,31 @@
 #pragma once
 
 #include "CollisionLayer.h"
+#include "graphics/api/GraphicsAPI.h"
 
 void CollisionLayer::onAttach(Scene *scene) {
+    updateLayerVariables(scene);
+    initialRenderingSetup(scene);
     Debug::show("[>] Collision Attached");
 }
 
-void CollisionLayer::update(Scene *scene) {
+void CollisionLayer::updateLayerVariables(Scene *scene) {
+    this->mNearPlane = scene->currentCamera->getNearClip();
+    this->mFarPlane = scene->currentCamera->getFarClip();
+}
+
+//void CollisionLayer::update(Scene *scene) {
+//    updateScreenRay(scene);
+////    processCollisions(scene); // todo investigate physx report
+//}
+
+void CollisionLayer::processCollisions(Scene *scene) {
     // check mCollider of models
     // will be checking collidable models in the scene for now just checking all render models
 
     /// just for debugging collision
     bool alreadyColliding[1000];
-    for (bool & i : alreadyColliding) {
+    for (bool &i: alreadyColliding) {
         i = false;
     }
 
@@ -43,7 +56,7 @@ void CollisionLayer::update(Scene *scene) {
                         scene->modelsInScene[collider2]->mCollider)) {
 
                     if (Debug::getIteration() == 1) {
-                        std::cout  << " [" << collider1 << "-X-" << collider2 << "] ";
+                        std::cout << " [" << collider1 << "-X-" << collider2 << "] ";
                     }
 
                     scene->modelsInScene[collider1]->mRootMesh->getMaterial().setAmbientColor({colourOffset, 0, 0});
@@ -83,12 +96,98 @@ void CollisionLayer::update(Scene *scene) {
     // perform collision detection - isColliding
 }
 
-void CollisionLayer::render(Scene *scene) {
-    // render collision shapes if option enabled
+void CollisionLayer::updateScreenRay(Scene *scene) {
+    GLfloat depth;
+    glReadPixels(Input::m_mousePos.x, scene->currentWindow->height - Input::m_mousePos.y, 1, 1, GL_DEPTH_COMPONENT,
+                 GL_FLOAT,
+                 &depth);
+    depth = 2.0f * depth - 1.0;
+    this->mouseOverDistance =
+            2.0f * mNearPlane * mFarPlane / (mFarPlane + mNearPlane - depth * (mFarPlane - mNearPlane));
+    this->mouseInClipSpace.x = Input::m_mousePos.x / (scene->currentWindow->width * 0.5) - 1.0f;
+    this->mouseInClipSpace.y = Input::m_mousePos.y / (scene->currentWindow->height * 0.5);
 
-    // set colour red if colliding green if not.
+    glm::vec4 ray_clip(this->mouseInClipSpace.x, this->mouseInClipSpace.y, -1.0, 1.0);
+    glm::vec4 ray_eye =
+            inverse(this->currentScene->currentCamera->mProjectionMatrix) *
+            ray_clip; //todo create inverse matrix with projection matrix
+    ray_eye = glm::vec4(ray_eye.x, ray_eye.y, -1.0, 0.0);
+    glm::vec4 ray_direction = inverse(this->currentScene->currentCamera->mViewMatrix) * ray_eye;
+    ray_direction = glm::normalize(ray_direction);
 
-    //if mCollider m_vertices isn't set initialise it with m_sphere m_vertices.
+    glm::vec3 rayEndPosition = ray_direction * mouseOverDistance;
+    cursorInWorld = this->currentScene->currentCamera->mPosition + rayEndPosition;
 }
 
+void CollisionLayer::appendToGui(Scene *scene) {
+
+    ImGui::Begin("Collision layer");
+
+    ImGui::Text("screen X: %f", this->mouseInClipSpace.x);
+    ImGui::Text("screen Y: %f", this->mouseInClipSpace.y);
+    ImGui::Text("Target Distance %f", this->mouseOverDistance);
+    ImGui::Text("Mouse World %f,%f,%f", cursorInWorld.x, cursorInWorld.y, cursorInWorld.z);
+    ImGui::Text("Cursor over object %i", cursorOverObjectID);
+    ImGui::Text("camera X: %f", this->currentScene->currentCamera->mPosition.x);
+    ImGui::Text("camera Y: %f", this->currentScene->currentCamera->mPosition.y);
+    ImGui::Text("camera Z: %f", this->currentScene->currentCamera->mPosition.z);
+
+    ImGui::End();
+}
+
+void CollisionLayer::initialRenderingSetup(Scene *scene) {
+    // todo abstract to layer level, now we have multiple layers using rendering
+
+    renderConfig.shaderID = api->loadShader("general.vert", "object_lookup.frag");
+    renderConfig.enable(api->getFlag((CULL_FACE)));
+//    meshConfig.enable(api->getFlag((ALPHA_BLENDING)));
+    renderConfig.enable(api->getFlag((DEPTH_TEST)));
+    renderConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
+    renderConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
+    renderConfig.clearColour = {0,0,0,1};
+    api->beginRender(renderConfig);
+    api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
+    api->shaderSetView(scene->currentCamera->getViewMatrix());
+}
+
+void CollisionLayer::render(Scene *scene) {
+
+
+}
+void CollisionLayer::update(Scene *scene) {
+    updateScreenRay(scene);
+
+    api->beginRender(renderConfig);
+    api->shaderSetView(scene->currentCamera->getViewMatrix());
+
+    //todo wrap all the below in another method and update view matrix - currently stuck
+    // updatePosition shaders and set m_api properties
+
+    api->shaderSetCamera(scene->currentCamera);
+    // todo only need selectable meshes in game
+    std::vector<Mesh *> meshes;
+    for (auto model: scene->modelsInScene) {
+        meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
+    }
+
+    api->shaderSetCamera(scene->currentCamera);
+
+    for (auto mesh: meshes) {
+        api->shaderSetTransform(mesh->getWorldMatrix());
+        api->shaderSetVec3("entityID", mesh->colourID);
+
+//        api->shaderSetMaterial(mesh->getMaterial());
+        api->renderMesh(mesh);
+    }
+
+        glFlush();
+        glFinish();
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    unsigned char data[4];
+    glReadPixels(Input::m_mousePos.x,
+                 this->currentScene->currentWindow->height - Input::m_mousePos.y,
+                 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    cursorOverObjectID = data[0] + data[1] * 256 + data[2] * 256 * 256;
+//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 

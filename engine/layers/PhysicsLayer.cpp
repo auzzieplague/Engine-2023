@@ -50,6 +50,8 @@ void PhysicsLayer::initPhysicsWorld() {
     sceneDesc.filterShader = physx::PxDefaultSimulationFilterShader;
     mScene = mPhysics->createScene(sceneDesc);
 
+    currentScene->physicsScene = mScene;
+
     physx::PxPvdSceneClient *pvdClient = mScene->getScenePvdClient();
     if (pvdClient) {
         pvdClient->setScenePvdFlag(physx::PxPvdSceneFlag::eTRANSMIT_CONSTRAINTS, true);

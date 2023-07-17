@@ -7,6 +7,8 @@ class Debug {
 private:
     static int m_iteration;
 public:
+    static bool flag;
+
     template<typename T>
     static void show(T value) {
         std::cout << value << std::endl;

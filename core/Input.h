@@ -1,9 +1,9 @@
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>
 #include "Debug.h"
-
+#pragma once
 class Input {
-private:
+public:
     static bool m_leftMouseDragging;
     static bool m_rightMouseDragging;
     static glm::vec2 m_mousePos;

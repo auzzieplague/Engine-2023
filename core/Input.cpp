@@ -12,6 +12,7 @@ glm::vec2 Input::m_lastMousePos;
 bool Input::m_keys[1024]{};
 bool Input::m_mouseButtons[8]{};
 
+
 Input::Input(GLFWwindow *window) {
     // Initialize key states to "not pressed"
     for (bool &m_key: m_keys) {
@@ -135,4 +136,3 @@ bool Input::isKeyPressed(int key)  {
     }
     return false;
 }
-

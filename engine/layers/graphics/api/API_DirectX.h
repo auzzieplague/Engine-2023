@@ -9,7 +9,7 @@ class API_DirectX : public GraphicsAPI {
 
     unsigned int compileShader(std::string &source, unsigned int type) override;
 
-    void updateRendererConfig(RenderingConfig &) override;
+    void beginRender(RenderingConfig &) override;
 
     unsigned int setupMesh(Mesh *mesh) override;
 

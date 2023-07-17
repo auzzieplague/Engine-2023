@@ -2,8 +2,7 @@
 #include "Camera.h"
 
 Camera::Camera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) :
-        mPosition(pos), m_worldUp(up), m_yaw(yaw), m_pitch(pitch), m_fov(45.0f), m_aspectRatio(1.0f), m_nearClip(0.1f),
-        m_farClip(100.0f) {
+        mPosition(pos), mWorldUp(up), mYaw(yaw), mPitch(pitch) {
     updateCameraVectors();
     updateProjectionMatrix();
     getViewMatrix();
@@ -11,14 +10,14 @@ Camera::Camera(glm::vec3 pos, glm::vec3 up, float yaw, float pitch) :
 
 glm::mat4 Camera::getViewMatrix() {
     if (mDirty) {
-        mViewMatrix = glm::lookAt(mPosition, mPosition + m_front, m_up);
+        mViewMatrix = glm::lookAt(mPosition, mPosition + mFront, mUp);
         mDirty = false;
     }
     return mViewMatrix;
 }
 
 void Camera::updateProjectionMatrix() {
-    mProjectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_nearClip, m_farClip);
+    mProjectionMatrix = glm::perspective(glm::radians(mFOV), mAspectRatio, mNearClip, mFarClip);
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
@@ -26,48 +25,48 @@ glm::mat4 Camera::getProjectionMatrix() {
 }
 
 [[maybe_unused]] void Camera::setAspectRatio(float aspectRatio) {
-    this->m_aspectRatio = aspectRatio;
+    this->mAspectRatio = aspectRatio;
     updateProjectionMatrix();
 }
 
 [[maybe_unused]] void Camera::setFOV(float fov) {
-    this->m_fov = fov;
+    this->mFOV = fov;
     updateProjectionMatrix();
 }
 
 [[maybe_unused]] void Camera::setClipPlanes(float nearClip, float farClip) {
-    this->m_nearClip = nearClip;
-    this->m_farClip = farClip;
+    this->mNearClip = nearClip;
+    this->mFarClip = farClip;
     updateProjectionMatrix();
 }
 
 void Camera::moveForward(float deltaTime) {
-    mPosition += m_front * deltaTime;
+    mPosition += mFront * deltaTime;
     mDirty = true;
 }
 
 void Camera::moveBackward(float deltaTime) {
-    mPosition -= m_front * deltaTime;
+    mPosition -= mFront * deltaTime;
     mDirty = true;
 }
 
 void Camera::moveRight(float deltaTime) {
-    mPosition += m_right * deltaTime;
+    mPosition += mRight * deltaTime;
     mDirty = true;
 }
 
 void Camera::moveLeft(float deltaTime) {
-    mPosition -= m_right * deltaTime;
+    mPosition -= mRight * deltaTime;
     mDirty = true;
 }
 
 void Camera::moveUp(float deltaTime) {
-    mPosition += m_up * deltaTime;
+    mPosition += mUp * deltaTime;
     mDirty = true;
 }
 
 void Camera::moveDown(float deltaTime) {
-    mPosition -= m_up * deltaTime;
+    mPosition -= mUp * deltaTime;
     mDirty = true;
 }
 
@@ -76,15 +75,15 @@ void Camera::rotate(float xoffset, float yoffset, bool constrainPitch) {
     xoffset *= 0.1f;
     yoffset *= 0.1f;
 
-    m_yaw += xoffset;
-    m_pitch += yoffset;
+    mYaw += xoffset;
+    mPitch += yoffset;
 
     if (constrainPitch) {
-        if (m_pitch > 89.0f) {
-            m_pitch = 89.0f;
+        if (mPitch > 89.0f) {
+            mPitch = 89.0f;
         }
-        if (m_pitch < -89.0f) {
-            m_pitch = -89.0f;
+        if (mPitch < -89.0f) {
+            mPitch = -89.0f;
         }
     }
 
@@ -95,16 +94,24 @@ void Camera::rotate(float xoffset, float yoffset, bool constrainPitch) {
 void Camera::updateCameraVectors() {
     // Calculate the new m_front vector
     glm::vec3 newFront;
-    newFront.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
-    newFront.y = sin(glm::radians(m_pitch));
-    newFront.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
-    m_front = glm::normalize(newFront);
+    newFront.x = cos(glm::radians(mYaw)) * cos(glm::radians(mPitch));
+    newFront.y = sin(glm::radians(mPitch));
+    newFront.z = sin(glm::radians(mYaw)) * cos(glm::radians(mPitch));
+    mFront = glm::normalize(newFront);
 
     // Recalculate the m_right and m_up vectors
-    m_right = glm::normalize(glm::cross(m_front, m_worldUp));
-    m_up = glm::normalize(glm::cross(m_right, m_front));
+    mRight = glm::normalize(glm::cross(mFront, mWorldUp));
+    mUp = glm::normalize(glm::cross(mRight, mFront));
 }
 
 glm::vec3 Camera::getLocalPosition() {
     return mPosition;
+}
+
+float Camera::getNearClip() const {
+    return mNearClip;
+}
+
+float Camera::getFarClip() const {
+    return mFarClip;
 }

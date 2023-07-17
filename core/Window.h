@@ -13,14 +13,13 @@ private:
     static GLFWwindow *m_currentWindow;
     bool m_ready = false;
     static GraphicsAPI *m_api;
-    int width;
 public:
-    int getWidth() const;
-
-    int getHeight() const;
+    int width;
+    int height;
+    [[nodiscard]] int getWidth() const;
+    [[nodiscard]] int getHeight() const;
 
 private:
-    int height;
 public:
     [[nodiscard]] GLFWwindow *glRef() const;
 

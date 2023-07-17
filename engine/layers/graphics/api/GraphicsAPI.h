@@ -25,7 +25,8 @@ public:
     virtual void renderMesh(Mesh *);
     virtual void renderMesh(Mesh *, int);
 
-    virtual void updateRendererConfig(RenderingConfig &);
+    virtual void beginRender(RenderingConfig &);
+    virtual void endRender(RenderingConfig &);
 
     virtual void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 

@@ -16,11 +16,12 @@ public:
     unsigned int clearFlags = GL_COLOR_BUFFER_BIT;
     glm::vec4 clearColour{0.2f, 0.3f, 0.3f, 1.0};
     unsigned int shaderID;
+    Window * window;
     bool debugMode = false;
 
     /**
      * amalgamates all flag changes into next render cycle to minimise m_api calls
-     * - if you need changes applied immediately use @see GraphicsAPI::updateRendererConfig()
+     * - if you need changes applied immediately use @see GraphicsAPI::beginRender()
      * @param flag
      */
     void enable(unsigned int flag) {

@@ -7,16 +7,20 @@
 class Camera : public Component {
 private:
 
-    glm::vec3 m_front;
-    glm::vec3 m_up;
-    glm::vec3 m_right;
-    glm::vec3 m_worldUp;
-    float m_yaw;
-    float m_pitch;
-    float m_fov;
-    float m_aspectRatio;
-    float m_nearClip;
-    float m_farClip;
+    glm::vec3 mFront;
+    glm::vec3 mUp;
+    glm::vec3 mRight;
+    glm::vec3 mWorldUp;
+    float mYaw;
+    float mPitch;
+    float mFOV = 45.0f;
+    float mAspectRatio = 16.0f / 9.0f;
+    float mNearClip = 1.0f;
+    float mFarClip = 9000.0f;
+
+public:
+    float getNearClip() const;
+    float getFarClip() const;
 
     void updateCameraVectors();
 

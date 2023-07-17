@@ -10,6 +10,7 @@ void InteractionLayer::onAttach(Scene *scene) {
 }
 
 void InteractionLayer::appendToGui(Scene *scene) {
+
     if (scene->selectedComponent) {
         selectedComponentGui(scene->selectedComponent);
     }
@@ -25,9 +26,11 @@ void InteractionLayer::processInput(Scene *scene) {
     float speed = 10; // travel speed
     float movement = speed / scene->currentFrameRate;
 
-    if (Input::isKeyPressed(GLFW_KEY_R)) {
-        Debug::resetIteration();
-    }
+    Debug::flag = Input::isKeyPressed(GLFW_KEY_H);
+
+//    if (Input::isKeyPressed(GLFW_KEY_R)) {  // now bound to roll
+//        Debug::resetIteration();
+//    }
 
     processCameraInput(scene, movement);
 
@@ -227,7 +230,7 @@ void InteractionLayer::assetsDirectoryGui() {
 
 void InteractionLayer::sceneComponentsGui(Scene *scene) {
     ImGui::Begin("Scene Layout");
-
+    ImGui::Checkbox("Debug Paused (H)", &Debug::flag);
     // Iterate over the component list in the scene
     for (auto component: scene->componentList) {
         componentTreeGui(component);

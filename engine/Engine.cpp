@@ -80,10 +80,9 @@ void Engine::addComponent(Component *component) {
 void Engine::attachLayer(Layer *layer) {
     //assign graphics m_api into layer
     layer->setApi(this->graphicsAPI);
-
+    layer->currentScene = this->currentScene;
     //run attach hook
     layer->onAttach(this->currentScene);
-
 
     // todo layer ordering
     this->layers.push_back(layer);

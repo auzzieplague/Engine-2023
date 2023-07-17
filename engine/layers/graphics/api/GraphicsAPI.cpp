@@ -26,9 +26,14 @@ void GraphicsAPI::renderMesh(Mesh *, int) {
     Debug::show("missing override for renderMesh instanced");
 }
 
-void GraphicsAPI::updateRendererConfig(RenderingConfig &) {
-    Debug::show("missing override for updateRenderConfig");
+void GraphicsAPI::beginRender(RenderingConfig &) {
+    Debug::show("missing override for beginRender");
 }
+
+void GraphicsAPI::endRender(RenderingConfig &) {
+    Debug::show("missing override for endRender");
+}
+
 
 void GraphicsAPI::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
     Debug::show("missing override for framebufferCallback");
