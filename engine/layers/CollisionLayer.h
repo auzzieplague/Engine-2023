@@ -16,7 +16,7 @@ class CollisionLayer : public Layer {
     glm::vec2 mouseInClipSpace{};
     glm::vec3 cursorInWorld{};
     float mouseOverDistance = 0;
-    unsigned int cursorOverObjectID = 0;
+//    unsigned int cursorOverObjectID = 0;
 
 public:
     RenderingConfig renderConfig;
@@ -36,9 +36,8 @@ public:
 
     void processCollisions(Scene *scene);
 
-    void initialRenderingSetup(Scene *scene);
+    void objectTrackerRenderConfigSetup(Scene *scene);
 
-    void render(Scene *scene) override;
 };
 
 

@@ -12,6 +12,8 @@ class Scene : public Object {
 public:
     float currentFrameRate = 1.0f;
     Component *selectedComponent = nullptr;
+    int cursorOverObjectID;
+
     physx::PxScene *physicsScene = nullptr; // set on initphysics
 
     std::vector<Component *> componentList;

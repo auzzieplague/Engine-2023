@@ -61,5 +61,5 @@ void main()
 
     // Apply the final color to the fragment
     fragColor = vec4(finalColor, textureColour.a);
-//    fragColor = vec4(normal, textureColour.a);
+//    fragColor = vec4(1,0,0,1);
 }

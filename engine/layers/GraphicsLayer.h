@@ -17,6 +17,7 @@ public:
     unsigned int testMeshVAO{};
     Mesh *testMesh{};
     RenderingConfig renderConfig;
+    RenderingConfig objectTrackerConfig;
 
     void setApi(GraphicsAPI *api) override;
 
@@ -28,5 +29,8 @@ public:
 
     void checkDirtyCamera(Scene *scene) const;
 
-    void initialRenderingSetup(Scene *scene);
+    void meshRenderConfig(Scene *scene);
+
+    void objectTrackerRenderConfig(Scene *scene);
+
 };
