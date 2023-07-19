@@ -22,6 +22,8 @@ public:
 
     void update(Scene *) override;
 
+    void appendToGui(Scene *scene) override;
+
     void initPhysicsWorld();
 
     void processModelSpawnQueue(Scene *scene);

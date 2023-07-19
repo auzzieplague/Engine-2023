@@ -115,3 +115,8 @@ float Camera::getNearClip() const {
 float Camera::getFarClip() const {
     return mFarClip;
 }
+
+void Camera::setPosition(glm::vec3 newPosition) {
+   this->mPosition=newPosition;
+   this->mDirty = true;
+}

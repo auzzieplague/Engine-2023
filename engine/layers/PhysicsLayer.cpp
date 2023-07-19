@@ -17,7 +17,7 @@ void PhysicsLayer::update(Scene *scene) {
     this->processModelSpawnQueue(scene);
 
     physx::PxTransform transform;
-    mScene->simulate(1.0f / 60.0f);
+    mScene->simulate(scene->simulationSpeed);
     mScene->fetchResults(true);
 
     //updatePosition positions of models
@@ -190,6 +190,15 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
     scene->modelsWithPhysics.push_back(model);
 
 }
+
+
+void PhysicsLayer::appendToGui(Scene *scene) {
+
+    ImGui::Begin("Physics");
+    ImGui::DragFloat("simulation speed", &scene->simulationSpeed, 0.0001f, 0.0001, 0.01);
+    ImGui::End();
+}
+
 
 
 

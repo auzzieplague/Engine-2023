@@ -44,6 +44,8 @@ public:
 
     [[maybe_unused]] void setClipPlanes(float nearClip, float farClip);
 
+    void setPosition(glm::vec3 newPosition) override;
+
     void moveForward(float deltaTime);
 
     void moveBackward(float deltaTime);

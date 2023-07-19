@@ -2,8 +2,15 @@
 #include <glm/vec2.hpp>
 #include "Debug.h"
 #pragma once
+
+
+
 class Input {
 public:
+    static const unsigned int MOUSE_LEFT ;
+    static const unsigned int MOUSE_RIGHT;
+    static const unsigned int MOUSE_MIDDLE;
+
     static bool m_leftMouseDragging;
     static bool m_rightMouseDragging;
     static glm::vec2 m_mousePos;

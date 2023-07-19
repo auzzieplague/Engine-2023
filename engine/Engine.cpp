@@ -2,7 +2,8 @@
 #include "Engine.h"
 
 Engine *Engine::instance;
-void (*Window::onWindowUpdate)(GLFWwindow* window, int width, int height);
+
+void (*Window::onWindowUpdate)(GLFWwindow *window, int width, int height);
 
 Engine::Engine(uint32_t width, uint32_t height, const std::string &title, Scene *scene) {
 //    window = new Window(width, height, title);
@@ -21,6 +22,16 @@ void Engine::initLayers() {
     for (Layer *layer: this->layers) {
         layer->currentScene = this->currentScene;
         layer->init(currentScene);
+    }
+}
+
+void Engine::processGUILayers() {
+    if (!this->hasGUILayer) {
+        return;
+    }
+
+    for (auto *layer: this->layers) {
+        layer->appendToGui(this->currentScene);
     }
 }
 
@@ -46,10 +57,7 @@ void Engine::loopLayers() {
                 layer->beforeRender(this->currentScene);
             }
 
-            // todo loop through all the layers and call appendToGui
-            for (auto *layer: this->layers) {
-                layer->appendToGui(this->currentScene);
-            }
+            this->processGUILayers();
 
             for (Layer *layer: this->layers) {
                 layer->render(this->currentScene);
@@ -77,12 +85,13 @@ void Engine::stop() {
 }
 
 void Engine::attachLayer(Layer *layer) {
-    //assign graphics m_api into layer
+    // assign graphics m_api into layer
     layer->setApi(this->graphicsAPI);
     layer->currentScene = this->currentScene;
-    //run attach hook
     layer->onAttach(this->currentScene);
-
+    if (layer->getType() == ObjectType::OT_Layer_GUI) {
+        this->hasGUILayer = true;
+    }
     // todo layer ordering
     this->layers.push_back(layer);
 }
@@ -123,7 +132,7 @@ float Engine::getCurrentFramerate() {
     return framerate;
 };
 
-void Engine::onWindowUpdate(GLFWwindow* window, int width, int height){
+void Engine::onWindowUpdate(GLFWwindow *window, int width, int height) {
     // get instance of engine
     Scene *scene = Engine::getInstance()->currentScene;
     scene->currentWindow->width = width;

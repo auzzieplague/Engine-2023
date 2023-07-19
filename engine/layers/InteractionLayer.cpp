@@ -1,6 +1,7 @@
 #pragma once
 
 #include "InteractionLayer.h"
+
 void InteractionLayer::onAttach(Scene *scene) {
     // bind this input to inputInstance
     Debug::show("[>] Interaction Attached");
@@ -22,6 +23,11 @@ void InteractionLayer::appendToGui(Scene *scene) {
 void InteractionLayer::processInput(Scene *scene) {
 
     this->currentComponent = scene->selectedComponent;
+
+    if (Input::m_mouseButtons[Input::MOUSE_MIDDLE]) {
+            scene->selectHoveredComponent = true;
+    }
+
 
     float speed = 10; // travel speed
     float movement = speed / scene->currentFrameRate;
@@ -296,12 +302,12 @@ void InteractionLayer::toolboxSetup(Scene *scene) {
     toolboxButtons.push_back(button);
 
     button.uvMin = ImVec2(textureSlice, 0.0f);
-    button.uvMax = ImVec2(textureSlice*2, textureSlice);
+    button.uvMax = ImVec2(textureSlice * 2, textureSlice);
     button.title = "Add Cube";
     toolboxButtons.push_back(button);
 
-    button.uvMin = ImVec2(textureSlice*2, 0.0f);
-    button.uvMax = ImVec2(textureSlice*3, textureSlice);
+    button.uvMin = ImVec2(textureSlice * 2, 0.0f);
+    button.uvMax = ImVec2(textureSlice * 3, textureSlice);
     button.title = "Add Terrain";
     toolboxButtons.push_back(button);
 }
@@ -340,10 +346,10 @@ void InteractionLayer::RenderImGuiTreeRecursive(const FileStructure &item) const
             auto component = AssetManager::loadModelFromFile(item.mFullPath);
             currentScene->addComponent(component);
             auto pos = currentScene->currentCamera->mPosition;
-            component->setPosition({pos.x,pos.y,pos.z-1});
+            component->setPosition({pos.x, pos.y, pos.z - 1});
             component->autoScale();
             // todo add item into a list of items to be loaded on a queue to be picked up by a layer.
-            Debug::show("loaded component "+component->getIdentifier());
+            Debug::show("loaded component " + component->getIdentifier());
         }
         ImGui::PopStyleVar(2);
     }

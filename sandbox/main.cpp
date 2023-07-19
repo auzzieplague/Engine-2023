@@ -93,7 +93,7 @@ void setupScene(Scene *scene) {
     auto terrain = terrainModel();
     scene->addComponent(terrain);
 
-//    scene->selectedComponent = playerObject;
+    scene->currentCamera->setPosition({0,0,20});
 
     Debug::show("[->] Use NumPad 4862+- to navigate test Model");
     Debug::show("[->] RPY (roll, pitch, yaw) UIO (world xyz) rotations ");
@@ -110,8 +110,7 @@ void outputExecutionMode() {
 int main() {
     /// preflight tests
     outputExecutionMode();
-
-    AssetManager::testASSIMP();
+//    AssetManager::testASSIMP();
 //    AssetManager::buildDirectoryStructure("..\\assets");
 
     /// Required Layers
@@ -122,11 +121,11 @@ int main() {
     /// optional layers
     engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene
     engine->attachLayer(new PhysicsLayer());   // uses physx to keep dynamic objects in bounds
-    engine->attachLayer(new CollisionLayer()); // processes collisions effects
+    engine->attachLayer(new CollisionLayer());    // process mouse collisions
     engine->attachLayer(new IMGuiLayer());
 
     // setup interaction layer and scene together to inject a tests model
-    auto *interactionLayer = new InteractionLayer();
+    auto *interactionLayer = new InteractionLayer();  // editor view
     engine->attachLayer(interactionLayer);
 
     try {

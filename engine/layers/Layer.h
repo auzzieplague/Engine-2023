@@ -13,6 +13,11 @@ public:
         this->api = api;
     }
 
+    ObjectType getType() override {
+        return ObjectType::OT_Layer;
+    };
+
+
     // overrides
     bool initialised = false;
 

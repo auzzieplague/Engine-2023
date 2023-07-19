@@ -12,10 +12,11 @@ class Scene : public Object {
 public:
     float currentFrameRate = 1.0f;
     Component *selectedComponent = nullptr;
-    int cursorOverObjectID;
+    int mouseOverObjectID;
+    bool selectHoveredComponent = false;
 
     physx::PxScene *physicsScene = nullptr; // set on initphysics
-
+    float simulationSpeed = 1.0f / 120.0f;
     std::vector<Component *> componentList;
     std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
     std::vector<Model *> modelsInScene;
@@ -26,6 +27,7 @@ public:
     Scene();
 
     void addComponent(Component *);
+    void selectComponent(Component *);
 
     Camera *currentCamera{};
     Window *currentWindow{};

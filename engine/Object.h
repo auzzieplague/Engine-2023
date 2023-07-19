@@ -14,7 +14,9 @@ public:
         OT_Terrain,
         OT_Mesh,
         OT_Texture,
-        OT_Light6
+        OT_Light,
+        OT_Layer,
+        OT_Layer_GUI
     };
 
     std::string objectName = "Un-named Object";

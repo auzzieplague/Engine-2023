@@ -1,6 +1,5 @@
 #include "IMGuiLayer.h"
 
-
 // note : require openGL attached first
 void IMGuiLayer::onAttach(Scene *scene) {
     const char *glsl_version = "#version 130";
@@ -17,7 +16,6 @@ void IMGuiLayer::onAttach(Scene *scene) {
 
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     Debug::show("[>] IMGUI Attached");
-
 };
 
 void IMGuiLayer::beforeUpdate(Scene *scene) {
@@ -69,12 +67,6 @@ void IMGuiLayer::update(Scene *scene) {
         }
     }
 }
-
-void IMGuiLayer::afterUpdate(Scene *scene) {};
-
-void IMGuiLayer::beforeRender(Scene *) {}
-
-void IMGuiLayer::appendToGui(Scene *scene) {}
 
 void IMGuiLayer::drawGizmos(Scene *scene) {
     if (!scene->selectedComponent) return;
@@ -140,7 +132,6 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGui::End();
 }
 
-
 void IMGuiLayer::render(Scene *scene) {
     ImGui::ShowDemoWindow();
     drawGizmos(scene);
@@ -150,7 +141,6 @@ void IMGuiLayer::render(Scene *scene) {
 
 void IMGuiLayer::afterRender(Scene *scene) {
 }
-
 
 void IMGuiLayer::processInput(Scene *scene) {
     ImGuiIO &io = ImGui::GetIO();

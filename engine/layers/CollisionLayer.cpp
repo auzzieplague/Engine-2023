@@ -99,7 +99,7 @@ void CollisionLayer::appendToGui(Scene *scene) {
     ImGui::Text("screen Y: %f", this->mouseInClipSpace.y);
     ImGui::Text("Target Distance %f", this->mouseOverDistance);
     ImGui::Text("Mouse World %f,%f,%f", cursorInWorld.x, cursorInWorld.y, cursorInWorld.z);
-    ImGui::Text("Cursor over object %i", scene->cursorOverObjectID);
+    ImGui::Text("Cursor over object %i", scene->mouseOverObjectID);
     ImGui::Text("camera X: %f", this->currentScene->currentCamera->mPosition.x);
     ImGui::Text("camera Y: %f", this->currentScene->currentCamera->mPosition.y);
     ImGui::Text("camera Z: %f", this->currentScene->currentCamera->mPosition.z);
@@ -108,18 +108,7 @@ void CollisionLayer::appendToGui(Scene *scene) {
 }
 
 void CollisionLayer::objectTrackerRenderConfigSetup(Scene *scene) {
-    // todo abstract to layer level, now we have multiple layers using rendering
 
-    renderConfig.shaderID = api->loadShader("general.vert", "object_lookup.frag");
-    renderConfig.enable(api->getFlag((CULL_FACE)));
-//    meshConfig.enable(api->getFlag((ALPHA_BLENDING)));
-    renderConfig.enable(api->getFlag((DEPTH_TEST)));
-    renderConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
-    renderConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
-    renderConfig.clearColour = {0,0,0,1};
-    api->beginRender(renderConfig);
-    api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
-    api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
 
 void CollisionLayer::updateScreenRay(Scene *scene) {
@@ -155,34 +144,8 @@ void CollisionLayer::update(Scene *scene) {
     }
 
     for (auto mesh: meshes) {
-        mesh->highlighted = mesh->selectable && mesh->objectID == scene->cursorOverObjectID;
+        mesh->highlighted = mesh->selectable && mesh->objectID == scene->mouseOverObjectID;
     }
-//
-//    api->beginRender(renderConfig);
-//    api->shaderSetView(scene->currentCamera->getViewMatrix());
-//
-//    std::vector<Mesh *> meshes;
-//    for (auto model: scene->modelsInScene) {
-//        meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
-//    }
-//
-//    for (auto mesh: meshes) {
-//        api->shaderSetTransform(mesh->getWorldMatrix());
-//        api->shaderSetVec3("entityID", mesh->colourID);
-//
-////        api->shaderSetMaterial(mesh->getMaterial());
-//        api->renderMesh(mesh);
-//    }
-//
-//    glFlush();
-//    glFinish();
-//        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-//    unsigned char data[4];
-//    glReadPixels(Input::m_mousePos.x,
-//                 this->currentScene->currentWindow->height - Input::m_mousePos.y,
-//                 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-//    scene->cursorOverObjectID = data[0] + data[1] * 256 + data[2] * 256 * 256;
-//    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 

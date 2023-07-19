@@ -48,6 +48,7 @@ void GraphicsLayer::objectTrackerRenderConfig(Scene *scene) {
 void GraphicsLayer::render(Scene *scene) {
     /// merged both renders into this one function to better troubleshoot the issue
     /// next step is to manually add the clears and
+
     api->beginRender(objectTrackerConfig);
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 
@@ -71,9 +72,12 @@ void GraphicsLayer::render(Scene *scene) {
     glReadPixels(Input::m_mousePos.x,
                  this->currentScene->currentWindow->height - Input::m_mousePos.y,
                  1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    scene->cursorOverObjectID = data[0] + data[1] * 256 + data[2] * 256 * 256;
+    scene->mouseOverObjectID = data[0] + data[1] * 256 + data[2] * 256 * 256;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+
     api->beginRender(renderConfig);
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 //    api->shaderSetCamera(scene->currentCamera);
@@ -89,6 +93,9 @@ void GraphicsLayer::render(Scene *scene) {
 //
 glm::vec3 highlight;
     for (auto mesh: meshes) {
+        if (scene->selectHoveredComponent && mesh->objectID == scene->mouseOverObjectID) {
+            scene->selectComponent(mesh);
+        }
         api->shaderSetTransform(mesh->getWorldMatrix());
         highlight = mesh->highlighted ? glm::vec3{2,2,2} : glm::vec3{1.0,1.0,1.0};
 

@@ -18,22 +18,23 @@
 class IMGuiLayer :
         public Layer
 {
+    ObjectType getType() override {
+        return ObjectType::OT_Layer_GUI;
+    };
+
     uint32_t getFrequency() override { return 10; };
 
     ImGuizmo::OPERATION gizmoMode = ImGuizmo::TRANSLATE;
 
     // requires opengl to be initialised first
-    void onAttach(Scene* scene);
+    void onAttach(Scene* scene) override;
+
     void onDetach(Scene* scene);
 
-    void appendToGui(Scene* scene);
     void drawGizmos(Scene* scene);
 
     void beforeUpdate(Scene*);
     void update(Scene*);
-    void afterUpdate(Scene*);
-
-    void beforeRender(Scene*);
     void render(Scene*);
     void afterRender(Scene*);
 

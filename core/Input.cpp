@@ -11,6 +11,9 @@ glm::vec2 Input::m_mousePos;
 glm::vec2 Input::m_lastMousePos;
 bool Input::m_keys[1024]{};
 bool Input::m_mouseButtons[8]{};
+const unsigned int Input::MOUSE_LEFT = 0;
+const unsigned int Input::MOUSE_RIGHT = 1;
+const unsigned int Input::MOUSE_MIDDLE = 2;
 
 
 Input::Input(GLFWwindow *window) {
@@ -94,7 +97,7 @@ void Input::mouseButtonCallback(GLFWwindow *window, int button, int action, int 
     if (input) {
         if (button >= 0 && button < 8) {
             if (action == GLFW_PRESS) {
-//                Debug::show("clicked mouse button: " + std::to_string(button));
+                Debug::show("clicked mouse button: " + std::to_string(button));
                 input->m_mouseButtons[button] = true;
             } else if (action == GLFW_RELEASE) {
                 input->m_mouseButtons[button] = false;
@@ -123,7 +126,7 @@ void Input::setCallbacksOnWindow(GLFWwindow *window) {
     glfwSetCursorPosCallback(window, mouseMoveCallback);
 }
 
-bool Input::isKeyPressed(int key)  {
+bool Input::isKeyPressed(int key) {
     if (key >= 0 && key < 1024) {
         return m_keys[key];
     }
