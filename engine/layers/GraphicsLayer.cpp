@@ -87,8 +87,12 @@ void GraphicsLayer::render(Scene *scene) {
 //
 //    api->shaderSetCamera(scene->currentCamera);
 //
+glm::vec3 highlight;
     for (auto mesh: meshes) {
         api->shaderSetTransform(mesh->getWorldMatrix());
+        highlight = mesh->highlighted ? glm::vec3{2,2,2} : glm::vec3{1.0,1.0,1.0};
+
+        api->shaderSetVec3("highlight", highlight);
         api->shaderSetMaterial(mesh->getMaterial());
         //todo update entityID only when clicking or maybe mouse move, not every frame
 //        api->shaderSetVec3("entityID", mesh->colourID);

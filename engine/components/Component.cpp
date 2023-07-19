@@ -153,6 +153,10 @@ void Component::autoScale() {
     Debug::show("Auto scale not supported for component "+this->getIdentifier());
 }
 
+void Component::setSelectable(bool selectable) {
+    this->selectable = selectable;
+}
+
 
 
 

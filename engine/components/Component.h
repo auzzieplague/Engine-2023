@@ -15,6 +15,12 @@ protected:
 
     std::string filePath;
 public:
+    bool selectable = false;
+
+    void setSelectable(bool selectable = true);
+
+    bool highlighted = false;
+    bool selected = false;
 
     const std::string &getFilePath() const;
 

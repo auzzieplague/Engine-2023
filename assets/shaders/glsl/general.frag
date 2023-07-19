@@ -16,6 +16,7 @@ struct Material {
 
 uniform Material material;
 uniform vec3 camera;
+uniform vec3 highlight;
 
 out vec4 fragColor;
 
@@ -58,8 +59,12 @@ void main()
 
     // Calculate the final fragment color
     vec3 finalColor = (ambient + diffuse + specular) * attenuation;
+    finalColor *= highlight;
+//    if (highlighted == true) {
+//        fragColor = vec4(textureColour);
+//    }
 
     // Apply the final color to the fragment
     fragColor = vec4(finalColor, textureColour.a);
-//    fragColor = vec4(1,0,0,1);
+
 }

@@ -321,7 +321,7 @@ Model *AssetManager::loadModelFromFile(const std::string &filePath) {
     //todo loop through all meshes and handle submeshes
     aiMesh *mesh = scene->mMeshes[0];
     auto ourMesh = convertMesh(mesh);
-
+    ourMesh->setSelectable();
     ourModel->addChild(ourMesh);
     ourModel->mRootMesh = ourMesh;
     ourModel->mRootMesh->parentComponent = ourModel;

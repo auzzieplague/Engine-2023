@@ -147,6 +147,16 @@ void CollisionLayer::updateScreenRay(Scene *scene) {
 
 void CollisionLayer::update(Scene *scene) {
     updateScreenRay(scene);
+
+    // todo this mesh list and graphics layer one, should be maintained on scene
+    std::vector<Mesh *> meshes;
+    for (auto model: scene->modelsInScene) {
+        meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
+    }
+
+    for (auto mesh: meshes) {
+        mesh->highlighted = mesh->selectable && mesh->objectID == scene->cursorOverObjectID;
+    }
 //
 //    api->beginRender(renderConfig);
 //    api->shaderSetView(scene->currentCamera->getViewMatrix());

@@ -6,7 +6,7 @@
 Model *Model::createWithGeometry(Geometry::ShapeType shape, GeometryConfig config) {
     auto *model = new Model();
     Mesh *newMesh = new Geometry();
-
+    newMesh->setSelectable();
     std::string shapeText = "";
     switch (shape) {
         default:

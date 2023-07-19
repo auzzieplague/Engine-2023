@@ -18,6 +18,7 @@ Model *modelWithSubMeshes(bool physics = true) {
     model->setMaterial(material);
     model->setLocalScale(1);
     model->setPosition(glm::vec3(0, 0, -20));
+    model->setSelectable();
 
     if (physics) {
         auto *collisionMesh = new Geometry();
@@ -46,6 +47,7 @@ Model *modelWithSubMeshes(bool physics = true) {
         subMesh->buildSphere();
         subMesh->setName("sub mesh "+std::to_string(n));
         subMesh->setPosition(positions[n]); // should be relative to parent mesh
+        subMesh->setSelectable();
         material.setAmbientColor(glm::vec3(n * (1 / (count?count:1)), 0, 0));
         subMesh->setMaterial(material);
         subMesh->getMaterial().randomAmbientColor();

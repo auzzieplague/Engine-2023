@@ -47,4 +47,5 @@ public:
     void stop();          // cleanup
     void initLayers();
 
+    void static onWindowUpdate(GLFWwindow *window, int width, int height);
 };

@@ -45,6 +45,12 @@ GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::stri
 }
 
 void Window::framebufferSizeCallback(GLFWwindow *window, int width, int height) {
+    // update engine stuff - window details, projection matrix etc
+    if (onWindowUpdate){
+        onWindowUpdate(window,width,height);
+    }
+
+    // update API stuff e.g. glViewPort
     m_api->framebufferSizeCallback(window, width, height);
 }
 

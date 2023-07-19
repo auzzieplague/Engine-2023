@@ -2,6 +2,7 @@
 #include "Engine.h"
 
 Engine *Engine::instance;
+void (*Window::onWindowUpdate)(GLFWwindow* window, int width, int height);
 
 Engine::Engine(uint32_t width, uint32_t height, const std::string &title, Scene *scene) {
 //    window = new Window(width, height, title);
@@ -11,9 +12,11 @@ Engine::Engine(uint32_t width, uint32_t height, const std::string &title, Scene 
 
 void Engine::start() {
     AssetManager::initialise();
+    Window::onWindowUpdate = &Engine::onWindowUpdate;
     this->initLayers();
     this->loopLayers();
 }
+
 void Engine::initLayers() {
     for (Layer *layer: this->layers) {
         layer->currentScene = this->currentScene;
@@ -21,7 +24,7 @@ void Engine::initLayers() {
     }
 }
 
-void Engine::loopLayers()  {
+void Engine::loopLayers() {
     initFrameTimer();
 
     if (Window::getCurrentWindow()) {
@@ -73,10 +76,6 @@ void Engine::stop() {
     delete this->currentScene;
 }
 
-void Engine::addComponent(Component *component) {
-    currentScene->addComponent(component);
-}
-
 void Engine::attachLayer(Layer *layer) {
     //assign graphics m_api into layer
     layer->setApi(this->graphicsAPI);
@@ -123,3 +122,11 @@ float Engine::getCurrentFramerate() {
 
     return framerate;
 };
+
+void Engine::onWindowUpdate(GLFWwindow* window, int width, int height){
+    // get instance of engine
+    Scene *scene = Engine::getInstance()->currentScene;
+    scene->currentWindow->width = width;
+    scene->currentWindow->height = height;
+    scene->currentCamera->updateProjectionMatrix();
+}
