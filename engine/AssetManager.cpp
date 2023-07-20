@@ -339,5 +339,5 @@ void AssetManager::initialise() {
 void AssetManager::refreshAssets() {
     // manually add assets level
     // then add multiple children for models, materials etc.
-    assetStructure = FileStructure::buildFileStructure("..\\assets");
+    assetStructure = FileStructure::buildFileStructure("..\\assets\\models");
 }

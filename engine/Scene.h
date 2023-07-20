@@ -14,6 +14,8 @@ public:
     Component *selectedComponent = nullptr;
     int mouseOverObjectID;
     bool selectHoveredComponent = false;
+    unsigned int selectComponentID = 0;
+    glm::vec3 cursorInWorld{};
 
     physx::PxScene *physicsScene = nullptr; // set on initphysics
     float simulationSpeed = 1.0f / 120.0f;

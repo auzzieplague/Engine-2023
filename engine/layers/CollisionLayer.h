@@ -14,7 +14,6 @@ class CollisionLayer : public Layer {
     float mFarPlane;
     glm::vec2 mouseInScreenSpace{};
     glm::vec2 mouseInClipSpace{};
-    glm::vec3 cursorInWorld{};
     float mouseOverDistance = 0;
 //    unsigned int cursorOverObjectID = 0;
 
@@ -38,6 +37,7 @@ public:
 
     void objectTrackerRenderConfigSetup(Scene *scene);
 
+    void afterRender(Scene *scene) override;
 };
 
 

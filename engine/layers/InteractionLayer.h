@@ -18,14 +18,16 @@ private:
         UI_EDIT
     };
     static unsigned int InteractionMode;
+    static bool moveObjectWithMouse;
     Input *input;
-
     std::vector<ImageButton> toolboxButtons;
 
 public:
     Component *currentComponent = nullptr;
 
     void onAttach(Scene *scene) override;
+
+    void update(Scene *scene) override;
 
     void appendToGui(Scene *scene) override;
 

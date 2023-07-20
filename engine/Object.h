@@ -6,6 +6,7 @@ class Object {
 public:
     static unsigned int counter;
     unsigned int objectID;
+    static std::map<int,Object *> objectMap;
     enum class ObjectType {
         OT_Unknown,
         OT_Object,
@@ -38,6 +39,7 @@ public:
         counter++;
         objectID = counter;
         setColourID();
+        objectMap[objectID]= this;
         std::cout << "created object " << counter << "\n";
     }
 
@@ -45,6 +47,10 @@ public:
         this->colourID.r = (this->counter & 0x000000FF) / 255.0f;
         this->colourID.g = ((this->counter & 0x0000FF00) >>  8) / 255.0f;
         this->colourID.b = ((this->counter & 0x00FF0000) >> 16) / 255.0f;
+    }
+
+    Object* getByID(unsigned int ID) {
+        return objectMap[ID];
     }
 };
 

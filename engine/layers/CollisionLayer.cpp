@@ -98,7 +98,7 @@ void CollisionLayer::appendToGui(Scene *scene) {
     ImGui::Text("screen X: %f", this->mouseInClipSpace.x);
     ImGui::Text("screen Y: %f", this->mouseInClipSpace.y);
     ImGui::Text("Target Distance %f", this->mouseOverDistance);
-    ImGui::Text("Mouse World %f,%f,%f", cursorInWorld.x, cursorInWorld.y, cursorInWorld.z);
+    ImGui::Text("Mouse World %f,%f,%f", scene->cursorInWorld.x, scene->cursorInWorld.y, scene->cursorInWorld.z);
     ImGui::Text("Cursor over object %i", scene->mouseOverObjectID);
     ImGui::Text("camera X: %f", this->currentScene->currentCamera->mPosition.x);
     ImGui::Text("camera Y: %f", this->currentScene->currentCamera->mPosition.y);
@@ -117,10 +117,12 @@ void CollisionLayer::updateScreenRay(Scene *scene) {
                  GL_FLOAT,
                  &depth);
     depth = 2.0f * depth - 1.0;
+
     this->mouseOverDistance =
             2.0f * mNearPlane * mFarPlane / (mFarPlane + mNearPlane - depth * (mFarPlane - mNearPlane));
+
     this->mouseInClipSpace.x = Input::m_mousePos.x / (scene->currentWindow->width * 0.5) - 1.0f;
-    this->mouseInClipSpace.y = Input::m_mousePos.y / (scene->currentWindow->height * 0.5);
+    this->mouseInClipSpace.y = 1.0f - Input::m_mousePos.y / (scene->currentWindow->height * 0.5) ;
 
     glm::vec4 ray_clip(this->mouseInClipSpace.x, this->mouseInClipSpace.y, -1.0, 1.0);
     glm::vec4 ray_eye =
@@ -131,12 +133,15 @@ void CollisionLayer::updateScreenRay(Scene *scene) {
     ray_direction = glm::normalize(ray_direction);
 
     glm::vec3 rayEndPosition = ray_direction * mouseOverDistance;
-    cursorInWorld = this->currentScene->currentCamera->mPosition + rayEndPosition;
+    scene->cursorInWorld = this->currentScene->currentCamera->mPosition + rayEndPosition;
+//    scene->cursorInWorld+=glm::vec3{1,1,1};
+}
+
+void CollisionLayer::afterRender(Scene *scene) {
+    updateScreenRay(scene);
 }
 
 void CollisionLayer::update(Scene *scene) {
-    updateScreenRay(scene);
-
     // todo this mesh list and graphics layer one, should be maintained on scene
     std::vector<Mesh *> meshes;
     for (auto model: scene->modelsInScene) {

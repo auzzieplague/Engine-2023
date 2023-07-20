@@ -2,6 +2,8 @@
 
 #include "InteractionLayer.h"
 
+bool InteractionLayer::moveObjectWithMouse = false;
+
 void InteractionLayer::onAttach(Scene *scene) {
     // bind this input to inputInstance
     Debug::show("[>] Interaction Attached");
@@ -25,9 +27,12 @@ void InteractionLayer::processInput(Scene *scene) {
     this->currentComponent = scene->selectedComponent;
 
     if (Input::m_mouseButtons[Input::MOUSE_MIDDLE]) {
-            scene->selectHoveredComponent = true;
+        scene->selectHoveredComponent = true;
     }
 
+    if (Input::m_mouseButtons[Input::MOUSE_LEFT]) {
+        moveObjectWithMouse = false;
+    }
 
     float speed = 10; // travel speed
     float movement = speed / scene->currentFrameRate;
@@ -348,9 +353,26 @@ void InteractionLayer::RenderImGuiTreeRecursive(const FileStructure &item) const
             auto pos = currentScene->currentCamera->mPosition;
             component->setPosition({pos.x, pos.y, pos.z - 1});
             component->autoScale();
+            moveObjectWithMouse = true;
+            currentScene->selectedComponent = component;
             // todo add item into a list of items to be loaded on a queue to be picked up by a layer.
             Debug::show("loaded component " + component->getIdentifier());
         }
         ImGui::PopStyleVar(2);
+    }
+}
+
+void InteractionLayer::update(Scene *scene) {
+    if (scene->selectComponentID > 0) {
+        scene->selectedComponent = dynamic_cast<Component *>(Object::getByID(scene->selectComponentID));
+        scene->selectComponentID = 0;
+    }
+
+    if (moveObjectWithMouse && scene->selectedComponent) {
+
+        if (scene->mouseOverObjectID != scene->selectedComponent->objectID) {
+            scene->selectedComponent->setPosition(scene->cursorInWorld+glm::vec3{1,1,1});
+        }
+
     }
 }
