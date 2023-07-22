@@ -113,10 +113,10 @@ void CollisionLayer::objectTrackerRenderConfigSetup(Scene *scene) {
 
 void CollisionLayer::updateScreenRay(Scene *scene) {
     GLfloat depth;
-    glReadPixels(Input::m_mousePos.x, scene->currentWindow->height - Input::m_mousePos.y, 1, 1, GL_DEPTH_COMPONENT,
-                 GL_FLOAT,
-                 &depth);
-    depth = 2.0f * depth - 1.0;
+//    glReadPixels(Input::m_mousePos.x, scene->currentWindow->height - Input::m_mousePos.y, 1, 1, GL_DEPTH_COMPONENT,
+//                 GL_FLOAT,
+//                 &depth);
+    depth = 2.0f * scene->mouseInZBufferDepth - 1.0;
 
     this->mouseOverDistance =
             2.0f * mNearPlane * mFarPlane / (mFarPlane + mNearPlane - depth * (mFarPlane - mNearPlane));
@@ -134,7 +134,6 @@ void CollisionLayer::updateScreenRay(Scene *scene) {
 
     glm::vec3 rayEndPosition = ray_direction * mouseOverDistance;
     scene->cursorInWorld = this->currentScene->currentCamera->mPosition + rayEndPosition;
-//    scene->cursorInWorld+=glm::vec3{1,1,1};
 }
 
 void CollisionLayer::afterRender(Scene *scene) {

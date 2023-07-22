@@ -8,17 +8,20 @@
 #include "components/Terrain.h"
 
 class Scene : public Object {
-    /// at a high level we just want to add components to the scene graph
 public:
+    // todo move these variables to a new class for Editor or Game, theyre not really part of scene
     float currentFrameRate = 1.0f;
     Component *selectedComponent = nullptr;
-    int mouseOverObjectID;
-    bool selectHoveredComponent = false;
     unsigned int selectComponentID = 0;
+    int mouseOverObjectID;
+    bool selectCurrentMouseTarget = false; // helper to select the current mouseOverObjectID as the selected component
+    bool moveObjectWithMouse = false;
     glm::vec3 cursorInWorld{};
+    float mouseInZBufferDepth = 0;
 
-    physx::PxScene *physicsScene = nullptr; // set on initphysics
-    float simulationSpeed = 1.0f / 120.0f;
+    physx::PxScene *physicsScene = nullptr; // set on Ini physics on physics layer, accessor for other layers.
+    float simulationSpeed = 1.0f / 60.0f;
+
     std::vector<Component *> componentList;
     std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
     std::vector<Model *> modelsInScene;
@@ -29,13 +32,13 @@ public:
     Scene();
 
     void addComponent(Component *);
+
     void selectComponent(Component *);
 
     Camera *currentCamera{};
     Window *currentWindow{};
 
     void addModel(Model *model);
-
 
 };
 

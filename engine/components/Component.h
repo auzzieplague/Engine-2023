@@ -42,7 +42,11 @@ protected:
 
 public:
 
+    Component(){
+        this->rootComponent = this;
+    };
     Component *parentComponent = nullptr;
+    Component *rootComponent = nullptr;
 
     ObjectType getType() override {
         return ObjectType::OT_Component;

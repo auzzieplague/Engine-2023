@@ -70,6 +70,8 @@ void IMGuiLayer::update(Scene *scene) {
 
 void IMGuiLayer::drawGizmos(Scene *scene) {
     if (!scene->selectedComponent) return;
+    if (scene->moveObjectWithMouse) return;
+
     // child manipulation not supported atm
     if (scene->selectedComponent->parentComponent) return;
 

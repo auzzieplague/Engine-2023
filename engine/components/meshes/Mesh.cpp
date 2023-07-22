@@ -202,12 +202,6 @@ void Mesh::addChild(Component *child) {
 }
 
 void Mesh::addMesh(Mesh *subMesh) {
-    /*
-     * Note: on construction this mesh is added to mesh tree, so mesh tree always contains self
-     */
-    subMesh->parentComponent = this;
-    childComponents.push_back(subMesh);
-
     // if this mesh has a parent mesh (is a child), update the mRootMesh tree
     if (this->parentComponent && this->parentComponent->getType() == Object::ObjectType::OT_Mesh) {
         // update existing submesh meshtree parent, root values accordingly
@@ -224,8 +218,6 @@ void Mesh::addMesh(Mesh *subMesh) {
         subMesh->rootMesh = this;
         meshTree.push_back(subMesh);
     }
-
-//    this->updateChildTransforms();
 }
 
 void Mesh::reduceMeshData(int iterations) {

@@ -40,31 +40,28 @@ void GraphicsLayer::objectTrackerRenderConfig(Scene *scene) {
 //    objectTrackerConfig.enable(api->getFlag((DEPTH_TEST)));
     objectTrackerConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
     objectTrackerConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
-    objectTrackerConfig.clearColour = {0,0,0,1};
+    objectTrackerConfig.clearColour = {0, 0, 0, 1};
     api->beginRender(objectTrackerConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
-void GraphicsLayer::render(Scene *scene) {
-    /// merged both renders into this one function to better troubleshoot the issue
-    /// next step is to manually add the clears and
+
+void GraphicsLayer::updateMouseOverObject(std::vector<Mesh *> meshes) {
 
     api->beginRender(objectTrackerConfig);
-    api->shaderSetView(scene->currentCamera->getViewMatrix());
-
-    std::vector<Mesh *> meshes;
-    for (auto model: scene->modelsInScene) {
-        meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
-    }
+    api->shaderSetView(currentScene->currentCamera->getViewMatrix());
 
     for (auto mesh: meshes) {
+        if (currentScene->selectCurrentMouseTarget && mesh->objectID == currentScene->mouseOverObjectID) {
+            currentScene->selectComponent(mesh);
+        }
+
         api->shaderSetTransform(mesh->getWorldMatrix());
         api->shaderSetVec3("entityID", mesh->colourID);
-
-//        api->shaderSetMaterial(mesh->getMaterial());
         api->renderMesh(mesh);
     }
 
+    // todo, move to graphicsAPI function
     glFlush();
     glFinish();
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
@@ -72,44 +69,54 @@ void GraphicsLayer::render(Scene *scene) {
     glReadPixels(Input::m_mousePos.x,
                  this->currentScene->currentWindow->height - Input::m_mousePos.y,
                  1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
-    scene->mouseOverObjectID = data[0] + data[1] * 256 + data[2] * 256 * 256;
+
+    currentScene->mouseOverObjectID = data[0] + data[1] * 256 + data[2] * 256 * 256;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
-
-
-    api->beginRender(renderConfig);
-    api->shaderSetView(scene->currentCamera->getViewMatrix());
-//    api->shaderSetCamera(scene->currentCamera);
-//    // camera might be mDirty
-//    checkDirtyCamera(scene);
-//
-//    // collect meshes - todo: sort by shader
+void GraphicsLayer::render(Scene *scene) {
+    std::vector<Mesh *> meshes;
+    std::vector<Mesh *> deferredMeshes;
     for (auto model: scene->modelsInScene) {
         meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
     }
-//
-//    api->shaderSetCamera(scene->currentCamera);
-//
-glm::vec3 highlight;
-    for (auto mesh: meshes) {
-        if (scene->selectHoveredComponent && mesh->objectID == scene->mouseOverObjectID) {
-            scene->selectComponent(mesh);
-        }
-        api->shaderSetTransform(mesh->getWorldMatrix());
-        highlight = mesh->highlighted ? glm::vec3{2,2,2} : glm::vec3{1.0,1.0,1.0};
 
-        api->shaderSetVec3("highlight", highlight);
-        api->shaderSetMaterial(mesh->getMaterial());
-        //todo update entityID only when clicking or maybe mouse move, not every frame
-//        api->shaderSetVec3("entityID", mesh->colourID);
-        api->renderMesh(mesh);
+   // todo object tracking should only be performed when a property is set
+   // this will allow it to be updated only once per frame or as necessary
+    this->updateMouseOverObject(meshes);
+
+    // render the meshes
+    api->beginRender(renderConfig);
+    api->shaderSetView(scene->currentCamera->getViewMatrix());
+    for (auto mesh: meshes) {
+        // deffer selected model and its sub meshes until after the ZBuffer depth has been read for mouse
+        if (currentScene->selectedComponent && scene->selectedComponent->rootComponent == mesh->rootComponent ) {
+            deferredMeshes.push_back(mesh);
+            continue;
+        }
+
+        this->renderMeshComponent(mesh);
     }
-////
-//    api->endRender(renderConfig);
-    // todo - instance render the cubes using the same model
-    glFlush();
-    glFinish();
+
+    // todo optionally update screenRay either condition of late bind a fucntion
+    glReadPixels(Input::m_mousePos.x, scene->currentWindow->height - Input::m_mousePos.y, 1, 1, GL_DEPTH_COMPONENT,
+                 GL_FLOAT,
+                 &scene->mouseInZBufferDepth);
+
+    // render any deffered meshes
+    for (auto mesh: deferredMeshes) {
+        this->renderMeshComponent(mesh);
+    }
+}
+
+void GraphicsLayer::renderMeshComponent(Mesh *mesh) const {
+    glm::vec3 highlight;
+    api->shaderSetTransform(mesh->getWorldMatrix());
+    highlight = mesh->highlighted ? glm::vec3{2, 2, 2} : glm::vec3{1.0, 1.0, 1.0};
+    api->shaderSetVec3("highlight", highlight);
+    api->shaderSetMaterial(mesh->getMaterial());
+    api->renderMesh(mesh);
 }
 
 void GraphicsLayer::checkDirtyCamera(Scene *scene) const {

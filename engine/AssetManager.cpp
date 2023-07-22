@@ -325,6 +325,7 @@ Model *AssetManager::loadModelFromFile(const std::string &filePath) {
     ourModel->addChild(ourMesh);
     ourModel->mRootMesh = ourMesh;
     ourModel->mRootMesh->parentComponent = ourModel;
+    ourModel->mRootMesh->rootComponent = ourModel;
     ourMesh->setMaterial(*Material::defaultMaterial);
     ourModel->setLocalRotation({0,0,0});
     // todo Materials - check for built in materials - use default material

@@ -2,8 +2,6 @@
 
 #include "InteractionLayer.h"
 
-bool InteractionLayer::moveObjectWithMouse = false;
-
 void InteractionLayer::onAttach(Scene *scene) {
     // bind this input to inputInstance
     Debug::show("[>] Interaction Attached");
@@ -27,11 +25,11 @@ void InteractionLayer::processInput(Scene *scene) {
     this->currentComponent = scene->selectedComponent;
 
     if (Input::m_mouseButtons[Input::MOUSE_MIDDLE]) {
-        scene->selectHoveredComponent = true;
+        scene->selectCurrentMouseTarget = true;
     }
 
     if (Input::m_mouseButtons[Input::MOUSE_LEFT]) {
-        moveObjectWithMouse = false;
+        scene->moveObjectWithMouse = false;
     }
 
     float speed = 10; // travel speed
@@ -258,9 +256,16 @@ void InteractionLayer::selectedComponentGui(Component *component) {
         ImGui::End();
     }
 
-    if (component->parentComponent && ImGui::Button("Select Parent")) {
+    if (component->parentComponent && ImGui::Button("Parent")) {
         currentScene->selectedComponent = component->parentComponent;
     }
+    ImGui::SameLine();
+    if (component->parentComponent && ImGui::Button("Root")) {
+        currentScene->selectedComponent = component->rootComponent;
+    }
+
+    ImGui::Text("ID: %d",currentScene->selectedComponent->objectID);
+    ImGui::Text("Root ID: %d",currentScene->selectedComponent->rootComponent->objectID);
 
     if (component->isPaused()) {
         if (ImGui::Button("Resume")) {
@@ -353,7 +358,7 @@ void InteractionLayer::RenderImGuiTreeRecursive(const FileStructure &item) const
             auto pos = currentScene->currentCamera->mPosition;
             component->setPosition({pos.x, pos.y, pos.z - 1});
             component->autoScale();
-            moveObjectWithMouse = true;
+            currentScene->moveObjectWithMouse = true;
             currentScene->selectedComponent = component;
             // todo add item into a list of items to be loaded on a queue to be picked up by a layer.
             Debug::show("loaded component " + component->getIdentifier());
@@ -368,7 +373,7 @@ void InteractionLayer::update(Scene *scene) {
         scene->selectComponentID = 0;
     }
 
-    if (moveObjectWithMouse && scene->selectedComponent) {
+    if (scene->moveObjectWithMouse && scene->selectedComponent) {
 
         if (scene->mouseOverObjectID != scene->selectedComponent->objectID) {
             scene->selectedComponent->setPosition(scene->cursorInWorld+glm::vec3{1,1,1});

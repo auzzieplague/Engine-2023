@@ -18,7 +18,6 @@ private:
         UI_EDIT
     };
     static unsigned int InteractionMode;
-    static bool moveObjectWithMouse;
     Input *input;
     std::vector<ImageButton> toolboxButtons;
 

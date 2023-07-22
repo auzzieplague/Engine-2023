@@ -51,7 +51,7 @@ Model *modelWithSubMeshes(bool physics = true) {
         material.setAmbientColor(glm::vec3(n * (1 / (count?count:1)), 0, 0));
         subMesh->setMaterial(material);
         subMesh->getMaterial().randomAmbientColor();
-        model->mRootMesh->addMesh(subMesh);
+        model->mRootMesh->addChild(subMesh);
     }
     //todo make box same size as demo corners
     return model;

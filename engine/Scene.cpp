@@ -33,11 +33,12 @@ Scene::Scene() {
 }
 
 void Scene::selectComponent(Component *component) {
-    selectHoveredComponent = false;
-    this->selectedComponent = component;
-    while (this->selectedComponent->parentComponent) {
-        this->selectedComponent = this->selectedComponent->parentComponent;
-    }
+    selectCurrentMouseTarget = false;
+//    selectedComponent=component;
+    this->selectedComponent = component->rootComponent;
+//    while (this->selectedComponent->parentComponent) {
+//        this->selectedComponent = this->selectedComponent->parentComponent;
+//    }
 }
 
 

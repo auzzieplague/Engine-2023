@@ -83,6 +83,9 @@ void Component::setReady(bool ready) {
 }
 
 void Component::addChild(Component *child) {
+    // ensure all children know their root ancenstor
+    child->rootComponent = this->rootComponent ? this->rootComponent : this;
+    child->parentComponent = this;
     this->childComponents.push_back(child);
 }
 

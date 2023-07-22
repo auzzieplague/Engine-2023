@@ -19,6 +19,8 @@ protected:
     std::vector<glm::vec3> m_tangents;
     std::vector<glm::vec3> m_biTangents;
 
+    void addMesh(Mesh *subMesh);
+
 public:
     void addIndex(unsigned int index) {
         this->m_indices.push_back(index);
@@ -48,7 +50,7 @@ public:
 
     void addChild(Component *child) override;
 
-    void addMesh(Mesh *subMesh);
+
 
     void setVertices(const std::vector<glm::vec3> &mVertices);
 

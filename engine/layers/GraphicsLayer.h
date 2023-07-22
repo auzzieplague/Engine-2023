@@ -33,4 +33,7 @@ public:
 
     void objectTrackerRenderConfig(Scene *scene);
 
+    void renderMeshComponent(Mesh *mesh) const;
+
+    void updateMouseOverObject(std::vector<Mesh *> meshes);
 };
