@@ -37,9 +37,10 @@ void Engine::processGUILayers() {
 
 void Engine::loopLayers() {
     initFrameTimer();
-
     if (Window::getCurrentWindow()) {
         while (!glfwWindowShouldClose(Window::getCurrentWindow())) {
+
+            currentScene->currentFrame++;
 
             for (Layer *layer: this->layers) {
                 layer->beforeUpdate(this->currentScene);

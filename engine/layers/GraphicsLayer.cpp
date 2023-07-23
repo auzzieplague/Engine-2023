@@ -18,14 +18,11 @@ void GraphicsLayer::onAttach(Scene *scene) {
 
 void GraphicsLayer::meshRenderConfig(Scene *scene) {
     renderConfig.shaderID = api->loadShader("general.vert", "general.frag");
-//    renderConfig.shaderID = api->loadShader("general.vert", "object_lookup.frag");
     renderConfig.enable(api->getFlag((CULL_FACE)));
-//    meshConfig.enable(api->getFlag((ALPHA_BLENDING)));
     renderConfig.enable(api->getFlag((DEPTH_TEST)));
     renderConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
     renderConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
 
-//    meshConfig.debugMode=true;
     api->beginRender(renderConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
@@ -33,11 +30,7 @@ void GraphicsLayer::meshRenderConfig(Scene *scene) {
 
 
 void GraphicsLayer::objectTrackerRenderConfig(Scene *scene) {
-
     objectTrackerConfig.shaderID = api->loadShader("general.vert", "object_lookup.frag");
-//    objectTrackerConfig.enable(api->getFlag((CULL_FACE)));
-//    meshConfig.enable(api->getFlag((ALPHA_BLENDING)));
-//    objectTrackerConfig.enable(api->getFlag((DEPTH_TEST)));
     objectTrackerConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
     objectTrackerConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
     objectTrackerConfig.clearColour = {0, 0, 0, 1};
@@ -47,7 +40,6 @@ void GraphicsLayer::objectTrackerRenderConfig(Scene *scene) {
 }
 
 void GraphicsLayer::updateMouseOverObject(std::vector<Mesh *> meshes) {
-
     api->beginRender(objectTrackerConfig);
     api->shaderSetView(currentScene->currentCamera->getViewMatrix());
 
@@ -61,18 +53,12 @@ void GraphicsLayer::updateMouseOverObject(std::vector<Mesh *> meshes) {
         api->renderMesh(mesh);
     }
 
-    // todo, move to graphicsAPI function
-    glFlush();
-    glFinish();
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    api->flushBuffers();
     unsigned char data[4];
-    glReadPixels(Input::m_mousePos.x,
-                 this->currentScene->currentWindow->height - Input::m_mousePos.y,
-                 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    api->readColourBufferRBGA(data, Input::m_mousePos.x,
+                              this->currentScene->currentWindow->height - Input::m_mousePos.y, 1, 1);
 
     currentScene->mouseOverObjectID = data[0] + data[1] * 256 + data[2] * 256 * 256;
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void GraphicsLayer::render(Scene *scene) {
@@ -82,16 +68,17 @@ void GraphicsLayer::render(Scene *scene) {
         meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
     }
 
-   // todo object tracking should only be performed when a property is set
-   // this will allow it to be updated only once per frame or as necessary
-    this->updateMouseOverObject(meshes);
+    // update mouse hover objectID if required (not every frame - too expensive)W
+//    if (currentScene->updateMouseFromBuffers) {
+        this->updateMouseOverObject(meshes);
+//    }
 
     // render the meshes
     api->beginRender(renderConfig);
     api->shaderSetView(scene->currentCamera->getViewMatrix());
     for (auto mesh: meshes) {
         // deffer selected model and its sub meshes until after the ZBuffer depth has been read for mouse
-        if (currentScene->selectedComponent && scene->selectedComponent->rootComponent == mesh->rootComponent ) {
+        if (currentScene->selectedComponent && scene->selectedComponent->rootComponent == mesh->rootComponent) {
             deferredMeshes.push_back(mesh);
             continue;
         }
@@ -99,12 +86,13 @@ void GraphicsLayer::render(Scene *scene) {
         this->renderMeshComponent(mesh);
     }
 
-    // todo optionally update screenRay either condition of late bind a fucntion
-    glReadPixels(Input::m_mousePos.x, scene->currentWindow->height - Input::m_mousePos.y, 1, 1, GL_DEPTH_COMPONENT,
-                 GL_FLOAT,
-                 &scene->mouseInZBufferDepth);
-
-    // render any deffered meshes
+    // update mouse depth if required (not every frame - too expensive)
+//    if (currentScene->updateMouseFromBuffers) {
+        api->readDepthBuffer(&scene->mouseInZBufferDepth, Input::m_mousePos.x,
+                             scene->currentWindow->height - Input::m_mousePos.y, 1, 1);
+//        currentScene->updateMouseFromBuffers = false;
+//    }
+    // render any deferred meshes
     for (auto mesh: deferredMeshes) {
         this->renderMeshComponent(mesh);
     }

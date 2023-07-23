@@ -27,6 +27,9 @@ public:
 
     virtual void beginRender(RenderingConfig &);
     virtual void endRender(RenderingConfig &);
+    virtual void flushBuffers();
+    virtual void readColourBufferRBGA(unsigned char *data, float x, float y, float width , float height);
+    virtual void readDepthBuffer(float *data, float x, float y, float width , float height );
 
     virtual void framebufferSizeCallback(GLFWwindow *window, int width, int height);
 

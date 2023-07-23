@@ -11,6 +11,8 @@ class Scene : public Object {
 public:
     // todo move these variables to a new class for Editor or Game, theyre not really part of scene
     float currentFrameRate = 1.0f;
+    unsigned int currentFrame = 0;
+
     Component *selectedComponent = nullptr;
     unsigned int selectComponentID = 0;
     int mouseOverObjectID;
@@ -18,6 +20,7 @@ public:
     bool moveObjectWithMouse = false;
     glm::vec3 cursorInWorld{};
     float mouseInZBufferDepth = 0;
+    bool updateMouseFromBuffers = false; // processed with graphics but enabled through interaction layer with a modulus
 
     physx::PxScene *physicsScene = nullptr; // set on Ini physics on physics layer, accessor for other layers.
     float simulationSpeed = 1.0f / 60.0f;

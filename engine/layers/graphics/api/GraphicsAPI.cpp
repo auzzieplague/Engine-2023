@@ -53,4 +53,16 @@ unsigned int GraphicsAPI::loadTexture(std::string filename) {
     return 0;
 }
 
+void GraphicsAPI::readColourBufferRBGA(unsigned char *data, float x, float y, float width , float height) {
+    Debug::show("missing override for readColourBufferRBGA");
+}
+
+void GraphicsAPI::readDepthBuffer(float *data, float x, float y, float width , float height) {
+    Debug::show("missing override for readDepthBuffer");
+}
+
+void GraphicsAPI::flushBuffers() {
+    Debug::show("missing override for flushBuffers");
+}
+
 

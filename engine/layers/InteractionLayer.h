@@ -12,6 +12,7 @@ class InteractionLayer : public Layer {
 private:
 
     unsigned int iconAtlas;
+    unsigned int mouseBufferUpdateFrequency = 1;
 
     enum UserInteractionMode {
         UI_PLAY,

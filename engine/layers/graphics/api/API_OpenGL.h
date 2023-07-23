@@ -29,6 +29,11 @@ public:
 
     void renderMesh(Mesh *, int count) override;
 
+    void readColourBufferRBGA(unsigned char *data, float x, float y, float width=1 , float height=1) override;
+
+    void readDepthBuffer(float *data, float x, float y, float width =1 , float height = 1) override;
+
+    void flushBuffers();
     unsigned int getFlag(GraphicsFlag flag) override;
 
     void shaderSetVec4(const std::string &name, const glm::vec4 &value) const override;

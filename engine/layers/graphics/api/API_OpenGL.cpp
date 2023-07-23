@@ -326,6 +326,19 @@ void API_OpenGL::shaderSetCamera(Camera *camera) {
     shaderSetVec3("camera", camera->getLocalPosition());
 }
 
+void API_OpenGL::readColourBufferRBGA(unsigned char *data, float x, float y, float width, float height) {
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glReadPixels(x,y,width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+}
+
+void API_OpenGL::readDepthBuffer(float *data, float x, float y, float width, float height) {
+    glReadPixels(x,y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT,data);
+}
+
+void API_OpenGL::flushBuffers() {
+    glFlush();
+    glFinish();
+}
 
 
 

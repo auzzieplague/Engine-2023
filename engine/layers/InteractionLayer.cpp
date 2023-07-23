@@ -264,8 +264,8 @@ void InteractionLayer::selectedComponentGui(Component *component) {
         currentScene->selectedComponent = component->rootComponent;
     }
 
-    ImGui::Text("ID: %d",currentScene->selectedComponent->objectID);
-    ImGui::Text("Root ID: %d",currentScene->selectedComponent->rootComponent->objectID);
+    ImGui::Text("ID: %d", currentScene->selectedComponent->objectID);
+    ImGui::Text("Root ID: %d", currentScene->selectedComponent->rootComponent->objectID);
 
     if (component->isPaused()) {
         if (ImGui::Button("Resume")) {
@@ -333,7 +333,6 @@ void InteractionLayer::toolboxRender(Scene *scene) {
     ImGui::End();
 }
 
-
 void InteractionLayer::RenderImGuiTreeRecursive(const FileStructure &item) const {
     if (item.mIsDirectory) {
 
@@ -368,6 +367,10 @@ void InteractionLayer::RenderImGuiTreeRecursive(const FileStructure &item) const
 }
 
 void InteractionLayer::update(Scene *scene) {
+    if ((mouseBufferUpdateFrequency % currentScene->currentFrame) == 0) {
+        currentScene->updateMouseFromBuffers = true;
+    }
+
     if (scene->selectComponentID > 0) {
         scene->selectedComponent = dynamic_cast<Component *>(Object::getByID(scene->selectComponentID));
         scene->selectComponentID = 0;
@@ -376,8 +379,7 @@ void InteractionLayer::update(Scene *scene) {
     if (scene->moveObjectWithMouse && scene->selectedComponent) {
 
         if (scene->mouseOverObjectID != scene->selectedComponent->objectID) {
-            scene->selectedComponent->setPosition(scene->cursorInWorld+glm::vec3{1,1,1});
+            scene->selectedComponent->setPosition(scene->cursorInWorld + glm::vec3{1, 1, 1});
         }
-
     }
 }
