@@ -28,7 +28,9 @@ void API_OpenGL::beginRender(RenderingConfig &config) {
     }
     glUseProgram(config.shaderID);
     glClearColor(config.clearColour.x, config.clearColour.y, config.clearColour.z, config.clearColour.w);
-    glClear(config.clearFlags);
+    if (config.clearFlags) {
+        glClear(config.clearFlags);
+    }
 }
 
 void API_OpenGL::endRender(RenderingConfig &config) {

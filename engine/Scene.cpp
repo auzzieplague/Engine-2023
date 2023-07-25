@@ -34,11 +34,9 @@ Scene::Scene() {
 
 void Scene::selectComponent(Component *component) {
     selectCurrentMouseTarget = false;
-//    selectedComponent=component;
+//    selectedComponent = component;
     this->selectedComponent = component->rootComponent;
-//    while (this->selectedComponent->parentComponent) {
-//        this->selectedComponent = this->selectedComponent->parentComponent;
-//    }
+
 }
 
 

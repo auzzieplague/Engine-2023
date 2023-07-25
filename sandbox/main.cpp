@@ -88,6 +88,11 @@ void setupScene(Scene *scene) {
 
     auto assimpModel = AssetManager::loadModelFromFile("../assets/models/testModel.obj");
     assimpModel->setPosition({1,1,-20});
+    // draw collision meshes
+    // todo  add physics to loaded models
+    // fix autoscale() on import
+    // save scene
+    // load scene
     scene->addComponent(assimpModel);
 
     auto terrain = terrainModel();

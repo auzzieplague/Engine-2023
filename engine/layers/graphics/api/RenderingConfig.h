@@ -13,7 +13,7 @@ public:
     std::vector<unsigned int> toDisable;
     unsigned int toDisableFlags = 0;
 
-    unsigned int clearFlags = GL_COLOR_BUFFER_BIT;
+    unsigned int clearFlags = 0;
     glm::vec4 clearColour{0.2f, 0.3f, 0.3f, 1.0};
     unsigned int shaderID;
     Window * window;

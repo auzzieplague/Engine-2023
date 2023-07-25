@@ -73,7 +73,7 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     if (scene->moveObjectWithMouse) return;
 
     // child manipulation not supported atm
-    if (scene->selectedComponent->parentComponent) return;
+//    if (scene->selectedComponent->parentComponent) return;
 
     scene->selectedComponent->pause();
 
@@ -100,9 +100,7 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 
     auto parent = scene->selectedComponent->parentComponent;
 
-    auto *selectedTransform = parent ?
-                              &scene->selectedComponent->worldTransform :
-                              &scene->selectedComponent->localTransform;
+    auto *selectedTransform = &scene->selectedComponent->localTransform;
 
     float matrix[16];
     float delta[16];
@@ -127,9 +125,13 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
 
     // if there are any changes then we'll need to consider physx
 
-    scene->selectedComponent->setPosition(position);
-    scene->selectedComponent->rotate(dRotation);
-    scene->selectedComponent->scale(dScale);
+    if (scene->selectedComponent->parentComponent) {
+
+    } else {
+        scene->selectedComponent->setPosition(position);
+        scene->selectedComponent->rotate(dRotation);
+        scene->selectedComponent->scale(dScale);
+    }
 
     ImGui::End();
 }

@@ -3,12 +3,16 @@
 #include <cooking/PxCooking.h>
 #include "PhysicsLayer.h"
 #include "../components/Terrain.h"
+#include "graphics/api/GraphicsAPI.h"
+
+ bool PhysicsLayer::showCollisionMeshes = true;
 
 void PhysicsLayer::onAttach(Scene *scene) {
     Debug::show("[>] Physics Attached");
     initPhysicsWorld();
     // keep a reference of physics scene on main scene
     scene->physicsScene = this->mScene;
+    collisionRenderConfig(scene);
 }
 
 void PhysicsLayer::update(Scene *scene) {
@@ -191,12 +195,41 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
 
 }
 
-
 void PhysicsLayer::appendToGui(Scene *scene) {
 
     ImGui::Begin("Physics");
     ImGui::DragFloat("simulation speed", &scene->simulationSpeed, 0.0001f, 0.0001, 0.01);
+    ImGui::Checkbox("Show Collision Mesh", &PhysicsLayer::showCollisionMeshes);
     ImGui::End();
+}
+
+void PhysicsLayer::collisionRenderConfig(Scene *scene) {
+    renderConfig.shaderID = this->api->loadShader("general.vert", "collision.frag");
+    renderConfig.enable(api->getFlag((ALPHA_BLENDING)));
+
+    api->beginRender(renderConfig);
+    api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
+    api->shaderSetView(scene->currentCamera->getViewMatrix());
+}
+
+void PhysicsLayer::renderCollisionMesh(Mesh * mesh) {
+    glm::vec3 highlight;
+    api->shaderSetTransform(mesh->getWorldMatrix());
+    api->renderMesh(mesh);
+}
+
+void PhysicsLayer::render(Scene *scene) {
+    if (!PhysicsLayer::showCollisionMeshes) {
+        return;
+    }
+
+    api->shaderSetView(scene->currentCamera->getViewMatrix());
+
+    api->beginRender(renderConfig);
+    api->shaderSetView(scene->currentCamera->getViewMatrix());
+    for (auto model: scene->modelsWithPhysics) {
+        this->renderCollisionMesh(model->mCollisionMesh);
+    }
 }
 
 

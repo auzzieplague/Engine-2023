@@ -99,22 +99,18 @@ void Model::setCollider(ColliderConfig config) {
 }
 
 void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
-
-    // todo - update world coordinates not local coordinates
-    // todo - swap to collision mesh instead of root mesh
-    // todo -
-
     //todo - will replace isColliding function with physX checks, but until then we will need to apply the position updates to the mCollider
     mCollider->rebuild(mCollisionMesh);
     this->mCollider->updatePosition(-worldTransform.getPosition());
 
-    if (!mPhysicsBody) {
+    if (!isDynamic()) {
         return;
     }
 
-    // transform being handled by physics so just update the combined value ready for rendering
     this->localTransform.applyPxTransform(pxTransform);
-//    updateChildTransforms();
+
+    // note collision mesh for Terrain is the same mesh pointer, will cause some issues
+    mCollisionMesh->applyPxTransform(pxTransform);
 }
 
 void Model::getMeshFromHeightMap(std::string name) {
@@ -178,18 +174,23 @@ void Model::autoScale() {
     collider->updateSize();
     auto size = collider->getSize();
     float xscale, yscale, zscale;
-    xscale = 1/size.x;
+    xscale = 1 / size.x;
 
 
     std::cout << "size "
-            << size.x << ","
-            << size.y << ","
-            << size.z << "\n";
-    this->scale({1/size.x,1/size.y,1/size.z});
+              << size.x << ","
+              << size.y << ","
+              << size.z << "\n";
+    this->scale({1 / size.x, 1 / size.y, 1 / size.z});
     // get the bounding box
     // needs a collider for that
     // destroy collider
     delete collider;
+}
+
+void Model::autoPhysics() {
+    // build collider
+    // wrap mesh around
 }
 
 // todo autophysics similar to above use collider mechanics

@@ -9,7 +9,7 @@ class Model : public Component {
 
 public:
     Mesh *mRootMesh{};
-    Mesh *mCollisionMesh{};
+    Mesh *mCollisionMesh;
     Collider *mCollider{};
     physx::PxRigidActor *mPhysicsBody{};
     physx::PxTransform previousGlobalPose{};
@@ -57,6 +57,8 @@ public:
     void setMaterial(Material material);
 
     void autoScale();
+
+    void autoPhysics();
 };
 
 

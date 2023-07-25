@@ -2,6 +2,7 @@
 
 #include "Layer.h"
 #include "../components/Terrain.h"
+#include "graphics/api/RenderingConfig.h"
 #include <PxPhysicsAPI.h>
 
 class PhysicsLayer  : public Layer {
@@ -16,11 +17,17 @@ public:
     physx::PxScene*                mScene = nullptr;
     physx::PxPvd*                  mPvd = nullptr;
 
+    static bool showCollisionMeshes;
+
+    RenderingConfig renderConfig;
+    void collisionRenderConfig(Scene *);
     bool flush = false;
 
     void onAttach(Scene *) override;
 
     void update(Scene *) override;
+
+    void render(Scene *) override;
 
     void appendToGui(Scene *scene) override;
 
@@ -28,10 +35,9 @@ public:
 
     void processModelSpawnQueue(Scene *scene);
 
-#include <PxPhysicsAPI.h>
-
 
     physx::PxTriangleMesh* createTriangleMeshForModel(Model * model);
 
 //    physx::PxHeightFieldGeometry createHeightGeometry(Terrain *model);
+    void renderCollisionMesh(Mesh *mesh);
 };
