@@ -52,6 +52,8 @@ public:
     static void refreshAssets() ;
 
     static Mesh *convertMesh(aiMesh *mesh);
+
+    Model *loadModel(const std::string &modelName);
 };
 
 

@@ -8,7 +8,7 @@ class GraphicsAPI;
 class Mesh : public Component {
     friend class Collider;
 
-protected:
+public:
     Material m_material;
     Material m_material_original;
     std::vector<glm::vec3> m_vertices;
@@ -49,8 +49,6 @@ public:
 
 
     void addChild(Component *child) override;
-
-
 
     void setVertices(const std::vector<glm::vec3> &mVertices);
 

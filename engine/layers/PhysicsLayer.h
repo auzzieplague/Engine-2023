@@ -35,9 +35,7 @@ public:
 
     void processModelSpawnQueue(Scene *scene);
 
-
     physx::PxTriangleMesh* createTriangleMeshForModel(Model * model);
 
-//    physx::PxHeightFieldGeometry createHeightGeometry(Terrain *model);
     void renderCollisionMesh(Mesh *mesh);
 };

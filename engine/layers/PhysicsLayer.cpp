@@ -5,7 +5,7 @@
 #include "../components/Terrain.h"
 #include "graphics/api/GraphicsAPI.h"
 
- bool PhysicsLayer::showCollisionMeshes = true;
+bool PhysicsLayer::showCollisionMeshes = true;
 
 void PhysicsLayer::onAttach(Scene *scene) {
     Debug::show("[>] Physics Attached");
@@ -13,26 +13,6 @@ void PhysicsLayer::onAttach(Scene *scene) {
     // keep a reference of physics scene on main scene
     scene->physicsScene = this->mScene;
     collisionRenderConfig(scene);
-}
-
-void PhysicsLayer::update(Scene *scene) {
-
-    // process spawn queues
-    this->processModelSpawnQueue(scene);
-
-    physx::PxTransform transform;
-    mScene->simulate(scene->simulationSpeed);
-    mScene->fetchResults(true);
-
-    //updatePosition positions of models
-    for (auto model: scene->modelsWithPhysics) {
-        transform = model->mPhysicsBody->getGlobalPose();
-        if (transform != model->previousGlobalPose) {
-            model->applyPxTransform(transform);
-            model->previousGlobalPose = transform;
-        }
-    }
-
 }
 
 void PhysicsLayer::initPhysicsWorld() {
@@ -195,14 +175,6 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
 
 }
 
-void PhysicsLayer::appendToGui(Scene *scene) {
-
-    ImGui::Begin("Physics");
-    ImGui::DragFloat("simulation speed", &scene->simulationSpeed, 0.0001f, 0.0001, 0.01);
-    ImGui::Checkbox("Show Collision Mesh", &PhysicsLayer::showCollisionMeshes);
-    ImGui::End();
-}
-
 void PhysicsLayer::collisionRenderConfig(Scene *scene) {
     renderConfig.shaderID = this->api->loadShader("general.vert", "collision.frag");
     renderConfig.enable(api->getFlag((ALPHA_BLENDING)));
@@ -212,10 +184,30 @@ void PhysicsLayer::collisionRenderConfig(Scene *scene) {
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
 
-void PhysicsLayer::renderCollisionMesh(Mesh * mesh) {
+void PhysicsLayer::renderCollisionMesh(Mesh *mesh) {
     glm::vec3 highlight;
     api->shaderSetTransform(mesh->getWorldMatrix());
     api->renderMesh(mesh);
+}
+
+void PhysicsLayer::update(Scene *scene) {
+
+    // process spawn queues
+    this->processModelSpawnQueue(scene);
+
+    physx::PxTransform transform;
+    mScene->simulate(scene->simulationSpeed);
+    mScene->fetchResults(true);
+
+    //updatePosition positions of models
+    for (auto model: scene->modelsWithPhysics) {
+        transform = model->mPhysicsBody->getGlobalPose();
+        if (transform != model->previousGlobalPose) {
+            model->applyPxTransform(transform);
+            model->previousGlobalPose = transform;
+        }
+    }
+
 }
 
 void PhysicsLayer::render(Scene *scene) {
@@ -232,6 +224,13 @@ void PhysicsLayer::render(Scene *scene) {
     }
 }
 
+void PhysicsLayer::appendToGui(Scene *scene) {
+
+    ImGui::Begin("Physics");
+    ImGui::DragFloat("simulation speed", &scene->simulationSpeed, 0.0001f, 0.0001, 0.01);
+    ImGui::Checkbox("Show Collision Mesh", &PhysicsLayer::showCollisionMeshes);
+    ImGui::End();
+}
 
 
 

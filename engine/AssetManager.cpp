@@ -305,6 +305,13 @@ Mesh *AssetManager::convertMesh(aiMesh *mesh) {
     return ourMesh;
 }
 
+Model *AssetManager::loadModel(const std::string &modelName) {
+    // grab from compiled assets if exists
+    // grab from models folder
+    // json
+//    auto assimpModel = AssetManager::loadModelFromFile("../assets/models/"+modelName);
+}
+
 Model *AssetManager::loadModelFromFile(const std::string &filePath) {
 
     Assimp::Importer importer;

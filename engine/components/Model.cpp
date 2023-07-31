@@ -172,7 +172,7 @@ void Model::autoScale() {
 
     collider->rebuild(this->mRootMesh);
     collider->updateSize();
-    auto size = collider->getSize();
+    glm::vec3 size = collider->getSize();
     float xscale, yscale, zscale;
     xscale = 1 / size.x;
 
@@ -189,10 +189,5 @@ void Model::autoScale() {
 }
 
 void Model::autoPhysics() {
-    // build collider
-    // wrap mesh around
+ // todo: build convex hull - grab all sub mesh vertices
 }
-
-// todo autophysics similar to above use collider mechanics
-// need better simplify mesh algorithm - can use box or circle for now
-

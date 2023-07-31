@@ -19,8 +19,6 @@ public:
         return ObjectType::OT_Model;
     };
 
-//    void addChild(Component *child) override; // need to add meshes to mesh tree
-
     [[nodiscard]] bool isDynamic() const {
         if (!this->mPhysicsBody) return false;
         if (this->mCollider->m_config.type != ColliderConfig::Dynamic) return false;

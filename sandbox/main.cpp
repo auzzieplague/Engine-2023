@@ -20,15 +20,6 @@ Model *modelWithSubMeshes(bool physics = true) {
     model->setPosition(glm::vec3(0, 0, -20));
     model->setSelectable();
 
-    if (physics) {
-        auto *collisionMesh = new Geometry();
-        collisionMesh->buildCube(GeometryConfig{.cube{.size=1}, .sphere{.radius=2}});
-        model->setCollisionMesh(collisionMesh);
-        config.shape = config.Box;
-        config.type = config.Dynamic;
-        model->setCollider(config);
-    }
-
     float offset = 1;
     glm::vec3 positions[] = {
             glm::vec3(-offset, -offset, -offset),
@@ -45,15 +36,26 @@ Model *modelWithSubMeshes(bool physics = true) {
     for (int n = count; n >= 0; n--) {
         auto subMesh = new Geometry();
         subMesh->buildSphere();
-        subMesh->setName("sub mesh "+std::to_string(n));
+        subMesh->setName("sub mesh " + std::to_string(n));
         subMesh->setPosition(positions[n]); // should be relative to parent mesh
         subMesh->setSelectable();
-        material.setAmbientColor(glm::vec3(n * (1 / (count?count:1)), 0, 0));
+        material.setAmbientColor(glm::vec3(n * (1 / (count ? count : 1)), 0, 0));
         subMesh->setMaterial(material);
         subMesh->getMaterial().randomAmbientColor();
         model->mRootMesh->addChild(subMesh);
     }
     //todo make box same size as demo corners
+
+    if (physics) {
+//        model->autoPhysics();
+        auto *collisionMesh = new Geometry();
+        collisionMesh->buildCube(GeometryConfig{.cube{.size=1}, .sphere{.radius=2}});
+        model->setCollisionMesh(collisionMesh);
+        config.shape = config.Box;
+        config.type = config.Dynamic;
+        model->setCollider(config);
+    }
+
     return model;
 }
 
@@ -64,7 +66,7 @@ Model *terrainModel() {
 
     auto *terrain1 = new Model();
     terrain1->getMeshFromHeightMap("test_map_64");
-    Mesh * mesh = terrain1->getRootMesh();
+    Mesh *mesh = terrain1->getRootMesh();
 
 //    Debug::show("Mesh Before and After");
 //    Debug::show(mesh->getVertices().size());
@@ -87,18 +89,19 @@ void setupScene(Scene *scene) {
     scene->addComponent(playerObject);
 
     auto assimpModel = AssetManager::loadModelFromFile("../assets/models/testModel.obj");
-    assimpModel->setPosition({1,1,-20});
+    assimpModel->setPosition({1, 1, -20});
     // draw collision meshes
     // todo  add physics to loaded models
     // fix autoscale() on import
     // save scene
     // load scene
+    assimpModel->autoPhysics();
     scene->addComponent(assimpModel);
 
     auto terrain = terrainModel();
     scene->addComponent(terrain);
 
-    scene->currentCamera->setPosition({0,0,20});
+    scene->currentCamera->setPosition({0, 0, 20});
 
     Debug::show("[->] Use NumPad 4862+- to navigate test Model");
     Debug::show("[->] RPY (roll, pitch, yaw) UIO (world xyz) rotations ");
