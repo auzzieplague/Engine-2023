@@ -40,7 +40,6 @@ public:
         objectID = counter;
         setColourID();
         objectMap[objectID]= this;
-        std::cout << "created object " << counter << "\n";
     }
 
     void setColourID(){
@@ -52,5 +51,11 @@ public:
     Object* getByID(unsigned int ID) {
         return objectMap[ID];
     }
+
+    virtual void print()  {
+        std::cout << "Object properties:\n";
+        std::cout << "Name: " << this->getName() << "\n";
+    }
+
 };
 

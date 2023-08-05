@@ -10,6 +10,7 @@
 #include <filesystem>
 #include <imgui.h>
 #include "FileStructure.h"
+#include <json/json.hpp>
 
 namespace fs = std::filesystem;
 
@@ -26,10 +27,6 @@ private:
     static FileStructure assetStructure;
 public:
     static const FileStructure &getAssetStructure();
-
-public:
-
-public:
 
     static std::string getPath(const std::string &category);
 
@@ -53,7 +50,13 @@ public:
 
     static Mesh *convertMesh(aiMesh *mesh);
 
-    Model *loadModel(const std::string &modelName);
+    static auto jsonFileToArray(std::string const &filePath);
+
+    static Model *loadModel(const std::string &modelName);
+
+    static void checkFileExists(const std::string &basicString);
+
+    static std::string removeComments(std::string &basicString);
 };
 
 

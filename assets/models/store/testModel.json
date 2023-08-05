@@ -1,0 +1,12 @@
+{
+  "name": "json test model",
+  "meshes": [
+    {
+      "name": "root",
+      "path": "models/testModel.obj"
+    }
+  ],
+  "textures": {
+    "diffuse": "diffuse.png"
+  }
+}

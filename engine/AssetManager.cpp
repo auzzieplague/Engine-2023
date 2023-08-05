@@ -305,11 +305,35 @@ Mesh *AssetManager::convertMesh(aiMesh *mesh) {
     return ourMesh;
 }
 
+auto AssetManager::jsonFileToArray(const std::string &filePath) {
+    checkFileExists(filePath);
+
+    using json = nlohmann::json;
+    std::ifstream t(filePath);
+
+    std::string jsonString((std::istreambuf_iterator<char>(t)),
+                           std::istreambuf_iterator<char>());
+
+    removeComments(jsonString);
+
+    json structure;
+    try {
+        structure = json::parse(jsonString);
+        return structure;
+    } catch (...) {
+        return structure;
+    }
+}
+
 Model *AssetManager::loadModel(const std::string &modelName) {
-    // grab from compiled assets if exists
-    // grab from models folder
-    // json
-//    auto assimpModel = AssetManager::loadModelFromFile("../assets/models/"+modelName);
+    // get path to models
+    auto jsonData = jsonFileToArray("..\\assets\\models\\store\\" + modelName + ".json");
+    auto model = new Model();
+    model->setName(jsonData["name"]);
+    auto meshes = jsonData["meshes"];
+    model->print();
+//    auto assimpModel = AssetManager::loadModelFromFile("../assets/models/" + modelName);
+    return model;
 }
 
 Model *AssetManager::loadModelFromFile(const std::string &filePath) {
@@ -334,7 +358,7 @@ Model *AssetManager::loadModelFromFile(const std::string &filePath) {
     ourModel->mRootMesh->parentComponent = ourModel;
     ourModel->mRootMesh->rootComponent = ourModel;
     ourMesh->setMaterial(*Material::defaultMaterial);
-    ourModel->setLocalRotation({0,0,0});
+    ourModel->setLocalRotation({0, 0, 0});
     // todo Materials - check for built in materials - use default material
 
     return ourModel;
@@ -349,3 +373,57 @@ void AssetManager::refreshAssets() {
     // then add multiple children for models, materials etc.
     assetStructure = FileStructure::buildFileStructure("..\\assets\\models");
 }
+
+void AssetManager::checkFileExists(const std::string &filePath) {
+    if (!std::filesystem::exists(filePath)) {
+        Debug::throwFileNotFound(filePath);
+    }
+}
+
+std::string AssetManager::removeComments(std::string &stringWithComments) {
+    std::string result;
+    size_t pos = 0;
+    size_t length = stringWithComments.length();
+    bool inMultiLineComment = false;
+
+    while (pos < length) {
+        // Find the beginning of a comment block (/*) or a single-line comment (//)
+        size_t multiLineCommentStart = stringWithComments.find("/*", pos);
+        size_t singleLineCommentStart = stringWithComments.find("//",
+                                                                pos);// Check which comment type comes first in the input
+        if (multiLineCommentStart == std::string::npos && singleLineCommentStart == std::string::npos) {
+            // No comments found, add the remaining part of the input to the result
+            result += stringWithComments.substr(pos);
+            break;
+        }
+        if (singleLineCommentStart == std::string::npos ||
+            (multiLineCommentStart != std::string::npos && multiLineCommentStart < singleLineCommentStart)) {
+            // Add the content before the multi-line comment to the result
+            result += stringWithComments.substr(pos, multiLineCommentStart - pos);
+            // Find the end of the multi-line comment (*/)
+            size_t commentEnd = stringWithComments.find("*/", multiLineCommentStart + 2);
+            if (commentEnd == std::string::npos) {
+                // If no end of multi-line comment found, exit the loop
+                break;
+            }
+            // Move the position past the multi-line comment
+            pos = commentEnd + 2;
+        } else {
+            // Add the content before the single-line comment to the result
+            result += stringWithComments.substr(pos, singleLineCommentStart - pos);
+            // Find the end of the single-line comment (newline character)
+            size_t commentEnd = stringWithComments.find('\n', singleLineCommentStart + 2);
+            if (commentEnd == std::string::npos) {
+                // If no end of single-line comment found, exit the loop
+                break;
+            }
+            // Move the position past the single-line comment
+            pos = commentEnd + 1;
+        }
+    }
+
+    stringWithComments = result;
+    return result;
+}
+
+

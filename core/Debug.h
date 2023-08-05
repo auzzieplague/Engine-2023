@@ -30,5 +30,9 @@ public:
         m_iteration = 0;
     };
 
+    static void throwFileNotFound(const std::string& fileName) {
+        throw std::runtime_error("Missing file "+fileName);
+    }
+
 };
 
