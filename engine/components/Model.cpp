@@ -77,12 +77,18 @@ void Model::applyForce(glm::vec3 force) const {
 }
 
 void Model::addChild(Component *child) {
+    // meshes get handled on root mesh and put into mesh tree
     if (child->getType() == ObjectType::OT_Mesh) {
         if (this->mRootMesh == nullptr) {
             mRootMesh = dynamic_cast<Mesh *>(child);
+        } else {
+            mRootMesh->addMesh(dynamic_cast<Mesh *>(child));
         }
+        child->rootComponent = this->rootComponent ? this->rootComponent : this;
+        child->parentComponent = this;
+    } else {
+        Component::addChild(child);
     }
-    Component::addChild(child);
 }
 
 void Model::applyImpulse(glm::vec3 force) const {

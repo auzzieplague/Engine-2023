@@ -325,9 +325,9 @@ glm::vec3 AssetManager::getVectorFromJson(nlohmann::json json, std::string key) 
     glm::vec3 vector;
     if (json.contains(key)) {
         if (jsonContains(json[key], {"x", "y", "z"})) {
-            vector.x = json[key]["x"];
-            vector.y = json[key]["y"];
-            vector.z = json[key]["z"];
+            vector.x = json[key]["x"].get<std::float_t>();
+            vector.y = json[key]["y"].get<std::float_t>();
+            vector.z = json[key]["z"].get<std::float_t>();
         }
     }
     return vector;
@@ -353,11 +353,13 @@ Mesh *AssetManager::getMeshFromJson(nlohmann::json jsonMesh) {
     }
 
     if (jsonMesh.contains("material")) {
+        // add materials - if no materials then add default material
+        // will need to upgrade materials system
 
     } else {
         mesh->setMaterial(*Material::defaultMaterial);
     }
-    // add materials - if no materials then add default material
+
 
     return mesh;
 }
