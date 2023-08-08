@@ -1,8 +1,14 @@
 {
   "name": "json test model",
+  "position": {"x": 1, "y": 1, "z": 1},
   "meshes": [
     {
-      "name": "root",
+      "name": "one",
+      "path": "models/testModel.obj",
+      "position": {"x": 1, "y": 1, "z": 1}
+    },
+    {
+      "name": "two",
       "path": "models/testModel.obj"
     }
   ],

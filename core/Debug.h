@@ -34,5 +34,8 @@ public:
         throw std::runtime_error("Missing file "+fileName);
     }
 
+    static void throwMissingItem( const std::string& item,const std::string& context ) {
+        throw std::runtime_error("expecting item"+item+" in "+context);
+    }
 };
 

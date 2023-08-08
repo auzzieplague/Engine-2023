@@ -321,3 +321,133 @@ glm::vec3 Mesh::calculateOptimalPosition(const glm::mat4 &qem) {
     glm::vec3 optimalPosition = -glm::vec3(invQEM3[0][2], invQEM3[1][2], invQEM3[2][2]) / invQEM3[2][2];
     return optimalPosition;
 }
+
+Mesh * Mesh::getMeshFromHeightMap(const std::string &fileName, float heightScale, float uvScale, bool flipTriangles) {
+
+    auto filename = AssetManager::getRelativePath("heightmap", fileName + ".png");
+    int width, height, channels;
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &channels, 1);
+
+    if (!data) {
+        std::cerr << "Failed to load height map " << filename << std::endl;
+        return nullptr;
+    }
+
+    std::vector<glm::vec3> vertices;
+    std::vector<glm::vec2> uv;
+    std::vector<glm::vec3> normals;
+    std::vector<unsigned int> indices;
+
+    // Calculate center offset
+    glm::vec3 offset(-0.5f * static_cast<float>(width) / static_cast<float>(height), 0.0f, -0.5f);
+
+    // Generate vertices and UVs
+    for (int z = 0; z < height; z++) {
+        for (int x = 0; x < width; x++) {
+            float xPos = (float) x / (float) width;
+            float zPos = (float) z / (float) height;
+            float yPos = ((float) data[z * width + x] / 255.0f) * heightScale;
+            // Center the mesh at (0, 0, 0)
+            glm::vec3 vertexPos(xPos, yPos, zPos);
+            vertexPos += offset;
+            vertices.push_back(vertexPos);
+            uv.emplace_back(xPos * uvScale, zPos * uvScale);
+        }
+    }
+
+    // Generate indices
+    for (int z = 0; z < height - 1; z++) {
+        for (int x = 0; x < width - 1; x++) {
+            int topLeft = (z * width) + x;
+            int topRight = topLeft + 1;
+            int bottomLeft = ((z + 1) * width) + x;
+            int bottomRight = bottomLeft + 1;
+
+            if (flipTriangles) {
+                indices.push_back(topLeft);
+                indices.push_back(bottomLeft);
+                indices.push_back(topRight);
+                indices.push_back(topRight);
+                indices.push_back(bottomLeft);
+                indices.push_back(bottomRight);
+            } else {
+                indices.push_back(bottomLeft);
+                indices.push_back(topLeft);
+                indices.push_back(topRight);
+                indices.push_back(bottomRight);
+                indices.push_back(bottomLeft);
+                indices.push_back(topRight);
+            }
+
+        }
+    }
+
+    // Generate normals
+    for (unsigned int i = 0; i < indices.size(); i += 3) {
+        glm::vec3 v0 = vertices[indices[i + 0]];
+        glm::vec3 v1 = vertices[indices[i + 1]];
+        glm::vec3 v2 = vertices[indices[i + 2]];
+
+        glm::vec3 e1 = v1 - v0;
+        glm::vec3 e2 = v2 - v0;
+        glm::vec3 normal = glm::normalize(glm::cross(e1, e2));
+
+        normals.push_back(normal);
+        normals.push_back(normal);
+        normals.push_back(normal);
+    }
+
+    // Generate tangents and bitangents
+    for (unsigned int i = 0; i < indices.size(); i += 3) {
+        glm::vec3 v0 = vertices[indices[i + 0]];
+        glm::vec3 v1 = vertices[indices[i + 1]];
+        glm::vec3 v2 = vertices[indices[i + 2]];
+
+        glm::vec2 uv0 = uv[indices[i + 0]];
+        glm::vec2 uv1 = uv[indices[i + 1]];
+        glm::vec2 uv2 = uv[indices[i + 2]];
+
+        glm::vec3 deltaPos1 = v1 - v0;
+        glm::vec3 deltaPos2 = v2 - v0;
+
+        glm::vec2 deltaUV1 = uv1 - uv0;
+        glm::vec2 deltaUV2 = uv2 - uv0;
+
+        float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+//        glm::vec3 tangent;
+//        tangent.x = f * (deltaUV2.y * deltaPos1.x - deltaUV1.y * deltaPos2.x);
+//        tangent.y = f * (deltaUV2.y * deltaPos1.y - deltaUV1.y * deltaPos2.y);
+//        tangent.z = f * (deltaUV2.y * deltaPos1.z - deltaUV1.y * deltaPos2.z);
+//        tangent = glm::normalize(tangent);
+//
+//        glm::vec3 bitangent;
+//        bitangent.x = f * (-deltaUV2.x * deltaPos1.x + deltaUV1.x * deltaPos2.x);
+//        bitangent.y = f * (-deltaUV2.x * deltaPos1.y + deltaUV1.x * deltaPos2.y);
+//        bitangent.z = f * (-deltaUV2.x * deltaPos1.z + deltaUV1.x * deltaPos2.z);
+//        bitangent = glm::normalize(bitangent);
+//
+//        // Assign tangent and bitangent to each vertex of the triangle
+//        m_tangents.push_back(tangent);
+//        m_tangents.push_back(tangent);
+//        m_tangents.push_back(tangent);
+//
+//        m_biTangents.push_back(bitangent);
+//        m_biTangents.push_back(bitangent);
+//        m_biTangents.push_back(bitangent);
+    }
+
+// Release memory allocated for image data
+    stbi_image_free(data);
+
+// Create and return the mesh object
+    Mesh *mesh = new Mesh();
+    mesh->setVertices(vertices);
+    mesh->setIndices(indices);
+    mesh->setUVs(uv);
+    mesh->setNormals(normals);
+//    mesh->setTangents(m_tangents);
+//    mesh->setBiTangents(m_biTangents);
+    return mesh;
+}

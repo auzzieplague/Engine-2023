@@ -95,6 +95,7 @@ void setupScene(Scene *scene) {
     // load scene
 
     auto jsonModel = AssetManager::loadModel("testModel");
+    scene->addComponent(jsonModel);
 
     auto terrain = terrainModel();
     scene->addComponent(terrain);

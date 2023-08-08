@@ -116,5 +116,7 @@ public:
     glm::vec3 calculateOptimalPosition(const glm::mat4& qem) ;
 
     void switchIndexOrder(bool clockwise = true);
+
+    static Mesh * getMeshFromHeightMap(const std::string &filePath, float heightScale, float uvScale, bool flipTriangles = true);
 };
 

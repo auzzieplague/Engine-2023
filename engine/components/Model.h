@@ -57,6 +57,8 @@ public:
     void autoScale();
 
     void autoPhysics();
+
+    void addChild(Component *child) override;
 };
 
 

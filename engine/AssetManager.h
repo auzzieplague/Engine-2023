@@ -37,8 +37,6 @@ public:
     // loads or retrieves from cache - the specified height map
     static HeightMap getHeightMap(const std::string &name, float scale = 1, float minHeight = 0, float maxHeight = 1);
 
-    static Mesh *
-    getMeshFromHeightMap(const std::string &filePath, float heightScale, float uvScale, bool flipTriangles = true);
 
     static void testASSIMP();
 
@@ -50,13 +48,23 @@ public:
 
     static Mesh *convertMesh(aiMesh *mesh);
 
-    static auto jsonFileToArray(std::string const &filePath);
+    static nlohmann::json jsonFileToArray(std::string const &filePath);
 
     static Model *loadModel(const std::string &modelName);
 
     static void checkFileExists(const std::string &basicString);
 
     static std::string removeComments(std::string &basicString);
+
+    static bool jsonContains(const nlohmann::json &jsonObject, const std::vector<std::string> &keys);
+
+    static glm::vec3 getVectorFromJson(nlohmann::json jsonKey,std::string key = "position");
+
+    static Mesh *getMeshFromJson(nlohmann::json json);
+
+    static Mesh *loadMeshFromFile(const std::string &filePath);
+
+    static std::string assetPathPrefix;
 };
 
 

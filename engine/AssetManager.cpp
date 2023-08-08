@@ -7,6 +7,7 @@
 #define DEV_MODE
 
 #ifdef DEV_MODE
+std::string AssetManager::assetPathPrefix = "../assets/";
 std::map<std::string, std::string> AssetManager::category_path = {
         {"model",          "models"},
         {"shaders_opengl", "shaders/glsl"},
@@ -28,7 +29,7 @@ std::map<std::string, std::string> AssetManager::category_path = {
 FileStructure AssetManager::assetStructure;
 
 std::string AssetManager::getPath(const std::string &category) {
-    auto assetPathPrefix = "../assets/";
+//    auto assetPathPrefix = "../assets/";
     auto it = category_path.find(category);
     // if there's no match for category then reference in code is an error
     assert(it != category_path.end() && "Asset category was not found");
@@ -123,137 +124,6 @@ HeightMap AssetManager::getHeightMap(
     return heightMap;
 }
 
-Mesh *
-AssetManager::getMeshFromHeightMap(const std::string &fileName, float heightScale, float uvScale, bool flipTriangles) {
-
-    auto filename = getRelativePath("heightmap", fileName + ".png");
-    int width, height, channels;
-    stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &channels, 1);
-
-    if (!data) {
-        std::cerr << "Failed to load height map " << filename << std::endl;
-        return nullptr;
-    }
-
-    std::vector<glm::vec3> vertices;
-    std::vector<glm::vec2> uv;
-    std::vector<glm::vec3> normals;
-    std::vector<unsigned int> indices;
-
-    // Calculate center offset
-    glm::vec3 offset(-0.5f * static_cast<float>(width) / static_cast<float>(height), 0.0f, -0.5f);
-
-    // Generate vertices and UVs
-    for (int z = 0; z < height; z++) {
-        for (int x = 0; x < width; x++) {
-            float xPos = (float) x / (float) width;
-            float zPos = (float) z / (float) height;
-            float yPos = ((float) data[z * width + x] / 255.0f) * heightScale;
-            // Center the mesh at (0, 0, 0)
-            glm::vec3 vertexPos(xPos, yPos, zPos);
-            vertexPos += offset;
-            vertices.push_back(vertexPos);
-            uv.emplace_back(xPos * uvScale, zPos * uvScale);
-        }
-    }
-
-    // Generate indices
-    for (int z = 0; z < height - 1; z++) {
-        for (int x = 0; x < width - 1; x++) {
-            int topLeft = (z * width) + x;
-            int topRight = topLeft + 1;
-            int bottomLeft = ((z + 1) * width) + x;
-            int bottomRight = bottomLeft + 1;
-
-            if (flipTriangles) {
-                indices.push_back(topLeft);
-                indices.push_back(bottomLeft);
-                indices.push_back(topRight);
-                indices.push_back(topRight);
-                indices.push_back(bottomLeft);
-                indices.push_back(bottomRight);
-            } else {
-                indices.push_back(bottomLeft);
-                indices.push_back(topLeft);
-                indices.push_back(topRight);
-                indices.push_back(bottomRight);
-                indices.push_back(bottomLeft);
-                indices.push_back(topRight);
-            }
-
-        }
-    }
-
-    // Generate normals
-    for (unsigned int i = 0; i < indices.size(); i += 3) {
-        glm::vec3 v0 = vertices[indices[i + 0]];
-        glm::vec3 v1 = vertices[indices[i + 1]];
-        glm::vec3 v2 = vertices[indices[i + 2]];
-
-        glm::vec3 e1 = v1 - v0;
-        glm::vec3 e2 = v2 - v0;
-        glm::vec3 normal = glm::normalize(glm::cross(e1, e2));
-
-        normals.push_back(normal);
-        normals.push_back(normal);
-        normals.push_back(normal);
-    }
-
-    // Generate tangents and bitangents
-    for (unsigned int i = 0; i < indices.size(); i += 3) {
-        glm::vec3 v0 = vertices[indices[i + 0]];
-        glm::vec3 v1 = vertices[indices[i + 1]];
-        glm::vec3 v2 = vertices[indices[i + 2]];
-
-        glm::vec2 uv0 = uv[indices[i + 0]];
-        glm::vec2 uv1 = uv[indices[i + 1]];
-        glm::vec2 uv2 = uv[indices[i + 2]];
-
-        glm::vec3 deltaPos1 = v1 - v0;
-        glm::vec3 deltaPos2 = v2 - v0;
-
-        glm::vec2 deltaUV1 = uv1 - uv0;
-        glm::vec2 deltaUV2 = uv2 - uv0;
-
-        float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
-
-//        glm::vec3 tangent;
-//        tangent.x = f * (deltaUV2.y * deltaPos1.x - deltaUV1.y * deltaPos2.x);
-//        tangent.y = f * (deltaUV2.y * deltaPos1.y - deltaUV1.y * deltaPos2.y);
-//        tangent.z = f * (deltaUV2.y * deltaPos1.z - deltaUV1.y * deltaPos2.z);
-//        tangent = glm::normalize(tangent);
-//
-//        glm::vec3 bitangent;
-//        bitangent.x = f * (-deltaUV2.x * deltaPos1.x + deltaUV1.x * deltaPos2.x);
-//        bitangent.y = f * (-deltaUV2.x * deltaPos1.y + deltaUV1.x * deltaPos2.y);
-//        bitangent.z = f * (-deltaUV2.x * deltaPos1.z + deltaUV1.x * deltaPos2.z);
-//        bitangent = glm::normalize(bitangent);
-//
-//        // Assign tangent and bitangent to each vertex of the triangle
-//        m_tangents.push_back(tangent);
-//        m_tangents.push_back(tangent);
-//        m_tangents.push_back(tangent);
-//
-//        m_biTangents.push_back(bitangent);
-//        m_biTangents.push_back(bitangent);
-//        m_biTangents.push_back(bitangent);
-    }
-
-// Release memory allocated for image data
-    stbi_image_free(data);
-
-// Create and return the mesh object
-    Mesh *mesh = new Mesh();
-    mesh->setVertices(vertices);
-    mesh->setIndices(indices);
-    mesh->setUVs(uv);
-    mesh->setNormals(normals);
-//    mesh->setTangents(m_tangents);
-//    mesh->setBiTangents(m_biTangents);
-    return mesh;
-}
-
 void AssetManager::testASSIMP() {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(getRelativePath("model", "testModel.obj"), aiProcess_Triangulate);
@@ -305,39 +175,41 @@ Mesh *AssetManager::convertMesh(aiMesh *mesh) {
     return ourMesh;
 }
 
-auto AssetManager::jsonFileToArray(const std::string &filePath) {
-    checkFileExists(filePath);
-
-    using json = nlohmann::json;
-    std::ifstream t(filePath);
-
-    std::string jsonString((std::istreambuf_iterator<char>(t)),
-                           std::istreambuf_iterator<char>());
-
-    removeComments(jsonString);
-
-    json structure;
-    try {
-        structure = json::parse(jsonString);
-        return structure;
-    } catch (...) {
-        return structure;
+bool AssetManager::jsonContains(const nlohmann::json &jsonObject, const std::vector<std::string> &keys) {
+    for (const std::string &key: keys) {
+        if (!jsonObject.contains(key)) {
+            return false;
+        }
     }
+    return true;
 }
 
 Model *AssetManager::loadModel(const std::string &modelName) {
     // get path to models
-    auto jsonData = jsonFileToArray("..\\assets\\models\\store\\" + modelName + ".json");
+    auto filePath = "..\\assets\\models\\store\\" + modelName + ".json";
+    auto jsonData = jsonFileToArray(filePath);
     auto model = new Model();
     model->setName(jsonData["name"]);
-    auto meshes = jsonData["meshes"];
     model->print();
-//    auto assimpModel = AssetManager::loadModelFromFile("../assets/models/" + modelName);
+
+    if (jsonData.contains("position")) {
+        model->setPosition(getVectorFromJson(jsonData, "position"));
+    }
+
+    if (jsonData.contains("meshes") && jsonData["meshes"].is_array()) {
+        std::cout << "processing mesh data\n";
+        for (auto mesh: jsonData["meshes"]) {
+            Mesh *newMesh = getMeshFromJson(mesh);
+            model->addChild(newMesh); // add functionality to automatically add root when empty
+        }
+    }
+
+    model->setSelectable();
+
     return model;
 }
 
-Model *AssetManager::loadModelFromFile(const std::string &filePath) {
-
+Mesh *AssetManager::loadMeshFromFile(const std::string &filePath) {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(filePath,
                                              aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
@@ -345,13 +217,17 @@ Model *AssetManager::loadModelFromFile(const std::string &filePath) {
         std::cout << "Error loading model file: " << importer.GetErrorString() << std::endl;
         return nullptr;
     }
-    // todo add model name and mesh names to a lookup, setup instanced rendering for multiples
-    auto *ourModel = new Model();
-    ourModel->setFilePath(filePath);
 
-    //todo loop through all meshes and handle submeshes
     aiMesh *mesh = scene->mMeshes[0];
     auto ourMesh = convertMesh(mesh);
+    return ourMesh;
+}
+
+Model *AssetManager::loadModelFromFile(const std::string &filePath) {
+    auto *ourModel = new Model();
+    ourModel->setFilePath(filePath);
+    auto ourMesh = loadMeshFromFile(filePath);
+
     ourMesh->setSelectable();
     ourModel->addChild(ourMesh);
     ourModel->mRootMesh = ourMesh;
@@ -359,7 +235,6 @@ Model *AssetManager::loadModelFromFile(const std::string &filePath) {
     ourModel->mRootMesh->rootComponent = ourModel;
     ourMesh->setMaterial(*Material::defaultMaterial);
     ourModel->setLocalRotation({0, 0, 0});
-    // todo Materials - check for built in materials - use default material
 
     return ourModel;
 }
@@ -426,4 +301,63 @@ std::string AssetManager::removeComments(std::string &stringWithComments) {
     return result;
 }
 
+nlohmann::json AssetManager::jsonFileToArray(const std::string &filePath) {
+    checkFileExists(filePath);
 
+    using json = nlohmann::json;
+    std::ifstream t(filePath);
+
+    std::string jsonString((std::istreambuf_iterator<char>(t)),
+                           std::istreambuf_iterator<char>());
+
+    removeComments(jsonString);
+
+    json structure;
+    try {
+        structure = json::parse(jsonString);
+        return structure;
+    } catch (...) {
+        return structure;
+    }
+}
+
+glm::vec3 AssetManager::getVectorFromJson(nlohmann::json json, std::string key) {
+    glm::vec3 vector;
+    if (json.contains(key)) {
+        if (jsonContains(json[key], {"x", "y", "z"})) {
+            vector.x = json[key]["x"];
+            vector.y = json[key]["y"];
+            vector.z = json[key]["z"];
+        }
+    }
+    return vector;
+}
+
+Mesh *AssetManager::getMeshFromJson(nlohmann::json jsonMesh) {
+    if (!jsonContains(jsonMesh, {"name", "path"})) {
+        Debug::throwMissingItem("required keys", "json mesh construction");
+    };
+
+    std::string path = assetPathPrefix + jsonMesh["path"].get<std::string>();
+    Mesh *mesh = loadMeshFromFile(path);
+
+    if (!mesh) {
+        Debug::throwFileNotFound(jsonMesh["path"]);
+    };
+
+    mesh->setName(jsonMesh["name"].get<std::string>());
+
+
+    if (jsonMesh.contains("position")) {
+        mesh->setPosition(getVectorFromJson(jsonMesh, "position"));
+    }
+
+    if (jsonMesh.contains("material")) {
+
+    } else {
+        mesh->setMaterial(*Material::defaultMaterial);
+    }
+    // add materials - if no materials then add default material
+
+    return mesh;
+}

@@ -76,6 +76,14 @@ void Model::applyForce(glm::vec3 force) const {
     dynamic_cast<physx::PxRigidDynamic *>(this->mPhysicsBody)->addForce(physx::PxVec3(force.x, force.y, force.z));
 }
 
+void Model::addChild(Component *child) {
+    if (child->getType() == ObjectType::OT_Mesh) {
+        if (this->mRootMesh == nullptr) {
+            mRootMesh = dynamic_cast<Mesh *>(child);
+        }
+    }
+    Component::addChild(child);
+}
 
 void Model::applyImpulse(glm::vec3 force) const {
     // todo: check if dynamic .. probably subclass dynamic and static models so no checking required
@@ -114,7 +122,7 @@ void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
 }
 
 void Model::getMeshFromHeightMap(std::string name) {
-    this->mRootMesh = AssetManager::getMeshFromHeightMap(name, 1, 1);
+    this->mRootMesh = Mesh::getMeshFromHeightMap(name, 1, 1);
     this->mRootMesh->parentComponent = this;
     this->mCollisionMesh = mRootMesh;
     this->childComponents.push_back(mRootMesh);
