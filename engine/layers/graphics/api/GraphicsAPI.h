@@ -4,7 +4,7 @@
 #include "../../../AssetManager.h"
 #include "RenderingConfig.h"
 
-class Mesh;
+class MeshData;
 
 class GraphicsAPI {
 
@@ -18,12 +18,12 @@ public:
 
     virtual unsigned int compileShader(std::string &source, unsigned int type);
 
-    virtual unsigned int setupMesh(Mesh *);
+    virtual unsigned int setupMesh(MeshData *);
 
     virtual unsigned int setupTerrain(HeightMap *heightmap);
 
-    virtual void renderMesh(Mesh *);
-    virtual void renderMesh(Mesh *, int);
+    virtual void renderMesh(MeshData *);
+    virtual void renderMesh(MeshData *, int);
 
     virtual void beginRender(RenderingConfig &);
     virtual void endRender(RenderingConfig &);

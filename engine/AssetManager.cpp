@@ -2,7 +2,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include "AssetManager.h"
-#include "components/meshes/Mesh.h"
+#include "components/meshes/MeshData.h"
 
 #define DEV_MODE
 
@@ -27,6 +27,12 @@ std::map<std::string, std::string> AssetManager::category_path = {
 #endif
 
 FileStructure AssetManager::assetStructure;
+
+std::map<std::string, Component*> AssetManager::componentPool;
+
+void AssetManager::initialise() {
+    refreshAssets();
+}
 
 std::string AssetManager::getPath(const std::string &category) {
 //    auto assetPathPrefix = "../assets/";
@@ -138,8 +144,8 @@ const FileStructure &AssetManager::getAssetStructure() {
     return assetStructure;
 }
 
-Mesh *AssetManager::convertMesh(aiMesh *mesh) {
-    auto *ourMesh = new Mesh();
+MeshData *AssetManager::convertMesh(aiMesh *mesh) {
+    auto *ourMesh = new MeshData();
 
     // Populate the vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
@@ -175,15 +181,6 @@ Mesh *AssetManager::convertMesh(aiMesh *mesh) {
     return ourMesh;
 }
 
-bool AssetManager::jsonContains(const nlohmann::json &jsonObject, const std::vector<std::string> &keys) {
-    for (const std::string &key: keys) {
-        if (!jsonObject.contains(key)) {
-            return false;
-        }
-    }
-    return true;
-}
-
 Model *AssetManager::loadModel(const std::string &modelName) {
     // get path to models
     auto filePath = "..\\assets\\models\\store\\" + modelName + ".json";
@@ -194,12 +191,17 @@ Model *AssetManager::loadModel(const std::string &modelName) {
 
     if (jsonData.contains("position")) {
         model->setPosition(getVectorFromJson(jsonData, "position"));
+
+    }
+
+    if (jsonData.contains("scale")) {
+        model->setLocalScale(getVectorFromJson(jsonData, "scale"));
     }
 
     if (jsonData.contains("meshes") && jsonData["meshes"].is_array()) {
-        std::cout << "processing mesh data\n";
+
         for (auto mesh: jsonData["meshes"]) {
-            Mesh *newMesh = getMeshFromJson(mesh);
+            MeshData *newMesh = getMeshFromJson(mesh);
             model->addChild(newMesh); // add functionality to automatically add root when empty
         }
     }
@@ -209,7 +211,16 @@ Model *AssetManager::loadModel(const std::string &modelName) {
     return model;
 }
 
-Mesh *AssetManager::loadMeshFromFile(const std::string &filePath) {
+MeshData *AssetManager::loadMeshFromFile(const std::string &filePath) {
+    bool instanced = true;
+
+    if (instanced) {
+        if (componentPool["filePath"]) {
+            return dynamic_cast<MeshData *>(componentPool["filePath"]);
+        }
+    }
+    // todo shared meshes -= loading the same mesh twice should reference the loaded meshID
+
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(filePath,
                                              aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
@@ -237,10 +248,6 @@ Model *AssetManager::loadModelFromFile(const std::string &filePath) {
     ourModel->setLocalRotation({0, 0, 0});
 
     return ourModel;
-}
-
-void AssetManager::initialise() {
-    refreshAssets();
 }
 
 void AssetManager::refreshAssets() {
@@ -301,6 +308,15 @@ std::string AssetManager::removeComments(std::string &stringWithComments) {
     return result;
 }
 
+bool AssetManager::jsonContains(const nlohmann::json &jsonObject, const std::vector<std::string> &keys) {
+    for (const std::string &key: keys) {
+        if (!jsonObject.contains(key)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 nlohmann::json AssetManager::jsonFileToArray(const std::string &filePath) {
     checkFileExists(filePath);
 
@@ -333,13 +349,13 @@ glm::vec3 AssetManager::getVectorFromJson(nlohmann::json json, std::string key) 
     return vector;
 }
 
-Mesh *AssetManager::getMeshFromJson(nlohmann::json jsonMesh) {
+MeshData *AssetManager::getMeshFromJson(nlohmann::json jsonMesh) {
     if (!jsonContains(jsonMesh, {"name", "path"})) {
         Debug::throwMissingItem("required keys", "json mesh construction");
     };
 
     std::string path = assetPathPrefix + jsonMesh["path"].get<std::string>();
-    Mesh *mesh = loadMeshFromFile(path);
+    MeshData *mesh = loadMeshFromFile(path);
 
     if (!mesh) {
         Debug::throwFileNotFound(jsonMesh["path"]);
@@ -352,10 +368,17 @@ Mesh *AssetManager::getMeshFromJson(nlohmann::json jsonMesh) {
         mesh->setPosition(getVectorFromJson(jsonMesh, "position"));
     }
 
+    if (jsonMesh.contains("scale")) {
+        mesh->setLocalScale(getVectorFromJson(jsonMesh, "scale"));
+    }
+
     if (jsonMesh.contains("material")) {
+        // convert material to pointer
+
         // add materials - if no materials then add default material
         // will need to upgrade materials system
-
+        Material *material = getMaterialFromJson(jsonMesh["material"]);
+        mesh->setMaterial(*material);
     } else {
         mesh->setMaterial(*Material::defaultMaterial);
     }
@@ -363,3 +386,11 @@ Mesh *AssetManager::getMeshFromJson(nlohmann::json jsonMesh) {
 
     return mesh;
 }
+
+Material *AssetManager::getMaterialFromJson(nlohmann::json jsonMaterial) {
+//    if (!jsonContains(jsonMaterial, {"name", "path"})) {
+//        Debug::throwMissingItem("required keys", "json mesh construction");
+//    };
+    return Material::defaultMaterial;
+}
+

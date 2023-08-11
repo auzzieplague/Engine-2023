@@ -61,7 +61,7 @@ Model *terrainModel() {
 
     auto *terrain1 = new Model();
     terrain1->getMeshFromHeightMap("test_map_64");
-    Mesh *mesh = terrain1->getRootMesh();
+    MeshData *mesh = terrain1->getRootMesh();
 
 //    Debug::show("Mesh Before and After");
 //    Debug::show(mesh->getVertices().size());

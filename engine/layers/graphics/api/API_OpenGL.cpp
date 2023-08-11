@@ -41,7 +41,7 @@ void API_OpenGL::endRender(RenderingConfig &config) {
 
 
 // unsigned int GraphicsLayerOpenGL::testMeshVAO;
-void API_OpenGL::renderMesh(Mesh *mesh) {
+void API_OpenGL::renderMesh(MeshData *mesh) {
     // if the Mesh hasn't been setup yet, we'll need to initialise it (lazy loading)
     if (mesh->getID() == 0) {
         mesh->generateMeshID();
@@ -56,7 +56,7 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
 }
 
 
-void API_OpenGL::renderMesh(Mesh *mesh, int count) {
+void API_OpenGL::renderMesh(MeshData *mesh, int count) {
     if (mesh->getID() == 0) {
         mesh->generateMeshID();
     }
@@ -168,7 +168,7 @@ unsigned int API_OpenGL::loadTexture(std::string fileName) {
     return textureID;
 }
 
-unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
+unsigned int API_OpenGL::setupMesh(MeshData *mesh) {
     if (mesh->getIndices().empty()) {
         Debug::show("mRootMesh object has no indices");
         return 0;

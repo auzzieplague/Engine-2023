@@ -1,6 +1,6 @@
 #pragma once
 
-#include "meshes/Mesh.h"
+#include "meshes/MeshData.h"
 
 struct GeometryConfig {
 
@@ -69,7 +69,7 @@ struct GeometryConfig {
     QuadConfig quad;
 };
 
-class Geometry : public Mesh {
+class Geometry : public MeshData {
     //inherits meshData
 private:
     float pi = 3.1415926;

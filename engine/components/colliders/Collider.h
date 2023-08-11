@@ -85,7 +85,7 @@ public:
         m_aabb.moveCorners(offsetChange);
     }
 
-    virtual void rebuild(Mesh *mesh) {
+    virtual void rebuild(MeshData *mesh) {
         /**
          * todo shift mPosition of m_sphere m_center ... note m_center is not origin of model so we can just set mPosition
          * similarly we need to shift the min and max corners of the bounding box

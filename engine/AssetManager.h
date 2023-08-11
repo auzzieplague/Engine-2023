@@ -2,7 +2,7 @@
 
 #include "../../core/Base.h"
 #include "stb_image.h"
-#include "components/meshes/Mesh.h"
+#include "components/meshes/MeshData.h"
 #include "components/Model.h"
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -26,6 +26,8 @@ private:
 //    static std::vector<std::string> fileList;
     static FileStructure assetStructure;
 public:
+    static std::map<std::string, Component*> componentPool; // loadPath => Component
+
     static const FileStructure &getAssetStructure();
 
     static std::string getPath(const std::string &category);
@@ -46,7 +48,7 @@ public:
 
     static void refreshAssets() ;
 
-    static Mesh *convertMesh(aiMesh *mesh);
+    static MeshData *convertMesh(aiMesh *mesh);
 
     static nlohmann::json jsonFileToArray(std::string const &filePath);
 
@@ -60,11 +62,13 @@ public:
 
     static glm::vec3 getVectorFromJson(nlohmann::json jsonKey,std::string key = "position");
 
-    static Mesh *getMeshFromJson(nlohmann::json json);
+    static MeshData *getMeshFromJson(nlohmann::json json);
 
-    static Mesh *loadMeshFromFile(const std::string &filePath);
+    static MeshData *loadMeshFromFile(const std::string &filePath);
 
     static std::string assetPathPrefix;
+
+    static Material *getMaterialFromJson(nlohmann::json jsonMaterial);
 };
 
 

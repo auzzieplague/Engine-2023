@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GraphicsAPI.h"
-#include "../../engine/components/meshes/Mesh.h" /// forward declaration override
+#include "../../engine/components/meshes/MeshData.h" /// forward declaration override
 
 unsigned int GraphicsAPI::compileShader(std::string &source, unsigned int type) {
     Debug::show("missing override for compileShader");
@@ -13,16 +13,16 @@ unsigned int GraphicsAPI::loadShader(std::string, std::string) {
     return 0;
 }
 
-unsigned int GraphicsAPI::setupMesh(Mesh *instance) {
+unsigned int GraphicsAPI::setupMesh(MeshData *instance) {
     Debug::show("missing override for setupMesh");
     return 0;
 }
 
-void GraphicsAPI::renderMesh(Mesh *) {
+void GraphicsAPI::renderMesh(MeshData *) {
     Debug::show("missing override for renderMesh");
 }
 
-void GraphicsAPI::renderMesh(Mesh *, int) {
+void GraphicsAPI::renderMesh(MeshData *, int) {
     Debug::show("missing override for renderMesh instanced");
 }
 

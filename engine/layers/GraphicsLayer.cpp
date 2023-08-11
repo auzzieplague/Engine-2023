@@ -5,7 +5,7 @@
 void GraphicsLayer::setApi(GraphicsAPI *api) {
     this->api = api;
     // let any graphics objects that contain their own setup methods know which API to call.
-    Mesh::setApi(api);
+    MeshData::setApi(api);
     Terrain::setApi(api);
 }
 
@@ -39,7 +39,7 @@ void GraphicsLayer::objectTrackerRenderConfig(Scene *scene) {
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
 
-void GraphicsLayer::updateMouseOverObject(std::vector<Mesh *> meshes) {
+void GraphicsLayer::updateMouseOverObject(std::vector<MeshData *> meshes) {
     api->beginRender(objectTrackerConfig);
     api->shaderSetView(currentScene->currentCamera->getViewMatrix());
 
@@ -62,8 +62,8 @@ void GraphicsLayer::updateMouseOverObject(std::vector<Mesh *> meshes) {
 }
 
 void GraphicsLayer::render(Scene *scene) {
-    std::vector<Mesh *> meshes;
-    std::vector<Mesh *> deferredMeshes;
+    std::vector<MeshData *> meshes;
+    std::vector<MeshData *> deferredMeshes;
     for (auto model: scene->modelsInScene) {
         meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
     }
@@ -98,7 +98,7 @@ void GraphicsLayer::render(Scene *scene) {
     }
 }
 
-void GraphicsLayer::renderMeshComponent(Mesh *mesh) const {
+void GraphicsLayer::renderMeshComponent(MeshData *mesh) const {
     glm::vec3 highlight;
     api->shaderSetTransform(mesh->getWorldMatrix());
     highlight = mesh->highlighted ? glm::vec3{2, 2, 2} : glm::vec3{1.0, 1.0, 1.0};

@@ -2,14 +2,14 @@
 
 #include <PxRigidActor.h>
 #include "Component.h"
-#include "meshes/Mesh.h"
+#include "meshes/MeshData.h"
 #include "colliders/Collider.h"
 
 class Model : public Component {
 
 public:
-    Mesh *mRootMesh{};
-    Mesh *mCollisionMesh;
+    MeshData *mRootMesh{};
+    MeshData *mCollisionMesh;
     Collider *mCollider{};
     physx::PxRigidActor *mPhysicsBody{};
     physx::PxTransform previousGlobalPose{};
@@ -35,11 +35,11 @@ public:
 
     virtual void setCollider(ColliderConfig config);
 
-    void setCollisionMesh(Mesh *mesh);
+    void setCollisionMesh(MeshData *mesh);
 
-    Mesh *getCollisionMesh();
+    MeshData *getCollisionMesh();
 
-    Mesh *getRootMesh();
+    MeshData *getRootMesh();
 
     // physics handlers
     void applyPxTransform(const physx::PxTransform &pxTransform);

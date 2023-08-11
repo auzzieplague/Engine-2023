@@ -142,7 +142,7 @@ void CollisionLayer::afterRender(Scene *scene) {
 
 void CollisionLayer::update(Scene *scene) {
     // todo this mesh list and graphics layer one, should be maintained on scene
-    std::vector<Mesh *> meshes;
+    std::vector<MeshData *> meshes;
     for (auto model: scene->modelsInScene) {
         meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
     }

@@ -15,7 +15,7 @@ class GraphicsLayer : public Layer {
 public:
     /// testing
     unsigned int testMeshVAO{};
-    Mesh *testMesh{};
+    MeshData *testMesh{};
     RenderingConfig renderConfig;
     RenderingConfig objectTrackerConfig;
 
@@ -33,7 +33,7 @@ public:
 
     void objectTrackerRenderConfig(Scene *scene);
 
-    void renderMeshComponent(Mesh *mesh) const;
+    void renderMeshComponent(MeshData *mesh) const;
 
-    void updateMouseOverObject(std::vector<Mesh *> meshes);
+    void updateMouseOverObject(std::vector<MeshData *> meshes);
 };

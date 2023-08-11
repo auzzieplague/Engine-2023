@@ -21,13 +21,13 @@ public:
     void beginRender(RenderingConfig &) override;
     void endRender(RenderingConfig &) override;
 
-    unsigned int setupMesh(Mesh *mesh) override;
+    unsigned int setupMesh(MeshData *mesh) override;
 
     unsigned int setupTerrain(HeightMap *heightmap) override;
 
-    void renderMesh(Mesh *) override;
+    void renderMesh(MeshData *) override;
 
-    void renderMesh(Mesh *, int count) override;
+    void renderMesh(MeshData *, int count) override;
 
     void readColourBufferRBGA(unsigned char *data, float x, float y, float width=1 , float height=1) override;
 

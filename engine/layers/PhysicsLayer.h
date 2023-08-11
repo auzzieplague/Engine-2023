@@ -37,5 +37,5 @@ public:
 
     physx::PxTriangleMesh* createTriangleMeshForModel(Model * model);
 
-    void renderCollisionMesh(Mesh *mesh);
+    void renderCollisionMesh(MeshData *mesh);
 };

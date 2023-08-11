@@ -184,7 +184,7 @@ void PhysicsLayer::collisionRenderConfig(Scene *scene) {
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
 
-void PhysicsLayer::renderCollisionMesh(Mesh *mesh) {
+void PhysicsLayer::renderCollisionMesh(MeshData *mesh) {
     glm::vec3 highlight;
     api->shaderSetTransform(mesh->getWorldMatrix());
     api->renderMesh(mesh);

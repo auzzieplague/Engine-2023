@@ -5,7 +5,7 @@
 
 Model *Model::createWithGeometry(Geometry::ShapeType shape, GeometryConfig config) {
     auto *model = new Model();
-    Mesh *newMesh = new Geometry();
+    MeshData *newMesh = new Geometry();
     newMesh->setSelectable();
     std::string shapeText = "";
     switch (shape) {
@@ -80,9 +80,9 @@ void Model::addChild(Component *child) {
     // meshes get handled on root mesh and put into mesh tree
     if (child->getType() == ObjectType::OT_Mesh) {
         if (this->mRootMesh == nullptr) {
-            mRootMesh = dynamic_cast<Mesh *>(child);
+            mRootMesh = dynamic_cast<MeshData *>(child);
         } else {
-            mRootMesh->addMesh(dynamic_cast<Mesh *>(child));
+            mRootMesh->addMesh(dynamic_cast<MeshData *>(child));
         }
         child->rootComponent = this->rootComponent ? this->rootComponent : this;
         child->parentComponent = this;
@@ -128,7 +128,7 @@ void Model::applyPxTransform(const physx::PxTransform &pxTransform) {
 }
 
 void Model::getMeshFromHeightMap(std::string name) {
-    this->mRootMesh = Mesh::getMeshFromHeightMap(name, 1, 1);
+    this->mRootMesh = MeshData::getMeshFromHeightMap(name, 1, 1);
     this->mRootMesh->parentComponent = this;
     this->mCollisionMesh = mRootMesh;
     this->childComponents.push_back(mRootMesh);
@@ -142,16 +142,16 @@ void Model::setMaterial(Material material) {
     this->mRootMesh->setMaterial(material);
 }
 
-void Model::setCollisionMesh(Mesh *mesh) {
+void Model::setCollisionMesh(MeshData *mesh) {
     this->mCollisionMesh = mesh;
     this->childComponents.push_back(mCollisionMesh);
 }
 
-Mesh *Model::getCollisionMesh() {
+MeshData *Model::getCollisionMesh() {
     return this->mCollisionMesh;
 }
 
-Mesh *Model::getRootMesh() {
+MeshData *Model::getRootMesh() {
     return this->mRootMesh;
 }
 

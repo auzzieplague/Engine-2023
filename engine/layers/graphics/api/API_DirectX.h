@@ -11,9 +11,9 @@ class API_DirectX : public GraphicsAPI {
 
     void beginRender(RenderingConfig &) override;
 
-    unsigned int setupMesh(Mesh *mesh) override;
+    unsigned int setupMesh(MeshData *mesh) override;
 
-    void renderMesh(Mesh *) override;
+    void renderMesh(MeshData *) override;
 
     unsigned int getFlag(GraphicsFlag flag) override;
 };
