@@ -96,8 +96,8 @@ public:
          *  - probably just collect all their min max values and take the min max from the whole collection
          */
         if (mesh){
-            m_sphere.findRadiusAndCenter(mesh->m_vertices);
-            m_aabb.findMinMaxCorners(mesh->m_vertices);
+            m_sphere.findRadiusAndCenter(mesh->meshData->m_vertices);
+            m_aabb.findMinMaxCorners(mesh->meshData->m_vertices);
         }
     }
 

@@ -3,6 +3,7 @@
 
 #include "AssetManager.h"
 #include "components/meshes/Mesh.h"
+#include "components/meshes/MeshData.h"
 
 #define DEV_MODE
 
@@ -140,12 +141,13 @@ const FileStructure &AssetManager::getAssetStructure() {
 
 Mesh *AssetManager::convertMesh(aiMesh *mesh) {
     auto *ourMesh = new Mesh();
+    auto *ourMeshData = new MeshData();
 
     // Populate the vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         aiVector3D vertex = mesh->mVertices[i];
         glm::vec3 glmVertex(vertex.x, vertex.y, vertex.z);
-        ourMesh->addVertex(glmVertex);
+        ourMeshData->addVertex(glmVertex);
     }
 
     // Populate the UVs (Texture Coordinates)
@@ -153,7 +155,7 @@ Mesh *AssetManager::convertMesh(aiMesh *mesh) {
         for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
             aiVector3D uv = mesh->mTextureCoords[0][i];
             glm::vec2 glmUV(uv.x, uv.y);
-            ourMesh->addUV(glmUV);
+            ourMeshData->addUV(glmUV);
         }
     }
 
@@ -161,7 +163,7 @@ Mesh *AssetManager::convertMesh(aiMesh *mesh) {
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         aiVector3D normal = mesh->mNormals[i];
         glm::vec3 glmNormal(normal.x, normal.y, normal.z);
-        ourMesh->addNormal(glmNormal);
+        ourMeshData->addNormal(glmNormal);
     }
 
     // Populate the indices
@@ -169,9 +171,11 @@ Mesh *AssetManager::convertMesh(aiMesh *mesh) {
         aiFace face = mesh->mFaces[i];
         for (unsigned int j = 0; j < face.mNumIndices; j++) {
             unsigned int index = face.mIndices[j];
-            ourMesh->addIndex(index);
+            ourMeshData->addIndex(index);
         }
     }
+
+    ourMesh->meshData = ourMeshData;
     return ourMesh;
 }
 

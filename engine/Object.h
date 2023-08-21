@@ -14,6 +14,7 @@ public:
         OT_Model,
         OT_Terrain,
         OT_Mesh,
+        OT_MeshData,
         OT_Texture,
         OT_Light,
         OT_Layer,

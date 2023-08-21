@@ -52,7 +52,7 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
     }
 
     glBindVertexArray(mesh->getID());
-    glDrawElements(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(GL_TRIANGLES, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr);
 }
 
 
@@ -66,7 +66,7 @@ void API_OpenGL::renderMesh(Mesh *mesh, int count) {
     }
 
     glBindVertexArray(mesh->getID());
-    glDrawElementsInstanced(GL_TRIANGLES, mesh->getIndices().size(), GL_UNSIGNED_INT, nullptr, count);
+    glDrawElementsInstanced(GL_TRIANGLES, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr, count);
 }
 
 void processInput(GLFWwindow *window) {
@@ -169,7 +169,7 @@ unsigned int API_OpenGL::loadTexture(std::string fileName) {
 }
 
 unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
-    if (mesh->getIndices().empty()) {
+    if (mesh->meshData->getIndices().empty()) {
         Debug::show("mRootMesh object has no indices");
         return 0;
     }
@@ -181,7 +181,7 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, mesh->getVertices().size() * sizeof(glm::vec3), &mesh->getVertices()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getVertices().size() * sizeof(glm::vec3), &mesh->meshData->getVertices()[0], GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void *) 0);
     glEnableVertexAttribArray(0);
 
@@ -191,7 +191,7 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     unsigned int uvVBO;
     glGenBuffers(1, &uvVBO);
     glBindBuffer(GL_ARRAY_BUFFER, uvVBO);
-    glBufferData(GL_ARRAY_BUFFER, mesh->getUVs().size() * sizeof(glm::vec2), &mesh->getUVs()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getUVs().size() * sizeof(glm::vec2), &mesh->meshData->getUVs()[0], GL_STATIC_DRAW);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void *) 0);
     glEnableVertexAttribArray(1);
 
@@ -199,13 +199,13 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     unsigned int normalVBO;
     glGenBuffers(1, &normalVBO);
     glBindBuffer(GL_ARRAY_BUFFER, normalVBO);
-    glBufferData(GL_ARRAY_BUFFER, mesh->getNormals().size() * sizeof(glm::vec3), &mesh->getNormals()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getNormals().size() * sizeof(glm::vec3), &mesh->meshData->getNormals()[0], GL_STATIC_DRAW);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void *) 0);
     glEnableVertexAttribArray(2);
 
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->getIndices().size() * sizeof(unsigned int), &mesh->getIndices()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->meshData->getIndices().size() * sizeof(unsigned int), &mesh->meshData->getIndices()[0], GL_STATIC_DRAW);
 
     glBindVertexArray(0);
 

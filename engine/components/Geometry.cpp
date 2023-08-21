@@ -34,10 +34,10 @@ void Geometry::buildQuad(GeometryConfig config) {
     };
 
     // Assign the vertex m_vertices and m_indices to the mRootMesh
-    this->m_vertices = vertices;
-    this->m_indices = indices;
-    this->m_normals = normals;
-    this->m_UVs = uvs;
+    this->meshData->setVertices(vertices);
+    this->meshData->setIndices(indices);
+    this->meshData->setNormals(normals);
+    this->meshData->setUVs(uvs);
 }
 
 void Geometry::buildCube(GeometryConfig config) {
@@ -167,15 +167,15 @@ void Geometry::buildBox(GeometryConfig config) {
     };
 
     // Assign the vertex m_vertices and m_indices to the mRootMesh
-    this->m_vertices = vertices;
-    this->m_indices = indices;
-    this->m_UVs = uvs;
-    this->m_normals = normals;
+    this->meshData->setVertices(vertices);
+    this->meshData->setIndices(indices);
+    this->meshData->setNormals(normals);
+    this->meshData->setUVs(uvs);
 }
 
 void Geometry::buildDome(GeometryConfig config) {
-    m_vertices.clear();
-    m_indices.clear();
+    this->meshData->m_vertices.clear();
+    this->meshData->m_indices.clear();
 
     // Generate the vertex m_vertices
     for (unsigned int j = 0; j <= config.dome.segments; j++) {
@@ -186,7 +186,7 @@ void Geometry::buildDome(GeometryConfig config) {
             float x = cos((float) i / (float) config.dome.segments * 2.0f * pi) * r;
             float z = sin((float) i / (float) config.dome.segments * 2.0f * pi) * r;
 
-            m_vertices.emplace_back(x, y, z);
+            this->meshData->m_vertices.emplace_back(x, y, z);
         }
     }
 
@@ -198,13 +198,13 @@ void Geometry::buildDome(GeometryConfig config) {
             unsigned int c = (j + 1) * (config.dome.segments + 1) + i;
             unsigned int d = c + 1;
 
-            m_indices.push_back(a);
-            m_indices.push_back(b);
-            m_indices.push_back(d);
+            this->meshData->m_indices.push_back(a);
+            this->meshData->m_indices.push_back(b);
+            this->meshData->m_indices.push_back(d);
 
-            m_indices.push_back(a);
-            m_indices.push_back(d);
-            m_indices.push_back(c);
+            this->meshData->m_indices.push_back(a);
+            this->meshData->m_indices.push_back(d);
+            this->meshData->m_indices.push_back(c);
         }
     }
 }
@@ -214,8 +214,8 @@ void Geometry::buildSphere(GeometryConfig config) {
     float const S = 1.0f / (float) (config.sphere.sectors - 1);
     float phi, theta;
 
-    m_vertices.clear();
-    m_indices.clear();
+    this->meshData->m_vertices.clear();
+    this->meshData->m_indices.clear();
     for (unsigned int r = 0; r < config.sphere.rings; ++r) {
         for (unsigned int s = 0; s < config.sphere.sectors; ++s) {
             phi = pi * r * R;
@@ -232,21 +232,21 @@ void Geometry::buildSphere(GeometryConfig config) {
             // Calculate normals
             glm::vec3 normal = glm::normalize(position);
 
-            m_vertices.push_back(position);
-            m_UVs.push_back(glm::vec2(u, v));
-            m_normals.push_back(normal);
+            this->meshData->m_vertices.push_back(position);
+            this->meshData->m_UVs.push_back(glm::vec2(u, v));
+            this->meshData->m_normals.push_back(normal);
         }
     }
 
     for (unsigned int r = 0; r < config.sphere.rings - 1; ++r) {
         for (unsigned int s = 0; s < config.sphere.sectors - 1; ++s) {
             unsigned int idx = r * config.sphere.sectors + s;
-            m_indices.push_back(idx);
-            m_indices.push_back(idx + 1);
-            m_indices.push_back((r + 1) * config.sphere.sectors + s + 1);
-            m_indices.push_back((r + 1) * config.sphere.sectors + s + 1);
-            m_indices.push_back((r + 1) * config.sphere.sectors + s);
-            m_indices.push_back(idx);
+            this->meshData->m_indices.push_back(idx);
+            this->meshData->m_indices.push_back(idx + 1);
+            this->meshData->m_indices.push_back((r + 1) * config.sphere.sectors + s + 1);
+            this->meshData->m_indices.push_back((r + 1) * config.sphere.sectors + s + 1);
+            this->meshData->m_indices.push_back((r + 1) * config.sphere.sectors + s);
+            this->meshData->m_indices.push_back(idx);
         }
     }
 }
@@ -294,7 +294,7 @@ void Geometry::buildCapsule(GeometryConfig config) {
             float azimuth = segmentAngle * i;
             float x = xy * cos(azimuth);
             float y = xy * sin(azimuth);
-            m_vertices.push_back(glm::vec3(x, y, z));
+            this->meshData->m_vertices.push_back(glm::vec3(x, y, z));
         }
     }
 
@@ -307,31 +307,31 @@ void Geometry::buildCapsule(GeometryConfig config) {
             float azimuth = segmentAngle * i;
             float x = xy * cos(azimuth);
             float y = xy * sin(azimuth);
-            m_vertices.push_back(glm::vec3(x, y, z));
+            this->meshData->m_vertices.push_back(glm::vec3(x, y, z));
         }
     }
 
     // Create cylinder
     unsigned int topStart = 0;
-    unsigned int bottomStart = m_vertices.size() - (config.capsule.segments + 1);
+    unsigned int bottomStart = this->meshData->m_vertices.size() - (config.capsule.segments + 1);
     for (unsigned int j = 0; j < config.capsule.segments; j++) {
         unsigned int offset = j * (config.capsule.segments + 1);
         for (unsigned int i = 0; i < config.capsule.segments; i++) {
-            m_indices.push_back(topStart + offset + i);
-            m_indices.push_back(topStart + offset + i + 1);
-            m_indices.push_back(bottomStart + offset + i);
+            this->meshData->m_indices.push_back(topStart + offset + i);
+            this->meshData->m_indices.push_back(topStart + offset + i + 1);
+            this->meshData->m_indices.push_back(bottomStart + offset + i);
 
-            m_indices.push_back(bottomStart + offset + i);
-            m_indices.push_back(topStart + offset + i + 1);
-            m_indices.push_back(bottomStart + offset + i + 1);
+            this->meshData->m_indices.push_back(bottomStart + offset + i);
+            this->meshData->m_indices.push_back(topStart + offset + i + 1);
+            this->meshData->m_indices.push_back(bottomStart + offset + i + 1);
         }
     }
 }
 
 /// torus has index glitch
 void Geometry::buildTorus(GeometryConfig config) {
-    m_vertices.clear();
-    m_indices.clear();
+    this->meshData->m_vertices.clear();
+    this->meshData->m_indices.clear();
 
     float segmentAngle = pi2 / config.torus.segments;
     float sideAngle = pi2 / config.torus.sides;
@@ -346,7 +346,7 @@ void Geometry::buildTorus(GeometryConfig config) {
             glm::vec3 dir(std::cos(theta), std::sin(theta), 0.0f);
             glm::vec3 vertex = center * (config.torus.radius + config.torus.tubeRadius * std::cos(theta)) +
                                dir * config.torus.tubeRadius * std::sin(theta);
-            m_vertices.push_back(vertex);
+            this->meshData->m_vertices.push_back(vertex);
         }
     }
 
@@ -357,23 +357,23 @@ void Geometry::buildTorus(GeometryConfig config) {
 
         for (int j = 0; j < config.torus.sides; j++, k1++, k2++) {
             if (j == config.torus.sides - 1) {
-                m_indices.push_back(k1);
-                m_indices.push_back(k2);
-                m_indices.push_back(
+                this->meshData->m_indices.push_back(k1);
+                this->meshData->m_indices.push_back(k2);
+                this->meshData->m_indices.push_back(
                         i == config.torus.segments - 1 ? k2 - config.torus.sides - 1 : k1 - config.torus.sides - 1);
 
-                m_indices.push_back(
+                this->meshData->m_indices.push_back(
                         i == config.torus.segments - 1 ? k2 - config.torus.sides - 1 : k1 - config.torus.sides - 1);
-                m_indices.push_back(k2);
-                m_indices.push_back(i == config.torus.segments - 1 ? k1 : k2);
+                this->meshData->m_indices.push_back(k2);
+                this->meshData->m_indices.push_back(i == config.torus.segments - 1 ? k1 : k2);
             } else {
-                m_indices.push_back(k1);
-                m_indices.push_back(k2);
-                m_indices.push_back(k1 + 1);
+                this->meshData->m_indices.push_back(k1);
+                this->meshData->m_indices.push_back(k2);
+                this->meshData->m_indices.push_back(k1 + 1);
 
-                m_indices.push_back(k1 + 1);
-                m_indices.push_back(k2);
-                m_indices.push_back(k2 + 1);
+                this->meshData->m_indices.push_back(k1 + 1);
+                this->meshData->m_indices.push_back(k2);
+                this->meshData->m_indices.push_back(k2 + 1);
             }
         }
     }
@@ -386,8 +386,9 @@ void Geometry::buildCone(GeometryConfig config) {
     int indexCount = config.cone.segments * 6;
 
     // Resize vectors to hold new data
-    m_vertices.resize(vertexCount);
-    m_indices.resize(indexCount);
+    this->meshData->m_indices.resize(indexCount);
+    this->meshData->m_vertices.resize(vertexCount);
+    this->meshData->m_indices.resize(indexCount);
 
     // Calculate angle and step size
     float angleStep = pi2 / config.cone.segments;
@@ -398,8 +399,8 @@ void Geometry::buildCone(GeometryConfig config) {
     glm::vec3 bottomPoint(0.0f, -config.cone.height / 2.0f, 0.0f);
 
     // Create top and bottom triangles
-    m_vertices[0] = topPoint;
-    m_vertices[vertexCount - 1] = bottomPoint;
+    this->meshData->m_vertices[0] = topPoint;
+    this->meshData->m_vertices[vertexCount - 1] = bottomPoint;
     for (int i = 1; i <= config.cone.segments; i++) {
         // Calculate current angle
         angle = angleStep * i;
@@ -411,17 +412,17 @@ void Geometry::buildCone(GeometryConfig config) {
                                config.cone.radius * glm::sin(angle));
 
         // Add m_vertices to m_vertices vector
-        m_vertices[i] = topVertex;
-        m_vertices[config.cone.segments + i] = bottomVertex;
+        this->meshData->m_vertices[i] = topVertex;
+        this->meshData->m_vertices[config.cone.segments + i] = bottomVertex;
 
-        // Add m_indices for top and bottom triangles
-        m_indices[(i - 1) * 3] = 0;
-        m_indices[(i - 1) * 3 + 1] = i;
-        m_indices[(i - 1) * 3 + 2] = i % config.cone.segments + 1;
+        // Add this->meshData->m_indices for top and bottom triangles
+        this->meshData->m_indices[(i - 1) * 3] = 0;
+        this->meshData->m_indices[(i - 1) * 3 + 1] = i;
+        this->meshData->m_indices[(i - 1) * 3 + 2] = i % config.cone.segments + 1;
 
-        m_indices[(i + config.cone.segments - 1) * 3] = vertexCount - 1;
-        m_indices[(i + config.cone.segments - 1) * 3 + 1] = config.cone.segments + i;
-        m_indices[(i + config.cone.segments - 1) * 3 + 2] = config.cone.segments + i % config.cone.segments + 1;
+        this->meshData->m_indices[(i + config.cone.segments - 1) * 3] = vertexCount - 1;
+        this->meshData->m_indices[(i + config.cone.segments - 1) * 3 + 1] = config.cone.segments + i;
+        this->meshData->m_indices[(i + config.cone.segments - 1) * 3 + 2] = config.cone.segments + i % config.cone.segments + 1;
     }
 
     // Set m_normals, m_tangents, and m_biTangents
@@ -440,8 +441,8 @@ void Geometry::buildTerrain(GeometryConfig config) {
     int numIndices = (config.terrain.width - 1) * (config.terrain.height - 1) * 6;
 
     // Resize the mPosition and index vectors
-    m_vertices.resize(numVertices);
-    m_indices.resize(numIndices);
+    this->meshData->m_vertices.resize(numVertices);
+    this->meshData->m_indices.resize(numIndices);
 
     // Populate the mPosition vector with random config.terrain.heights
     for (int x = 0; x < config.terrain.width; ++x) {
@@ -450,7 +451,7 @@ void Geometry::buildTerrain(GeometryConfig config) {
             float y = config.terrain.minHeight + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX /
                                                                                                   (config.terrain.maxHeight -
                                                                                                    config.terrain.minHeight)));
-            m_vertices[index] = glm::vec3(static_cast<float>(x) * config.terrain.cellSize, y,
+            this->meshData->m_vertices[index] = glm::vec3(static_cast<float>(x) * config.terrain.cellSize, y,
                                           static_cast<float>(z) * config.terrain.cellSize);
         }
     }
@@ -464,12 +465,12 @@ void Geometry::buildTerrain(GeometryConfig config) {
             int c = x + (z + 1) * config.terrain.width;
             int d = (x + 1) + (z + 1) * config.terrain.width;
 
-            m_indices[index++] = a;
-            m_indices[index++] = b;
-            m_indices[index++] = c;
-            m_indices[index++] = b;
-            m_indices[index++] = d;
-            m_indices[index++] = c;
+            this->meshData->m_indices[index++] = a;
+            this->meshData->m_indices[index++] = b;
+            this->meshData->m_indices[index++] = c;
+            this->meshData->m_indices[index++] = b;
+            this->meshData->m_indices[index++] = d;
+            this->meshData->m_indices[index++] = c;
         }
     }
 

@@ -2,6 +2,7 @@
 
 #include "../Component.h"
 #include "../Material.h"
+#include "MeshData.h"
 
 class GraphicsAPI;
 
@@ -11,34 +12,16 @@ class Mesh : public Component {
 public:
     Material m_material;
     Material m_material_original;
-    std::vector<glm::vec3> m_vertices;
-    std::vector<glm::vec2> m_UVs;
-    std::vector<unsigned int> m_indices;
-    std::vector<glm::vec3> m_normals;
 
-    std::vector<glm::vec3> m_tangents;
-    std::vector<glm::vec3> m_biTangents;
+    MeshData *meshData;
 
-    void addMesh(Mesh *subMesh);
+    static GraphicsAPI *m_api;
 
-public:
-    void addIndex(unsigned int index) {
-        this->m_indices.push_back(index);
-    }
+    ObjectType getType() override {
+        return ObjectType::OT_Mesh;
+    };
 
-    void addNormal (glm::vec3 normal){
-        this->m_normals.push_back(normal);
-    }
-
-    void addVertex (glm::vec3 vertex){
-        this->m_vertices.push_back(vertex);
-    }
-
-    void addUV( glm::vec2 uv){
-        this->m_UVs.push_back(uv);
-    }
     Mesh *rootMesh = nullptr;
-
     std::vector<Mesh *> meshTree;
     /**
      * meshLODTree contains other versions of the meshTree to use, we will need to apply current
@@ -47,23 +30,9 @@ public:
      */
     std::vector<Mesh *> meshLODTree; // todo allow different meshes to have a different number of LODs,
 
-
     void addChild(Component *child) override;
 
-    void setVertices(const std::vector<glm::vec3> &mVertices);
-
-    void setIndices(const std::vector<unsigned int> &mIndices);
-
-    void setUVs(std::vector<glm::vec2> &UVs);
-
-    void setNormals(const std::vector<glm::vec3> &mNormals);
-
-    unsigned int m_gID = 0;
-    static GraphicsAPI *m_api;
-
-    ObjectType getType() override {
-        return ObjectType::OT_Mesh;
-    };
+    void addMesh(Mesh *subMesh);
 
     bool isReady() override;
 
@@ -79,18 +48,6 @@ public:
 
     Material &getMaterial();
 
-    [[nodiscard]] const std::vector<glm::vec3> &getVertices() const;
-
-    [[nodiscard]] const std::vector<glm::vec2> &getUVs() const;
-
-    [[nodiscard]] const std::vector<glm::vec3> &getNormals() const;
-
-    [[nodiscard]] const std::vector<glm::vec3> &getTangents() const;
-
-    [[nodiscard]] const std::vector<glm::vec3> &getBiTangents() const;
-
-    [[nodiscard]] const std::vector<unsigned int> &getIndices() const;
-
     [[nodiscard]] unsigned int getID() const;
 
     /**
@@ -101,22 +58,8 @@ public:
      */
     unsigned int generateMeshID();
 
-    void calculateNormals();
-
-    void calculateTangents();
-
     void applyPxTransform(const physx::PxTransform &pxTransform);
 
-    void reduceMeshData(int iterations);
-    void reduceMeshData();
-    static glm::vec3 calculateMidpoint(const glm::vec3& v1, const glm::vec3& v2);
-    static glm::vec2 calculateMidpoint(const glm::vec2& uv1, const glm::vec2& uv2);
-    glm::mat4 calculateFaceQEM(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2) ;
-
-    glm::vec3 calculateOptimalPosition(const glm::mat4& qem) ;
-
-    void switchIndexOrder(bool clockwise = true);
-
-    static Mesh * getMeshFromHeightMap(const std::string &filePath, float heightScale, float uvScale, bool flipTriangles = true);
+    static Mesh *getMeshFromHeightMap(const std::string &filePath, float heightScale, float uvScale, bool flipTriangles = true);
 };
 

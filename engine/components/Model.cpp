@@ -52,10 +52,10 @@ Model *Model::createWithGeometry(Geometry::ShapeType shape, GeometryConfig confi
 //    model->childComponents.push_back(newMesh);
 //    model->addChild(newMesh);
     // check if model has UVs and Normals, if not, build them
-    if (newMesh->getUVs().size() == 0) {
+    if (newMesh->meshData->getUVs().size() == 0) {
         throw std::runtime_error("missing UVs for shape:" + shapeText);
     }
-    if (newMesh->getNormals().size() == 0) {
+    if (newMesh->meshData->getNormals().size() == 0) {
         throw std::runtime_error("missing Normals for shape:" + shapeText);
     }
 

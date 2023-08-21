@@ -89,7 +89,9 @@ public:
         Terrain
     };
 
-    Geometry() = default;;
+    Geometry() {
+     this->meshData = new MeshData();
+    }
 
     void buildQuad(GeometryConfig config = {});
 

@@ -46,8 +46,8 @@ void PhysicsLayer::initPhysicsWorld() {
 
 physx::PxTriangleMesh *PhysicsLayer::createTriangleMeshForModel(Model *model) {
 // Create the triangle mRootMesh descriptor
-    auto vertices = model->mCollisionMesh->getVertices();
-    auto indices = model->mCollisionMesh->getIndices();
+    auto vertices = model->mCollisionMesh->meshData->getVertices();
+    auto indices = model->mCollisionMesh->meshData->getIndices();
 
     // Get the scale matrix of the model
 //    glm::vec3 scale = model->getLocalScale();
