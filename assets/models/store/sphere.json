@@ -1,0 +1,13 @@
+{
+  "name": "json test model",
+  "position": {"x": 1, "y": 1, "z": 1},
+  "meshes": [
+    {
+      "name": "one",
+      "path": "geometry/icosphere.fbx"
+    }
+  ],
+  "textures": {
+    "diffuse": "diffuse.png"
+  }
+}

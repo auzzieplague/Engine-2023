@@ -28,6 +28,7 @@ std::map<std::string, std::string> AssetManager::category_path = {
 #endif
 
 FileStructure AssetManager::assetStructure;
+std::map<std::string,MeshData *>AssetManager::meshPool;
 
 std::string AssetManager::getPath(const std::string &category) {
 //    auto assetPathPrefix = "../assets/";
@@ -139,7 +140,7 @@ const FileStructure &AssetManager::getAssetStructure() {
     return assetStructure;
 }
 
-Mesh *AssetManager::convertMesh(aiMesh *mesh) {
+Mesh *AssetManager::populateMeshFromAiMesh(aiMesh *mesh) {
     auto *ourMesh = new Mesh();
     auto *ourMeshData = new MeshData();
 
@@ -213,9 +214,20 @@ Model *AssetManager::loadModel(const std::string &modelName) {
     return model;
 }
 
+Mesh *AssetManager::getExistingMeshDataForPath(const std::string &filePath) {
+//    return nullptr;
+    if ( !AssetManager::meshPool[filePath]) {
+        return nullptr;
+    }
+    auto mesh = new Mesh();
+    mesh->meshData = AssetManager::meshPool[filePath];
+//    Debug::show("using existing " + mesh->meshData->getIdentifier());
+    return mesh;
+}
+
 Mesh *AssetManager::loadMeshFromFile(const std::string &filePath) {
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(filePath,
+    const aiScene *scene = importer.ReadFile(assetPathPrefix+filePath,
                                              aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs);
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cout << "Error loading model file: " << importer.GetErrorString() << std::endl;
@@ -223,7 +235,12 @@ Mesh *AssetManager::loadMeshFromFile(const std::string &filePath) {
     }
 
     aiMesh *mesh = scene->mMeshes[0];
-    auto ourMesh = convertMesh(mesh);
+
+    Mesh* ourMesh = getExistingMeshDataForPath(filePath);
+    if (!ourMesh){
+        ourMesh = populateMeshFromAiMesh(mesh);
+        AssetManager::meshPool[filePath] = ourMesh->meshData;
+    }
     return ourMesh;
 }
 
@@ -351,9 +368,16 @@ Mesh *AssetManager::getMeshFromJson(nlohmann::json jsonMesh) {
 
     mesh->setName(jsonMesh["name"].get<std::string>());
 
-
     if (jsonMesh.contains("position")) {
         mesh->setPosition(getVectorFromJson(jsonMesh, "position"));
+    }
+
+    if (jsonMesh.contains("scale")) {
+        mesh->setLocalScale(getVectorFromJson(jsonMesh, "scale"));
+    }
+
+    if (jsonMesh.contains("rotation")) {
+        mesh->setLocalRotation(getVectorFromJson(jsonMesh, "rotation"));
     }
 
     if (jsonMesh.contains("material")) {

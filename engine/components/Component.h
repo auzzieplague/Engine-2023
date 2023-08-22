@@ -22,9 +22,9 @@ public:
     bool highlighted = false;
     bool selected = false;
 
-    const std::string &getFilePath() const;
+    [[nodiscard]] const std::string &getFilePath() const;
 
-    const std::string &getFileName() const;
+    [[nodiscard]] const std::string &getFileName() const;
 
     std::string getIdentifier(){
         return this->getName() + std::to_string(this->objectID);

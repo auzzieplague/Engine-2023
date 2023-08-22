@@ -25,6 +25,7 @@ private:
     static std::map<std::string, std::string> category_path;
 //    static std::vector<std::string> fileList;
     static FileStructure assetStructure;
+    static std::map<std::string,MeshData *>meshPool;
 public:
     static const FileStructure &getAssetStructure();
 
@@ -46,7 +47,7 @@ public:
 
     static void refreshAssets() ;
 
-    static Mesh *convertMesh(aiMesh *mesh);
+    static Mesh *populateMeshFromAiMesh(aiMesh *mesh);
 
     static nlohmann::json jsonFileToArray(std::string const &filePath);
 
@@ -63,6 +64,8 @@ public:
     static Mesh *getMeshFromJson(nlohmann::json json);
 
     static Mesh *loadMeshFromFile(const std::string &filePath);
+
+    static Mesh *getExistingMeshDataForPath(const std::string &filePath);
 
     static std::string assetPathPrefix;
 };

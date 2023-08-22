@@ -29,9 +29,9 @@ Model *modelWithSubMeshes(bool physics = true) {
 
     int count = 7;
     for (int n = count; n >= 0; n--) {
-        auto subMesh = new Geometry();
-        subMesh->buildSphere();
+        auto subMesh = AssetManager::loadMeshFromFile("geometry/box.fbx");
         subMesh->setName("sub mesh " + std::to_string(n));
+        subMesh->setLocalScale(0.5f);
         subMesh->setPosition(positions[n]); // should be relative to parent mesh
         subMesh->setSelectable();
         material.setAmbientColor(glm::vec3(n * (1 / (count ? count : 1)), 0, 0));
