@@ -39,18 +39,31 @@ void GraphicsLayer::objectTrackerRenderConfig(Scene *scene) {
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
 
-void GraphicsLayer::updateMouseOverObject(std::vector<Mesh *> meshes) {
+/**
+ * this method renders the objectID to the shader and sets the MouseOver object ID
+ * @param meshes
+ */
+void GraphicsLayer::updateMouseOverObject() {
+
+    // note here we are only interested in objects that are selectable however, we still need to render
+    // things that aren't selectable to obscure objects correctly from view
+    // object picking from meshesToRender using physx will probably be a lot more affective
     api->beginRender(objectTrackerConfig);
     api->shaderSetView(currentScene->currentCamera->getViewMatrix());
+    int currentVID = 0;
+    for (auto meshGroup: this->currentScene->meshesToRender) {
+        //todo, can also benefit from instanced rendering
+        currentVID = meshGroup.first;
+        for (const auto mesh: meshGroup.second) {
 
-    for (auto mesh: meshes) {
-        if (currentScene->selectCurrentMouseTarget && mesh->objectID == currentScene->mouseOverObjectID) {
-            currentScene->selectComponent(mesh);
+            if (currentScene->selectCurrentMouseTarget && mesh->objectID == currentScene->mouseOverObjectID) {
+                currentScene->selectComponent(mesh);
+            }
+
+            api->shaderSetTransform(mesh->getWorldMatrix());
+            api->shaderSetVec3("entityID", mesh->colourID);
+            api->renderMesh(mesh);
         }
-
-        api->shaderSetTransform(mesh->getWorldMatrix());
-        api->shaderSetVec3("entityID", mesh->colourID);
-        api->renderMesh(mesh);
     }
 
     api->flushBuffers();
@@ -62,28 +75,31 @@ void GraphicsLayer::updateMouseOverObject(std::vector<Mesh *> meshes) {
 }
 
 void GraphicsLayer::render(Scene *scene) {
-    std::vector<Mesh *> meshes;
     std::vector<Mesh *> deferredMeshes;
-    for (auto model: scene->modelsInScene) {
-        meshes.insert(meshes.end(), model->mRootMesh->meshTree.begin(), model->mRootMesh->meshTree.end());
-    }
 
     // update mouse hover objectID if required (not every frame - too expensive)W
-//    if (currentScene->updateMouseFromBuffers) {
-        this->updateMouseOverObject(meshes);
-//    }
+    if (currentScene->updateMouseFromBuffers) {
+        // note: only selectedObjects will be highlighted
+        this->updateMouseOverObject();
+    }
 
+
+    int currentVID = 0;
     // render the meshes
     api->beginRender(renderConfig);
     api->shaderSetView(scene->currentCamera->getViewMatrix());
-    for (auto mesh: meshes) {
-        // deffer selected model and its sub meshes until after the ZBuffer depth has been read for mouse
+    for (auto meshGroup: scene->meshesToRender) {
+        currentVID = meshGroup.first;
+        for(const auto mesh : meshGroup.second) {
+
+        // defer selected model and its sub meshes until after the ZBuffer depth has been read for mouse
         if (currentScene->selectedComponent && scene->selectedComponent->rootComponent == mesh->rootComponent) {
             deferredMeshes.push_back(mesh);
             continue;
         }
 
         this->renderMeshComponent(mesh);
+        }
     }
 
     // update mouse depth if required (not every frame - too expensive)
@@ -114,7 +130,13 @@ void GraphicsLayer::checkDirtyCamera(Scene *scene) const {
     }
 }
 
-void GraphicsLayer::update(Scene *) {
+void GraphicsLayer::update(Scene *scene) {
     // pickup and exchange any modelsInSceneQueue that are ready
+    scene->meshesToRender.clear();
+    for (auto model: scene->modelsInScene) {
+        for (auto mesh: model->mRootMesh->meshTree) {
+            scene->meshesToRender[mesh->getID()].push_back(mesh);
+        }
+    }
 
 }

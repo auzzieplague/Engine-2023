@@ -227,7 +227,7 @@ void PhysicsLayer::render(Scene *scene) {
 void PhysicsLayer::appendToGui(Scene *scene) {
 
     ImGui::Begin("Physics");
-    ImGui::DragFloat("simulation speed", &scene->simulationSpeed, 0.0001f, 0.0001, 0.01);
+    ImGui::DragFloat("simulation speed", &scene->simulationSpeed, 0.0001f, 0.0001, 0.04);
     ImGui::Checkbox("Show Collision Mesh", &PhysicsLayer::showCollisionMeshes);
     ImGui::End();
 }

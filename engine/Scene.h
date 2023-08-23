@@ -28,6 +28,7 @@ public:
     std::vector<Component *> componentList;
     std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
     std::vector<Model *> modelsInScene;
+    std::map<int, std::vector<Mesh *>> meshesToRender; // processed meshes keyed by vID/glID
 
     std::deque<Model *> modelsWithPhysicsQueue;
     std::vector<Model *> modelsWithPhysics;

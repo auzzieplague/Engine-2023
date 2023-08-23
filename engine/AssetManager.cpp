@@ -236,6 +236,7 @@ Mesh *AssetManager::loadMeshFromFile(const std::string &filePath) {
 
     aiMesh *mesh = scene->mMeshes[0];
 
+    // todo mark as instanced, add to lookup table
     Mesh* ourMesh = getExistingMeshDataForPath(filePath);
     if (!ourMesh){
         ourMesh = populateMeshFromAiMesh(mesh);
