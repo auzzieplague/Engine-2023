@@ -160,6 +160,10 @@ void Component::setSelectable(bool selectable) {
     this->selectable = selectable;
 }
 
+void Component::setRenderLast(bool last) {
+    this->renderLast = last;
+}
+
 
 
 

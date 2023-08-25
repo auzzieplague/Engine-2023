@@ -6,6 +6,8 @@ class API_OpenGL : public GraphicsAPI {
 public:
     RenderingConfig *currentRenderingConfig;
 
+     void setCapabilities() override;
+
     /* todo add a hook and replace glGetUniformLocation, with a map to cache the calls - then tests performance
      * modern OpenGL implementations have optimisations that can reduce the overhead of calling glGetUniformLocation,
      * so the performance difference between the two approaches may not be significant in practice.
@@ -19,6 +21,7 @@ public:
     unsigned int compileShader(std::string &source, unsigned int type) override;
 
     void beginRender(RenderingConfig &) override;
+
     void endRender(RenderingConfig &) override;
 
     unsigned int setupMesh(Mesh *mesh) override;
@@ -29,11 +32,12 @@ public:
 
     void renderMesh(Mesh *, int count) override;
 
-    void readColourBufferRBGA(unsigned char *data, float x, float y, float width=1 , float height=1) override;
+    void readColourBufferRBGA(unsigned char *data, float x, float y, float width , float height) override;
 
-    void readDepthBuffer(float *data, float x, float y, float width =1 , float height = 1) override;
+    void readDepthBuffer(float *data, float x, float y, float width , float height) override;
 
-    void flushBuffers();
+    void flushBuffers() override;
+
     unsigned int getFlag(GraphicsFlag flag) override;
 
     void shaderSetVec4(const std::string &name, const glm::vec4 &value) const override;
@@ -57,6 +61,8 @@ public:
     void shaderSetMaterial(Material material) const override;
 
     void shaderSetTransform(const glm::mat4 &mat) const override;
+
+    void shaderSetTransformList(const std::vector<glm::mat4> &mats) const override;
 
     void shaderSetView(const glm::mat4 &mat) const override;
 

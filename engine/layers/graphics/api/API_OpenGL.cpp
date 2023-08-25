@@ -2,12 +2,10 @@
 #include "API_OpenGL.h"
 #include <glm/gtc/type_ptr.hpp>
 
-// unsigned int API_OpenGL::shaderProgram;
-
 void API_OpenGL::beginRender(RenderingConfig &config) {
     currentRenderingConfig = &config;
 
-    for (auto enable : config.toEnable){
+    for (auto enable: config.toEnable) {
         glEnable(enable);
 
         if (enable == GL_BLEND) {
@@ -17,7 +15,7 @@ void API_OpenGL::beginRender(RenderingConfig &config) {
 
     config.toEnableFlags = 0;
 
-    for (auto disable : config.toDisable){
+    for (auto disable: config.toDisable) {
         glDisable(disable);
     }
 
@@ -27,8 +25,8 @@ void API_OpenGL::beginRender(RenderingConfig &config) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
     glUseProgram(config.shaderID);
-    glClearColor(config.clearColour.x, config.clearColour.y, config.clearColour.z, config.clearColour.w);
     if (config.clearFlags) {
+        glClearColor(config.clearColour.x, config.clearColour.y, config.clearColour.z, config.clearColour.w);
         glClear(config.clearFlags);
     }
 }
@@ -37,8 +35,6 @@ void API_OpenGL::endRender(RenderingConfig &config) {
 //    glClear(config.clearFlags);
 //    glfwSwapBuffers(scene->currentWindow->glRef());
 }
-
-
 
 // unsigned int GraphicsLayerOpenGL::testMeshVAO;
 void API_OpenGL::renderMesh(Mesh *mesh) {
@@ -54,7 +50,6 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
     glBindVertexArray(mesh->getID());
     glDrawElements(GL_TRIANGLES, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr);
 }
-
 
 void API_OpenGL::renderMesh(Mesh *mesh, int count) {
     if (mesh->getID() == 0) {
@@ -138,7 +133,7 @@ unsigned int API_OpenGL::loadTexture(std::string fileName) {
 
     int width, height, numChannels;
     stbi_set_flip_vertically_on_load(false);
-    unsigned char* data = stbi_load(fileName.c_str(), &width, &height, &numChannels, 0);
+    unsigned char *data = stbi_load(fileName.c_str(), &width, &height, &numChannels, 0);
     if (data) {
         GLenum format;
         if (numChannels == 1)
@@ -158,8 +153,7 @@ unsigned int API_OpenGL::loadTexture(std::string fileName) {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
         stbi_image_free(data);
-    }
-    else {
+    } else {
         // Failed to load texture
         stbi_image_free(data);
         return 0;
@@ -181,8 +175,10 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getVertices().size() * sizeof(glm::vec3), &mesh->meshData->getVertices()[0], GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void *) 0);
+    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getVertices().size() * sizeof(glm::vec3),
+                 &mesh->meshData->getVertices()[0], GL_STATIC_DRAW);
+    auto stride = sizeof(glm::vec3);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, (void *) 0);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -191,7 +187,8 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     unsigned int uvVBO;
     glGenBuffers(1, &uvVBO);
     glBindBuffer(GL_ARRAY_BUFFER, uvVBO);
-    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getUVs().size() * sizeof(glm::vec2), &mesh->meshData->getUVs()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getUVs().size() * sizeof(glm::vec2), &mesh->meshData->getUVs()[0],
+                 GL_STATIC_DRAW);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void *) 0);
     glEnableVertexAttribArray(1);
 
@@ -199,13 +196,15 @@ unsigned int API_OpenGL::setupMesh(Mesh *mesh) {
     unsigned int normalVBO;
     glGenBuffers(1, &normalVBO);
     glBindBuffer(GL_ARRAY_BUFFER, normalVBO);
-    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getNormals().size() * sizeof(glm::vec3), &mesh->meshData->getNormals()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mesh->meshData->getNormals().size() * sizeof(glm::vec3),
+                 &mesh->meshData->getNormals()[0], GL_STATIC_DRAW);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void *) 0);
     glEnableVertexAttribArray(2);
 
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->meshData->getIndices().size() * sizeof(unsigned int), &mesh->meshData->getIndices()[0], GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, mesh->meshData->getIndices().size() * sizeof(unsigned int),
+                 &mesh->meshData->getIndices()[0], GL_STATIC_DRAW);
 
     glBindVertexArray(0);
 
@@ -221,14 +220,14 @@ GLuint API_OpenGL::setupTerrain(HeightMap *heightmap) {
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-    glBufferData(GL_ARRAY_BUFFER, heightmap->vertices.size() * sizeof(float), & heightmap->vertices[0],
+    glBufferData(GL_ARRAY_BUFFER, heightmap->vertices.size() * sizeof(float), &heightmap->vertices[0],
                  GL_STATIC_DRAW);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, heightmap->indices.size() * sizeof(unsigned int), &heightmap->indices[0],
                  GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void *) 0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -312,6 +311,12 @@ void API_OpenGL::shaderSetMaterial(Material material) const {
     shaderSetInt("material.normalTexture", 1);
 }
 
+void API_OpenGL::shaderSetTransformList(const std::vector<glm::mat4> &mats) const {
+    glUniformMatrix4fv(
+            (glGetUniformLocation(currentRenderingConfig->shaderID,"modelMatrices")),
+                    mats.size(), GL_FALSE, glm::value_ptr(mats[0]));
+}
+
 void API_OpenGL::shaderSetTransform(const glm::mat4 &mat) const {
     shaderSetMat4("transform", mat);
 }
@@ -330,16 +335,26 @@ void API_OpenGL::shaderSetCamera(Camera *camera) {
 
 void API_OpenGL::readColourBufferRBGA(unsigned char *data, float x, float y, float width, float height) {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glReadPixels(x,y,width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }
 
 void API_OpenGL::readDepthBuffer(float *data, float x, float y, float width, float height) {
-    glReadPixels(x,y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT,data);
+    glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, data);
 }
 
 void API_OpenGL::flushBuffers() {
     glFlush();
     glFinish();
+}
+
+void API_OpenGL::setCapabilities() {
+    capabilities.gpuName = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+    glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &capabilities.maxTextureUnits);
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &capabilities.maxResolutionX);
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &capabilities.maxResolutionY);
+//    glGetFloatv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &capabilities.maxAnisotropy);
+    glGetIntegerv(GL_MAX_DRAW_BUFFERS, &capabilities.maxRenderTargets);
+    glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, &capabilities.maxUniformBufferBindings);
 }
 
 

@@ -8,53 +8,53 @@ class IMGuiLayer;       // forward declare friend class
 class InteractionLayer; // forward declare friend class
 
 class Component : public Object {
+    friend class IMGuiLayer;
+
+    friend class InteractionLayer;
+
 protected:
     bool mDirty = true;
     bool mReady = false;
     bool mPaused = false;
-
     std::string filePath;
-public:
-    bool selectable = false;
-
-    void setSelectable(bool selectable = true);
-
-    bool highlighted = false;
-    bool selected = false;
-
-    [[nodiscard]] const std::string &getFilePath() const;
-
-    [[nodiscard]] const std::string &getFileName() const;
-
-    std::string getIdentifier(){
-        return this->getName() + std::to_string(this->objectID);
-    }
-protected:
     std::string fileName;
 
     // for editor direct access - might be able to friend class / protected access these
     Transform localTransform{};
     Transform worldTransform{};
 
-    friend class IMGuiLayer;
-
-    friend class InteractionLayer;
-
 public:
-
-    Component(){
-        this->rootComponent = this;
-    };
+    bool renderLast = false;
     Component *parentComponent = nullptr;
     Component *rootComponent = nullptr;
+    std::vector<Component *> childComponents;
+
+    bool selectable = false;
+    bool highlighted = false;
+    bool selected = false;
+
+    void setRenderLast(bool last = true);
+
+    void setSelectable(bool selectable = true);
+
+    [[nodiscard]] const std::string &getFilePath() const;
+
+    [[nodiscard]] const std::string &getFileName() const;
+
+    std::string getIdentifier() {
+        return this->getName() + std::to_string(this->objectID);
+    }
+
+    Component() {
+        this->rootComponent = this;
+    };
 
     ObjectType getType() override {
         return ObjectType::OT_Component;
     };
 
-    void setFilePath(const std::string& fullPath) ;
+    void setFilePath(const std::string &fullPath);
 
-    std::vector<Component *> childComponents;
 
     virtual void addChild(Component *child);
 
@@ -103,7 +103,6 @@ public:
     [[nodiscard]] virtual glm::mat4 getWorldMatrix();
 
     [[nodiscard]] virtual Transform getWorldTransform() const;
-
 
     virtual void rotateX(float degrees);
 

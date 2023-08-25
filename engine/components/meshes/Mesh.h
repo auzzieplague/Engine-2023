@@ -61,5 +61,6 @@ public:
     void applyPxTransform(const physx::PxTransform &pxTransform);
 
     static Mesh *getMeshFromHeightMap(const std::string &filePath, float heightScale, float uvScale, bool flipTriangles = true);
+
 };
 

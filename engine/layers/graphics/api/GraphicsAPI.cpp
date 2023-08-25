@@ -65,4 +65,16 @@ void GraphicsAPI::flushBuffers() {
     Debug::show("missing override for flushBuffers");
 }
 
+void GraphicsAPI::setCapabilities() {
+    Debug::show("missing override for setCapabilities");
+}
+
+void GraphicsAPI::displayCapabilities() {
+    std::cout << " - Graphics Card: " << capabilities.gpuName << std::endl;
+    std::cout << " - Max Texture Units: " << capabilities.maxTextureUnits << std::endl;
+    std::cout << " - Max Resolution: " << capabilities.maxResolutionX << "x" << capabilities.maxResolutionY << std::endl;
+    std::cout << " - Max Anisotropy: " << capabilities.maxAnisotropy << "x" << std::endl;
+    std::cout << " - Max Render Targets: " << capabilities.maxRenderTargets << std::endl;
+    std::cout << " - Max Uniform Buffer Bindings: " << capabilities.maxUniformBufferBindings << std::endl;
+}
 

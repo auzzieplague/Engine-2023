@@ -16,7 +16,8 @@ public:
     /// testing
     unsigned int testMeshVAO{};
     Mesh *testMesh{};
-    RenderingConfig renderConfig;
+    RenderingConfig singleRenderConfig;
+    RenderingConfig instanceRenderConfig;
     RenderingConfig objectTrackerConfig;
 
     void setApi(GraphicsAPI *api) override;
@@ -33,7 +34,11 @@ public:
 
     void objectTrackerRenderConfig(Scene *scene);
 
-    void renderMeshComponent(Mesh *mesh) const;
+    void renderSingleMesh(Mesh *mesh) const;
+
+    void renderInstancedMesh(Mesh *mesh, std::vector<glm::mat4> transforms);
 
     void updateMouseOverObject();
+
+    bool checkDeferMesh(Mesh *mesh);
 };

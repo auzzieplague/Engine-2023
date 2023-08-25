@@ -3,14 +3,18 @@
 #include "../../GraphicsLayer.h"
 #include "../../../AssetManager.h"
 #include "RenderingConfig.h"
+#include "../GraphicsCapabilities.h"
 
 class Mesh;
 
 class GraphicsAPI {
 
-protected:
-
 public:
+    GraphicsCapabilities capabilities{};
+
+    GraphicsAPI(){};
+
+    virtual void setCapabilities();
 
     virtual unsigned int loadShader(std::string, std::string);
 
@@ -57,11 +61,17 @@ public:
 
     virtual void shaderSetTransform(const glm::mat4 &mat) const {};
 
+    virtual void shaderSetTransformList(const std::vector<glm::mat4> &mats) const {};
+
     virtual void shaderSetView(const glm::mat4 &mat) const {};
 
     virtual void shaderSetProjection(const glm::mat4 &mat) const {};
 
     virtual void  shaderSetCamera(Camera *pCamera){};
+
+    void displayCapabilities();
 };
+
+
 
 
