@@ -11,29 +11,29 @@ void GraphicsLayer::setApi(GraphicsAPI *api) {
 
 void GraphicsLayer::onAttach(Scene *scene) {
     Debug::show("[>] Graphics Attached");
+    api->initialise();
+    api->setCapabilities();
+    api->displayCapabilities();
     meshRenderConfig(scene);
     objectTrackerRenderConfig(scene);
     Material::initialise();
-    api->setCapabilities();
-    api->displayCapabilities();
+
 }
 
 void GraphicsLayer::meshRenderConfig(Scene *scene) {
-
     singleRenderConfig.shaderID = api->loadShader("general.vert", "general.frag");
     singleRenderConfig.enable(api->getFlag((CULL_FACE)));
     singleRenderConfig.enable(api->getFlag((DEPTH_TEST)));
-    singleRenderConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
-    singleRenderConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
-
-    api->beginRender(singleRenderConfig);
+    api->initRender(singleRenderConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 
     instanceRenderConfig.shaderID = api->loadShader("generalInstanced.vert", "general.frag");
     instanceRenderConfig.enable(api->getFlag((CULL_FACE)));
     instanceRenderConfig.enable(api->getFlag((DEPTH_TEST)));
-    api->beginRender(instanceRenderConfig);
+    instanceRenderConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
+    instanceRenderConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
+    api->initRender(instanceRenderConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
@@ -44,7 +44,7 @@ void GraphicsLayer::objectTrackerRenderConfig(Scene *scene) {
     objectTrackerConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
     objectTrackerConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
     objectTrackerConfig.clearColour = {0, 0, 0, 1};
-    api->beginRender(objectTrackerConfig);
+    api->initRender(objectTrackerConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
@@ -58,22 +58,28 @@ void GraphicsLayer::updateMouseOverObject() {
     // note here we are only interested in objects that are selectable however, we still need to render
     // things that aren't selectable to obscure objects correctly from view
     // object picking from meshesToRender using physx will probably be a lot more affective
+
+    // we might also store the id in the vertexbufferattribute
+
     api->beginRender(objectTrackerConfig);
     api->shaderSetView(currentScene->currentCamera->getViewMatrix());
     int currentVID = 0;
-    for (auto meshGroup: this->currentScene->instancedMeshesToRender) {
+
+    // todo selection
+    for (auto mesh: this->currentScene->singleMeshesToRender) {
+//    for (auto meshGroup: this->currentScene->instanceMeshes) {
         //todo, can also benefit from instanced rendering
-        currentVID = meshGroup.first;
-        for (const auto mesh: meshGroup.second) {
+//        currentVID = meshGroup.first;
+//        for (const auto mesh: meshGroup.second) {
 
-            if (currentScene->selectCurrentMouseTarget && mesh->objectID == currentScene->mouseOverObjectID) {
-                currentScene->selectComponent(mesh);
-            }
-
-            api->shaderSetTransform(mesh->getWorldMatrix());
-            api->shaderSetVec3("entityID", mesh->colourID);
-            api->renderMesh(mesh);
+        if (currentScene->selectCurrentMouseTarget && mesh->objectID == currentScene->mouseOverObjectID) {
+            currentScene->selectComponent(mesh);
         }
+
+        api->shaderSetTransform(mesh->getWorldMatrix());
+        api->shaderSetVec3("entityID", mesh->colourID);
+        api->renderMesh(mesh);
+//        }
     }
 
     api->flushBuffers();
@@ -91,17 +97,20 @@ void GraphicsLayer::update(Scene *scene) {
     scene->deferredMeshes.clear();
 
     for (auto model: scene->modelsInScene) {
-        for (auto mesh: model->mRootMesh->meshTree) {
-//            scene->instancedMeshesToRender[mesh->getID()].push_back(mesh);
-            scene->singleMeshesToRender.push_back(mesh);
+        if (model->mRootMesh->meshTree.size() > 1) {
+            for (auto mesh: model->mRootMesh->meshTree) {
+                scene->instancedMeshesToRender[mesh->getID()].push_back(mesh);
+            }
+        } else {
+            scene->singleMeshesToRender.push_back(model->mRootMesh);
         }
     }
 }
 
 bool GraphicsLayer::checkDeferMesh(Mesh *mesh) {
     if (mesh->renderLast ||
-            (currentScene->selectedComponent
-        && currentScene->selectedComponent->rootComponent == mesh->rootComponent)) {
+        (currentScene->selectedComponent
+         && currentScene->selectedComponent->rootComponent == mesh->rootComponent)) {
         currentScene->deferredMeshes.push_back(mesh);
         return true;
     }
@@ -109,63 +118,38 @@ bool GraphicsLayer::checkDeferMesh(Mesh *mesh) {
 }
 
 void GraphicsLayer::render(Scene *scene) {
-
-
     // update mouse hover objectID if required (not every frame - too expensive)W
     if (currentScene->updateMouseFromBuffers) {
         // note: only selectedObjects will be highlighted
         this->updateMouseOverObject();
     }
 
-// todo sort meshes into single and instanced renders - because we need to switch shaders
-
-    int currentVID = 0;
-    int meshCount = 0;
     Mesh *lastMesh = nullptr;
     std::vector<glm::mat4> transforms;
+
+    api->beginRender(instanceRenderConfig);
+    api->shaderSetView(scene->currentCamera->getViewMatrix());
+
+    for (const auto& meshGroup: scene->instancedMeshesToRender) {
+        for(const auto mesh : meshGroup.second) {
+            if (checkDeferMesh(mesh)) {
+                continue;
+            }
+            transforms.push_back(mesh->getWorldMatrix());
+            lastMesh = mesh;
+        }
+
+        this->renderInstancedMesh(lastMesh,transforms);
+    }
 
     api->beginRender(singleRenderConfig);
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 
     for (auto mesh: scene->singleMeshesToRender) {
-        if (!checkDeferMesh(mesh)){
+        if (!checkDeferMesh(mesh)) {
             this->renderSingleMesh(mesh);
         }
     }
-
-//    api->beginRender(instanceRenderConfig);
-//    api->shaderSetView(scene->currentCamera->getViewMatrix());
-
-//    for (auto meshGroup: scene->instancedMeshesToRender) {
-//        currentVID = meshGroup.first;
-//        meshCount = meshGroup.second.size();
-//
-//        for(const auto mesh : meshGroup.second) {
-//            // defer selected model and its sub meshes until after the ZBuffer depth has been read for mouse
-//            if (currentScene->selectedComponent && scene->selectedComponent->rootComponent == mesh->rootComponent) {
-//                scene->deferredMeshes.push_back(mesh);
-//                continue;
-//            }
-//
-//            if (meshCount == 1) {
-//                // render these later - using different shader
-//                scene->singleMeshesToRender.push_back(mesh);
-//                break; // need to
-////                this->renderMeshComponent(mesh);
-//            } else {
-//
-//                transforms.push_back(mesh->getWorldMatrix());
-//                // should also send / materials - tbc
-//            }
-//
-//            lastMesh = mesh;
-//        }
-//
-//        if (meshCount>1) {
-//            this->renderInstancedMesh(lastMesh,transforms);
-//        }
-//    }
-
     // todo : mark skymesh and terrains for deffered rendering to increase performance
 
 //    // update mouse depth if required (not every frame - too expensive)
@@ -174,10 +158,12 @@ void GraphicsLayer::render(Scene *scene) {
 //                             scene->currentWindow->height - Input::m_mousePos.y, 1, 1);
 ////        currentScene->updateMouseFromBuffers = false;
 ////    }
+
+
 //    // render any deferred meshes
-//    for (auto mesh: scene->deferredMeshes) {
-//        this->renderSingleMesh(mesh);
-//    }
+    for (auto mesh: scene->deferredMeshes) {
+        this->renderSingleMesh(mesh);
+    }
 }
 
 void GraphicsLayer::renderSingleMesh(Mesh *mesh) const {
@@ -190,7 +176,6 @@ void GraphicsLayer::renderSingleMesh(Mesh *mesh) const {
 }
 
 void GraphicsLayer::renderInstancedMesh(Mesh *mesh, std::vector<glm::mat4> transforms) {
-
     api->shaderSetTransformList(transforms);
     api->shaderSetMaterial(mesh->getMaterial());
     api->renderMesh(mesh, transforms.size());

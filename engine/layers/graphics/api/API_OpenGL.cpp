@@ -2,8 +2,32 @@
 #include "API_OpenGL.h"
 #include <glm/gtc/type_ptr.hpp>
 
-void API_OpenGL::beginRender(RenderingConfig &config) {
+
+void API_OpenGL::initialise() {
+    GLsizeiptr size = transformBufferSize * sizeof(glm::mat4);
+    glGenBuffers(1, &transformBuffer);
+    glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
+    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW); // Allocate 100 * 64 bytes of memory
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+
+void API_OpenGL::shaderSetTransformList(const std::vector<glm::mat4> &mats) const {
+    glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
+    GLsizeiptr size = mats.size() * sizeof(glm::mat4);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, size, &mats[0]);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+}
+
+void API_OpenGL::initRender(RenderingConfig &config) {
     currentRenderingConfig = &config;
+    glUseProgram(config.shaderID);
+}
+
+void API_OpenGL::beginRender(RenderingConfig &config) {
+
+    currentRenderingConfig = &config;
+    glUseProgram(config.shaderID);
 
     for (auto enable: config.toEnable) {
         glEnable(enable);
@@ -24,7 +48,7 @@ void API_OpenGL::beginRender(RenderingConfig &config) {
     if (config.debugMode) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     }
-    glUseProgram(config.shaderID);
+
     if (config.clearFlags) {
         glClearColor(config.clearColour.x, config.clearColour.y, config.clearColour.z, config.clearColour.w);
         glClear(config.clearFlags);
@@ -61,7 +85,7 @@ void API_OpenGL::renderMesh(Mesh *mesh, int count) {
     }
 
     glBindVertexArray(mesh->getID());
-    glDrawElementsInstanced(GL_TRIANGLES, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr, count);
+    glDrawElementsInstanced(GL_LINE_STRIP, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr, count);
 }
 
 void processInput(GLFWwindow *window) {
@@ -309,12 +333,6 @@ void API_OpenGL::shaderSetMaterial(Material material) const {
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, textureID);
     shaderSetInt("material.normalTexture", 1);
-}
-
-void API_OpenGL::shaderSetTransformList(const std::vector<glm::mat4> &mats) const {
-    glUniformMatrix4fv(
-            (glGetUniformLocation(currentRenderingConfig->shaderID,"modelMatrices")),
-                    mats.size(), GL_FALSE, glm::value_ptr(mats[0]));
 }
 
 void API_OpenGL::shaderSetTransform(const glm::mat4 &mat) const {

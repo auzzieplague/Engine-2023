@@ -6,6 +6,11 @@ class API_OpenGL : public GraphicsAPI {
 public:
     RenderingConfig *currentRenderingConfig;
 
+    int transformBufferSize = 100;
+    unsigned int transformBuffer = 0;
+
+    void initialise() override;
+
      void setCapabilities() override;
 
     /* todo add a hook and replace glGetUniformLocation, with a map to cache the calls - then tests performance
@@ -19,6 +24,8 @@ public:
     unsigned int loadTexture (std::string) override;
 
     unsigned int compileShader(std::string &source, unsigned int type) override;
+
+    void initRender(RenderingConfig &) override;
 
     void beginRender(RenderingConfig &) override;
 

@@ -14,6 +14,7 @@ public:
 
     GraphicsAPI(){};
 
+    virtual void initialise();
     virtual void setCapabilities();
 
     virtual unsigned int loadShader(std::string, std::string);
@@ -29,6 +30,7 @@ public:
     virtual void renderMesh(Mesh *);
     virtual void renderMesh(Mesh *, int);
 
+    virtual void initRender(RenderingConfig &);
     virtual void beginRender(RenderingConfig &);
     virtual void endRender(RenderingConfig &);
     virtual void flushBuffers();

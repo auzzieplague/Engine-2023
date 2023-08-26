@@ -179,7 +179,7 @@ void PhysicsLayer::collisionRenderConfig(Scene *scene) {
     renderConfig.shaderID = this->api->loadShader("general.vert", "collision.frag");
     renderConfig.enable(api->getFlag((ALPHA_BLENDING)));
 
-    api->beginRender(renderConfig);
+    api->initRender(renderConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
