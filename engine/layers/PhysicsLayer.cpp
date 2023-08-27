@@ -5,7 +5,7 @@
 #include "../components/Terrain.h"
 #include "graphics/api/GraphicsAPI.h"
 
-bool PhysicsLayer::showCollisionMeshes = true;
+bool PhysicsLayer::showCollisionMeshes = false;
 
 void PhysicsLayer::onAttach(Scene *scene) {
     Debug::show("[>] Physics Attached");
@@ -176,10 +176,10 @@ void PhysicsLayer::processModelSpawnQueue(Scene *scene) {
 }
 
 void PhysicsLayer::collisionRenderConfig(Scene *scene) {
-    renderConfig.shaderID = this->api->loadShader("general.vert", "collision.frag");
+    renderConfig = this->api->loadShader("general.vert", "collision.frag");
     renderConfig.enable(api->getFlag((ALPHA_BLENDING)));
 
-    api->initRender(renderConfig);
+    api->initialiseShader(renderConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }

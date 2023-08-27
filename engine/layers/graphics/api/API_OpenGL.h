@@ -8,6 +8,7 @@ public:
 
     int transformBufferSize = 100;
     unsigned int transformBuffer = 0;
+    unsigned int transformBufferBindingPoint = 0;
 
     void initialise() override;
 
@@ -19,13 +20,13 @@ public:
     */
     void framebufferSizeCallback(GLFWwindow *window, int width, int height) override;
 
-    unsigned int loadShader(std::string, std::string) override;
+    RenderingConfig loadShader(std::string, std::string) override;
 
     unsigned int loadTexture (std::string) override;
 
     unsigned int compileShader(std::string &source, unsigned int type) override;
 
-    void initRender(RenderingConfig &) override;
+    void initialiseShader(RenderingConfig &) override;
 
     void beginRender(RenderingConfig &) override;
 
@@ -36,8 +37,7 @@ public:
     unsigned int setupTerrain(HeightMap *heightmap) override;
 
     void renderMesh(Mesh *) override;
-
-    void renderMesh(Mesh *, int count) override;
+    void renderInstancedMesh(Mesh *, std::vector<glm::mat4> transforms) override;
 
     void readColourBufferRBGA(unsigned char *data, float x, float y, float width , float height) override;
 

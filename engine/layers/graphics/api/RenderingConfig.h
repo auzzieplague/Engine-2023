@@ -3,6 +3,8 @@
 struct RenderingConfig {
 public:
 
+    std::string name;
+
     /*
      * some flags will only need to be enabled / disabled intermittently
      * these can be added to the enable/ disable queue this should keep things

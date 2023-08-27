@@ -195,14 +195,12 @@ Model *AssetManager::loadModel(const std::string &modelName) {
     auto jsonData = jsonFileToArray(filePath);
     auto model = new Model();
     model->setName(jsonData["name"]);
-    model->print();
 
     if (jsonData.contains("position")) {
         model->setPosition(getVectorFromJson(jsonData, "position"));
     }
 
     if (jsonData.contains("meshes") && jsonData["meshes"].is_array()) {
-        std::cout << "processing mesh data\n";
         for (auto mesh: jsonData["meshes"]) {
             Mesh *newMesh = getMeshFromJson(mesh);
             model->addChild(newMesh); // add functionality to automatically add root when empty

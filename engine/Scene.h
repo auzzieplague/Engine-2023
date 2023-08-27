@@ -29,7 +29,7 @@ public:
     std::deque<Model *> modelsInSceneQueue; //todo spawn queue for threading same as onion core
     std::vector<Model *> modelsInScene;
 
-    std::map<int, std::vector<Mesh *>> instancedMeshesToRender; // processed meshes keyed by vID/glID
+    std::map<unsigned int, std::vector<Mesh *>> instancedMeshesToRender; // processed meshes keyed by vID/glID
     std::vector<Mesh *> singleMeshesToRender;
     std::vector<Mesh *> deferredMeshes; // render meshes last
 

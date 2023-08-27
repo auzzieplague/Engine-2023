@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../GraphicsLayer.h"
+#include "../../GraphicsLayer.h" // todo remove ?? add glfw refences here
 #include "../../../AssetManager.h"
 #include "RenderingConfig.h"
 #include "../GraphicsCapabilities.h"
@@ -17,7 +17,7 @@ public:
     virtual void initialise();
     virtual void setCapabilities();
 
-    virtual unsigned int loadShader(std::string, std::string);
+    virtual RenderingConfig loadShader(std::string, std::string);
 
     virtual unsigned int loadTexture (std::string filename);
 
@@ -28,9 +28,9 @@ public:
     virtual unsigned int setupTerrain(HeightMap *heightmap);
 
     virtual void renderMesh(Mesh *);
-    virtual void renderMesh(Mesh *, int);
+    virtual void renderInstancedMesh(Mesh *, std::vector<glm::mat4> transforms);
 
-    virtual void initRender(RenderingConfig &);
+    virtual void initialiseShader(RenderingConfig &);
     virtual void beginRender(RenderingConfig &);
     virtual void endRender(RenderingConfig &);
     virtual void flushBuffers();

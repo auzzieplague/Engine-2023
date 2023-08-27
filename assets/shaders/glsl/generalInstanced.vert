@@ -5,7 +5,7 @@ layout (location = 1) in vec2 uv;
 layout (location = 2) in vec3 normal;
 
 layout(std140) uniform TransformBlock {
-    mat4 modelMatrices[];
+    mat4 modelMatrices[100];
 };
 
 uniform mat4 projection;

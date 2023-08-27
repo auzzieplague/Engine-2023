@@ -101,7 +101,4 @@ void setupScene(Scene *scene) {
     scene->addComponent(terrain);
 
     scene->currentCamera->setPosition({0, 0, 20});
-
-    Debug::show("[->] Use NumPad 4862+- to navigate test Model");
-    Debug::show("[->] RPY (roll, pitch, yaw) UIO (world xyz) rotations ");
 }

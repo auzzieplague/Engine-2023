@@ -8,9 +8,9 @@ unsigned int GraphicsAPI::compileShader(std::string &source, unsigned int type) 
     return 0;
 }
 
-unsigned int GraphicsAPI::loadShader(std::string, std::string) {
+RenderingConfig GraphicsAPI::loadShader(std::string, std::string) {
     Debug::show("missing override for loadShader");
-    return 0;
+    return RenderingConfig();
 }
 
 unsigned int GraphicsAPI::setupMesh(Mesh *instance) {
@@ -22,8 +22,9 @@ void GraphicsAPI::renderMesh(Mesh *) {
     Debug::show("missing override for renderMesh");
 }
 
-void GraphicsAPI::renderMesh(Mesh *, int) {
-    Debug::show("missing override for renderMesh instanced");
+
+void GraphicsAPI::renderInstancedMesh(Mesh *, std::vector<glm::mat4> transforms){
+    Debug::show("missing override for renderInstancedMesh ");
 }
 
 void GraphicsAPI::beginRender(RenderingConfig &) {
@@ -69,8 +70,8 @@ void GraphicsAPI::setCapabilities() {
     Debug::show("missing override for setCapabilities");
 }
 
-void GraphicsAPI::initRender(RenderingConfig &) {
-    Debug::show("missing override for initRender");
+void GraphicsAPI::initialiseShader(RenderingConfig &) {
+    Debug::show("missing override for initialiseShader");
 }
 
 void GraphicsAPI::displayCapabilities() {

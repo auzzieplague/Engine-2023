@@ -4,25 +4,92 @@
 
 
 void API_OpenGL::initialise() {
+//    note: opengl initialise - for shader init see init render.shader
     GLsizeiptr size = transformBufferSize * sizeof(glm::mat4);
     glGenBuffers(1, &transformBuffer);
     glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
-    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW); // Allocate 100 * 64 bytes of memory
+//    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW); // Allocate 100 * 64 bytes of memory
+    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_DYNAMIC_DRAW ); // dynamic because constantly changing
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    glBindBufferBase(GL_UNIFORM_BUFFER, transformBufferBindingPoint, transformBuffer);
 }
 
+
+RenderingConfig API_OpenGL::loadShader(std::string vertex, std::string fragment) {
+
+    auto config = RenderingConfig();
+    config.name = vertex +"_" + fragment;
+
+    /// lookup paths in assetManager
+    std::string vertexPath = AssetManager::getRelativePath("shaders_opengl", vertex);
+    std::string vertexSource = AssetManager::stringFromFile(vertexPath);
+    std::string fragmentPath = AssetManager::getRelativePath("shaders_opengl", fragment);
+    std::string fragmentSource = AssetManager::stringFromFile(fragmentPath);
+
+    unsigned int program = glCreateProgram();
+    unsigned int vs = compileShader(vertexSource, GL_VERTEX_SHADER);
+    unsigned int fs = compileShader(fragmentSource, GL_FRAGMENT_SHADER);
+
+    GLint success;
+    GLchar infoLog[512];
+
+    // Check shader compilation
+    glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(vs, sizeof(infoLog), NULL, infoLog);
+        Debug::show("frag Shader Compilation Error: "+ config.name);
+        Debug::show(infoLog);
+    }
+    // Check shader compilation
+    glGetShaderiv(vs, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(vs, sizeof(infoLog), NULL, infoLog);
+        Debug::show("vertex Shader Compilation Error: "+ config.name);
+        Debug::show(infoLog);
+    }
+
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+
+    glLinkProgram(program);
+    glValidateProgram(program);
+
+    // Check program linking
+    GLint logLength;
+    glGetProgramiv(program, GL_INFO_LOG_LENGTH, &logLength);
+    if (logLength > 1) {
+        glGetProgramInfoLog(program, sizeof(infoLog), NULL, infoLog);
+        Debug::show("[X] - Program Linking Error: " + config.name);
+        Debug::show(infoLog);
+    }
+
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
+
+    config.shaderID = program;
+    return config;
+}
+
+void API_OpenGL::initialiseShader(RenderingConfig &config) {
+    currentRenderingConfig = &config;
+    glUseProgram(config.shaderID);
+
+    GLuint blockIndex = glGetUniformBlockIndex(config.shaderID, "TransformBlock");
+
+    if (blockIndex != GL_INVALID_INDEX) {
+        glUniformBlockBinding(config.shaderID, blockIndex, transformBufferBindingPoint);
+        Debug::show("Transform Block Found");
+    }
+}
 
 void API_OpenGL::shaderSetTransformList(const std::vector<glm::mat4> &mats) const {
     glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
     GLsizeiptr size = mats.size() * sizeof(glm::mat4);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, size, &mats[0]);
+    glBufferSubData(GL_UNIFORM_BUFFER, 0, size, mats.data());
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void API_OpenGL::initRender(RenderingConfig &config) {
-    currentRenderingConfig = &config;
-    glUseProgram(config.shaderID);
-}
 
 void API_OpenGL::beginRender(RenderingConfig &config) {
 
@@ -73,9 +140,10 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
 
     glBindVertexArray(mesh->getID());
     glDrawElements(GL_TRIANGLES, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr);
+//    glDrawElements(GL_LINE_STRIP, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr);
 }
 
-void API_OpenGL::renderMesh(Mesh *mesh, int count) {
+void API_OpenGL::renderInstancedMesh(Mesh *mesh, std::vector<glm::mat4> transforms) {
     if (mesh->getID() == 0) {
         mesh->generateMeshID();
     }
@@ -85,7 +153,22 @@ void API_OpenGL::renderMesh(Mesh *mesh, int count) {
     }
 
     glBindVertexArray(mesh->getID());
-    glDrawElementsInstanced(GL_LINE_STRIP, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr, count);
+    // todo fix UBO
+    shaderSetTransformList(transforms);
+    glDrawElementsInstanced(GL_LINE_STRIP, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr, transforms.size());
+
+/**
+ * currently looking at why objects are being rendered black, even after changing the renderer back
+ * were just rendering single items to test the matrix being loaded correctly.
+ */
+
+    // todo strange that we have no materials flowing through even on single render
+    // we havent pushed texture 1 into this shader
+//    for (auto transform: transforms) {
+//        shaderSetTransform(transforms[0]);
+//        shaderSetMaterial(mesh->getMaterial());
+//        glDrawElements(GL_LINE_STRIP, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr);
+//    }
 }
 
 void processInput(GLFWwindow *window) {
@@ -127,29 +210,6 @@ unsigned int API_OpenGL::compileShader(std::string &source, unsigned int type) {
     return id;
 }
 
-unsigned int API_OpenGL::loadShader(std::string vertex, std::string fragment) {
-
-    /// lookup paths in assetManager
-    std::string vertexPath = AssetManager::getRelativePath("shaders_opengl", vertex);
-    std::string vertexSource = AssetManager::stringFromFile(vertexPath);
-    std::string fragmentPath = AssetManager::getRelativePath("shaders_opengl", fragment);
-    std::string fragmentSource = AssetManager::stringFromFile(fragmentPath);
-
-    unsigned int program = glCreateProgram();
-    unsigned int vs = compileShader(vertexSource, GL_VERTEX_SHADER);
-    unsigned int fs = compileShader(fragmentSource, GL_FRAGMENT_SHADER);
-
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-
-    glLinkProgram(program);
-    glValidateProgram(program);
-
-    glDeleteShader(vs);
-    glDeleteShader(fs);
-
-    return program;
-}
 
 unsigned int API_OpenGL::loadTexture(std::string fileName) {
     unsigned int textureID;
@@ -366,7 +426,7 @@ void API_OpenGL::flushBuffers() {
 }
 
 void API_OpenGL::setCapabilities() {
-    capabilities.gpuName = reinterpret_cast<const char*>(glGetString(GL_RENDERER));
+    capabilities.gpuName = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &capabilities.maxTextureUnits);
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &capabilities.maxResolutionX);
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &capabilities.maxResolutionY);

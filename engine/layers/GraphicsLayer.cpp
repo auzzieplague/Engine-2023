@@ -17,34 +17,36 @@ void GraphicsLayer::onAttach(Scene *scene) {
     meshRenderConfig(scene);
     objectTrackerRenderConfig(scene);
     Material::initialise();
-
 }
 
 void GraphicsLayer::meshRenderConfig(Scene *scene) {
-    singleRenderConfig.shaderID = api->loadShader("general.vert", "general.frag");
+    singleRenderConfig = api->loadShader("general.vert", "general.frag");
     singleRenderConfig.enable(api->getFlag((CULL_FACE)));
     singleRenderConfig.enable(api->getFlag((DEPTH_TEST)));
-    api->initRender(singleRenderConfig);
+    api->initialiseShader(singleRenderConfig);
+    // todo - move projection and camera into config -
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 
-    instanceRenderConfig.shaderID = api->loadShader("generalInstanced.vert", "general.frag");
+    // todo loadShader should return a shader config object
+
+    instanceRenderConfig = api->loadShader("generalInstanced.vert", "general.frag");
     instanceRenderConfig.enable(api->getFlag((CULL_FACE)));
     instanceRenderConfig.enable(api->getFlag((DEPTH_TEST)));
     instanceRenderConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
     instanceRenderConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
-    api->initRender(instanceRenderConfig);
+    api->initialiseShader(instanceRenderConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
 
 
 void GraphicsLayer::objectTrackerRenderConfig(Scene *scene) {
-    objectTrackerConfig.shaderID = api->loadShader("general.vert", "object_lookup.frag");
+    objectTrackerConfig= api->loadShader("general.vert", "object_lookup.frag");
     objectTrackerConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
     objectTrackerConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
     objectTrackerConfig.clearColour = {0, 0, 0, 1};
-    api->initRender(objectTrackerConfig);
+    api->initialiseShader(objectTrackerConfig);
     api->shaderSetProjection(scene->currentCamera->getProjectionMatrix());
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 }
@@ -100,6 +102,7 @@ void GraphicsLayer::update(Scene *scene) {
         if (model->mRootMesh->meshTree.size() > 1) {
             for (auto mesh: model->mRootMesh->meshTree) {
                 scene->instancedMeshesToRender[mesh->getID()].push_back(mesh);
+//                scene->singleMeshesToRender.push_back(mesh);
             }
         } else {
             scene->singleMeshesToRender.push_back(model->mRootMesh);
@@ -124,22 +127,26 @@ void GraphicsLayer::render(Scene *scene) {
         this->updateMouseOverObject();
     }
 
-    Mesh *lastMesh = nullptr;
+    Mesh *renderMesh = nullptr;
     std::vector<glm::mat4> transforms;
 
     api->beginRender(instanceRenderConfig);
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 
     for (const auto& meshGroup: scene->instancedMeshesToRender) {
+
         for(const auto mesh : meshGroup.second) {
             if (checkDeferMesh(mesh)) {
                 continue;
             }
             transforms.push_back(mesh->getWorldMatrix());
-            lastMesh = mesh;
+            if (renderMesh == nullptr) {
+                renderMesh = mesh;
+            }
         }
 
-        this->renderInstancedMesh(lastMesh,transforms);
+        this->renderInstancedMesh(renderMesh,transforms);
+        renderMesh = nullptr;
     }
 
     api->beginRender(singleRenderConfig);
@@ -150,7 +157,7 @@ void GraphicsLayer::render(Scene *scene) {
             this->renderSingleMesh(mesh);
         }
     }
-    // todo : mark skymesh and terrains for deffered rendering to increase performance
+    // todo : mark sky mesh and terrains for deferred rendering to increase performance
 
 //    // update mouse depth if required (not every frame - too expensive)
 ////    if (currentScene->updateMouseFromBuffers) {
@@ -160,7 +167,7 @@ void GraphicsLayer::render(Scene *scene) {
 ////    }
 
 
-//    // render any deferred meshes
+    // render any deferred meshes
     for (auto mesh: scene->deferredMeshes) {
         this->renderSingleMesh(mesh);
     }
@@ -176,9 +183,7 @@ void GraphicsLayer::renderSingleMesh(Mesh *mesh) const {
 }
 
 void GraphicsLayer::renderInstancedMesh(Mesh *mesh, std::vector<glm::mat4> transforms) {
-    api->shaderSetTransformList(transforms);
-    api->shaderSetMaterial(mesh->getMaterial());
-    api->renderMesh(mesh, transforms.size());
+    api->renderInstancedMesh(mesh, transforms);
 }
 
 void GraphicsLayer::checkDirtyCamera(Scene *scene) const {
