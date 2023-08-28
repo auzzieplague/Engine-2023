@@ -7,6 +7,15 @@
 #include "graphics/GraphicsFlag.h"
 
 /**
+ * todo uniform for lights,
+ * instanced items should have a transform / material reference
+ * uniform for instanced mesh materials ^
+ */
+struct ShaderUniformState {
+
+};
+
+/**
  * When instantiating this class we pass through a framework, which in turn sets m_up the function pointers
  * for OPENGL or other framework options
  */

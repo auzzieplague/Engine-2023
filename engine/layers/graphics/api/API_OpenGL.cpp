@@ -12,6 +12,9 @@ void API_OpenGL::initialise() {
     glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_DYNAMIC_DRAW ); // dynamic because constantly changing
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     glBindBufferBase(GL_UNIFORM_BUFFER, transformBufferBindingPoint, transformBuffer);
+
+
+//    glEnable(GL_MULTISAMPLE); // for antialiasing
 }
 
 

@@ -14,6 +14,8 @@ GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::stri
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
     //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    glfwWindowHint(GLFW_SAMPLES, 4); // multisampling for antialiasing 
+
     GLFWwindow *window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
 
     glfwMakeContextCurrent(window);

@@ -6,7 +6,7 @@ class API_OpenGL : public GraphicsAPI {
 public:
     RenderingConfig *currentRenderingConfig;
 
-    int transformBufferSize = 100;
+    int transformBufferSize = 1000;
     unsigned int transformBuffer = 0;
     unsigned int transformBufferBindingPoint = 0;
 

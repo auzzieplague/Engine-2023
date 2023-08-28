@@ -54,6 +54,47 @@ Model *modelWithSubMeshes(bool physics = true) {
     return model;
 }
 
+
+Model *gridOfCubes(bool physics = true) {
+    ColliderConfig config{};
+    Material material;
+    material.loadFromAsset("mats_ground", "gray-bricks1");
+
+    auto *model = Model::createWithGeometry(Geometry::ShapeType::Sphere);
+    model->setName("grid root");
+    model->setLocalRotation(glm::vec3(-30, 0, -25));
+    model->setMaterial(material);
+    model->setLocalScale(1);
+    model->setPosition(glm::vec3(0, 0, -20));
+    model->setSelectable();
+
+    glm::vec3 position = {1, 20, 20};
+    auto scale = 0.5;
+    auto gap = 3;
+    auto count = 5;
+    auto n = 0;
+    for (int x = -count; x < count; x++) {
+        for (int z = -count; z < count; z++) {
+            for (int y = -count; y < count; y++) {
+                auto subMesh = AssetManager::loadMeshFromFile("geometry/box.fbx");
+                subMesh->setName("sub mesh " + std::to_string(n));
+                subMesh->setLocalScale(scale);
+                subMesh->setPosition({x *gap, y*gap , z*gap });
+                subMesh->setSelectable();
+                material.setAmbientColor(glm::vec3(n * (1 / (count ? count : 1)), 0, 0));
+                subMesh->setMaterial(material);
+                subMesh->getMaterial().randomAmbientColor();
+                model->mRootMesh->addChild(subMesh);
+                n++;
+            }
+        }
+    }
+    return model;
+};
+
+
+
+
 Model *terrainModel() {
     ColliderConfig config{};
     Material material;
@@ -89,6 +130,8 @@ void setupScene(Scene *scene) {
     assimpModel->autoPhysics(); // todo - build automatic hull
     scene->addComponent(assimpModel);
 
+    auto cubes = gridOfCubes();
+    scene->addComponent(cubes);
     /// todos:
     //add physics to loaded models
     // fix autoscale() on import
