@@ -30,7 +30,7 @@ void GraphicsLayer::meshRenderConfig(Scene *scene) {
 
     // todo loadShader should return a shader config object
 
-    instanceRenderConfig = api->loadShader("generalInstanced.vert", "general.frag");
+    instanceRenderConfig = api->loadShader("generalInstanced.vert", "generalInstanced.frag");
     instanceRenderConfig.enable(api->getFlag((CULL_FACE)));
     instanceRenderConfig.enable(api->getFlag((DEPTH_TEST)));
     instanceRenderConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
@@ -101,7 +101,14 @@ void GraphicsLayer::update(Scene *scene) {
     for (auto model: scene->modelsInScene) {
         if (model->mRootMesh->meshTree.size() > 1) {
             for (auto mesh: model->mRootMesh->meshTree) {
-                scene->instancedMeshesToRender[mesh->getID()].push_back(mesh);
+                // usually we initialise if not ready inside the rendered but here we need those vIDs
+                auto meshID = mesh->getID();
+                if (meshID != 0) {
+                    scene->instancedMeshesToRender[meshID].push_back(mesh);
+                } else {
+                    mesh->generateMeshID();
+                }
+
 //                scene->singleMeshesToRender.push_back(mesh);
             }
         } else {
@@ -134,7 +141,7 @@ void GraphicsLayer::render(Scene *scene) {
     api->shaderSetView(scene->currentCamera->getViewMatrix());
 
     for (const auto& meshGroup: scene->instancedMeshesToRender) {
-
+        transforms.clear();
         for(const auto mesh : meshGroup.second) {
             if (checkDeferMesh(mesh)) {
                 continue;
@@ -143,9 +150,10 @@ void GraphicsLayer::render(Scene *scene) {
             if (renderMesh == nullptr) {
                 renderMesh = mesh;
             }
+
+            this->renderInstancedMesh(renderMesh,transforms);
         }
 
-        this->renderInstancedMesh(renderMesh,transforms);
         renderMesh = nullptr;
     }
 

@@ -84,6 +84,7 @@ void setupScene(Scene *scene) {
     scene->addComponent(playerObject);
 
     auto assimpModel = AssetManager::loadModelFromFile("../assets/models/testModel.obj");
+    assimpModel->mRootMesh->setMaterial(*Material::defaultMaterial);
     assimpModel->setPosition({1, 1, -20});
     assimpModel->autoPhysics(); // todo - build automatic hull
     scene->addComponent(assimpModel);
@@ -95,6 +96,7 @@ void setupScene(Scene *scene) {
     // load scene
 
     auto jsonModel = AssetManager::loadModel("testModel");
+    jsonModel->mRootMesh->setMaterial(*Material::defaultMaterial);
     scene->addComponent(jsonModel);
 
     auto terrain = terrainModel();

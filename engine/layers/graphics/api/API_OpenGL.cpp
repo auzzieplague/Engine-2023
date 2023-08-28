@@ -66,7 +66,6 @@ RenderingConfig API_OpenGL::loadShader(std::string vertex, std::string fragment)
     glDeleteShader(vs);
     glDeleteShader(fs);
 
-
     config.shaderID = program;
     return config;
 }
@@ -144,18 +143,20 @@ void API_OpenGL::renderMesh(Mesh *mesh) {
 }
 
 void API_OpenGL::renderInstancedMesh(Mesh *mesh, std::vector<glm::mat4> transforms) {
-    if (mesh->getID() == 0) {
-        mesh->generateMeshID();
-    }
+//    if (mesh->getID() == 0) {
+//        mesh->generateMeshID();
+//    }
 
     if (!mesh->isReady()) {
         return;
     }
 
     glBindVertexArray(mesh->getID());
+    shaderSetMaterial(mesh->getMaterial());
     // todo fix UBO
     shaderSetTransformList(transforms);
-    glDrawElementsInstanced(GL_LINE_STRIP, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr, transforms.size());
+    glDrawElementsInstanced(GL_TRIANGLES, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr, transforms.size());
+//    glDrawElementsInstanced(GL_LINE_STRIP, mesh->meshData->getIndices().size(), GL_UNSIGNED_INT, nullptr, transforms.size());
 
 /**
  * currently looking at why objects are being rendered black, even after changing the renderer back

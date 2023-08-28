@@ -63,7 +63,7 @@ Model *Model::createWithGeometry(Geometry::ShapeType shape, GeometryConfig confi
     model->mCollisionMesh = newMesh;
     model->mRootMesh = newMesh;
     newMesh->parentComponent = model;
-    model->addChild(newMesh);
+//    model->addChild(newMesh);
     return model;
 }
 
