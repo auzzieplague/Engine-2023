@@ -23,6 +23,11 @@ private:
     std::vector<ImageButton> toolboxButtons;
 
 public:
+
+    std::string getName() override{
+        return "Interaction Layer";
+    };
+
     Component *currentComponent = nullptr;
 
     void onAttach(Scene *scene) override;

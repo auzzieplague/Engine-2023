@@ -28,7 +28,7 @@ void main()
 
 
     // Light properties
-    vec3 lightPosition = vec3(0, 2, -4.5);
+    vec3 lightPosition = vec3(0, 5, -10.5);
     vec3 lightColor = vec3(1,1,1);
     float specularStrength =0.5;
 

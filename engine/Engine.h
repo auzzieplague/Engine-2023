@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../core/Performance.h"
 #include "Object.h"
 #include "Scene.h"
 #include "layers/GraphicsLayer.h"

@@ -18,6 +18,11 @@ class CollisionLayer : public Layer {
 //    unsigned int cursorOverObjectID = 0;
 
 public:
+
+    std::string getName() override{
+        return "Collision Layer";
+    };
+
     RenderingConfig renderConfig;
 
     void onAttach(Scene *scene) override;

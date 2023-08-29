@@ -17,7 +17,6 @@ public:
         return ObjectType::OT_Layer;
     };
 
-
     // overrides
     bool initialised = false;
 

@@ -1,4 +1,5 @@
 #include "IMGuiLayer.h"
+#include <algorithm> // for std::sort
 
 // note : require openGL attached first
 void IMGuiLayer::onAttach(Scene *scene) {
@@ -136,7 +137,34 @@ void IMGuiLayer::drawGizmos(Scene *scene) {
     ImGui::End();
 }
 
+void IMGuiLayer::showPerformanceWindow(Scene *scene) {
+    // Grab instance of PerformanceMeasurer
+    PerformanceMeasurer& perf = PerformanceMeasurer::getInstance();
+
+    // Create an ImGui window
+    ImGui::Begin("Performance Window");
+
+    // Get the durations
+    auto durations = perf.getDurations();
+
+    // Loop through durations and build ImGui text output
+    for (const auto& pair : durations) {
+        const std::string& title = pair.first;
+        double duration = pair.second;
+
+        ImGui::Text("Title: %s, Duration: %.9f ms", title.c_str(), duration);
+//        if (duration >= 0) {
+//        } else {
+//            ImGui::Text("Title: %s, Duration: Not stopped yet", title.c_str());
+//        }
+    }
+
+    // End ImGui window
+    ImGui::End();
+}
+
 void IMGuiLayer::render(Scene *scene) {
+    showPerformanceWindow(scene);
     ImGui::ShowDemoWindow();
     drawGizmos(scene);
     ImGui::Render();

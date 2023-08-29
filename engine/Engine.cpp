@@ -37,45 +37,61 @@ void Engine::processGUILayers() {
 
 void Engine::loopLayers() {
     initFrameTimer();
+    PerformanceMeasurer& perf = PerformanceMeasurer::getInstance();
+
     if (Window::getCurrentWindow()) {
         while (!glfwWindowShouldClose(Window::getCurrentWindow())) {
-
             currentScene->currentFrame++;
 
             for (Layer *layer: this->layers) {
+                perf.start("before_update_"+layer->getName());
                 layer->beforeUpdate(this->currentScene);
+                perf.stop("before_update_"+layer->getName());
             }
 
             for (Layer *layer: this->layers) {
+                perf.start("update_"+layer->getName());
                 layer->update(this->currentScene);
+                perf.stop("update_"+layer->getName());
             }
 
             for (Layer *layer: this->layers) {
+                perf.start("after_update_"+layer->getName());
                 layer->afterUpdate(this->currentScene);
+                perf.stop("after_update_"+layer->getName());
             }
 
             for (Layer *layer: this->layers) {
+                perf.start("before_render"+layer->getName());
                 layer->beforeRender(this->currentScene);
+                perf.stop("before_render"+layer->getName());
             }
 
             this->processGUILayers();
 
             for (Layer *layer: this->layers) {
+                perf.start("render_"+layer->getName());
                 layer->render(this->currentScene);
+                perf.stop("render_"+layer->getName());
             }
 
+            perf.start("combined inputs");
             for (auto it = std::rbegin(this->layers); it != std::rend(this->layers); ++it) {
                 (*it)->processInput(this->currentScene);
             }
+            perf.stop("combined inputs");
 
             for (auto it = std::rbegin(this->layers); it != std::rend(this->layers); ++it) {
+                perf.start("after update_"+(*it)->getName());
                 (*it)->afterRender(this->currentScene);
+                perf.stop("after update_"+(*it)->getName());
             }
 
             // pass down framerate value to scene for use by layers
             this->currentScene->currentFrameRate = this->getCurrentFramerate();
 //            glfwPollEvents();
         }
+
     }
 
     Engine::stop();

@@ -7,6 +7,10 @@
 class WindowLayer : public Layer {
 
 public:
+    std::string getName() override{
+        return "Window Layer";
+    };
+
     void onAttach(Scene *) override;
 
     void onDetach(Scene *) override;

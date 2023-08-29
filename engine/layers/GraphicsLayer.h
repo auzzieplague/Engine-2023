@@ -22,6 +22,9 @@ struct ShaderUniformState {
 class GraphicsLayer : public Layer {
 
 public:
+    std::string getName() override{
+        return "Graphics Layer";
+    };
     /// testing
     unsigned int testMeshVAO{};
     Mesh *testMesh{};

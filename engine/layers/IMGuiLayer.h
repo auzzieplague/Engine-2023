@@ -18,6 +18,10 @@
 class IMGuiLayer :
         public Layer
 {
+    std::string getName() override{
+        return "IMGui Layer";
+    };
+
     ObjectType getType() override {
         return ObjectType::OT_Layer_GUI;
     };
@@ -42,6 +46,7 @@ class IMGuiLayer :
 
     void buildDockSpace(Scene* scene);
 
+    void showPerformanceWindow(Scene *scene);
 };
 
 

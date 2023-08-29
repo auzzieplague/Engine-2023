@@ -33,6 +33,7 @@ void GraphicsLayer::meshRenderConfig(Scene *scene) {
     instanceRenderConfig = api->loadShader("generalInstanced.vert", "generalInstanced.frag");
     instanceRenderConfig.enable(api->getFlag((CULL_FACE)));
     instanceRenderConfig.enable(api->getFlag((DEPTH_TEST)));
+    instanceRenderConfig.enable(api->getFlag((ALPHA_BLENDING)));
     instanceRenderConfig.setClearFlag(api->getFlag((CLEAR_COLOUR_BUFFER)));
     instanceRenderConfig.setClearFlag(api->getFlag((CLEAR_DEPTH_BUFFER)));
     api->initialiseShader(instanceRenderConfig);

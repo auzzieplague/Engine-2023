@@ -13,6 +13,13 @@
       "position": {"x": -2, "y": 1, "z": 1},
       "scale": {"x": 2, "y": 2, "z": 2},
       "rotation": {"x": 45, "y": 2, "z": 2}
+    },
+    {
+      "name": "three",
+      "path": "models/testModel.obj",
+      "position": {"x": 2, "y": 1, "z": 1},
+      "scale": {"x": 2, "y": 2, "z": 2},
+      "rotation": {"x": 45, "y": 2, "z": 2}
     }
   ],
   "textures": {

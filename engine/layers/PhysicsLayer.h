@@ -8,6 +8,10 @@
 class PhysicsLayer  : public Layer {
 
 public:
+    std::string getName() override{
+        return "Physics Layer";
+    };
+
     physx::PxDefaultAllocator      mDefaultAllocatorCallback;
     physx::PxDefaultErrorCallback  mDefaultErrorCallback;
     physx::PxDefaultCpuDispatcher* mDispatcher = nullptr;
