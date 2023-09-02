@@ -59,6 +59,8 @@ public:
     void autoPhysics();
 
     void addChild(Component *child) override;
+
+    void mergeSubMeshes();
 };
 
 

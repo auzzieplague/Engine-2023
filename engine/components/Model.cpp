@@ -67,6 +67,61 @@ Model *Model::createWithGeometry(Geometry::ShapeType shape, GeometryConfig confi
     return model;
 }
 
+void Model::mergeSubMeshes() {
+
+    //todo fix - meshes arent being merged correctly.
+    if (!mRootMesh) {
+        // If there's no root mesh, there's nothing to merge
+        return;
+    }
+
+    // Create a new mesh data to hold the merged data
+    MeshData mergedMeshData;
+
+    // Loop through the meshTree and merge data from each mesh
+    for (Mesh* mesh : mRootMesh->meshTree) {
+        // Get the transform of the current mesh
+        const glm::mat4 meshTransform = mesh->getLocalMatrix();
+
+        // Loop through vertices and transform them
+        for (const glm::vec3& vertex : mesh->meshData->m_vertices) {
+            glm::vec3 transformedVertex =  meshTransform * glm::vec4(vertex, 1.0f);
+            mergedMeshData.m_vertices.push_back(transformedVertex);
+        }
+
+        // Merge other data like UVs, normals, etc.
+        mergedMeshData.m_UVs.insert(mergedMeshData.m_UVs.end(), mesh->meshData->m_UVs.begin(), mesh->meshData->m_UVs.end());
+        mergedMeshData.m_normals.insert(mergedMeshData.m_normals.end(), mesh->meshData->m_normals.begin(), mesh->meshData->m_normals.end());
+        // Merge indices with an offset
+        unsigned int vertexOffset = mergedMeshData.m_vertices.size();
+        for (unsigned int index : mesh->meshData->m_indices) {
+            mergedMeshData.m_indices.push_back(index + vertexOffset);
+        }
+    }
+
+    // Set the merged mesh data to the root mesh
+    if (!mRootMesh->meshData) {
+        mRootMesh->meshData = new MeshData(); // Create a new MeshData if the root mesh doesn't have one
+    }
+    mRootMesh->meshData->m_vertices = mergedMeshData.m_vertices;
+    mRootMesh->meshData->m_UVs = mergedMeshData.m_UVs;
+    mRootMesh->meshData->m_normals = mergedMeshData.m_normals;
+    mRootMesh->meshData->m_tangents = mergedMeshData.m_tangents;
+    mRootMesh->meshData->m_indices = mergedMeshData.m_indices;
+
+    // Clear the meshTree except for the root mesh
+//    for (Mesh* mesh : mRootMesh->meshTree) {
+//        if (mesh != mRootMesh) {
+//            delete mesh;
+//        }
+//    }
+//    mRootMesh->meshTree.clear();
+
+    // Update the meshTree to only include the root mesh
+    mRootMesh->meshTree.push_back(mRootMesh);
+}
+
+
 void Model::applyForce(glm::vec3 force) const {
     // todo: check if dynamic .. probably subclass dynamic and static models so no checking required
     if (!mPhysicsBody) {

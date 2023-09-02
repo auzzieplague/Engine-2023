@@ -71,7 +71,7 @@ Model *gridOfCubes(bool physics = true) {
     glm::vec3 position = {1, 20, 20};
     auto scale = 0.5;
     auto gap = 1;
-    auto count = 5;
+    auto count = 1;
     auto n = 0;
     for (int x = -count; x < count; x++) {
         for (int z = -count; z < count; z++) {
@@ -129,6 +129,7 @@ void setupScene(Scene *scene) {
     scene->addComponent(assimpModel);
 
     auto cubes = gridOfCubes();
+//    cubes->mergeSubMeshes();
     scene->addComponent(cubes);
     /// todos:
     //add physics to loaded models
@@ -138,6 +139,7 @@ void setupScene(Scene *scene) {
 
     auto jsonModel = AssetManager::loadModel("testModel");
     jsonModel->mRootMesh->setMaterial(*Material::defaultMaterial);
+    jsonModel->mergeSubMeshes();
     scene->addComponent(jsonModel);
 
     auto terrain = terrainModel();
