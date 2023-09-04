@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Layer.h"
-#include "../../core/Input.h"
+#include "Input.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtx/rotate_vector.hpp>

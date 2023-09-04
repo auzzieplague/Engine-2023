@@ -2,7 +2,7 @@
 // predefine all components here, mRootMesh, m_material, texture, animation, script etc.
 
 #include "../Object.h"
-#include "../../core/Transform.h"
+#include "Transform.h"
 
 class IMGuiLayer;       // forward declare friend class
 class InteractionLayer; // forward declare friend class

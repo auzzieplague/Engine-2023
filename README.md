@@ -1,4 +1,5 @@
-
+#Tinker Engine
+to include the engine in another project, run deploy.bat which makes, build and deploys files to c:\src
 
 #cmake settings notes
 * set CMake options to: -G Ninja

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Layer.h"
-#include "../../core/Window.h"
+#include "Window.h"
 #include "graphics/api/GraphicsAPI.h"
 
 class WindowLayer : public Layer {

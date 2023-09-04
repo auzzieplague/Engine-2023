@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../core/Window.h"
+#include "Window.h"
 #include "Layer.h"
 #include "../components/Geometry.h"
 #include "graphics/api/RenderingConfig.h"

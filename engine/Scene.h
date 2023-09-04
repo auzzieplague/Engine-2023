@@ -2,7 +2,7 @@
 
 #include "Object.h"
 #include "components/Camera.h"
-#include "../core/Window.h"
+#include "Window.h"
 #include "components/Model.h"
 #include "components/colliders/Octree.h"
 #include "components/Terrain.h"

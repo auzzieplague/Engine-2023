@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Layer.h"
-#include "../core/Input.h"
+#include "Input.h"
 #include "graphics/api/RenderingConfig.h"
 
 /**

@@ -14,6 +14,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "C:/src/lib")
 
 # Include and link directories
 include_directories(
+        "${CORE}"
         "${VENDOR}"
         "${VENDOR}/includes"
         "${VENDOR}/includes/physx"

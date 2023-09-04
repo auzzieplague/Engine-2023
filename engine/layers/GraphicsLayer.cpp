@@ -1,6 +1,6 @@
 #include "GraphicsLayer.h"
 #include "graphics/api/GraphicsAPI.h"
-#include "../../core/Input.h"
+#include "Input.h"
 
 void GraphicsLayer::setApi(GraphicsAPI *api) {
     this->api = api;

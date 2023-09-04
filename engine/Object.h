@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../core/Base.h"
+#include "Base.h"
 
 class Object {
 public:

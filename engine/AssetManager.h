@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../core/Base.h"
+#include "Base.h"
 #include "stb_image.h"
 #include "components/meshes/Mesh.h"
 #include "components/Model.h"

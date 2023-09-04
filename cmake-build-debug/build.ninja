@@ -80,7 +80,7 @@ build cmake_object_order_depends_target_TinkerEngine: phony || cmake_object_orde
 
 build CMakeFiles\TinkerEngine.dir\core\Debug.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Debug.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -88,7 +88,7 @@ build CMakeFiles\TinkerEngine.dir\core\Debug.cpp.obj: CXX_COMPILER__TinkerEngine
 
 build CMakeFiles\TinkerEngine.dir\core\Input.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Input.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -96,7 +96,7 @@ build CMakeFiles\TinkerEngine.dir\core\Input.cpp.obj: CXX_COMPILER__TinkerEngine
 
 build CMakeFiles\TinkerEngine.dir\core\Performance.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Performance.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -104,7 +104,7 @@ build CMakeFiles\TinkerEngine.dir\core\Performance.cpp.obj: CXX_COMPILER__Tinker
 
 build CMakeFiles\TinkerEngine.dir\core\Transform.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Transform.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -112,7 +112,7 @@ build CMakeFiles\TinkerEngine.dir\core\Transform.cpp.obj: CXX_COMPILER__TinkerEn
 
 build CMakeFiles\TinkerEngine.dir\core\Window.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Window.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -120,7 +120,7 @@ build CMakeFiles\TinkerEngine.dir\core\Window.cpp.obj: CXX_COMPILER__TinkerEngin
 
 build CMakeFiles\TinkerEngine.dir\engine\AssetManager.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\AssetManager.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -128,7 +128,7 @@ build CMakeFiles\TinkerEngine.dir\engine\AssetManager.cpp.obj: CXX_COMPILER__Tin
 
 build CMakeFiles\TinkerEngine.dir\engine\Engine.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\Engine.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -136,7 +136,7 @@ build CMakeFiles\TinkerEngine.dir\engine\Engine.cpp.obj: CXX_COMPILER__TinkerEng
 
 build CMakeFiles\TinkerEngine.dir\engine\FileStructure.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\FileStructure.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -144,7 +144,7 @@ build CMakeFiles\TinkerEngine.dir\engine\FileStructure.cpp.obj: CXX_COMPILER__Ti
 
 build CMakeFiles\TinkerEngine.dir\engine\Object.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\Object.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -152,7 +152,7 @@ build CMakeFiles\TinkerEngine.dir\engine\Object.cpp.obj: CXX_COMPILER__TinkerEng
 
 build CMakeFiles\TinkerEngine.dir\engine\Scene.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\Scene.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -160,7 +160,7 @@ build CMakeFiles\TinkerEngine.dir\engine\Scene.cpp.obj: CXX_COMPILER__TinkerEngi
 
 build CMakeFiles\TinkerEngine.dir\engine\components\Camera.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Camera.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -168,7 +168,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\Camera.cpp.obj: CXX_COMPILER
 
 build CMakeFiles\TinkerEngine.dir\engine\components\Component.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Component.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -176,7 +176,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\Component.cpp.obj: CXX_COMPI
 
 build CMakeFiles\TinkerEngine.dir\engine\components\GUIEditor\ImageButton.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\GUIEditor\ImageButton.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\GUIEditor
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -184,7 +184,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\GUIEditor\ImageButton.cpp.ob
 
 build CMakeFiles\TinkerEngine.dir\engine\components\Geometry.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Geometry.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -192,7 +192,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\Geometry.cpp.obj: CXX_COMPIL
 
 build CMakeFiles\TinkerEngine.dir\engine\components\IMGuiComponents.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\IMGuiComponents.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -200,7 +200,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\IMGuiComponents.cpp.obj: CXX
 
 build CMakeFiles\TinkerEngine.dir\engine\components\Material.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Material.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -208,7 +208,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\Material.cpp.obj: CXX_COMPIL
 
 build CMakeFiles\TinkerEngine.dir\engine\components\Model.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Model.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -216,7 +216,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\Model.cpp.obj: CXX_COMPILER_
 
 build CMakeFiles\TinkerEngine.dir\engine\components\Terrain.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Terrain.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -224,7 +224,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\Terrain.cpp.obj: CXX_COMPILE
 
 build CMakeFiles\TinkerEngine.dir\engine\components\colliders\BoundingBox.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\colliders\BoundingBox.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\colliders
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -232,7 +232,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\colliders\BoundingBox.cpp.ob
 
 build CMakeFiles\TinkerEngine.dir\engine\components\colliders\BoundingSphere.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\colliders\BoundingSphere.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\colliders
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -240,7 +240,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\colliders\BoundingSphere.cpp
 
 build CMakeFiles\TinkerEngine.dir\engine\components\colliders\Collider.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\colliders\Collider.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\colliders
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -248,7 +248,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\colliders\Collider.cpp.obj: 
 
 build CMakeFiles\TinkerEngine.dir\engine\components\colliders\Octree.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\colliders\Octree.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\colliders
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -256,7 +256,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\colliders\Octree.cpp.obj: CX
 
 build CMakeFiles\TinkerEngine.dir\engine\components\meshes\Mesh.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\meshes\Mesh.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\meshes
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -264,7 +264,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\meshes\Mesh.cpp.obj: CXX_COM
 
 build CMakeFiles\TinkerEngine.dir\engine\components\meshes\MeshData.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\meshes\MeshData.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\meshes
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -272,7 +272,7 @@ build CMakeFiles\TinkerEngine.dir\engine\components\meshes\MeshData.cpp.obj: CXX
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\CollisionLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\CollisionLayer.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -280,7 +280,7 @@ build CMakeFiles\TinkerEngine.dir\engine\layers\CollisionLayer.cpp.obj: CXX_COMP
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\GraphicsLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\GraphicsLayer.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -288,7 +288,7 @@ build CMakeFiles\TinkerEngine.dir\engine\layers\GraphicsLayer.cpp.obj: CXX_COMPI
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\IMGuiLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\IMGuiLayer.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -296,7 +296,7 @@ build CMakeFiles\TinkerEngine.dir\engine\layers\IMGuiLayer.cpp.obj: CXX_COMPILER
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\InteractionLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\InteractionLayer.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -304,7 +304,7 @@ build CMakeFiles\TinkerEngine.dir\engine\layers\InteractionLayer.cpp.obj: CXX_CO
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\PhysicsLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\PhysicsLayer.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -312,7 +312,7 @@ build CMakeFiles\TinkerEngine.dir\engine\layers\PhysicsLayer.cpp.obj: CXX_COMPIL
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\WindowLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\WindowLayer.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -320,7 +320,7 @@ build CMakeFiles\TinkerEngine.dir\engine\layers\WindowLayer.cpp.obj: CXX_COMPILE
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\API_DirectX.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\graphics\api\API_DirectX.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -328,7 +328,7 @@ build CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\API_DirectX.cpp.obj
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\API_OpenGL.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\graphics\api\API_OpenGL.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -336,7 +336,7 @@ build CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\API_OpenGL.cpp.obj:
 
 build CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\GraphicsAPI.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\graphics\api\GraphicsAPI.cpp || cmake_object_order_depends_target_TinkerEngine
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine
   OBJECT_DIR = CMakeFiles\TinkerEngine.dir
   OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api
   TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
@@ -377,7 +377,7 @@ build cmake_object_order_depends_target_imgui: phony || CMakeFiles\imgui.dir
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -385,7 +385,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui.cpp.obj: CXX_COMPILER__imgui_Debug
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_demo.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_demo.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -393,7 +393,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_demo.cpp.obj: CXX_COMPILER__imgui_
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_draw.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_draw.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -401,7 +401,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_draw.cpp.obj: CXX_COMPILER__imgui_
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_glfw.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_impl_glfw.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -409,7 +409,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_glfw.cpp.obj: CXX_COMPILER__i
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_opengl3.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_impl_opengl3.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -417,7 +417,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_opengl3.cpp.obj: CXX_COMPILER
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_tables.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_tables.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -425,7 +425,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_tables.cpp.obj: CXX_COMPILER__imgu
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_widgets.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_widgets.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
+  INCLUDES = -I..\core -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
