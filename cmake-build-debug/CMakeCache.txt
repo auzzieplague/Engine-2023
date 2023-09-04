@@ -171,7 +171,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=componentLayout
+CMAKE_PROJECT_NAME:STATIC=TinkerEngine
 
 //Value Computed by CMake
 CMAKE_PROJECT_VERSION:STATIC=1.13.0
@@ -278,6 +278,12 @@ Google_tests_run_SOURCE_DIR:STATIC=C:/Users/auzzi/CLionProjects/componentLayout/
 //Enable installation of googletest. (Projects embedding googletest
 // may want to turn this OFF.)
 INSTALL_GTEST:BOOL=ON
+
+//Value Computed by CMake
+TinkerEngine_BINARY_DIR:STATIC=C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug
+
+//Value Computed by CMake
+TinkerEngine_SOURCE_DIR:STATIC=C:/Users/auzzi/CLionProjects/componentLayout
 
 //Value Computed by CMake
 componentLayout_BINARY_DIR:STATIC=C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug

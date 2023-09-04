@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: componentLayout
+# Project: TinkerEngine
 # Configurations: Debug
 # =============================================================================
 
@@ -34,307 +34,337 @@ CONFIGURATION = Debug
 
 include CMakeFiles\rules.ninja
 
-# =============================================================================
-# Object build statements for EXECUTABLE target componentLayout
+
+#############################################
+# Utility command for install/local
+
+build CMakeFiles\install\local.util: CUSTOM_COMMAND all
+  COMMAND = cmd.exe /C "cd /D C:\Users\auzzi\CLionProjects\componentLayout\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake"
+  DESC = Installing only the local directory...
+  pool = console
+  restat = 1
+
+build install\local: phony CMakeFiles\install\local.util
 
 
 #############################################
-# Order-only phony target for componentLayout
+# Utility command for install
 
-build cmake_object_order_depends_target_componentLayout: phony || cmake_object_order_depends_target_glad cmake_object_order_depends_target_imgui cmake_object_order_depends_target_imguizmo
+build CMakeFiles\install.util: CUSTOM_COMMAND all
+  COMMAND = cmd.exe /C "cd /D C:\Users\auzzi\CLionProjects\componentLayout\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.2.4\bin\cmake\win\bin\cmake.exe" -P cmake_install.cmake"
+  DESC = Install the project...
+  pool = console
+  restat = 1
 
-build CMakeFiles\componentLayout.dir\core\Debug.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\core\Debug.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\core
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\core\Input.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\core\Input.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\core
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\core\Performance.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\core\Performance.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\core
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\core\Transform.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\core\Transform.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\core
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\core\Window.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\core\Window.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\core
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\AssetManager.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\AssetManager.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\Engine.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\Engine.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\FileStructure.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\FileStructure.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\Object.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\Object.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\Scene.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\Scene.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\Camera.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\Camera.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\Component.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\Component.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\GUIEditor\ImageButton.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\GUIEditor\ImageButton.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components\GUIEditor
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\Geometry.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\Geometry.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\IMGuiComponents.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\IMGuiComponents.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\Material.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\Material.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\Model.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\Model.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\Terrain.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\Terrain.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\colliders\BoundingBox.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\colliders\BoundingBox.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components\colliders
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\colliders\BoundingSphere.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\colliders\BoundingSphere.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components\colliders
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\colliders\Collider.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\colliders\Collider.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components\colliders
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\colliders\Octree.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\colliders\Octree.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components\colliders
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\meshes\Mesh.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\meshes\Mesh.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components\meshes
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\components\meshes\MeshData.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\components\meshes\MeshData.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\components\meshes
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\CollisionLayer.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\CollisionLayer.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\GraphicsLayer.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\GraphicsLayer.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\IMGuiLayer.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\IMGuiLayer.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\InteractionLayer.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\InteractionLayer.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\PhysicsLayer.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\PhysicsLayer.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\WindowLayer.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\WindowLayer.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\graphics\api\API_DirectX.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\graphics\api\API_DirectX.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers\graphics\api
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\graphics\api\API_OpenGL.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\graphics\api\API_OpenGL.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers\graphics\api
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\engine\layers\graphics\api\GraphicsAPI.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\engine\layers\graphics\api\GraphicsAPI.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\engine\layers\graphics\api
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-build CMakeFiles\componentLayout.dir\sandbox\main.cpp.obj: CXX_COMPILER__componentLayout_Debug ..\sandbox\main.cpp || cmake_object_order_depends_target_componentLayout
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  OBJECT_FILE_DIR = CMakeFiles\componentLayout.dir\sandbox
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_PDB = componentLayout.pdb
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target componentLayout
+build install: phony CMakeFiles\install.util
 
 
 #############################################
-# Link the executable componentLayout.exe
+# Utility command for edit_cache
 
-build componentLayout.exe: CXX_EXECUTABLE_LINKER__componentLayout_Debug CMakeFiles\componentLayout.dir\core\Debug.cpp.obj CMakeFiles\componentLayout.dir\core\Input.cpp.obj CMakeFiles\componentLayout.dir\core\Performance.cpp.obj CMakeFiles\componentLayout.dir\core\Transform.cpp.obj CMakeFiles\componentLayout.dir\core\Window.cpp.obj CMakeFiles\componentLayout.dir\engine\AssetManager.cpp.obj CMakeFiles\componentLayout.dir\engine\Engine.cpp.obj CMakeFiles\componentLayout.dir\engine\FileStructure.cpp.obj CMakeFiles\componentLayout.dir\engine\Object.cpp.obj CMakeFiles\componentLayout.dir\engine\Scene.cpp.obj CMakeFiles\componentLayout.dir\engine\components\Camera.cpp.obj CMakeFiles\componentLayout.dir\engine\components\Component.cpp.obj CMakeFiles\componentLayout.dir\engine\components\GUIEditor\ImageButton.cpp.obj CMakeFiles\componentLayout.dir\engine\components\Geometry.cpp.obj CMakeFiles\componentLayout.dir\engine\components\IMGuiComponents.cpp.obj CMakeFiles\componentLayout.dir\engine\components\Material.cpp.obj CMakeFiles\componentLayout.dir\engine\components\Model.cpp.obj CMakeFiles\componentLayout.dir\engine\components\Terrain.cpp.obj CMakeFiles\componentLayout.dir\engine\components\colliders\BoundingBox.cpp.obj CMakeFiles\componentLayout.dir\engine\components\colliders\BoundingSphere.cpp.obj CMakeFiles\componentLayout.dir\engine\components\colliders\Collider.cpp.obj CMakeFiles\componentLayout.dir\engine\components\colliders\Octree.cpp.obj CMakeFiles\componentLayout.dir\engine\components\meshes\Mesh.cpp.obj CMakeFiles\componentLayout.dir\engine\components\meshes\MeshData.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\CollisionLayer.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\GraphicsLayer.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\IMGuiLayer.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\InteractionLayer.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\PhysicsLayer.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\WindowLayer.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\graphics\api\API_DirectX.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\graphics\api\API_OpenGL.cpp.obj CMakeFiles\componentLayout.dir\engine\layers\graphics\api\GraphicsAPI.cpp.obj CMakeFiles\componentLayout.dir\sandbox\main.cpp.obj | glad.lib imgui.lib imguizmo.lib || glad.lib imgui.lib imguizmo.lib
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  LINK_FLAGS = /machine:X86 /debug /INCREMENTAL /subsystem:console
-  LINK_LIBRARIES = glfw3.lib  glad.lib  opengl32.lib  imgui.lib  imguizmo.lib  d3d11.lib  DirectXTK.lib  assimp.lib  PhysX_32.lib  PhysXCommon_32.lib  PhysXCooking_32.lib  PhysXFoundation_32.lib  PhysXExtensions_static_32.lib  PhysXPvdSDK_static_32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
-  LINK_PATH = -LIBPATH:C:\Users\auzzi\CLionProjects\componentLayout\vendor\libs   -LIBPATH:C:\Users\auzzi\CLionProjects\componentLayout\vendor\libs\debug   -LIBPATH:C:\Users\auzzi\CLionProjects\componentLayout\vendor\libs\debug\physx
-  OBJECT_DIR = CMakeFiles\componentLayout.dir
-  POST_BUILD = cmd.exe /C "cd /D C:\Users\auzzi\CLionProjects\componentLayout\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.2.4\bin\cmake\win\bin\cmake.exe" -E copy_directory C:/Users/auzzi/CLionProjects/componentLayout/vendor/libs/debug/dll C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug"
+build CMakeFiles\edit_cache.util: CUSTOM_COMMAND
+  COMMAND = cmd.exe /C "cd /D C:\Users\auzzi\CLionProjects\componentLayout\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.2.4\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+  DESC = No interactive CMake dialog available...
+  restat = 1
+
+build edit_cache: phony CMakeFiles\edit_cache.util
+
+# =============================================================================
+# Object build statements for STATIC_LIBRARY target TinkerEngine
+
+
+#############################################
+# Order-only phony target for TinkerEngine
+
+build cmake_object_order_depends_target_TinkerEngine: phony || cmake_object_order_depends_target_imgui
+
+build CMakeFiles\TinkerEngine.dir\core\Debug.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Debug.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\core\Input.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Input.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\core\Performance.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Performance.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\core\Transform.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Transform.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\core\Window.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\core\Window.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\core
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\AssetManager.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\AssetManager.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\Engine.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\Engine.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\FileStructure.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\FileStructure.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\Object.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\Object.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\Scene.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\Scene.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\Camera.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Camera.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\Component.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Component.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\GUIEditor\ImageButton.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\GUIEditor\ImageButton.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\GUIEditor
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\Geometry.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Geometry.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\IMGuiComponents.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\IMGuiComponents.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\Material.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Material.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\Model.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Model.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\Terrain.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\Terrain.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\colliders\BoundingBox.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\colliders\BoundingBox.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\colliders
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\colliders\BoundingSphere.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\colliders\BoundingSphere.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\colliders
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\colliders\Collider.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\colliders\Collider.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\colliders
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\colliders\Octree.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\colliders\Octree.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\colliders
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\meshes\Mesh.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\meshes\Mesh.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\meshes
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\components\meshes\MeshData.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\components\meshes\MeshData.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\components\meshes
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\CollisionLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\CollisionLayer.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\GraphicsLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\GraphicsLayer.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\IMGuiLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\IMGuiLayer.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\InteractionLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\InteractionLayer.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\PhysicsLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\PhysicsLayer.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\WindowLayer.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\WindowLayer.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\API_DirectX.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\graphics\api\API_DirectX.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\API_OpenGL.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\graphics\api\API_OpenGL.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+build CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\GraphicsAPI.cpp.obj: CXX_COMPILER__TinkerEngine_Debug ..\engine\layers\graphics\api\GraphicsAPI.cpp || cmake_object_order_depends_target_TinkerEngine
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\core -I..\engine
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  OBJECT_FILE_DIR = CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target TinkerEngine
+
+
+#############################################
+# Link the static library C:\src\lib\TinkerEngine.lib
+
+build C$:\src\lib\TinkerEngine.lib: CXX_STATIC_LIBRARY_LINKER__TinkerEngine_Debug CMakeFiles\TinkerEngine.dir\core\Debug.cpp.obj CMakeFiles\TinkerEngine.dir\core\Input.cpp.obj CMakeFiles\TinkerEngine.dir\core\Performance.cpp.obj CMakeFiles\TinkerEngine.dir\core\Transform.cpp.obj CMakeFiles\TinkerEngine.dir\core\Window.cpp.obj CMakeFiles\TinkerEngine.dir\engine\AssetManager.cpp.obj CMakeFiles\TinkerEngine.dir\engine\Engine.cpp.obj CMakeFiles\TinkerEngine.dir\engine\FileStructure.cpp.obj CMakeFiles\TinkerEngine.dir\engine\Object.cpp.obj CMakeFiles\TinkerEngine.dir\engine\Scene.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\Camera.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\Component.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\GUIEditor\ImageButton.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\Geometry.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\IMGuiComponents.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\Material.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\Model.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\Terrain.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\colliders\BoundingBox.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\colliders\BoundingSphere.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\colliders\Collider.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\colliders\Octree.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\meshes\Mesh.cpp.obj CMakeFiles\TinkerEngine.dir\engine\components\meshes\MeshData.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\CollisionLayer.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\GraphicsLayer.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\IMGuiLayer.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\InteractionLayer.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\PhysicsLayer.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\WindowLayer.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\API_DirectX.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\API_OpenGL.cpp.obj CMakeFiles\TinkerEngine.dir\engine\layers\graphics\api\GraphicsAPI.cpp.obj || C$:\src\lib\imgui.lib
+  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd
+  LINK_FLAGS = /machine:X86
+  OBJECT_DIR = CMakeFiles\TinkerEngine.dir
+  POST_BUILD = cd .
   PRE_LINK = cd .
-  TARGET_COMPILE_PDB = CMakeFiles\componentLayout.dir\
-  TARGET_FILE = componentLayout.exe
-  TARGET_IMPLIB = componentLayout.lib
-  TARGET_PDB = componentLayout.pdb
+  TARGET_COMPILE_PDB = CMakeFiles\TinkerEngine.dir\TinkerEngine.pdb
+  TARGET_FILE = C:\src\lib\TinkerEngine.lib
+  TARGET_PDB = C:\src\lib\TinkerEngine.pdb
+
+
+#############################################
+# Utility command for list_install_components
+
+build list_install_components: phony
 
 # =============================================================================
 # Object build statements for STATIC_LIBRARY target imgui
@@ -351,7 +381,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui.cpp.obj: CXX_COMPILER__imgui_Debug
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
-  TARGET_PDB = imgui.pdb
+  TARGET_PDB = C:\src\lib\imgui.pdb
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_demo.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_demo.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
@@ -359,7 +389,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_demo.cpp.obj: CXX_COMPILER__imgui_
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
-  TARGET_PDB = imgui.pdb
+  TARGET_PDB = C:\src\lib\imgui.pdb
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_draw.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_draw.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
@@ -367,7 +397,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_draw.cpp.obj: CXX_COMPILER__imgui_
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
-  TARGET_PDB = imgui.pdb
+  TARGET_PDB = C:\src\lib\imgui.pdb
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_glfw.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_impl_glfw.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
@@ -375,7 +405,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_glfw.cpp.obj: CXX_COMPILER__i
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
-  TARGET_PDB = imgui.pdb
+  TARGET_PDB = C:\src\lib\imgui.pdb
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_opengl3.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_impl_opengl3.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
@@ -383,7 +413,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_opengl3.cpp.obj: CXX_COMPILER
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
-  TARGET_PDB = imgui.pdb
+  TARGET_PDB = C:\src\lib\imgui.pdb
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_tables.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_tables.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
@@ -391,7 +421,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_tables.cpp.obj: CXX_COMPILER__imgu
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
-  TARGET_PDB = imgui.pdb
+  TARGET_PDB = C:\src\lib\imgui.pdb
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_widgets.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_widgets.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
@@ -399,7 +429,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_widgets.cpp.obj: CXX_COMPILER__img
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
-  TARGET_PDB = imgui.pdb
+  TARGET_PDB = C:\src\lib\imgui.pdb
 
 
 # =============================================================================
@@ -407,130 +437,17 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_widgets.cpp.obj: CXX_COMPILER__img
 
 
 #############################################
-# Link the static library imgui.lib
+# Link the static library C:\src\lib\imgui.lib
 
-build imgui.lib: CXX_STATIC_LIBRARY_LINKER__imgui_Debug CMakeFiles\imgui.dir\vendor\imgui\imgui.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_demo.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_draw.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_glfw.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_opengl3.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_tables.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_widgets.cpp.obj
+build C$:\src\lib\imgui.lib: CXX_STATIC_LIBRARY_LINKER__imgui_Debug CMakeFiles\imgui.dir\vendor\imgui\imgui.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_demo.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_draw.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_glfw.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_opengl3.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_tables.cpp.obj CMakeFiles\imgui.dir\vendor\imgui\imgui_widgets.cpp.obj
   LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd
   LINK_FLAGS = /machine:X86
   OBJECT_DIR = CMakeFiles\imgui.dir
   POST_BUILD = cd .
   PRE_LINK = cd .
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
-  TARGET_FILE = imgui.lib
-  TARGET_PDB = imgui.pdb
-
-# =============================================================================
-# Object build statements for STATIC_LIBRARY target imguizmo
-
-
-#############################################
-# Order-only phony target for imguizmo
-
-build cmake_object_order_depends_target_imguizmo: phony || CMakeFiles\imguizmo.dir
-
-build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\GraphEditor.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\GraphEditor.cpp || cmake_object_order_depends_target_imguizmo
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\imguizmo.dir
-  OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
-  TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
-  TARGET_PDB = imguizmo.pdb
-
-build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImCurveEdit.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\ImCurveEdit.cpp || cmake_object_order_depends_target_imguizmo
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\imguizmo.dir
-  OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
-  TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
-  TARGET_PDB = imguizmo.pdb
-
-build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImGradient.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\ImGradient.cpp || cmake_object_order_depends_target_imguizmo
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\imguizmo.dir
-  OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
-  TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
-  TARGET_PDB = imguizmo.pdb
-
-build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImGuizmo.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\ImGuizmo.cpp || cmake_object_order_depends_target_imguizmo
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\imguizmo.dir
-  OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
-  TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
-  TARGET_PDB = imguizmo.pdb
-
-build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImSequencer.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\ImSequencer.cpp || cmake_object_order_depends_target_imguizmo
-  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\imguizmo.dir
-  OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
-  TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
-  TARGET_PDB = imguizmo.pdb
-
-
-# =============================================================================
-# Link build statements for STATIC_LIBRARY target imguizmo
-
-
-#############################################
-# Link the static library imguizmo.lib
-
-build imguizmo.lib: CXX_STATIC_LIBRARY_LINKER__imguizmo_Debug CMakeFiles\imguizmo.dir\vendor\ImGuizmo\GraphEditor.cpp.obj CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImCurveEdit.cpp.obj CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImGradient.cpp.obj CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImGuizmo.cpp.obj CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImSequencer.cpp.obj
-  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd
-  LINK_FLAGS = /machine:X86
-  OBJECT_DIR = CMakeFiles\imguizmo.dir
-  POST_BUILD = cd .
-  PRE_LINK = cd .
-  TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
-  TARGET_FILE = imguizmo.lib
-  TARGET_PDB = imguizmo.pdb
-
-# =============================================================================
-# Object build statements for STATIC_LIBRARY target glad
-
-
-#############################################
-# Order-only phony target for glad
-
-build cmake_object_order_depends_target_glad: phony || CMakeFiles\glad.dir
-
-build CMakeFiles\glad.dir\vendor\includes\glad\glad.c.obj: C_COMPILER__glad_Debug ..\vendor\includes\glad\glad.c || cmake_object_order_depends_target_glad
-  FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui
-  OBJECT_DIR = CMakeFiles\glad.dir
-  OBJECT_FILE_DIR = CMakeFiles\glad.dir\vendor\includes\glad
-  TARGET_COMPILE_PDB = CMakeFiles\glad.dir\glad.pdb
-  TARGET_PDB = glad.pdb
-
-
-# =============================================================================
-# Link build statements for STATIC_LIBRARY target glad
-
-
-#############################################
-# Link the static library glad.lib
-
-build glad.lib: C_STATIC_LIBRARY_LINKER__glad_Debug CMakeFiles\glad.dir\vendor\includes\glad\glad.c.obj
-  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd
-  LINK_FLAGS = /machine:X86
-  OBJECT_DIR = CMakeFiles\glad.dir
-  POST_BUILD = cd .
-  PRE_LINK = cd .
-  TARGET_COMPILE_PDB = CMakeFiles\glad.dir\glad.pdb
-  TARGET_FILE = glad.lib
-  TARGET_PDB = glad.pdb
-
-
-#############################################
-# Utility command for edit_cache
-
-build CMakeFiles\edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cmd.exe /C "cd /D C:\Users\auzzi\CLionProjects\componentLayout\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.2.4\bin\cmake\win\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
-  DESC = No interactive CMake dialog available...
-  restat = 1
-
-build edit_cache: phony CMakeFiles\edit_cache.util
+  TARGET_FILE = C:\src\lib\imgui.lib
+  TARGET_PDB = C:\src\lib\imgui.pdb
 
 
 #############################################
@@ -547,13 +464,13 @@ build rebuild_cache: phony CMakeFiles\rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
-build componentLayout: phony componentLayout.exe
+build TinkerEngine: phony C$:\src\lib\TinkerEngine.lib
 
-build glad: phony glad.lib
+build TinkerEngine.lib: phony C$:\src\lib\TinkerEngine.lib
 
-build imgui: phony imgui.lib
+build imgui: phony C$:\src\lib\imgui.lib
 
-build imguizmo: phony imguizmo.lib
+build imgui.lib: phony C$:\src\lib\imgui.lib
 
 # =============================================================================
 # Folder targets.
@@ -563,7 +480,7 @@ build imguizmo: phony imguizmo.lib
 #############################################
 # Folder: C:/Users/auzzi/CLionProjects/componentLayout/cmake-build-debug
 
-build all: phony componentLayout.exe imgui.lib imguizmo.lib glad.lib
+build all: phony C$:\src\lib\TinkerEngine.lib C$:\src\lib\imgui.lib
 
 # =============================================================================
 # Built-in targets

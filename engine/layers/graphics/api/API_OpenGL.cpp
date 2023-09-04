@@ -8,7 +8,7 @@ void API_OpenGL::initialise() {
     GLsizeiptr size = transformBufferSize * sizeof(glm::mat4);
     glGenBuffers(1, &transformBuffer);
     glBindBuffer(GL_UNIFORM_BUFFER, transformBuffer);
-//    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW); // Allocate 100 * 64 bytes of memory
+//    glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_maSTATIC_DRAW); // Allocate 100 * 64 bytes of memory
     glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_DYNAMIC_DRAW ); // dynamic because constantly changing
     glBindBuffer(GL_UNIFORM_BUFFER, 0);
     glBindBufferBase(GL_UNIFORM_BUFFER, transformBufferBindingPoint, transformBuffer);
