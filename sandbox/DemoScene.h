@@ -70,7 +70,7 @@ Model *gridOfCubes(bool physics = true) {
 
     glm::vec3 position = {1, 20, 20};
     auto scale = 0.5;
-    auto gap = 1;
+    auto gap = 5;
     auto count = 5;
     auto n = 0;
     for (int x = -count; x < count; x++) {

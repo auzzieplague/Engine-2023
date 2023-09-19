@@ -32,6 +32,8 @@ public:
     RenderingConfig instanceRenderConfig;
     RenderingConfig objectTrackerConfig;
 
+    std::vector<glm::mat4> transforms;
+
     void setApi(GraphicsAPI *api) override;
 
     void onAttach(Scene *) override;

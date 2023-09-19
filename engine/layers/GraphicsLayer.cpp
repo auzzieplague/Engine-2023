@@ -109,8 +109,6 @@ void GraphicsLayer::update(Scene *scene) {
                 } else {
                     mesh->generateMeshID();
                 }
-
-//                scene->singleMeshesToRender.push_back(mesh);
             }
         } else {
             scene->singleMeshesToRender.push_back(model->mRootMesh);
@@ -136,7 +134,6 @@ void GraphicsLayer::render(Scene *scene) {
     }
 
     Mesh *renderMesh = nullptr;
-    std::vector<glm::mat4> transforms;
 
     api->beginRender(instanceRenderConfig);
     api->shaderSetView(scene->currentCamera->getViewMatrix());
@@ -147,11 +144,13 @@ void GraphicsLayer::render(Scene *scene) {
             if (checkDeferMesh(mesh)) {
                 continue;
             }
+            // this can't be global because it's used for multiple meshes!!!
             transforms.push_back(mesh->getWorldMatrix());
             if (renderMesh == nullptr) {
                 renderMesh = mesh;
             }
 
+            // why is this inside this loop :/
             this->renderInstancedMesh(renderMesh,transforms);
         }
 

@@ -20,7 +20,7 @@ public:
     // overrides
     bool initialised = false;
 
-    virtual uint32_t getFrequency() { return 0; };
+    virtual uint32_t getFrequency() { return 1; };
 
     virtual void init(Scene *) {}
 
