@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "layers/GraphicsLayer.h"
 #include "../engine/layers/WindowLayer.h"
+#include "../engine/layers/graphics/api/API_DirectX.h"
 #include "../engine/layers/graphics/api/API_OpenGL.h"
 #include "../engine/layers/InteractionLayer.h"
 #include <chrono>

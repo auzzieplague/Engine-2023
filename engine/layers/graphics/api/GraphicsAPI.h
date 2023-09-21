@@ -8,11 +8,11 @@
 class Mesh;
 
 class GraphicsAPI {
-
 public:
+    RenderingConfig *currentRenderingConfig{};
     GraphicsCapabilities capabilities{};
 
-    GraphicsAPI(){};
+    GraphicsAPI()= default;;
 
     virtual void initialise();
     virtual void setCapabilities();
