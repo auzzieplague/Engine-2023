@@ -1,5 +1,5 @@
-#include "Window.h"
-#include "../engine/layers/graphics/api/GraphicsAPI.h"
+#include <Window.h>
+#include <GraphicsAPI.h>
 
 GLFWwindow *Window::m_currentWindow = nullptr;
 GraphicsAPI *Window::m_api;
@@ -53,7 +53,7 @@ void Window::framebufferSizeCallback(GLFWwindow *window, int width, int height) 
     }
 
     // update API stuff e.g. glViewPort
-    m_api->framebufferSizeCallback(window, width, height);
+    m_api->resizeViewport(window, width, height);
 }
 
 Window::Window(GraphicsAPI *graphicsAPI, uint32_t width, uint32_t height, const std::string &title) {

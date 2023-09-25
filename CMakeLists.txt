@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(componentLayout)
+project(agnosticRendering)
 
 set(VENDOR ${CMAKE_CURRENT_SOURCE_DIR}/vendor) # vendor folder
 set(ENGINE ${CMAKE_CURRENT_SOURCE_DIR}/engine) # engine folder
@@ -16,6 +16,19 @@ include_directories(
         "${VENDOR}/includes"
         "${VENDOR}/includes/physx"
         "${VENDOR}/imgui/"
+
+        "${ENGINE}/audio/"
+        "${ENGINE}/input/"
+        "${ENGINE}/loaders/"
+        "${ENGINE}/networking/"
+        "${ENGINE}/rendering/"
+        "${ENGINE}/scene/"
+        "${ENGINE}/scripting/"
+        "${ENGINE}/ui/"
+
+        "${ENGINE}/rendering/graphics/api/"
+
+        "${CORE}/"
 )
 
 link_directories(
@@ -56,8 +69,8 @@ add_library(imguizmo  ${IMGUI_GIZMO_HEADER_FILES} ${IMGUI_GIZMO_SOURCE_FILES})
 #        ${VENDOR}/*.c
 #        )
 
-add_executable(componentLayout  ${ENGINE_HEADER_FILES} ${ENGINE_SOURCE_FILES} ${VENDOR_HEADER_FILES} ${VENDOR_SOURCE_FILES})
-#target_link_options(componentLayout PUBLIC "/NODEFAULTLIB:library")
+add_executable(agnosticRendering  ${ENGINE_HEADER_FILES} ${ENGINE_SOURCE_FILES} ${VENDOR_HEADER_FILES} ${VENDOR_SOURCE_FILES})
+#target_link_options(agnosticRendering PUBLIC "/NODEFAULTLIB:library")
 
 #Build and/or include libraries include lib files or build libs from .c files
 
@@ -85,7 +98,7 @@ set (PHYSX
 #SimulationController_static_32
         )
 
-target_link_libraries(componentLayout ${LIBS} ${PHYSX})
+target_link_libraries(agnosticRendering ${LIBS} ${PHYSX})
 
 if(WIN32)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
