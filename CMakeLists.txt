@@ -5,6 +5,15 @@ set(VENDOR ${CMAKE_CURRENT_SOURCE_DIR}/vendor) # vendor folder
 set(ENGINE ${CMAKE_CURRENT_SOURCE_DIR}/engine) # engine folder
 set(CORE ${CMAKE_CURRENT_SOURCE_DIR}/core) # core folder
 set(SANDBOX ${CMAKE_CURRENT_SOURCE_DIR}/sandbox) # sandbox folder
+
+# setup direct x using windows sdk version
+set (WindowsSDKVersion 10.0.22621.0)
+set(WindowsSDK "C:/Program Files (x86)/Windows Kits/10")
+
+
+#install vulkan system wide https://vulkan.lunarg.com/sdk/home
+find_package(Vulkan REQUIRED)
+
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/vendor)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -29,12 +38,18 @@ include_directories(
         "${ENGINE}/rendering/graphics/api/"
 
         "${CORE}/"
+
+        ${Vulkan_INCLUDE_DIRS}
+
+        "${WindowsSDK}/Include/${WindowsSDKVersion}/um"
+
 )
 
 link_directories(
         ${VENDOR}/libs
         ${VENDOR}/libs/debug
         ${VENDOR}/libs/debug/physx
+        "${WindowsSDK}/Lib/${WindowsSDKVersion}/um/x86"
         )
 
 file(GLOB_RECURSE ENGINE_HEADER_FILES
@@ -76,9 +91,11 @@ add_executable(agnosticRendering  ${ENGINE_HEADER_FILES} ${ENGINE_SOURCE_FILES} 
 
 add_library(glad ${VENDOR}/includes/glad/glad.c)
 
+
+
 set(LIBS glfw3 glad opengl32
+        d3d12 dxgi
         imgui imguizmo
-        d3d11 DirectXTK
         assimp)
 
 set (PHYSX
@@ -98,7 +115,7 @@ set (PHYSX
 #SimulationController_static_32
         )
 
-target_link_libraries(agnosticRendering ${LIBS} ${PHYSX})
+target_link_libraries(agnosticRendering ${LIBS} ${PHYSX}  ${Vulkan_LIBRARIES})
 
 if(WIN32)
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

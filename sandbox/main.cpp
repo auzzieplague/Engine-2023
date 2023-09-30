@@ -1,6 +1,10 @@
 
 #include <Engine.h>
 #include <API_OpenGL.h>
+#include <API_DirectX.h>
+
+#include <API_Vulkan.h>
+
 #include <WindowLayer.h>
 
 void outputExecutionMode() {
@@ -15,7 +19,8 @@ int main() {
 
     /// Required Layers
     Engine *engine = Engine::getInstance();
-    engine->setGraphicsApi(new API_OpenGL());
+    engine->setGraphicsApi(new API_DirectX());
+//    engine->setGraphicsApi(new API_OpenGL());
 
     engine->attachLayer(new WindowLayer());    // maintains the window interface & required for input processing
     engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene

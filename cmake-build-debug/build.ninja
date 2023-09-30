@@ -45,7 +45,7 @@ build cmake_object_order_depends_target_imgui: phony || CMakeFiles\imgui.dir
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -53,7 +53,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui.cpp.obj: CXX_COMPILER__imgui_Debug
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_demo.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_demo.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -61,7 +61,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_demo.cpp.obj: CXX_COMPILER__imgui_
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_draw.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_draw.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -69,7 +69,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_draw.cpp.obj: CXX_COMPILER__imgui_
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_glfw.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_impl_glfw.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -77,7 +77,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_glfw.cpp.obj: CXX_COMPILER__i
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_opengl3.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_impl_opengl3.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -85,7 +85,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_impl_opengl3.cpp.obj: CXX_COMPILER
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_tables.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_tables.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -93,7 +93,7 @@ build CMakeFiles\imgui.dir\vendor\imgui\imgui_tables.cpp.obj: CXX_COMPILER__imgu
 
 build CMakeFiles\imgui.dir\vendor\imgui\imgui_widgets.cpp.obj: CXX_COMPILER__imgui_Debug ..\vendor\imgui\imgui_widgets.cpp || cmake_object_order_depends_target_imgui
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imgui.dir
   OBJECT_FILE_DIR = CMakeFiles\imgui.dir\vendor\imgui
   TARGET_COMPILE_PDB = CMakeFiles\imgui.dir\imgui.pdb
@@ -128,7 +128,7 @@ build cmake_object_order_depends_target_imguizmo: phony || CMakeFiles\imguizmo.d
 
 build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\GraphEditor.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\GraphEditor.cpp || cmake_object_order_depends_target_imguizmo
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imguizmo.dir
   OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
   TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
@@ -136,7 +136,7 @@ build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\GraphEditor.cpp.obj: CXX_COMPILER_
 
 build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImCurveEdit.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\ImCurveEdit.cpp || cmake_object_order_depends_target_imguizmo
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imguizmo.dir
   OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
   TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
@@ -144,7 +144,7 @@ build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImCurveEdit.cpp.obj: CXX_COMPILER_
 
 build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImGradient.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\ImGradient.cpp || cmake_object_order_depends_target_imguizmo
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imguizmo.dir
   OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
   TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
@@ -152,7 +152,7 @@ build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImGradient.cpp.obj: CXX_COMPILER__
 
 build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImGuizmo.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\ImGuizmo.cpp || cmake_object_order_depends_target_imguizmo
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imguizmo.dir
   OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
   TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
@@ -160,7 +160,7 @@ build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImGuizmo.cpp.obj: CXX_COMPILER__im
 
 build CMakeFiles\imguizmo.dir\vendor\ImGuizmo\ImSequencer.cpp.obj: CXX_COMPILER__imguizmo_Debug ..\vendor\ImGuizmo\ImSequencer.cpp || cmake_object_order_depends_target_imguizmo
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\imguizmo.dir
   OBJECT_FILE_DIR = CMakeFiles\imguizmo.dir\vendor\ImGuizmo
   TARGET_COMPILE_PDB = CMakeFiles\imguizmo.dir\imguizmo.pdb
@@ -195,7 +195,7 @@ build cmake_object_order_depends_target_agnosticRendering: phony || cmake_object
 
 build CMakeFiles\agnosticRendering.dir\core\Debug.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\core\Debug.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -203,7 +203,7 @@ build CMakeFiles\agnosticRendering.dir\core\Debug.cpp.obj: CXX_COMPILER__agnosti
 
 build CMakeFiles\agnosticRendering.dir\core\Engine.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\core\Engine.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -211,7 +211,7 @@ build CMakeFiles\agnosticRendering.dir\core\Engine.cpp.obj: CXX_COMPILER__agnost
 
 build CMakeFiles\agnosticRendering.dir\core\Input.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\core\Input.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -219,7 +219,7 @@ build CMakeFiles\agnosticRendering.dir\core\Input.cpp.obj: CXX_COMPILER__agnosti
 
 build CMakeFiles\agnosticRendering.dir\core\Object.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\core\Object.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -227,7 +227,7 @@ build CMakeFiles\agnosticRendering.dir\core\Object.cpp.obj: CXX_COMPILER__agnost
 
 build CMakeFiles\agnosticRendering.dir\core\Transform.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\core\Transform.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -235,7 +235,7 @@ build CMakeFiles\agnosticRendering.dir\core\Transform.cpp.obj: CXX_COMPILER__agn
 
 build CMakeFiles\agnosticRendering.dir\core\Window.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\core\Window.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\core
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -243,7 +243,7 @@ build CMakeFiles\agnosticRendering.dir\core\Window.cpp.obj: CXX_COMPILER__agnost
 
 build CMakeFiles\agnosticRendering.dir\engine\rendering\GraphicsAPI.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\rendering\GraphicsAPI.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\rendering
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -251,15 +251,39 @@ build CMakeFiles\agnosticRendering.dir\engine\rendering\GraphicsAPI.cpp.obj: CXX
 
 build CMakeFiles\agnosticRendering.dir\engine\rendering\WindowLayer.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\rendering\WindowLayer.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\rendering
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
   TARGET_PDB = agnosticRendering.pdb
 
+build CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\Texture.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\rendering\graphics\Texture.cpp || cmake_object_order_depends_target_agnosticRendering
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
+  OBJECT_DIR = CMakeFiles\agnosticRendering.dir
+  OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\rendering\graphics
+  TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
+  TARGET_PDB = agnosticRendering.pdb
+
+build CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\API_DirectX.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\rendering\graphics\api\API_DirectX.cpp || cmake_object_order_depends_target_agnosticRendering
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
+  OBJECT_DIR = CMakeFiles\agnosticRendering.dir
+  OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api
+  TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
+  TARGET_PDB = agnosticRendering.pdb
+
 build CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\API_OpenGL.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\rendering\graphics\api\API_OpenGL.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
+  OBJECT_DIR = CMakeFiles\agnosticRendering.dir
+  OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api
+  TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
+  TARGET_PDB = agnosticRendering.pdb
+
+build CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\API_Vulkan.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\rendering\graphics\api\API_Vulkan.cpp || cmake_object_order_depends_target_agnosticRendering
+  FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -267,7 +291,7 @@ build CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\API_OpenGL.
 
 build CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\GraphicsAPI.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\rendering\graphics\api\GraphicsAPI.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -275,7 +299,7 @@ build CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\GraphicsAPI
 
 build CMakeFiles\agnosticRendering.dir\engine\scene\Scene.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\scene\Scene.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\scene
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -283,7 +307,7 @@ build CMakeFiles\agnosticRendering.dir\engine\scene\Scene.cpp.obj: CXX_COMPILER_
 
 build CMakeFiles\agnosticRendering.dir\engine\scene\components\Camera.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\scene\components\Camera.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\scene\components
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -291,7 +315,7 @@ build CMakeFiles\agnosticRendering.dir\engine\scene\components\Camera.cpp.obj: C
 
 build CMakeFiles\agnosticRendering.dir\engine\scene\components\Component.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\scene\components\Component.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\scene\components
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -299,7 +323,7 @@ build CMakeFiles\agnosticRendering.dir\engine\scene\components\Component.cpp.obj
 
 build CMakeFiles\agnosticRendering.dir\engine\scene\components\Material.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\scene\components\Material.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\scene\components
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -307,7 +331,7 @@ build CMakeFiles\agnosticRendering.dir\engine\scene\components\Material.cpp.obj:
 
 build CMakeFiles\agnosticRendering.dir\engine\scene\components\Model.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\scene\components\Model.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\scene\components
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -315,7 +339,7 @@ build CMakeFiles\agnosticRendering.dir\engine\scene\components\Model.cpp.obj: CX
 
 build CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes\Mesh.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\scene\components\meshes\Mesh.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -323,7 +347,7 @@ build CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes\Mesh.cpp.o
 
 build CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes\MeshData.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\engine\scene\components\meshes\MeshData.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -331,7 +355,7 @@ build CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes\MeshData.c
 
 build CMakeFiles\agnosticRendering.dir\sandbox\main.cpp.obj: CXX_COMPILER__agnosticRendering_Debug ..\sandbox\main.cpp || cmake_object_order_depends_target_agnosticRendering
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd -std:c++latest
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   OBJECT_FILE_DIR = CMakeFiles\agnosticRendering.dir\sandbox
   TARGET_COMPILE_PDB = CMakeFiles\agnosticRendering.dir\
@@ -345,11 +369,11 @@ build CMakeFiles\agnosticRendering.dir\sandbox\main.cpp.obj: CXX_COMPILER__agnos
 #############################################
 # Link the executable agnosticRendering.exe
 
-build agnosticRendering.exe: CXX_EXECUTABLE_LINKER__agnosticRendering_Debug CMakeFiles\agnosticRendering.dir\core\Debug.cpp.obj CMakeFiles\agnosticRendering.dir\core\Engine.cpp.obj CMakeFiles\agnosticRendering.dir\core\Input.cpp.obj CMakeFiles\agnosticRendering.dir\core\Object.cpp.obj CMakeFiles\agnosticRendering.dir\core\Transform.cpp.obj CMakeFiles\agnosticRendering.dir\core\Window.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\GraphicsAPI.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\WindowLayer.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\API_OpenGL.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\GraphicsAPI.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\Scene.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\Camera.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\Component.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\Material.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\Model.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes\Mesh.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes\MeshData.cpp.obj CMakeFiles\agnosticRendering.dir\sandbox\main.cpp.obj | glad.lib imgui.lib imguizmo.lib || glad.lib imgui.lib imguizmo.lib
+build agnosticRendering.exe: CXX_EXECUTABLE_LINKER__agnosticRendering_Debug CMakeFiles\agnosticRendering.dir\core\Debug.cpp.obj CMakeFiles\agnosticRendering.dir\core\Engine.cpp.obj CMakeFiles\agnosticRendering.dir\core\Input.cpp.obj CMakeFiles\agnosticRendering.dir\core\Object.cpp.obj CMakeFiles\agnosticRendering.dir\core\Transform.cpp.obj CMakeFiles\agnosticRendering.dir\core\Window.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\GraphicsAPI.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\WindowLayer.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\Texture.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\API_DirectX.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\API_OpenGL.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\API_Vulkan.cpp.obj CMakeFiles\agnosticRendering.dir\engine\rendering\graphics\api\GraphicsAPI.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\Scene.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\Camera.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\Component.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\Material.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\Model.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes\Mesh.cpp.obj CMakeFiles\agnosticRendering.dir\engine\scene\components\meshes\MeshData.cpp.obj CMakeFiles\agnosticRendering.dir\sandbox\main.cpp.obj | glad.lib imgui.lib imguizmo.lib C$:\libs\Vulkan\Lib32\vulkan-1.lib || glad.lib imgui.lib imguizmo.lib
   FLAGS = /DWIN32 /D_WINDOWS /EHsc /Zi /Ob0 /Od /RTC1 -MDd
   LINK_FLAGS = /machine:X86 /debug /INCREMENTAL /subsystem:console
-  LINK_LIBRARIES = glfw3.lib  glad.lib  opengl32.lib  imgui.lib  imguizmo.lib  d3d11.lib  DirectXTK.lib  assimp.lib  PhysX_32.lib  PhysXCommon_32.lib  PhysXCooking_32.lib  PhysXFoundation_32.lib  PhysXExtensions_static_32.lib  PhysXPvdSDK_static_32.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
-  LINK_PATH = -LIBPATH:C:\Users\auzzi\CLionProjects\agnosticRendering\vendor\libs   -LIBPATH:C:\Users\auzzi\CLionProjects\agnosticRendering\vendor\libs\debug   -LIBPATH:C:\Users\auzzi\CLionProjects\agnosticRendering\vendor\libs\debug\physx
+  LINK_LIBRARIES = glfw3.lib  glad.lib  opengl32.lib  d3d12.lib  dxgi.lib  imgui.lib  imguizmo.lib  assimp.lib  PhysX_32.lib  PhysXCommon_32.lib  PhysXCooking_32.lib  PhysXFoundation_32.lib  PhysXExtensions_static_32.lib  PhysXPvdSDK_static_32.lib  C:\libs\Vulkan\Lib32\vulkan-1.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
+  LINK_PATH = -LIBPATH:C:\Users\auzzi\CLionProjects\agnosticRendering\vendor\libs   -LIBPATH:C:\Users\auzzi\CLionProjects\agnosticRendering\vendor\libs\debug   -LIBPATH:C:\Users\auzzi\CLionProjects\agnosticRendering\vendor\libs\debug\physx   -LIBPATH:C:\PROGRA~2\WI3CF2~1\10\Lib\100226~1.0\um\x86
   OBJECT_DIR = CMakeFiles\agnosticRendering.dir
   POST_BUILD = cmd.exe /C "cd /D C:\Users\auzzi\CLionProjects\agnosticRendering\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2021.2.4\bin\cmake\win\bin\cmake.exe" -E copy_directory C:/Users/auzzi/CLionProjects/agnosticRendering/vendor/libs/debug/dll C:/Users/auzzi/CLionProjects/agnosticRendering/cmake-build-debug"
   PRE_LINK = cd .
@@ -369,7 +393,7 @@ build cmake_object_order_depends_target_glad: phony || CMakeFiles\glad.dir
 
 build CMakeFiles\glad.dir\vendor\includes\glad\glad.c.obj: C_COMPILER__glad_Debug ..\vendor\includes\glad\glad.c || cmake_object_order_depends_target_glad
   FLAGS = /DWIN32 /D_WINDOWS /Zi /Ob0 /Od /RTC1 -MDd
-  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core
+  INCLUDES = -I..\vendor -I..\vendor\includes -I..\vendor\includes\physx -I..\vendor\imgui -I..\engine\audio -I..\engine\input -I..\engine\loaders -I..\engine\networking -I..\engine\rendering -I..\engine\scene -I..\engine\scripting -I..\engine\ui -I..\engine\rendering\graphics\api -I..\core -IC:\libs\Vulkan\Include -I"C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um"
   OBJECT_DIR = CMakeFiles\glad.dir
   OBJECT_FILE_DIR = CMakeFiles\glad.dir\vendor\includes\glad
   TARGET_COMPILE_PDB = CMakeFiles\glad.dir\glad.pdb
@@ -444,14 +468,14 @@ build all: phony imgui.lib imguizmo.lib agnosticRendering.exe glad.lib
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE | ..\CMakeLists.txt C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeRCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\WindowsPaths.cmake CMakeCache.txt CMakeFiles\3.20.2\CMakeCCompiler.cmake CMakeFiles\3.20.2\CMakeCXXCompiler.cmake CMakeFiles\3.20.2\CMakeRCCompiler.cmake CMakeFiles\3.20.2\CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE | ..\CMakeLists.txt C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeRCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\FindPackageHandleStandardArgs.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\FindPackageMessage.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\FindVulkan.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\WindowsPaths.cmake CMakeCache.txt CMakeFiles\3.20.2\CMakeCCompiler.cmake CMakeFiles\3.20.2\CMakeCXXCompiler.cmake CMakeFiles\3.20.2\CMakeRCCompiler.cmake CMakeFiles\3.20.2\CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build ..\CMakeLists.txt C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeRCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\WindowsPaths.cmake CMakeCache.txt CMakeFiles\3.20.2\CMakeCCompiler.cmake CMakeFiles\3.20.2\CMakeCXXCompiler.cmake CMakeFiles\3.20.2\CMakeRCCompiler.cmake CMakeFiles\3.20.2\CMakeSystem.cmake: phony
+build ..\CMakeLists.txt C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCXXInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeCommonLanguageInclude.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeGenericSystem.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeInitializeConfigs.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeLanguageInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeRCInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeSystemSpecificInformation.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\CMakeSystemSpecificInitialize.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\CMakeCommonCompilerMacros.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Compiler\MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\FindPackageHandleStandardArgs.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\FindPackageMessage.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\FindVulkan.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC-C.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC-CXX.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows-MSVC.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\Windows.cmake C$:\Program$ Files\JetBrains\CLion$ 2021.2.4\bin\cmake\win\share\cmake-3.20\Modules\Platform\WindowsPaths.cmake CMakeCache.txt CMakeFiles\3.20.2\CMakeCCompiler.cmake CMakeFiles\3.20.2\CMakeCXXCompiler.cmake CMakeFiles\3.20.2\CMakeRCCompiler.cmake CMakeFiles\3.20.2\CMakeSystem.cmake: phony
 
 
 #############################################
