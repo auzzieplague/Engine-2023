@@ -1,43 +1,92 @@
 #pragma once
 
-#include <GraphicsLayer.h>
-#include <graphics/VertexBuffer.h>
-#include <graphics/IndexBuffer.h>
-#include <graphics/Texture.h>
-#include <graphics/Shader.h>
-#include <graphics/RenderTarget.h>
-#include <GPUInfo.h>
+#include <GraphicsBehaviour.h>
 
 class Mesh;
 
 class GraphicsAPI {
 protected:
-    GPUInfo * gpuInfo{};
+    GraphicsBehaviour *api{};
 public:
+    explicit GraphicsAPI(GraphicsBehaviour *api) : api(api) {
+//        this->queryCapabilities();
+    }
 
-    virtual bool initialise() { return false; };
-    virtual void queryCapabilities(){ this->gpuInfo = new GPUInfo;};
-//    virtual std::string getError() = 0;
-//    virtual void shutdown() = 0;
-//    virtual VertexBuffer createVertexBuffer(...) = 0;
-//    virtual IndexBuffer createIndexBuffer(...) = 0;
-//    virtual Texture loadTexture(...) = 0;
-//    virtual Mesh loadMesh(...) = 0;
-//    virtual Shader createShader(...) = 0;
-//    virtual void setShader(Shader shader) = 0;
-//    virtual void setUniform(...) = 0;
-//    virtual void bindTextureToShader(Texture texture, int textureUnit, const std::string& uniformName) = 0;
-//    virtual void setShaderParameters(...) = 0;
-//    virtual void renderMesh(Mesh mesh, ...) = 0;
-//    virtual void setRenderTarget(RenderTarget target) = 0;
-//    virtual void clearRenderTarget(...) = 0;
-//    virtual void beginFrame() = 0;
-//    virtual void endFrame() = 0;
-    virtual void resizeViewport(...){};
-    virtual void displayCapabilities();
+    void setInitializationBehavior(GraphicsBehaviour *behavior) {
+        api = behavior;
+    }
 
+    template<typename... Args>
+    bool initialise(Args &&... args) { return this->api->initialise(std::forward<Args>(args)...); };
 
+    template<typename... Args>
+    void queryCapabilities(Args &&... args) { this->api->queryCapabilities(std::forward<Args>(args)...); };
 
+    template<typename... Args>
+    void displayCapabilities(Args &&... args) { this->api->displayCapabilities(std::forward<Args>(args)...); };
+
+    // Resource Management
+    template<typename... Args>
+    unsigned int createVertexBuffer(Args &&... args) {return this->api->createVertexBuffer(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    unsigned int createIndexBuffer(Args &&... args) {return this->api->createIndexBuffer(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    unsigned int createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    unsigned int createShaderProgram(Args &&... args) {return this->api->createShaderProgram(std::forward<Args>(args)...); };
+
+    // Rendering
+    template<typename... Args>
+    void bindVertexBuffer(Args &&... args) { this->api->bindVertexBuffer(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void bindIndexBuffer(Args &&... args) { this->api->bindIndexBuffer(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void bindTexture(Args &&... args) { this->api->bindTexture(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void bindShaderProgram(Args &&... args) { this->api->bindShaderProgram(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void drawIndexed(Args &&... args) { this->api->drawIndexed(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void setUniforms(Args &&... args) { this->api->setUniforms(std::forward<Args>(args)...); };
+
+    // Framebuffer and Render Target Management
+    template<typename... Args>
+    void setRenderTarget(Args &&... args) { this->api->setRenderTarget(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void clearRenderTarget(Args &&... args) { this->api->clearRenderTarget(std::forward<Args>(args)...); };
+
+    // Viewport and Projection
+    template<typename... Args>
+    void setViewport(Args &&... args) { this->api->setViewport(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void setProjectionMatrix(Args &&... args) { this->api->setProjectionMatrix(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void resizeViewport(Args &&... args) { this->api->resizeViewport(std::forward<Args>(args)...); };
+
+    // Shader Management
+    template<typename... Args>
+    void compileShader(Args &&... args) { this->api->compileShader(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void linkProgram(Args &&... args) { this->api->linkProgram(std::forward<Args>(args)...); };
+
+    // Cleanup and Shutdown
+    template<typename... Args>
+    void shutdown(Args &&... args) { this->api->shutdown(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void demoTriangle(Args &&... args) { this->api->demoTriangle(std::forward<Args>(args)...); };
 
 };
 

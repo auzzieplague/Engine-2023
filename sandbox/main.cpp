@@ -19,14 +19,25 @@ int main() {
 
     /// Required Layers
     Engine *engine = Engine::getInstance();
-    engine->setGraphicsApi(new API_DirectX());
+    auto* strategy = new GraphicsAPI(new API_OpenGL);
+    engine->setGraphicsApi(strategy);
+
+//    engine->setGraphicsApi(new API_DirectX());
 //    engine->setGraphicsApi(new API_OpenGL());
+//    engine->setGraphicsApi(new API_Vulkan()); // needs breaking down into smaller initialisation
 
     engine->attachLayer(new WindowLayer());    // maintains the window interface & required for input processing
     engine->attachLayer(new GraphicsLayer());  // uses the specified Graphics API to render the scene
 
-    /// kick-start the main loop
-    engine->start();
+    try {
+        Debug::show("[>] engine->start()");
+        engine->start();
+    } catch (std::exception exception) {
+        Debug::show("[!] error encountered shutting down safely");
+    }
 
-    Debug::show("[>] Expected engine->stop()");
+    Debug::show("[>] engine->stop()");
+    engine->stop();
+
+
 }

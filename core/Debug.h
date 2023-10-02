@@ -37,5 +37,7 @@ public:
     static void throwMissingItem( const std::string& item,const std::string& context ) {
         throw std::runtime_error("expecting item"+item+" in "+context);
     }
+
+    static void FatalError(const char *string);
 };
 

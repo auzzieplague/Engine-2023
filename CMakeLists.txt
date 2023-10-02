@@ -94,7 +94,7 @@ add_library(glad ${VENDOR}/includes/glad/glad.c)
 
 
 set(LIBS glfw3 glad opengl32
-        d3d12 dxgi
+        d3d11 dxgi
         imgui imguizmo
         assimp)
 

@@ -1,62 +1,257 @@
-
+#include <glad/glad.h>
 #include "API_OpenGL.h"
+#include <Window.h>
 
-void API_OpenGL::queryCapabilities() {;
+void API_OpenGL::queryCapabilities(...) {
     if (this->gpuInfo == nullptr) {
         this->gpuInfo = new GPUInfo();
     }
-
-    // Get GPU model and vendor
     gpuInfo->model = reinterpret_cast<const char *>(glGetString(GL_RENDERER));
     gpuInfo->driverVersion = reinterpret_cast<const char *>(glGetString(GL_VERSION));
-
-    // Get OpenGL version support
     gpuInfo->openGLVersionSupport = reinterpret_cast<const char *>(glGetString(GL_VERSION));
-
-    // Get maximum texture size
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gpuInfo->maxTextureSize);
-
-    // Get maximum render target size
     glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE, &gpuInfo->maxRenderSize);
-
-    // Get maximum anisotropic filtering level
     glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY, &gpuInfo->maxAnisotropicFiltering);
-
-    // Get maximum MSAA level
     glGetIntegerv(GL_MAX_SAMPLES, &gpuInfo->maxMSAA);
-
-    // Get maximum texture units
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &gpuInfo->maxTextureUnits);
-
-    // Get maximum vertex attributes
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &gpuInfo->maxVertexAttributes);
-
-    // Get maximum uniform buffer bindings
     glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, &gpuInfo->maxUniformBindings);
-
-    // Get maximum texture image units
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &gpuInfo->maxTextureImageUnits);
-
-    // Get maximum geometry shader output vertices
     glGetIntegerv(GL_MAX_GEOMETRY_OUTPUT_VERTICES, &gpuInfo->maxGeometryOutputVertices);
-
-    // Get maximum geometry shader output components
     glGetIntegerv(GL_MAX_GEOMETRY_TOTAL_OUTPUT_COMPONENTS, &gpuInfo->maxGeometryOutputComponents);
-
-    // Check for tessellation support
     gpuInfo->tessellationSupport = isExtensionSupported("GL_ARB_tessellation_shader") != 0;
-
-    // Check for compute shader support
     gpuInfo->computeShaderSupport = isExtensionSupported("GL_ARB_compute_shader") != 0;
 }
 
-
 bool API_OpenGL::isExtensionSupported(const char *extensionName){
     if (glfwExtensionSupported(extensionName)) {
-        std::cout << "Extension '" << extensionName << "' is supported." << std::endl;
+//        std::cout << "Extension '" << extensionName << "' is supported." << std::endl;
         return true;
     } else {
-        std::cout << "Extension '" << extensionName << "' is not supported." << std::endl;
+//        std::cout << "Extension '" << extensionName << "' is not supported." << std::endl;
         return false;
     }
+}
+
+bool API_OpenGL::initialise(...) {
+    // initialise opengl context
+    return true;
+}
+
+
+unsigned int API_OpenGL::createVertexBuffer(const VertexBuffer& vertexBuffer, ...) {
+    unsigned int buffer;
+    glGenBuffers(1, &buffer); // Generate the OpenGL vertex buffer
+    glBindBuffer(GL_ARRAY_BUFFER, buffer); // Bind the buffer to the GL_ARRAY_BUFFER target
+    glBufferData(GL_ARRAY_BUFFER, vertexBuffer.getDataSize(), vertexBuffer.getData(), vertexBuffer.getUsage()); // Upload the data to the buffer
+    glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind the buffer
+
+    return buffer; // Return the ID of the created buffer
+}
+
+
+// should be able to be promoted to parent class to render triangle agnostically
+void API_OpenGL::demoTriangle(...) {
+    // Define the vertices for a triangle
+    float vertices[] = {
+            -0.5f, -0.5f, 0.0f, // Bottom-left corner
+            0.5f, -0.5f, 0.0f, // Bottom-right corner
+            0.0f, 0.5f, 0.0f, // Top center
+    };
+
+    // Define the indices to create triangles
+    unsigned int indices[] = {
+            0, 1, 2 // Indices for the vertices that make up the triangle
+    };
+
+    GLuint VAO, VBO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    // Bind and initialize the vertex buffer
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Bind and initialize the element buffer (indices)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+//    reate and compile vertex and fragment shaders
+    const char *vertexShaderSource = "#version 330 core\n"
+                                     "layout (location = 0) in vec3 aPos;\n"
+                                     "void main()\n"
+                                     "{\n"
+                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                     "}\0";
+    GLuint vertexShader;
+    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    // Check for shader compilation errors (you should add error checking here)
+
+    const char *fragmentShaderSource = "#version 330 core\n"
+                                       "out vec4 FragColor;\n"
+                                       "void main()\n"
+                                       "{\n"
+                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                       "}\n\0";
+    GLuint fragmentShader;
+    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    // Check for shader compilation errors (you should add error checking here)
+
+    // Create and link a shader program
+    GLuint shaderProgram;
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    // Check for shader program linking errors (you should add error checking here)
+
+    // Use the shader program
+    glUseProgram(shaderProgram);
+
+
+    // Specify the layout of the vertex data
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
+    glEnableVertexAttribArray(0);
+
+    auto window = Window::getCurrentWindow();
+
+    // Rendering loop
+    while (!glfwWindowShouldClose(window)) {
+        // Clear the screen
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Draw the triangle using indices
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+
+        // Swap buffers and poll for events
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    // Cleanup (release resources) should be done when you're done with the OpenGL context
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    glDeleteProgram(shaderProgram);
+
+    // Terminate GLFW
+    glfwTerminate();
+}
+
+/**
+ * We will replace each piece of this demo triangle with the new methodology
+ */
+void API_OpenGL::demoTriangleRaw() {
+    // Define the vertices for a triangle
+    float vertices[] = {
+            -0.5f, -0.5f, 0.0f, // Bottom-left corner
+            0.5f, -0.5f, 0.0f, // Bottom-right corner
+            0.0f, 0.5f, 0.0f, // Top center
+    };
+
+    // Define the indices to create triangles
+    unsigned int indices[] = {
+            0, 1, 2 // Indices for the vertices that make up the triangle
+    };
+
+    GLuint VAO, VBO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    // Bind and initialize the vertex buffer
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    // Bind and initialize the element buffer (indices)
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+//    reate and compile vertex and fragment shaders
+    const char *vertexShaderSource = "#version 330 core\n"
+                                     "layout (location = 0) in vec3 aPos;\n"
+                                     "void main()\n"
+                                     "{\n"
+                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                     "}\0";
+    GLuint vertexShader;
+    vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    // Check for shader compilation errors (you should add error checking here)
+
+    const char *fragmentShaderSource = "#version 330 core\n"
+                                       "out vec4 FragColor;\n"
+                                       "void main()\n"
+                                       "{\n"
+                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                       "}\n\0";
+    GLuint fragmentShader;
+    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    // Check for shader compilation errors (you should add error checking here)
+
+    // Create and link a shader program
+    GLuint shaderProgram;
+    shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+
+    // Check for shader program linking errors (you should add error checking here)
+
+    // Use the shader program
+    glUseProgram(shaderProgram);
+
+
+    // Specify the layout of the vertex data
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
+    glEnableVertexAttribArray(0);
+
+    auto window = Window::getCurrentWindow();
+
+    // Rendering loop
+    while (!glfwWindowShouldClose(window)) {
+        // Clear the screen
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Draw the triangle using indices
+        glUseProgram(shaderProgram);
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+
+        // Swap buffers and poll for events
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    // Cleanup (release resources) should be done when you're done with the OpenGL context
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    glDeleteProgram(shaderProgram);
+
+    // Terminate GLFW
+    glfwTerminate();
 }

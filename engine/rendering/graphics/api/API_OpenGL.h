@@ -1,14 +1,24 @@
 #pragma once
-
+#include <GLFW/glfw3.h>
 #include "GraphicsAPI.h"
 
 /**
  * requires glfw3.lib installed
  */
-class API_OpenGL : public GraphicsAPI {
-
-    void queryCapabilities() override;
-//
+class API_OpenGL : public GraphicsBehaviour {
+private:
     static bool isExtensionSupported(const char* extensionName);
+public:
+    bool initialise (...) override;
+    void queryCapabilities(...) override;
+
+    void demoTriangle(...) override ;
+
+    void demoTriangleRaw();
+
+    unsigned int createVertexBuffer(const VertexBuffer& vertexBuffer, ...) override;
+
+//    unsigned int createIndexBuffer(...) override;
+
 };
 

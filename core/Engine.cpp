@@ -99,6 +99,7 @@ void Engine::loopLayers() {
 
 void Engine::stop() {
     delete this->currentScene;
+    this->graphicsAPI->shutdown();
 }
 
 void Engine::attachLayer(Layer *layer) {
@@ -117,7 +118,7 @@ Engine *Engine::getInstance() {
     {
         if (!instance) {
             instance = new Engine();
-            instance->graphicsAPI = new API_OpenGL();
+//            instance->graphicsAPI = new API_OpenGL();
         }
         return instance;
     }

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Component.h"
-#include "Material.h"
+#include <components/Component.h>
+#include <components/Material.h>
 #include "MeshData.h"
 
 class GraphicsAPI;
