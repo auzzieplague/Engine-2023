@@ -16,8 +16,10 @@ public:
 
     void demoTriangleRaw();
 
-    unsigned int createVertexBuffer(const VertexBuffer& vertexBuffer, ...) override;
+    unsigned int createVertexBuffer( VertexBuffer* ) override;
+    void bindVertexBuffer( VertexBuffer* vb ) override;
 
+    unsigned int getFlagCode(const char *string) override;
 //    unsigned int createIndexBuffer(...) override;
 
 };

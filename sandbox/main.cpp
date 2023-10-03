@@ -19,8 +19,7 @@ int main() {
 
     /// Required Layers
     Engine *engine = Engine::getInstance();
-    auto* strategy = new GraphicsAPI(new API_OpenGL);
-    engine->setGraphicsApi(strategy);
+    engine->setGraphicsApi(new API_OpenGL());
 
 //    engine->setGraphicsApi(new API_DirectX());
 //    engine->setGraphicsApi(new API_OpenGL());

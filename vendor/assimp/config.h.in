@@ -50,7 +50,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *  default value. See the doc for the mentioned methods for more details.
  *
  *  <br><br>
- *  The corresponding functions for use with the plain-c API are:
+ *  The corresponding functions for use with the plain-c graphicsApi are:
  *  #aiSetImportPropertyInteger,
  *  #aiSetImportPropertyFloat,
  *  #aiSetImportPropertyString

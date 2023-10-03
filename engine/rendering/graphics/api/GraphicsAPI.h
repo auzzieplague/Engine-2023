@@ -26,8 +26,7 @@ public:
     void displayCapabilities(Args &&... args) { this->api->displayCapabilities(std::forward<Args>(args)...); };
 
     // Resource Management
-    template<typename... Args>
-    unsigned int createVertexBuffer(Args &&... args) {return this->api->createVertexBuffer(std::forward<Args>(args)...); };
+    unsigned int createVertexBuffer(VertexBuffer *vb) {return this->api->createVertexBuffer(vb); };
 
     template<typename... Args>
     unsigned int createIndexBuffer(Args &&... args) {return this->api->createIndexBuffer(std::forward<Args>(args)...); };
@@ -88,6 +87,9 @@ public:
     template<typename... Args>
     void demoTriangle(Args &&... args) { this->api->demoTriangle(std::forward<Args>(args)...); };
 
+    unsigned int getFlag(const char *string) {
+        return this->api->getFlagCode(string);
+    }
 };
 
 

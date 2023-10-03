@@ -16,7 +16,7 @@ private:
     bool hasGUILayer = false;
 
 public:
-    void setGraphicsApi(GraphicsAPI *api);
+    void setGraphicsApi(GraphicsBehaviour *behaviour);
 
     Scene *currentScene{};
     Window *window{};

@@ -25,10 +25,8 @@ void API_OpenGL::queryCapabilities(...) {
 
 bool API_OpenGL::isExtensionSupported(const char *extensionName){
     if (glfwExtensionSupported(extensionName)) {
-//        std::cout << "Extension '" << extensionName << "' is supported." << std::endl;
         return true;
     } else {
-//        std::cout << "Extension '" << extensionName << "' is not supported." << std::endl;
         return false;
     }
 }
@@ -39,16 +37,19 @@ bool API_OpenGL::initialise(...) {
 }
 
 
-unsigned int API_OpenGL::createVertexBuffer(const VertexBuffer& vertexBuffer, ...) {
-    unsigned int buffer;
-    glGenBuffers(1, &buffer); // Generate the OpenGL vertex buffer
-    glBindBuffer(GL_ARRAY_BUFFER, buffer); // Bind the buffer to the GL_ARRAY_BUFFER target
-    glBufferData(GL_ARRAY_BUFFER, vertexBuffer.getDataSize(), vertexBuffer.getData(), vertexBuffer.getUsage()); // Upload the data to the buffer
+unsigned int API_OpenGL::createVertexBuffer( VertexBuffer* vb) {
+    glGenBuffers(1, &vb->bufferID); // Generate the OpenGL vertex buffer
+    glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID); // Bind the buffer to the GL_ARRAY_BUFFER target
+    glBufferData(GL_ARRAY_BUFFER, vb->dataSize, vb->data, vb->usage); // Upload the data to the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind the buffer
 
-    return buffer; // Return the ID of the created buffer
+    return vb->bufferID; // Return the ID of the created buffer
 }
 
+void API_OpenGL::bindVertexBuffer(VertexBuffer *vb) {
+    glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID);
+    glBufferData(GL_ARRAY_BUFFER, vb->dataSize, vb->data, vb->usage);
+}
 
 // should be able to be promoted to parent class to render triangle agnostically
 void API_OpenGL::demoTriangle(...) {
@@ -64,16 +65,16 @@ void API_OpenGL::demoTriangle(...) {
             0, 1, 2 // Indices for the vertices that make up the triangle
     };
 
-    GLuint VAO, VBO, EBO;
+    GLuint VAO, EBO;
     glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
+//    glGenBuffers(1, &VBO);
     glGenBuffers(1, &EBO);
-
     glBindVertexArray(VAO);
 
-    // Bind and initialize the vertex buffer
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    //todo maybe add factory
+    VertexBuffer VBO(vertices, sizeof(vertices), "static");
+    VBO.generate()->bind();
 
     // Bind and initialize the element buffer (indices)
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -142,7 +143,7 @@ void API_OpenGL::demoTriangle(...) {
 
     // Cleanup (release resources) should be done when you're done with the OpenGL context
     glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &VBO.bufferID);
     glDeleteBuffers(1, &EBO);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
@@ -255,3 +256,21 @@ void API_OpenGL::demoTriangleRaw() {
     // Terminate GLFW
     glfwTerminate();
 }
+
+unsigned int API_OpenGL::getFlagCode(const char *string) {
+    static std::map<std::string, unsigned int> flagMap = {
+            {"static",  GL_STATIC_DRAW},
+            {"dynamic", GL_DYNAMIC_DRAW},
+            {"stream",  GL_STREAM_DRAW},
+            // Add more mappings here
+    };
+
+    auto it = flagMap.find(string);
+    if (it != flagMap.end()) {
+        return it->second;
+    } else {
+        return 0;
+    }
+}
+
+

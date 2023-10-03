@@ -18,13 +18,13 @@ public:
     virtual void displayCapabilities(...);
 
     // Resource Management
-    virtual unsigned int createVertexBuffer(const VertexBuffer& vertexBuffer, ...) {return 0;};
+    virtual unsigned int createVertexBuffer(VertexBuffer* vb) {return 0;};
     virtual unsigned int createIndexBuffer(...) {return 0;};
     virtual unsigned int createTexture(...) {return 0;};
     virtual unsigned int createShaderProgram(...) {return 0;};
 
     // Rendering
-    virtual void bindVertexBuffer(...) {};
+    virtual void bindVertexBuffer(VertexBuffer* vb) {};
     virtual void bindIndexBuffer(...) {};
     virtual void bindTexture(...) {};
     virtual void bindShaderProgram(...) {};
@@ -47,4 +47,6 @@ public:
     // Cleanup and Shutdown
     virtual void shutdown(...) {};
     virtual void demoTriangle(...) {};
+
+    virtual unsigned int getFlagCode(const char *string);
 };

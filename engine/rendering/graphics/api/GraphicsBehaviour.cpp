@@ -28,3 +28,7 @@ void GraphicsBehaviour::displayCapabilities(...) {
     // Display other GPUInfo details as needed
 }
 
+unsigned int GraphicsBehaviour::getFlagCode(const char *string) {
+    return 0;
+}
+
