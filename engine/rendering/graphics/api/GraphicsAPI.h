@@ -1,14 +1,15 @@
 #pragma once
 
 #include <GraphicsBehaviour.h>
+#include "HasGraphicsAPI.h"
 
 class Mesh;
 
-class GraphicsAPI {
-protected:
-    GraphicsBehaviour *api{};
+class GraphicsAPI: public HasGraphicsAPI {
+
 public:
-    explicit GraphicsAPI(GraphicsBehaviour *api) : api(api) {
+    explicit GraphicsAPI(GraphicsBehaviour *api){
+        this->api = api;
 //        this->queryCapabilities();
     }
 
