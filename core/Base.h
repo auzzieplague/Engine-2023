@@ -18,6 +18,7 @@
 
 /// our own includes
 #include "Debug.h"
+#include "Tinker.h"
 
 // type definitions
 typedef unsigned int uint;

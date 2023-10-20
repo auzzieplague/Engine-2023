@@ -128,8 +128,7 @@ Engine *Engine::getInstance() {
 void Engine::setGraphicsApi(GraphicsBehaviour *behaviour) {
     auto *api = new GraphicsAPI( behaviour);
     Engine::graphicsAPI = api;
-    Material::setGraphicsAPI(api);
-    VertexBuffer::setGraphicsAPI(api);
+    // note: the api is passed through to material, mesh, buffers etc by the graphics layer on attach
 }
 
 void Engine::initFrameTimer() {
