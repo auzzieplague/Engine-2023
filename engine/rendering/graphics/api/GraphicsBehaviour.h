@@ -1,6 +1,6 @@
 #pragma once
 #include <graphics/Texture.h>
-#include <graphics/Shader.h>
+#include <graphics/ShaderProgram.h>
 #include <graphics/RenderTarget.h>
 #include <GPUInfo.h>
 #include <cstdio>
@@ -23,9 +23,11 @@ public:
     virtual unsigned int createVertexBuffer(VertexBuffer* vb) {return 0;};
     virtual unsigned int createIndexBuffer(IndexBuffer *ib) {return 0;};
     virtual unsigned int createBufferObject(BufferObject *bo) {return 0;}; // VAO in opengl
+    virtual void compileShader(Shader *shader) {};
+    virtual unsigned int linkShaderProgram(ShaderProgram *) {return 0;};
 
     virtual unsigned int createTexture(...) {return 0;};
-    virtual unsigned int createShaderProgram(...) {return 0;};
+
 
     // Rendering
     virtual void bindVertexBuffer(VertexBuffer* vb) {};

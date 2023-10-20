@@ -50,9 +50,6 @@ public:
     template<typename... Args>
     unsigned int createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
 
-    template<typename... Args>
-    unsigned int createShaderProgram(Args &&... args) {return this->api->createShaderProgram(std::forward<Args>(args)...); };
-
     // Rendering
     template<typename... Args>
     void bindVertexBuffer(Args &&... args) { this->api->bindVertexBuffer(std::forward<Args>(args)...); };
@@ -95,6 +92,9 @@ public:
     // Shader Management
     template<typename... Args>
     void compileShader(Args &&... args) { this->api->compileShader(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void linkShaderProgram(Args &&... args) { this->api->linkShaderProgram(std::forward<Args>(args)...); };
 
     template<typename... Args>
     void linkProgram(Args &&... args) { this->api->linkProgram(std::forward<Args>(args)...); };

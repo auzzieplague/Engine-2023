@@ -19,6 +19,8 @@ public:
         Material::setGraphicsAPI(api);
         VertexBuffer::setGraphicsAPI(api);
         IndexBuffer::setGraphicsAPI(api);
+        ShaderProgram::setGraphicsAPI(api);
+        Shader::setGraphicsAPI(api);
         Mesh::setApi(api);
     };
 

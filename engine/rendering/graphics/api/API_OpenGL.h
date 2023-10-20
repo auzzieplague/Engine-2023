@@ -33,5 +33,9 @@ public:
 
     void bindBufferObject(BufferObject *bo) override;
 
+    void compileShader(Shader *) override;
+
+    unsigned int linkShaderProgram(ShaderProgram *) override;
+
 };
 

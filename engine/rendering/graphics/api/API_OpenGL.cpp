@@ -80,6 +80,39 @@ void API_OpenGL::bindBufferObject(BufferObject *bo) {
     glBindVertexArray(bo->bufferID);
 }
 
+void API_OpenGL::compileShader(Shader *shader) {
+    //todo make a type map or method to lookup type
+    switch (shader->type) {
+        case VERTEX_SHADER:
+        shader->shaderID = glCreateShader(GL_VERTEX_SHADER);
+        break;
+        case FRAGMENT_SHADER:
+            shader->shaderID = glCreateShader(GL_FRAGMENT_SHADER);
+            break;
+    }
+
+    const GLchar* sourceCStr = shader->source.c_str();
+    glShaderSource(shader->shaderID, 1, &sourceCStr, NULL);
+    glCompileShader(shader->shaderID);
+
+}
+
+unsigned int API_OpenGL::linkShaderProgram(ShaderProgram *program) {
+
+    program->programID = glCreateProgram();
+
+    for (auto shader: program->shaders) {
+        if (!shader->compiled) {
+            shader->compile();
+        }
+
+        glAttachShader(program->programID, shader->shaderID);
+    }
+
+    glLinkProgram (program->programID);
+    return program->programID;
+}
+
 // should be able to be promoted to parent class to render triangle agnostically
 void API_OpenGL::demoTriangle(...) {
     // Define the vertices for a triangle
@@ -90,15 +123,21 @@ void API_OpenGL::demoTriangle(...) {
     };
 
     // Define the indices to create triangles
-    unsigned int indices[] = {
-            0, 1, 2 // Indices for the vertices that make up the triangle
-    };
+    unsigned int indices[] = {0, 1, 2};
 
-//    GLuint VAO;
-//    glGenVertexArrays(1, &VAO);
-//    glGenBuffers(1, &VBO);
-//    glGenBuffers(1, &EBO);
-//    glBindVertexArray(VAO);
+    const char *fragmentShaderSource = "#version 330 core\n"
+                                       "out vec4 FragColor;\n"
+                                       "void main()\n"
+                                       "{\n"
+                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                       "}\n\0";
+
+        const char *vertexShaderSource = "#version 330 core\n"
+                                     "layout (location = 0) in vec3 aPos;\n"
+                                     "void main()\n"
+                                     "{\n"
+                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                     "}\0";
 
     BufferObject VAO;
     VAO.generate()->bind();
@@ -110,48 +149,24 @@ void API_OpenGL::demoTriangle(...) {
     EBO.generate()->bind();
 
 
+    auto * program = new ShaderProgram();
 
-    // Bind and initialize the element buffer (indices)
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-//    reate and compile vertex and fragment shaders
-    const char *vertexShaderSource = "#version 330 core\n"
-                                     "layout (location = 0) in vec3 aPos;\n"
-                                     "void main()\n"
-                                     "{\n"
-                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                     "}\0";
-    GLuint vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
+    auto * vertexShader = new Shader(VERTEX_SHADER);
+    vertexShader->setSource(vertexShaderSource);
+    vertexShader->compile(); // will be done in program compile if not already compiled
+    program->addShader(vertexShader);
 
-    // Check for shader compilation errors (you should add error checking here)
+    auto fragmentShader = new Shader(FRAGMENT_SHADER);
+    fragmentShader->setSource(fragmentShaderSource);
+    fragmentShader->compile();
+    program->addShader(fragmentShader);
 
-    const char *fragmentShaderSource = "#version 330 core\n"
-                                       "out vec4 FragColor;\n"
-                                       "void main()\n"
-                                       "{\n"
-                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                       "}\n\0";
-    GLuint fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // Check for shader compilation errors (you should add error checking here)
-
-    // Create and link a shader program
-    GLuint shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
+    program->compileAndLink();
 
     // Check for shader program linking errors (you should add error checking here)
 
     // Use the shader program
-    glUseProgram(shaderProgram);
+    glUseProgram(program->programID);
 
 
     // Specify the layout of the vertex data
@@ -167,7 +182,7 @@ void API_OpenGL::demoTriangle(...) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Draw the triangle using indices
-        glUseProgram(shaderProgram);
+        glUseProgram(program->programID);
         VAO.bind();
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
@@ -180,9 +195,9 @@ void API_OpenGL::demoTriangle(...) {
     glDeleteVertexArrays(1, &VAO.bufferID);
     glDeleteBuffers(1, &VBO.bufferID); // make cleanup method / destructor
     glDeleteBuffers(1, &EBO.bufferID);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    glDeleteProgram(shaderProgram);
+    glDeleteShader(vertexShader->shaderID);
+    glDeleteShader(fragmentShader->shaderID);
+    glDeleteProgram(program->programID);
 
     // Terminate GLFW
     glfwTerminate();
@@ -307,5 +322,6 @@ unsigned int API_OpenGL::getFlagCode(const char *string) {
         return 0;
     }
 }
+
 
 

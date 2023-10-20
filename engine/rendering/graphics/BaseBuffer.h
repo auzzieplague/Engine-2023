@@ -5,7 +5,6 @@
 
 class GraphicsAPI; // forward declare
 
-
 class BaseBuffer {
 public:
 

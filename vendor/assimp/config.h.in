@@ -951,7 +951,7 @@ enum aiComponent
 #   define AI_CONFIG_GLOBAL_SCALE_FACTOR_DEFAULT  1.0f
 #endif // !! AI_DEBONE_THRESHOLD
 
-// ---------- All the Build/Compile-time defines ------------
+// ---------- All the Build/compile-time defines ------------
 
 /** @brief Specifies if double precision is supported inside assimp
  *
