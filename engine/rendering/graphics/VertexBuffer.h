@@ -1,11 +1,15 @@
 #pragma once
 
-#include <HasGraphicsAPI.h>
+
+#include <GraphicsBehaviour.h>
 
 class GraphicsAPI; // forward declare
 
-class VertexBuffer: public HasGraphicsAPI {
+class VertexBuffer {
 public:
+
+    static GraphicsAPI *graphicsApi;
+
     const void *data;
     size_t dataSize;
     unsigned int usage;

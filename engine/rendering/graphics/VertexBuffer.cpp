@@ -1,6 +1,7 @@
 #include "VertexBuffer.h"
 #include <GraphicsAPI.h> // override forward declaration of graphics api here
 
+GraphicsAPI * VertexBuffer::graphicsApi;
 
 void VertexBuffer::setGraphicsAPI(GraphicsAPI *api) {
     VertexBuffer::graphicsApi = api;

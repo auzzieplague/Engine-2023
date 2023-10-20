@@ -1,12 +1,11 @@
 #pragma once
 
 #include <GraphicsBehaviour.h>
-#include "HasGraphicsAPI.h"
 
 class Mesh;
 
-class GraphicsAPI: public HasGraphicsAPI {
-
+class GraphicsAPI {
+    GraphicsBehaviour *api;
 public:
     explicit GraphicsAPI(GraphicsBehaviour *api){
         this->api = api;

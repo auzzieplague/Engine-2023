@@ -1,11 +1,12 @@
-
-#include <graphics/VertexBuffer.h>
-#include <graphics/IndexBuffer.h>
+#pragma once
 #include <graphics/Texture.h>
 #include <graphics/Shader.h>
 #include <graphics/RenderTarget.h>
 #include <GPUInfo.h>
 #include <cstdio>
+
+class VertexBuffer;
+class IndexBuffer;
 
 class GraphicsBehaviour {
 

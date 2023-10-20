@@ -1,6 +1,8 @@
 #include <glad/glad.h>
 #include "API_OpenGL.h"
 #include <Window.h>
+#include "../VertexBuffer.h"
+#include "../IndexBuffer.h"
 
 void API_OpenGL::queryCapabilities(...) {
     if (this->gpuInfo == nullptr) {
