@@ -1,26 +1,15 @@
 #pragma once
+
+#include "BaseBuffer.h"
+
 class GraphicsAPI; // forward declare
 
-class IndexBuffer {
-public:
-    const unsigned int *data;
-    size_t dataSize;
-    unsigned int usage;
-    static GraphicsAPI *graphicsApi;
+class IndexBuffer: public BaseBuffer {
+
 
 public:
-    static void setGraphicsAPI(GraphicsAPI *api);
+    IndexBuffer(const unsigned int *data, size_t dataSize, const char* usage): BaseBuffer(data,dataSize,usage){};
 
-    IndexBuffer(const unsigned int *data, size_t dataSize, const char* usage);
-
-    mutable unsigned int bufferID = 0;
-
-    [[nodiscard]] const unsigned int *getData() const { return data; }
-
-    [[nodiscard]] size_t getDataSize() const { return dataSize; }
-
-    [[nodiscard]] unsigned int getUsage() const { return usage; }
-
-    IndexBuffer* generate();
-    IndexBuffer* bind();
+    IndexBuffer* generate() override;
+    IndexBuffer* bind() override;
 };

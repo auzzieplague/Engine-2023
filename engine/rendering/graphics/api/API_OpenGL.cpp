@@ -3,6 +3,8 @@
 #include <Window.h>
 #include "../VertexBuffer.h"
 #include "../IndexBuffer.h"
+#include "../BufferObject.h"
+
 
 void API_OpenGL::queryCapabilities(...) {
     if (this->gpuInfo == nullptr) {
@@ -40,7 +42,7 @@ bool API_OpenGL::initialise(...) {
 
 
 unsigned int API_OpenGL::createVertexBuffer( VertexBuffer* vb) {
-    glGenBuffers(1, &vb->bufferID); // Generate the OpenGL vertex buffer
+    glGenBuffers(1, &vb->bufferID); // Generate the OpenGL buffer
     glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID); // Bind the buffer to the GL_ARRAY_BUFFER target
     glBufferData(GL_ARRAY_BUFFER, vb->dataSize, vb->data, vb->usage); // Upload the data to the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind the buffer
@@ -51,6 +53,31 @@ unsigned int API_OpenGL::createVertexBuffer( VertexBuffer* vb) {
 void API_OpenGL::bindVertexBuffer(VertexBuffer *vb) {
     glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID);
     glBufferData(GL_ARRAY_BUFFER, vb->dataSize, vb->data, vb->usage);
+}
+
+
+unsigned int API_OpenGL::createIndexBuffer(IndexBuffer *ib) {
+    glGenBuffers(1, &ib->bufferID); // Generate the OpenGL buffer
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->bufferID); // Bind the buffer to the GL_ELEMENT_ARRAY_BUFFER target
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->dataSize, ib->data, ib->usage); // Upload the data to the buffer
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind the buffer
+
+    return ib->bufferID; // Return the ID of the created buffer
+}
+
+void API_OpenGL::bindIndexBuffer(IndexBuffer *ib) {
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->bufferID);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->dataSize, ib->data, ib->usage);
+}
+
+
+unsigned int API_OpenGL::createBufferObject(BufferObject *bo) {
+    glGenVertexArrays(1, &bo->bufferID); // Generate the OpenGL buffer
+    return bo->bufferID; // Return the ID of the created buffer
+}
+
+void API_OpenGL::bindBufferObject(BufferObject *bo) {
+    glBindVertexArray(bo->bufferID);
 }
 
 // should be able to be promoted to parent class to render triangle agnostically
@@ -67,20 +94,26 @@ void API_OpenGL::demoTriangle(...) {
             0, 1, 2 // Indices for the vertices that make up the triangle
     };
 
-    GLuint VAO, EBO;
-    glGenVertexArrays(1, &VAO);
+//    GLuint VAO;
+//    glGenVertexArrays(1, &VAO);
 //    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-    glBindVertexArray(VAO);
+//    glGenBuffers(1, &EBO);
+//    glBindVertexArray(VAO);
 
+    BufferObject VAO;
+    VAO.generate()->bind();
 
-    //todo maybe add factory
     VertexBuffer VBO(vertices, sizeof(vertices), "static");
     VBO.generate()->bind();
 
+    IndexBuffer EBO(indices, sizeof(indices),"static");
+    EBO.generate()->bind();
+
+
+
     // Bind and initialize the element buffer (indices)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+//    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 //    reate and compile vertex and fragment shaders
     const char *vertexShaderSource = "#version 330 core\n"
                                      "layout (location = 0) in vec3 aPos;\n"
@@ -135,7 +168,7 @@ void API_OpenGL::demoTriangle(...) {
 
         // Draw the triangle using indices
         glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
+        VAO.bind();
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
         // Swap buffers and poll for events
@@ -144,9 +177,9 @@ void API_OpenGL::demoTriangle(...) {
     }
 
     // Cleanup (release resources) should be done when you're done with the OpenGL context
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO.bufferID);
-    glDeleteBuffers(1, &EBO);
+    glDeleteVertexArrays(1, &VAO.bufferID);
+    glDeleteBuffers(1, &VBO.bufferID); // make cleanup method / destructor
+    glDeleteBuffers(1, &EBO.bufferID);
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
     glDeleteProgram(shaderProgram);

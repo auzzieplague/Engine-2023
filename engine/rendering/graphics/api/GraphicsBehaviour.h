@@ -7,6 +7,7 @@
 
 class VertexBuffer;
 class IndexBuffer;
+class BufferObject;
 
 class GraphicsBehaviour {
 
@@ -20,13 +21,17 @@ public:
 
     // Resource Management
     virtual unsigned int createVertexBuffer(VertexBuffer* vb) {return 0;};
-    virtual unsigned int createIndexBuffer(...) {return 0;};
+    virtual unsigned int createIndexBuffer(IndexBuffer *ib) {return 0;};
+    virtual unsigned int createBufferObject(BufferObject *bo) {return 0;}; // VAO in opengl
+
     virtual unsigned int createTexture(...) {return 0;};
     virtual unsigned int createShaderProgram(...) {return 0;};
 
     // Rendering
     virtual void bindVertexBuffer(VertexBuffer* vb) {};
-    virtual void bindIndexBuffer(...) {};
+    virtual void bindIndexBuffer(IndexBuffer* ib) {};
+    virtual void bindBufferObject(BufferObject *bo) {}; // VAO in opengl
+
     virtual void bindTexture(...) {};
     virtual void bindShaderProgram(...) {};
     virtual void drawIndexed(...) {};

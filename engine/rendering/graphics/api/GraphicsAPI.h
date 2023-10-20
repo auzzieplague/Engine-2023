@@ -2,6 +2,18 @@
 
 #include <GraphicsBehaviour.h>
 
+/*
+ * the methods below act as a gateway to the chosen api for our other classes such as VertexBuffer, IndexBuffer, etc.
+ * those methods can call ->createVertexBuffer(this) and this gateway will call the corresponding api->createVertexBuffer(instance)
+ *
+ * the variadic templated functions provide a level of abstraction for us to hook in to if required
+ * I think we can just have createBuffer(instance) and the templating will allow us to provide the
+ * 3 types of buffers and have the 3 methods in behaviour with only 1 entry here :/
+ * rather than createVertexBuffer, createIndexBuffer, createObjectBuffer
+ *
+ * then we only need 1 method to createBuffer, BindBuffer in the BaseBuffer class
+ */
+
 class Mesh;
 
 class GraphicsAPI {
@@ -12,8 +24,8 @@ public:
 //        this->queryCapabilities();
     }
 
-    void setInitializationBehavior(GraphicsBehaviour *behavior) {
-        api = behavior;
+    void setBehaviour(GraphicsBehaviour *behavior) {
+        this->api = behavior;
     }
 
     template<typename... Args>
@@ -26,10 +38,14 @@ public:
     void displayCapabilities(Args &&... args) { this->api->displayCapabilities(std::forward<Args>(args)...); };
 
     // Resource Management
-    unsigned int createVertexBuffer(VertexBuffer *vb) {return this->api->createVertexBuffer(vb); };
+    template<typename... Args>
+    unsigned int createVertexBuffer(Args &&... args) {return this->api->createVertexBuffer(std::forward<Args>(args)...); };
 
     template<typename... Args>
     unsigned int createIndexBuffer(Args &&... args) {return this->api->createIndexBuffer(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    unsigned int createBufferObject(Args &&... args) {return this->api->createBufferObject(std::forward<Args>(args)...); };
 
     template<typename... Args>
     unsigned int createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
@@ -43,6 +59,9 @@ public:
 
     template<typename... Args>
     void bindIndexBuffer(Args &&... args) { this->api->bindIndexBuffer(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void bindBufferObject(Args &&... args) { this->api->bindBufferObject(std::forward<Args>(args)...); };
 
     template<typename... Args>
     void bindTexture(Args &&... args) { this->api->bindTexture(std::forward<Args>(args)...); };
@@ -88,7 +107,7 @@ public:
     void demoTriangle(Args &&... args) { this->api->demoTriangle(std::forward<Args>(args)...); };
 
     unsigned int getFlag(const char *string) {
-        return this->api->getFlagCode(string);
+        return string ? this->api->getFlagCode(string) : 0;
     }
 };
 

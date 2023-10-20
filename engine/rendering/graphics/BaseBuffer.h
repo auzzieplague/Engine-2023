@@ -26,12 +26,12 @@ public:
 
     [[nodiscard]] unsigned int getUsage() const { return usage; }
 
-    virtual VertexBuffer *generate() {
+    virtual BaseBuffer *generate() {
         TINKER_MISSING_OVERRIDE;
         return nullptr;
     };
 
-    virtual VertexBuffer *bind() {
+    virtual BaseBuffer *bind() {
         TINKER_MISSING_OVERRIDE;
         return nullptr;
     };
