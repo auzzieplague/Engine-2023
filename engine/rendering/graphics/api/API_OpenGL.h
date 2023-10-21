@@ -36,6 +36,7 @@ public:
     void compileShader(Shader *) override;
 
     unsigned int linkShaderProgram(ShaderProgram *) override;
+   void  useShaderProgram(ShaderProgram *) override;
 
 };
 

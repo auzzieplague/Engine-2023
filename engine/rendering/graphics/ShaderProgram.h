@@ -15,10 +15,12 @@ public:
     std::vector<Shader *> shaders;
 
     void compileAndLink();
+    void use();
 
     void addShader(Shader * shader) {
         this->shaders.push_back(shader);
     }
+
 
 
     // add shader

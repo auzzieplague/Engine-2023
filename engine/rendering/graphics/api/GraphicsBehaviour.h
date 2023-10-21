@@ -25,6 +25,7 @@ public:
     virtual unsigned int createBufferObject(BufferObject *bo) {return 0;}; // VAO in opengl
     virtual void compileShader(Shader *shader) {};
     virtual unsigned int linkShaderProgram(ShaderProgram *) {return 0;};
+    virtual void useShaderProgram(ShaderProgram *) {};
 
     virtual unsigned int createTexture(...) {return 0;};
 

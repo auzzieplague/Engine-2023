@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 
 enum ShaderType {
@@ -22,13 +23,16 @@ public:
     bool compiled = false;
     std::string source;
     unsigned int shaderID = 0;
-    explicit Shader(unsigned int type);
-    explicit Shader(unsigned int type, const std::string& fileName);
 
-    Shader *loadFromSource (const std::string & sourceCode);
-    Shader *setSource (const std::string & sourceCode);
+    explicit Shader(unsigned int type);
+
+    explicit Shader(unsigned int type, const std::string &fileName);
+
+    Shader *loadFromSource(const std::string &fileName);
+
+    Shader *setSource(const std::string &sourceCode);
 
     static void setGraphicsAPI(GraphicsAPI *api);
 
-    Shader *compile ();
+    Shader *compile();
 };

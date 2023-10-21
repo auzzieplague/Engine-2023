@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 #include "API_OpenGL.h"
 #include <Window.h>
+#include <graphics/GPULayout.h>
 #include "../VertexBuffer.h"
 #include "../IndexBuffer.h"
 #include "../BufferObject.h"
@@ -97,6 +98,10 @@ void API_OpenGL::compileShader(Shader *shader) {
 
 }
 
+void API_OpenGL::useShaderProgram(ShaderProgram *program) {
+    glUseProgram(program->programID);
+}
+
 unsigned int API_OpenGL::linkShaderProgram(ShaderProgram *program) {
 
     program->programID = glCreateProgram();
@@ -124,23 +129,24 @@ void API_OpenGL::demoTriangle(...) {
 
     // Define the indices to create triangles
     unsigned int indices[] = {0, 1, 2};
-
-    const char *fragmentShaderSource = "#version 330 core\n"
-                                       "out vec4 FragColor;\n"
-                                       "void main()\n"
-                                       "{\n"
-                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                       "}\n\0";
-
-        const char *vertexShaderSource = "#version 330 core\n"
-                                     "layout (location = 0) in vec3 aPos;\n"
-                                     "void main()\n"
-                                     "{\n"
-                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                     "}\0";
+//
+//    const char *fragmentShaderSource = "#version 330 core\n"
+//                                       "out vec4 FragColor;\n"
+//                                       "void main()\n"
+//                                       "{\n"
+//                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+//                                       "}\n\0";
+//
+//        const char *vertexShaderSource = "#version 330 core\n"
+//                                     "layout (location = 0) in vec3 aPos;\n"
+//                                     "void main()\n"
+//                                     "{\n"
+//                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+//                                     "}\0";
 
     BufferObject VAO;
     VAO.generate()->bind();
+    GPULayout layout1;
 
     VertexBuffer VBO(vertices, sizeof(vertices), "static");
     VBO.generate()->bind();
@@ -148,30 +154,27 @@ void API_OpenGL::demoTriangle(...) {
     IndexBuffer EBO(indices, sizeof(indices),"static");
     EBO.generate()->bind();
 
-
-    auto * program = new ShaderProgram();
-
-    auto * vertexShader = new Shader(VERTEX_SHADER);
-    vertexShader->setSource(vertexShaderSource);
-    vertexShader->compile(); // will be done in program compile if not already compiled
-    program->addShader(vertexShader);
-
-    auto fragmentShader = new Shader(FRAGMENT_SHADER);
-    fragmentShader->setSource(fragmentShaderSource);
-    fragmentShader->compile();
-    program->addShader(fragmentShader);
-
-    program->compileAndLink();
-
-    // Check for shader program linking errors (you should add error checking here)
-
-    // Use the shader program
-    glUseProgram(program->programID);
-
-
     // Specify the layout of the vertex data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
+//    VAO.layout()->se;
+
+    auto * program = new ShaderProgram();
+
+    // todo load from source, shader program might also load all source with the same name
+    auto * vertexShader = new Shader(VERTEX_SHADER);
+    vertexShader->loadFromSource("general");
+    program->addShader(vertexShader);
+
+    auto fragmentShader = new Shader(FRAGMENT_SHADER);
+    fragmentShader->loadFromSource("general");
+    program->addShader(fragmentShader);
+
+    program->compileAndLink();
+    program->use();
+
+
+
 
     auto window = Window::getCurrentWindow();
 
@@ -198,110 +201,6 @@ void API_OpenGL::demoTriangle(...) {
     glDeleteShader(vertexShader->shaderID);
     glDeleteShader(fragmentShader->shaderID);
     glDeleteProgram(program->programID);
-
-    // Terminate GLFW
-    glfwTerminate();
-}
-
-/**
- * We will replace each piece of this demo triangle with the new methodology
- */
-void API_OpenGL::demoTriangleRaw() {
-    // Define the vertices for a triangle
-    float vertices[] = {
-            -0.5f, -0.5f, 0.0f, // Bottom-left corner
-            0.5f, -0.5f, 0.0f, // Bottom-right corner
-            0.0f, 0.5f, 0.0f, // Top center
-    };
-
-    // Define the indices to create triangles
-    unsigned int indices[] = {
-            0, 1, 2 // Indices for the vertices that make up the triangle
-    };
-
-    GLuint VAO, VBO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    // Bind and initialize the vertex buffer
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Bind and initialize the element buffer (indices)
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-//    reate and compile vertex and fragment shaders
-    const char *vertexShaderSource = "#version 330 core\n"
-                                     "layout (location = 0) in vec3 aPos;\n"
-                                     "void main()\n"
-                                     "{\n"
-                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                     "}\0";
-    GLuint vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    // Check for shader compilation errors (you should add error checking here)
-
-    const char *fragmentShaderSource = "#version 330 core\n"
-                                       "out vec4 FragColor;\n"
-                                       "void main()\n"
-                                       "{\n"
-                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                       "}\n\0";
-    GLuint fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // Check for shader compilation errors (you should add error checking here)
-
-    // Create and link a shader program
-    GLuint shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    // Check for shader program linking errors (you should add error checking here)
-
-    // Use the shader program
-    glUseProgram(shaderProgram);
-
-
-    // Specify the layout of the vertex data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(0);
-
-    auto window = Window::getCurrentWindow();
-
-    // Rendering loop
-    while (!glfwWindowShouldClose(window)) {
-        // Clear the screen
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // Draw the triangle using indices
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-
-        // Swap buffers and poll for events
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-    }
-
-    // Cleanup (release resources) should be done when you're done with the OpenGL context
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    glDeleteProgram(shaderProgram);
 
     // Terminate GLFW
     glfwTerminate();

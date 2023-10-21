@@ -97,7 +97,7 @@ public:
     void linkShaderProgram(Args &&... args) { this->api->linkShaderProgram(std::forward<Args>(args)...); };
 
     template<typename... Args>
-    void linkProgram(Args &&... args) { this->api->linkProgram(std::forward<Args>(args)...); };
+    void useShaderProgram(Args &&... args) { this->api->useShaderProgram(std::forward<Args>(args)...); };
 
     // Cleanup and Shutdown
     template<typename... Args>

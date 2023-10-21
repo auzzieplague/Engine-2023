@@ -11,3 +11,7 @@ void ShaderProgram::setGraphicsAPI(GraphicsAPI *api) {
 void ShaderProgram::compileAndLink() {
     ShaderProgram::graphicsApi->linkShaderProgram(this);
 }
+
+void ShaderProgram::use() {
+    ShaderProgram::graphicsApi->useShaderProgram(this);
+}
