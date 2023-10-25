@@ -4,10 +4,12 @@
 #include <graphics/RenderTarget.h>
 #include <GPUInfo.h>
 #include <cstdio>
+#include <components/meshes/MeshData.h>
 
 class VertexBuffer;
 class IndexBuffer;
 class BufferObject;
+class GPULayout;
 
 class GraphicsBehaviour {
 
@@ -26,6 +28,7 @@ public:
     virtual void compileShader(Shader *shader) {};
     virtual unsigned int linkShaderProgram(ShaderProgram *) {return 0;};
     virtual void useShaderProgram(ShaderProgram *) {};
+    virtual void applyLayout(GPULayout *layout, BufferObject *object);
 
     virtual unsigned int createTexture(...) {return 0;};
 
@@ -58,4 +61,25 @@ public:
     virtual void demoTriangle(...) {};
 
     virtual unsigned int getFlagCode(const char *string);
+
+    virtual MeshData* getSampleMeshData(){
+
+        float vertices[] = {
+                -0.5f, -0.5f, 0.0f, // Bottom-left corner
+                0.5f, -0.5f, 0.0f, // Bottom-right corner
+                0.5f, 0.5f, 0.0f, // Top-right corner
+                -0.5f, 0.5f, 0.0f  // Top-left corner
+        };
+
+        unsigned int indices[] = {
+                0, 1, 2, // First triangle
+                2, 3, 0  // Second triangle
+        };
+
+        auto meshData = new MeshData();
+        meshData->setVertices(vertices, sizeof (vertices));
+        meshData->setIndices(indices, sizeof (indices));
+
+        return meshData;
+    };
 };

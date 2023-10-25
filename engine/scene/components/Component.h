@@ -32,6 +32,7 @@ public:
     bool selectable = false;
     bool highlighted = false;
     bool selected = false;
+    bool dynamic = false;
 
     void setRenderLast(bool last = true);
 

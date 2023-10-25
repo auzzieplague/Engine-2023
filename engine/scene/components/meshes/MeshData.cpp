@@ -6,6 +6,9 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <unordered_map>
 #include <algorithm>
+#include <graphics/BufferObject.h>
+#include <graphics/VertexBuffer.h>
+#include <graphics/IndexBuffer.h>
 
 
 GraphicsAPI *MeshData::m_api;
@@ -17,6 +20,7 @@ void MeshData::setApi(GraphicsAPI *api) {
 void MeshData::setVertices(const std::vector<glm::vec3> &mVertices) {
     m_vertices = mVertices;
 }
+
 
 void MeshData::setIndices(const std::vector<unsigned int> &mIndices) {
     m_indices = mIndices;
@@ -256,3 +260,29 @@ glm::vec3 MeshData::calculateOptimalPosition(const glm::mat4 &qem) {
 MeshData * MeshData::getMeshFromHeightMap(const std::string &fileName, float heightScale, float uvScale, bool flipTriangles) {
     return {};
 }
+
+void MeshData::setVertices(const float *floatArray, std::size_t arraySize) {
+    if (arraySize % 3 != 0) {
+        Debug::show("attempting to set vertices that is not a multiple of 3");
+        return;
+    }
+
+    m_vertices.clear();
+    m_vertices.reserve(arraySize / 3);
+
+    for (std::size_t i = 0; i < arraySize; i += 3) {
+        glm::vec3 vertex(floatArray[i], floatArray[i + 1], floatArray[i + 2]);
+        m_vertices.push_back(vertex);
+    }
+}
+
+void MeshData::setIndices(const unsigned int *intArray, std::size_t arraySize) {
+    m_indices.clear();
+    m_indices.reserve(arraySize);
+
+    for (std::size_t i = 0; i < arraySize; ++i) {
+        m_indices.push_back(intArray[i]);
+    }
+}
+
+

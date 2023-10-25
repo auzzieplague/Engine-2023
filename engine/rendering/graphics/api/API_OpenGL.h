@@ -17,7 +17,6 @@ public:
 
     void demoTriangle(...) override;
 
-    void demoTriangleRaw();
 
     unsigned int getFlagCode(const char *string) override;
 
@@ -36,7 +35,10 @@ public:
     void compileShader(Shader *) override;
 
     unsigned int linkShaderProgram(ShaderProgram *) override;
-   void  useShaderProgram(ShaderProgram *) override;
+
+    void  useShaderProgram(ShaderProgram *) override;
+
+    void applyLayout(GPULayout *layout, BufferObject * bufferObject) override;
 
 };
 

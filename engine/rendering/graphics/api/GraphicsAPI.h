@@ -48,6 +48,9 @@ public:
     unsigned int createBufferObject(Args &&... args) {return this->api->createBufferObject(std::forward<Args>(args)...); };
 
     template<typename... Args>
+    void applyLayout(Args &&... args) {return this->api->applyLayout(std::forward<Args>(args)...); };
+
+    template<typename... Args>
     unsigned int createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
 
     // Rendering

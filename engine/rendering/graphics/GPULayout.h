@@ -1,5 +1,9 @@
 #pragma once
 
+#include <GraphicsAPI.h>
+
+class BufferObject;
+
 enum TinkerDataType {
     TINKER_BYTE = 0x1400,
     TINKER_UNSIGNED_BYTE = 0x1401,
@@ -17,8 +21,19 @@ enum TinkerDataSize {
     TINKER_4D = 4, //  for 4D data
 };
 
+class GraphicsAPI;
+
 class GPULayout {
 public:
+    static GraphicsAPI *graphicsApi;
+    GPULayout(unsigned int index) : index(index) {
+        this->size = TINKER_3D;
+        this->type = TINKER_FLOAT;
+        this->normalised = false;
+        this->stride = 3*sizeof (float);
+        this->pointer=(void *) nullptr;
+    }
+
     unsigned int index = 0;    // Location of the vertex attribute
     int size = TINKER_3D;              // Number of components per vertex attribute (1 to 4)
     TinkerDataType type = TINKER_FLOAT;   // Data type of each component
@@ -31,6 +46,8 @@ public:
     GPULayout * setType(TinkerDataType _type) {this->type = _type; return this;};
     GPULayout * setNormalised(int _normalised) {this->normalised = _normalised; return this;};
     GPULayout * setStride(int _stride) {this->stride = _stride; return this;};
+
+    GPULayout *apply(BufferObject * buffer);
 
 
 };

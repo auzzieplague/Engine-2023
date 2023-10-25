@@ -7,6 +7,7 @@ class MeshData
     friend class Mesh;
 public:
     unsigned int m_gID = 0;
+
     static GraphicsAPI *m_api;
 
     ObjectType getType() override {
@@ -41,8 +42,12 @@ public:
     }
 
     void setVertices(const std::vector<glm::vec3> &mVertices);
+    void setVertices(const float *floatArray, std::size_t arraySize);
 
     void setIndices(const std::vector<unsigned int> &mIndices);
+    void setIndices(const unsigned int *intArray, std::size_t arraySize);
+
+    void setupGPUBuffers();
 
     void setUVs(std::vector<glm::vec2> &UVs);
 

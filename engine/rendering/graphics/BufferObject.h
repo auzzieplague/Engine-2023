@@ -6,7 +6,8 @@
 class BufferObject: public BaseBuffer {
 public:
 
-    std::vector<GPULayout *> layouts;
+//    std::vector<GPULayout *> layouts;
+    std::map<unsigned int, GPULayout *> layouts;
 
     BufferObject(): BaseBuffer(nullptr, 0, nullptr){}
 
@@ -14,11 +15,9 @@ public:
 
     BufferObject *bind() override;
 
-    GPULayout * addLayout(GPULayout * layout) const{
-        // todo graphicsAPI add layout
-//        this.layouts->push_back(layout);
-        return layout;
+    BufferObject * addLayout(GPULayout * layout) {
+        layouts[layout->index] = layout;
+        return this;
     }
-
 };
 

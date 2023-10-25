@@ -2,6 +2,8 @@
 #include "GraphicsBehaviour.h"
 #include <string>
 #include <iostream>
+#include "../BufferObject.h"
+
 
 void GraphicsBehaviour::displayCapabilities(...) {
     std::cout << "GPU Model: " << gpuInfo->model << std::endl;
@@ -31,4 +33,6 @@ void GraphicsBehaviour::displayCapabilities(...) {
 unsigned int GraphicsBehaviour::getFlagCode(const char *string) {
     return 0;
 }
+
+void GraphicsBehaviour::applyLayout(GPULayout * layout, BufferObject * object) {}
 

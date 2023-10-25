@@ -121,43 +121,17 @@ unsigned int API_OpenGL::linkShaderProgram(ShaderProgram *program) {
 // should be able to be promoted to parent class to render triangle agnostically
 void API_OpenGL::demoTriangle(...) {
     // Define the vertices for a triangle
-    float vertices[] = {
-            -0.5f, -0.5f, 0.0f, // Bottom-left corner
-            0.5f, -0.5f, 0.0f, // Bottom-right corner
-            0.0f, 0.5f, 0.0f, // Top center
-    };
 
-    // Define the indices to create triangles
-    unsigned int indices[] = {0, 1, 2};
-//
-//    const char *fragmentShaderSource = "#version 330 core\n"
-//                                       "out vec4 FragColor;\n"
-//                                       "void main()\n"
-//                                       "{\n"
-//                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-//                                       "}\n\0";
-//
-//        const char *vertexShaderSource = "#version 330 core\n"
-//                                     "layout (location = 0) in vec3 aPos;\n"
-//                                     "void main()\n"
-//                                     "{\n"
-//                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-//                                     "}\0";
+    auto meshData = this->getSampleMeshData();
+    auto VAO = (new BufferObject())->generate()->bind();
+    auto VBO = (new VertexBuffer(meshData->m_vertices.data(),meshData->m_vertices.size()*3, "static"))->generate()->bind();
+    auto EBO = (new IndexBuffer (meshData->m_indices.data(),meshData->m_indices.size(),"static"))->generate()->bind();
 
-    BufferObject VAO;
-    VAO.generate()->bind();
-    GPULayout layout1;
+    auto layout1 = new GPULayout(0);
+//    layout1->apply(VAO);
 
-    VertexBuffer VBO(vertices, sizeof(vertices), "static");
-    VBO.generate()->bind();
-
-    IndexBuffer EBO(indices, sizeof(indices),"static");
-    EBO.generate()->bind();
-
-    // Specify the layout of the vertex data
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
     glEnableVertexAttribArray(0);
-//    VAO.layout()->se;
 
     auto * program = new ShaderProgram();
 
@@ -174,8 +148,6 @@ void API_OpenGL::demoTriangle(...) {
     program->use();
 
 
-
-
     auto window = Window::getCurrentWindow();
 
     // Rendering loop
@@ -186,7 +158,7 @@ void API_OpenGL::demoTriangle(...) {
 
         // Draw the triangle using indices
         glUseProgram(program->programID);
-        VAO.bind();
+        VAO->bind();
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
         // Swap buffers and poll for events
@@ -195,9 +167,9 @@ void API_OpenGL::demoTriangle(...) {
     }
 
     // Cleanup (release resources) should be done when you're done with the OpenGL context
-    glDeleteVertexArrays(1, &VAO.bufferID);
-    glDeleteBuffers(1, &VBO.bufferID); // make cleanup method / destructor
-    glDeleteBuffers(1, &EBO.bufferID);
+    glDeleteVertexArrays(1, &VAO->bufferID);
+    glDeleteBuffers(1, &VBO->bufferID); // make cleanup method / destructor
+    glDeleteBuffers(1, &EBO->bufferID);
     glDeleteShader(vertexShader->shaderID);
     glDeleteShader(fragmentShader->shaderID);
     glDeleteProgram(program->programID);
@@ -220,6 +192,20 @@ unsigned int API_OpenGL::getFlagCode(const char *string) {
     } else {
         return 0;
     }
+}
+
+void API_OpenGL::applyLayout(GPULayout *layout, BufferObject* bufferObject) {
+    glEnableVertexAttribArray(bufferObject->bufferID);
+
+    glVertexAttribPointer(layout->index,
+                          layout->size,
+                          layout->type,
+                          layout->normalised,
+                          layout->stride,
+                          layout->pointer);
+
+    bufferObject->addLayout(layout);
+    glEnableVertexAttribArray(0);
 }
 
 
