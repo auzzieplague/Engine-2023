@@ -16,7 +16,7 @@ class GraphicsBehaviour {
 protected:
     GPUInfo *gpuInfo{};
 public:
-// Initialization
+    // Initialization
     virtual bool initialise(...) { return false; };
     virtual void queryCapabilities(...) {  };
     virtual void displayCapabilities(...);
@@ -29,9 +29,10 @@ public:
     virtual unsigned int linkShaderProgram(ShaderProgram *) {return 0;};
     virtual void useShaderProgram(ShaderProgram *) {};
     virtual void applyLayout(GPULayout *layout){};
+    virtual void clearRenderTarget(...) {};
+
 
     virtual unsigned int createTexture(...) {return 0;};
-
 
     // Rendering
     virtual void bindVertexBuffer(VertexBuffer* vb) {};
@@ -45,7 +46,7 @@ public:
 
     // Framebuffer and Render Target Management
     virtual void setRenderTarget(...) {};
-    virtual void clearRenderTarget(...) {};
+
 
     // Viewport and Projection
     virtual void setViewport(...) {};
@@ -62,24 +63,12 @@ public:
 
     virtual unsigned int getFlagCode(const char *string);
 
-    virtual MeshData* getSampleMeshData(){
+    virtual MeshData* getSampleMeshData();
 
-        float vertices[] = {
-                -0.5f, -0.5f, 0.0f, // Bottom-left corner
-                0.5f, -0.5f, 0.0f, // Bottom-right corner
-                0.5f, 0.5f, 0.0f, // Top-right corner
-                -0.5f, 0.5f, 0.0f  // Top-left corner
-        };
-
-        unsigned int indices[] = {
-                0, 1, 2, // First triangle
-                2, 3, 0  // Second triangle
-        };
-
-        auto meshData = new MeshData();
-        meshData->setVertices(vertices, sizeof (vertices));
-        meshData->setIndices(indices, sizeof (indices));
-
-        return meshData;
-    };
+    virtual ~GraphicsBehaviour() {
+        if (gpuInfo) {
+            delete gpuInfo;
+            gpuInfo = nullptr;
+        }
+    }
 };

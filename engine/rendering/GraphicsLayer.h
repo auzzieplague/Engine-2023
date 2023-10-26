@@ -6,6 +6,7 @@
 #include "graphics/VertexBuffer.h"
 #include "graphics/IndexBuffer.h"
 #include "graphics/GPULayout.h"
+#include "graphics/RenderTarget.h"
 class GraphicsLayer : public Layer {
 
 public:
@@ -23,6 +24,7 @@ public:
         ShaderProgram::setGraphicsAPI(api);
         Shader::setGraphicsAPI(api);
         Mesh::setGraphicsAPI(api);
+        RenderTarget::setGraphicsAPI(api);
     };
 
     void onAttach(Scene *) override ;

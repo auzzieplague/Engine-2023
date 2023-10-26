@@ -33,3 +33,24 @@ void GraphicsBehaviour::displayCapabilities(...) {
 unsigned int GraphicsBehaviour::getFlagCode(const char *string) {
     return 0;
 }
+
+MeshData *GraphicsBehaviour::getSampleMeshData() {
+
+    float vertices[] = {
+            -0.5f, -0.5f, 0.0f, // Bottom-left corner
+            0.5f, -0.5f, 0.0f, // Bottom-right corner
+            0.5f, 0.5f, 0.0f, // Top-right corner
+            -0.5f, 0.5f, 0.0f  // Top-left corner
+    };
+
+    unsigned int indices[] = {
+            0, 1, 2, // First triangle
+            2, 3, 0  // Second triangle
+    };
+
+    auto meshData = new MeshData();
+    meshData->setVertices(vertices, sizeof (vertices));
+    meshData->setIndices(indices, sizeof (indices));
+
+    return meshData;
+};

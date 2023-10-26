@@ -145,6 +145,10 @@ void API_OpenGL::demoTriangle(...) {
     program->use();
 
 
+    // create render target
+    // apply to window
+    // add -> clear method
+    // will have to initialise with GL_TEXTURE_2D for opengl
     auto window = Window::getCurrentWindow();
 
     // Rendering loop
@@ -154,7 +158,7 @@ void API_OpenGL::demoTriangle(...) {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Draw the triangle using indices
-        glUseProgram(program->programID);
+        program->use();
         VAO->bind();
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 
