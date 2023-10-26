@@ -40,7 +40,7 @@ public:
         meshTree.push_back(this);
     };
 
-    static void setApi(GraphicsAPI *api);
+    static void setGraphicsAPI(GraphicsAPI *api);
 
     void setMaterial(const Material &material);
 

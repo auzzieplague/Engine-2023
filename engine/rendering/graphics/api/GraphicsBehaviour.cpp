@@ -33,6 +33,3 @@ void GraphicsBehaviour::displayCapabilities(...) {
 unsigned int GraphicsBehaviour::getFlagCode(const char *string) {
     return 0;
 }
-
-void GraphicsBehaviour::applyLayout(GPULayout * layout, BufferObject * object) {}
-

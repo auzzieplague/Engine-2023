@@ -38,7 +38,7 @@ public:
 
     void  useShaderProgram(ShaderProgram *) override;
 
-    void applyLayout(GPULayout *layout, BufferObject * bufferObject) override;
+    void applyLayout(GPULayout *layout) override;
 
 };
 

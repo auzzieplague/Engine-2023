@@ -128,10 +128,7 @@ void API_OpenGL::demoTriangle(...) {
     auto EBO = (new IndexBuffer (meshData->m_indices.data(),meshData->m_indices.size(),"static"))->generate()->bind();
 
     auto layout1 = new GPULayout(0);
-//    layout1->apply(VAO);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
-    glEnableVertexAttribArray(0);
+    layout1->apply(VAO);
 
     auto * program = new ShaderProgram();
 
@@ -194,8 +191,8 @@ unsigned int API_OpenGL::getFlagCode(const char *string) {
     }
 }
 
-void API_OpenGL::applyLayout(GPULayout *layout, BufferObject* bufferObject) {
-    glEnableVertexAttribArray(bufferObject->bufferID);
+void API_OpenGL::applyLayout(GPULayout *layout) {
+    glEnableVertexAttribArray(layout->applyToBuffer->bufferID);
 
     glVertexAttribPointer(layout->index,
                           layout->size,
@@ -204,7 +201,7 @@ void API_OpenGL::applyLayout(GPULayout *layout, BufferObject* bufferObject) {
                           layout->stride,
                           layout->pointer);
 
-    bufferObject->addLayout(layout);
+    layout->applyToBuffer->addLayout(layout);
     glEnableVertexAttribArray(0);
 }
 

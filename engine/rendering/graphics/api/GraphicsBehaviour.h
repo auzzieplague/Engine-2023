@@ -28,7 +28,7 @@ public:
     virtual void compileShader(Shader *shader) {};
     virtual unsigned int linkShaderProgram(ShaderProgram *) {return 0;};
     virtual void useShaderProgram(ShaderProgram *) {};
-    virtual void applyLayout(GPULayout *layout, BufferObject *object);
+    virtual void applyLayout(GPULayout *layout){};
 
     virtual unsigned int createTexture(...) {return 0;};
 

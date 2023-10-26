@@ -5,7 +5,7 @@
 #include "graphics/GraphicsFlag.h"
 #include "graphics/VertexBuffer.h"
 #include "graphics/IndexBuffer.h"
-
+#include "graphics/GPULayout.h"
 class GraphicsLayer : public Layer {
 
 public:
@@ -19,9 +19,10 @@ public:
         Material::setGraphicsAPI(api);
         VertexBuffer::setGraphicsAPI(api);
         IndexBuffer::setGraphicsAPI(api);
+        GPULayout::setGraphicsAPI(api);
         ShaderProgram::setGraphicsAPI(api);
         Shader::setGraphicsAPI(api);
-        Mesh::setApi(api);
+        Mesh::setGraphicsAPI(api);
     };
 
     void onAttach(Scene *) override ;

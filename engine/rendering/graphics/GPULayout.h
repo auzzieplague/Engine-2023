@@ -26,6 +26,9 @@ class GraphicsAPI;
 class GPULayout {
 public:
     static GraphicsAPI *graphicsApi;
+    static void setGraphicsAPI(GraphicsAPI *api) ;
+
+    BufferObject *applyToBuffer;
     GPULayout(unsigned int index) : index(index) {
         this->size = TINKER_3D;
         this->type = TINKER_FLOAT;
@@ -48,6 +51,7 @@ public:
     GPULayout * setStride(int _stride) {this->stride = _stride; return this;};
 
     GPULayout *apply(BufferObject * buffer);
+
 
 
 };

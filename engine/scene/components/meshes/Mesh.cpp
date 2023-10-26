@@ -9,7 +9,7 @@
 
 GraphicsAPI *Mesh::m_api;
 
-void Mesh::setApi(GraphicsAPI *api) {
+void Mesh::setGraphicsAPI(GraphicsAPI *api) {
     Mesh::m_api = api;
 }
 

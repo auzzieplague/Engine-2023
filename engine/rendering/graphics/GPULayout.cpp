@@ -6,6 +6,11 @@
 GraphicsAPI *GPULayout::graphicsApi;
 
 GPULayout *GPULayout::apply(BufferObject *buffer) {
-    graphicsApi->applyLayout(this, buffer);
+    this->applyToBuffer = buffer;
+    graphicsApi->applyLayout(this);
     return this;
+}
+
+void GPULayout::setGraphicsAPI(GraphicsAPI *api) {
+    GPULayout::graphicsApi = api;
 }
