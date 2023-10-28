@@ -8,10 +8,17 @@ void ShaderProgram::setGraphicsAPI(GraphicsAPI *api) {
     ShaderProgram::graphicsApi = api;
 }
 
-void ShaderProgram::compileAndLink() {
+ShaderProgram *ShaderProgram::compileAndLink() {
     ShaderProgram::graphicsApi->linkShaderProgram(this);
+    return this;
 }
 
-void ShaderProgram::use() {
+ShaderProgram *ShaderProgram::use() {
     ShaderProgram::graphicsApi->useShaderProgram(this);
+    return this;
+}
+
+ShaderProgram *ShaderProgram::addShader(Shader *shader) {
+    this->shaders.push_back(shader);
+    return this;
 }

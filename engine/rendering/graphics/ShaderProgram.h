@@ -14,12 +14,10 @@ public:
     static void setGraphicsAPI(GraphicsAPI *api);
     std::vector<Shader *> shaders;
 
-    void compileAndLink();
-    void use();
+    ShaderProgram* compileAndLink();
+    ShaderProgram* use();
 
-    void addShader(Shader * shader) {
-        this->shaders.push_back(shader);
-    }
+    ShaderProgram* addShader(Shader * shader);
 
 
 

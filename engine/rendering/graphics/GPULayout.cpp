@@ -5,7 +5,7 @@
 
 GraphicsAPI *GPULayout::graphicsApi;
 
-GPULayout *GPULayout::apply(BufferObject *buffer) {
+GPULayout *GPULayout::applyTo(BufferObject *buffer) {
     this->applyToBuffer = buffer;
     graphicsApi->applyLayout(this);
     return this;

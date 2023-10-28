@@ -24,7 +24,7 @@ public:
     Mesh *rootMesh = nullptr;
     std::vector<Mesh *> meshTree;
     /**
-     * meshLODTree contains other versions of the meshTree to use, we will need to apply current
+     * meshLODTree contains other versions of the meshTree to use, we will need to applyTo current
      * before switching the pointer we will need to update the transforms of the new LOD meshTree item
      * to that of the current mesh tree.
      */

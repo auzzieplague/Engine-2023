@@ -1,25 +1,10 @@
 #pragma once
 
 #include <GraphicsAPI.h>
+#include <Tinker.h>
 
 class BufferObject;
 
-enum TinkerDataType {
-    TINKER_BYTE = 0x1400,
-    TINKER_UNSIGNED_BYTE = 0x1401,
-    TINKER_SHORT = 0x1402,
-    TINKER_UNSIGNED_SHORT = 0x1403,
-    TINKER_INT = 0x1404,
-    TINKER_UNSIGNED_INT = 0x1405,
-    TINKER_FLOAT = 0x1406,
-};
-
-enum TinkerDataSize {
-    TINKER_1D = 1, //  for scalar data
-    TINKER_2D = 2, //  for 2D data e.g. texture u,v
-    TINKER_3D = 3, //  for 3D data e.g. vertex positions
-    TINKER_4D = 4, //  for 4D data
-};
 
 class GraphicsAPI;
 
@@ -28,8 +13,8 @@ public:
     static GraphicsAPI *graphicsApi;
     static void setGraphicsAPI(GraphicsAPI *api) ;
 
-    BufferObject *applyToBuffer;
-    GPULayout(unsigned int index) : index(index) {
+    BufferObject *applyToBuffer{};
+    explicit GPULayout(unsigned int index) : index(index) {
         this->size = TINKER_3D;
         this->type = TINKER_FLOAT;
         this->normalised = false;
@@ -50,7 +35,7 @@ public:
     GPULayout * setNormalised(int _normalised) {this->normalised = _normalised; return this;};
     GPULayout * setStride(int _stride) {this->stride = _stride; return this;};
 
-    GPULayout *apply(BufferObject * buffer);
+    GPULayout *applyTo(BufferObject * buffer);
 
 
 

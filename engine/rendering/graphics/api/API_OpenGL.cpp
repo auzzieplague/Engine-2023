@@ -128,32 +128,34 @@ void API_OpenGL::demoTriangle(...) {
     auto EBO = (new IndexBuffer (meshData->m_indices.data(),meshData->m_indices.size(),"static"))->generate()->bind();
 
     auto layout1 = new GPULayout(0);
-    layout1->apply(VAO);
+    layout1->applyTo(VAO);
 
     auto * program = new ShaderProgram();
 
     // todo load from source, shader program might also load all source with the same name
     auto * vertexShader = new Shader(VERTEX_SHADER);
     vertexShader->loadFromSource("general");
-    program->addShader(vertexShader);
 
     auto fragmentShader = new Shader(FRAGMENT_SHADER);
     fragmentShader->loadFromSource("general");
-    program->addShader(fragmentShader);
-
-    program->compileAndLink();
-    program->use();
+    program->addShader(fragmentShader)->addShader(vertexShader)->compileAndLink()->use();
 
 
+    auto target = new RenderTarget();
+    target->setClearColour({0,0,0,0});
     // create render target
     // apply to window
     // add -> clear method
     // will have to initialise with GL_TEXTURE_2D for opengl
+    // might be starting with rendering to texture :D
+
+    //^ need to implement texture first
+    // texture is used as render target.
     auto window = Window::getCurrentWindow();
 
     // Rendering loop
     while (!glfwWindowShouldClose(window)) {
-        // Clear the screen
+        // Clear the screens
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
@@ -187,6 +189,7 @@ unsigned int API_OpenGL::getFlagCode(const char *string) {
             // Add more mappings here
     };
 
+    // todo return flagmap[string] ?? null - trap exception or something.
     auto it = flagMap.find(string);
     if (it != flagMap.end()) {
         return it->second;
