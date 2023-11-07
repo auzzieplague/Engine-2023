@@ -37,15 +37,29 @@ public:
     template<typename... Args>
     void displayCapabilities(Args &&... args) { this->api->displayCapabilities(std::forward<Args>(args)...); };
 
+
     // Resource Management
     template<typename... Args>
     unsigned int createVertexBuffer(Args &&... args) {return this->api->createVertexBuffer(std::forward<Args>(args)...); };
 
     template<typename... Args>
+    void bindVertexBuffer(Args &&... args) { this->api->bindVertexBuffer(std::forward<Args>(args)...); };
+
+    template<typename... Args>
     unsigned int createIndexBuffer(Args &&... args) {return this->api->createIndexBuffer(std::forward<Args>(args)...); };
 
     template<typename... Args>
+    void bindIndexBuffer(Args &&... args) { this->api->bindIndexBuffer(std::forward<Args>(args)...); };
+
+    template<typename... Args>
     unsigned int createBufferObject(Args &&... args) {return this->api->createBufferObject(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void bindBufferObject(Args &&... args) { this->api->bindBufferObject(std::forward<Args>(args)...); };
+
+    template<typename... Args>
+    void createFrameBuffer(Args &&... args) { this->api->createFrameBuffer(std::forward<Args>(args)...); };
+
 
     template<typename... Args>
     void applyLayout(Args &&... args) {return this->api->applyLayout(std::forward<Args>(args)...); };
@@ -53,18 +67,9 @@ public:
     template<typename... Args>
     unsigned int createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
 
-    // Rendering
-    template<typename... Args>
-    void bindVertexBuffer(Args &&... args) { this->api->bindVertexBuffer(std::forward<Args>(args)...); };
-
-    template<typename... Args>
-    void bindIndexBuffer(Args &&... args) { this->api->bindIndexBuffer(std::forward<Args>(args)...); };
-
-    template<typename... Args>
-    void bindBufferObject(Args &&... args) { this->api->bindBufferObject(std::forward<Args>(args)...); };
-
     template<typename... Args>
     void bindTexture(Args &&... args) { this->api->bindTexture(std::forward<Args>(args)...); };
+
 
     template<typename... Args>
     void bindShaderProgram(Args &&... args) { this->api->bindShaderProgram(std::forward<Args>(args)...); };

@@ -2,9 +2,10 @@
 #include "API_OpenGL.h"
 #include <Window.h>
 #include <graphics/GPULayout.h>
-#include "../VertexBuffer.h"
-#include "../IndexBuffer.h"
-#include "../BufferObject.h"
+#include "graphics/buffers/VertexBuffer.h"
+#include "graphics/buffers/IndexBuffer.h"
+#include "graphics/buffers/FrameBuffer.h"
+#include "graphics/buffers/BufferObject.h"
 
 
 void API_OpenGL::queryCapabilities(...) {
@@ -141,7 +142,8 @@ void API_OpenGL::demoTriangle(...) {
     program->addShader(fragmentShader)->addShader(vertexShader)->compileAndLink()->use();
 
 
-    auto target = new RenderTarget();
+    auto target = new RenderTarget(800,800);
+    target->makeCurrent();
     target->setClearColour({0,0,0,0});
     // create render target
     // apply to window
@@ -210,6 +212,40 @@ void API_OpenGL::applyLayout(GPULayout *layout) {
 
     layout->applyToBuffer->addLayout(layout);
     glEnableVertexAttribArray(0);
+}
+
+unsigned int API_OpenGL::createFrameBuffer(FrameBuffer *fbo) {
+    glGenBuffers(1, &fbo->bufferID);
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo->bufferID);
+
+    // apply framebuffers width and hieght to a new texture
+    fbo->texture = new Texture(fbo->width, fbo->height, GL_RGB);
+    fbo->texture->generate();
+
+    // Attach the texture to the FBO
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo->texture->textureId, 0);
+
+    // Unbind the FBO for now
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    return GraphicsBehaviour::createFrameBuffer(fbo);
+}
+
+void API_OpenGL::createTexture(Texture *texture) {
+
+     int format =  texture->format ? texture->format : GL_RGB;
+     int width =  texture->width ? texture->width : 512;
+     int height =  texture->height ? texture->height : 512;
+
+    // Create the texture to render to
+    glGenTextures(1, &texture->textureId);
+    glBindTexture(GL_TEXTURE_2D, texture->textureId);
+    glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, nullptr);
+
+    //todo get filter by type
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 }
 
 

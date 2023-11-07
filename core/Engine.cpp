@@ -1,6 +1,6 @@
 
 #include "Engine.h"
-#include "../engine/rendering/graphics/VertexBuffer.h"
+#include "graphics/buffers/VertexBuffer.h"
 
 Engine *Engine::instance;
 

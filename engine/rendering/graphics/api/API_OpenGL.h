@@ -32,6 +32,10 @@ public:
 
     void bindBufferObject(BufferObject *bo) override;
 
+    unsigned int createFrameBuffer(FrameBuffer *fbo) override;
+
+    void createTexture(Texture *texture) override;
+
     void compileShader(Shader *) override;
 
     unsigned int linkShaderProgram(ShaderProgram *) override;

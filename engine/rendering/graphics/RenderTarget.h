@@ -2,19 +2,16 @@
 
 #include <string>
 #include <glm/glm.hpp>
+#include "Texture.h"
+
 class GraphicsAPI;
-
 class DepthBuffer;
-
 class StencilBuffer;
-
-
+class FrameBuffer;
 
 class RenderTarget {
 public:
     std::string name = "render target"; // could use object name if inheriting from object.
-    unsigned int width = 512;
-    unsigned int height = 512;
     glm::vec4 clearColour{1, 1, 1, 1};
     DepthBuffer *depthBuffer = nullptr;
     float clearDepth = 1.0;
@@ -22,14 +19,21 @@ public:
     float clearStencil = 0;
     unsigned int samplesPerPixel = 8;
 
-    void *target;
+    unsigned int height = 720; // also stored on framebuffer - might remove here and replace with getters
+    unsigned int width = 1024;
+    FrameBuffer *frameBuffer = nullptr;
+//    Texture * texture; // will be on framebuffer
+
+//    void *target;
 
     static GraphicsAPI *graphicsApi;
     static void setGraphicsAPI(GraphicsAPI *api);
 
-    void setClearColour(const glm::vec4 &clearColour);
-    void initialise(int width, int height);
-    void clearTarget();
+    RenderTarget(unsigned int height, unsigned int width);
+
+    RenderTarget * setClearColour(const glm::vec4 &clearColour);
+    RenderTarget * initialise(int width, int height);
+//    RenderTarget * clearTarget();
 
 
 //    RenderTarget();
@@ -42,5 +46,6 @@ public:
 //    void attachDepthTexture(const Texture& texture);
 //    bool isComplete();
 //    void release();
+    RenderTarget * makeCurrent();
 };
 

@@ -2,7 +2,7 @@
 #include "GraphicsBehaviour.h"
 #include <string>
 #include <iostream>
-#include "../BufferObject.h"
+#include "graphics/buffers/BufferObject.h"
 
 
 void GraphicsBehaviour::displayCapabilities(...) {

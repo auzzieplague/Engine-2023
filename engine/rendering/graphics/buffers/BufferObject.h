@@ -1,7 +1,7 @@
 #pragma once
 
 #include "BaseBuffer.h"
-#include "GPULayout.h"
+#include "graphics/GPULayout.h"
 
 class BufferObject: public BaseBuffer {
 public:

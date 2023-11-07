@@ -5,10 +5,10 @@
 
 
 class Texture {
-private:
+public:
     unsigned int textureId;
     int width, height;
-    unsigned int format;
+    int format;
     unsigned int type;
     TextureWrap wrapMode;
     TextureFilter minFilter;
@@ -18,7 +18,7 @@ private:
     const char* debugName;
 
 public:
-    Texture() : textureId(0), width(0), height(0), format(0), type(TINKER_2D),
+    Texture(int width, int height, int format) : textureId(0), width(width), height(height), format(0), type(TINKER_2D),
                 wrapMode(TextureWrap::Clamp), minFilter(TextureFilter::Linear), magFilter(TextureFilter::Linear),
                 mipMapLevels(1), isLoaded(false), debugName("Unnamed Texture") {
 //        glGenTextures(1, &textureId);
@@ -30,21 +30,7 @@ public:
 //        }
     }
 
-    void initialise(int width, int height, unsigned int format, unsigned int type) {
-        this->width = width;
-        this->height = height;
-//        this->format = format;
-//        this->type = type;
-//
-//        glBindTexture(GL_TEXTURE_2D, textureId);
-//        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, type, nullptr);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, wrapMode);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, wrapMode);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter);
-//        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter);
-//        glBindTexture(GL_TEXTURE_2D, 0);
-
-        isLoaded = true;
+    void generate() {
     }
 
     // ... Getter and Setter functions ...

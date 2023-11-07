@@ -6,9 +6,9 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <unordered_map>
 #include <algorithm>
-#include <graphics/BufferObject.h>
-#include <graphics/VertexBuffer.h>
-#include <graphics/IndexBuffer.h>
+#include <graphics/buffers/BufferObject.h>
+#include <graphics/buffers/VertexBuffer.h>
+#include <graphics/buffers/IndexBuffer.h>
 
 
 GraphicsAPI *MeshData::m_api;

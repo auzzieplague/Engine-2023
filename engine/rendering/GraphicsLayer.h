@@ -3,8 +3,9 @@
 #include "../../core/Window.h"
 #include "Layer.h"
 #include "graphics/GraphicsFlag.h"
-#include "graphics/VertexBuffer.h"
-#include "graphics/IndexBuffer.h"
+#include "graphics/buffers/VertexBuffer.h"
+#include "graphics/buffers/IndexBuffer.h"
+#include "graphics/buffers/FrameBuffer.h"
 #include "graphics/GPULayout.h"
 #include "graphics/RenderTarget.h"
 class GraphicsLayer : public Layer {
@@ -20,6 +21,7 @@ public:
         Material::setGraphicsAPI(api);
         VertexBuffer::setGraphicsAPI(api);
         IndexBuffer::setGraphicsAPI(api);
+        FrameBuffer::setGraphicsAPI(api);
         GPULayout::setGraphicsAPI(api);
         ShaderProgram::setGraphicsAPI(api);
         Shader::setGraphicsAPI(api);
