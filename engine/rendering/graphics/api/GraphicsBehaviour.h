@@ -17,7 +17,7 @@ class GraphicsBehaviour {
 protected:
     GPUInfo *gpuInfo{};
     MeshData *fullScreenQuad;
-
+    ShaderProgram *quadShader;
 public:
 
     // buffer reference pool for cleanup
@@ -62,6 +62,7 @@ public:
     virtual void setRenderTarget(RenderTarget * renderTarget) {};
 
 
+    virtual void reportErrors(){};
     virtual void finalRender(RenderTarget *renderTarget){};
     virtual void renderTargetBind(RenderTarget *renderTarget){};
     virtual void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData){};

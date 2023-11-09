@@ -42,7 +42,6 @@ bool API_OpenGL::initialise(...) {
         return true;
     }
     this->fullScreenQuad = this->getFullScreenQuadMeshData();
-//    this->fullScreenQuad = this->getSampleMeshData();
     this->allocateMeshData(fullScreenQuad);
     this->initialised = true;
     return true;
@@ -137,7 +136,7 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
     auto layout1 = new GPULayout(0);
     layout1->applyTo(VAO);
 
-    // store pointers for cleanup
+    // todo - better store pointers for cleanup - some general internal mechanic
     this->bufferObjects.push_back(VAO);
     this->vertexBuffers.push_back(VBO);
     this->indexBuffers.push_back(EBO);
@@ -153,25 +152,37 @@ void API_OpenGL::demoTriangle(...) {
 //    auto meshData = this->getFullScreenQuadMeshData();
     this->allocateMeshData(meshData);
     // todo load from source, shader program might also load all source with the same name
-    auto vertexShader = (new Shader(VERTEX_SHADER))->loadFromSource("general");
-    auto fragmentShader = (new Shader(FRAGMENT_SHADER))->loadFromSource("general");
-    auto lightingShade = (new ShaderProgram())->addShader(fragmentShader)->addShader(
-            vertexShader)->compileAndLink()->use();
-    auto quadShader = (new ShaderProgram())->addShader(fragmentShader)->addShader(
-            vertexShader)->compileAndLink()->use();
+//    auto vertexShader = (new Shader(VERTEX_SHADER))->loadFromSource("general");
+//    auto fragmentShader = (new Shader(FRAGMENT_SHADER))->loadFromSource("general");
+//    auto lightingShader = (new ShaderProgram())->addShader(fragmentShader)->addShader(
+//            vertexShader)->compileAndLink()->use();
+//    auto quadShader = (new ShaderProgram())->addShader(fragmentShader)->addShader(
+//            vertexShader)->compileAndLink()->use();
+
+    auto lightingShader = (new ShaderProgram())
+            ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("general"))
+            ->addShader( (new Shader(VERTEX_SHADER))->loadFromSource("general"))
+            ->compileAndLink()
+            ->use();
+
+    this->quadShader = (new ShaderProgram())
+            ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("quad"))
+            ->addShader( (new Shader(VERTEX_SHADER))->loadFromSource("quad"))
+            ->compileAndLink()
+            ->use();
+
+
     // ^ in reality quad shader is much simpler than rendering shader
 
     auto target = (new RenderTarget(800, 800))->setClearColour({0, 0, 0, 0});
 
     auto window = Window::getCurrentWindow();
     std::vector<MeshData *> meshDataList;
-//    meshDataList.push_back(meshData);
-    meshDataList.push_back(fullScreenQuad);
-//    initFullScreenQuad(); //
+    meshDataList.push_back(meshData);
 
     // Rendering things to current target
     while (!glfwWindowShouldClose(window)) {
-        lightingShade->use();
+        lightingShader->use();
 //        target->bind();
         target->clearColourBuffer();
         // would actually take a list of meshes not mesh data so it can pass transforms, materials etc to shader etc
@@ -180,18 +191,17 @@ void API_OpenGL::demoTriangle(...) {
         target->finalRender();
 
         // render quad to screen, draw current render target texture on quad
-
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     //cleanup
     {
-
-        //todo add shaders to cleanup
-        glDeleteShader(vertexShader->shaderID);
-        glDeleteShader(fragmentShader->shaderID);
-        glDeleteProgram(lightingShade->programID);
+        //todo add shaders to cleanup - will have to internally add something to manage the pointers
+//        glDeleteShader(vertexShader->shaderID);
+//        glDeleteShader(fragmentShader->shaderID);
+//        glDeleteProgram(lightingShade->programID);
     }
 
     // Terminate GLFW
@@ -199,15 +209,25 @@ void API_OpenGL::demoTriangle(...) {
 }
 
 void API_OpenGL::finalRender(RenderTarget *renderTarget) {
+    quadShader->use(); // switch to quad shader
+    // Retrieve the location of the uniform variables
+    GLint screenTextureLocation = glGetUniformLocation(quadShader->programID, "screenTexture");
+    GLint timeLocation = glGetUniformLocation(quadShader->programID, "time");
+
     // switch back to main buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    // use quad shader to render simple texture
+
+    // Bind the texture to texture unit 0
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, renderTarget->frameBuffer->texture->textureId);
 
 
-    //todo having trouble initialising quad inside initialise method :/
-    // draw full screen quad with texture
-//    this->fullScreenQuad->bufferObject->bind();
-//    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0); // draw object
+    this->fullScreenQuad->bufferObject->bind();
+    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void API_OpenGL::renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshDataList) {
@@ -303,6 +323,9 @@ void API_OpenGL::createTexture(Texture *texture) {
 }
 
 void API_OpenGL::cleanupResources() {
+
+    // todo actually can put all the pointers into a single list - at least most of them
+
     // Delete BufferObjects
     for (auto *bufferObject: bufferObjects) {
         glDeleteBuffers(1, &bufferObject->bufferID);
@@ -343,6 +366,31 @@ void API_OpenGL::cleanupResources() {
         delete gpuLayout;
     }
     gpuLayouts.clear();
+}
+
+std::string getGLErrorString(GLenum err) {
+    switch (err) {
+        case GL_NO_ERROR: return "No error";
+        case GL_INVALID_ENUM: return "Invalid enum";
+        case GL_INVALID_VALUE: return "Invalid value";
+        case GL_INVALID_OPERATION: return "Invalid operation";
+        case GL_STACK_OVERFLOW: return "Stack overflow";
+        case GL_STACK_UNDERFLOW: return "Stack underflow";
+        case GL_OUT_OF_MEMORY: return "Out of memory";
+        case GL_INVALID_FRAMEBUFFER_OPERATION: return "Invalid framebuffer operation";
+        default: return "Unknown error";
+    }
+}
+
+void API_OpenGL::reportErrors() {
+    GLenum errCode;
+    std::string errString;
+
+    // Loop until `glGetError` returns `GL_NO_ERROR`
+    while ((errCode = glGetError()) != GL_NO_ERROR) {
+        errString = getGLErrorString(errCode);
+        std::cerr << "OpenGL Error: " << errString << " (0x" << std::hex << errCode << ")" << std::endl;
+    }
 }
 
 

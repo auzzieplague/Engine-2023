@@ -33,6 +33,7 @@ public:
     void init(Scene *) override {
         api->queryCapabilities();
 //        api->displayCapabilities();
+
         api->demoTriangle();
     };
 };

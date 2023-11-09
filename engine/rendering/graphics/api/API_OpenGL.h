@@ -45,6 +45,7 @@ public:
 
     void applyLayout(GPULayout *layout) override;
 
+    void reportErrors() override;
     void finalRender(RenderTarget *renderTarget) override;
     void renderTargetBind(RenderTarget *renderTarget) override;
     void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData) override;
@@ -52,5 +53,6 @@ public:
     void renderTargetClearColourBuffer(RenderTarget *renderTarget) override;
 
     void cleanupResources() override;
+
 };
 

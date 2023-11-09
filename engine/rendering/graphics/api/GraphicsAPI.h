@@ -87,6 +87,9 @@ public:
     template<typename... Args>
     void finalRender(RenderTarget *renderTarget){ this->api->finalRender(renderTarget);};
 
+    template<typename... Args>
+    void reportErrors(){ this->api->reportErrors();};
+
 
     template<typename... Args>
     void cleanupResources(){ this->api->cleanupResources();};
@@ -115,9 +118,10 @@ public:
     template<typename... Args>
     void linkShaderProgram(Args &&... args) { this->api->linkShaderProgram(std::forward<Args>(args)...); };
 
- template<typename... Args>
+    template<typename... Args>
     MeshData * allocateMeshData(MeshData * meshData){ this->api->allocateMeshData(meshData);};
     template<typename... Args>
+
     void useShaderProgram(Args &&... args) { this->api->useShaderProgram(std::forward<Args>(args)...); };
 
     // Cleanup and Shutdown
@@ -125,7 +129,12 @@ public:
     void shutdown(Args &&... args) { this->api->shutdown(std::forward<Args>(args)...); };
 
     template<typename... Args>
-    void demoTriangle(Args &&... args) { this->api->demoTriangle(std::forward<Args>(args)...); };
+    void demoTriangle(Args &&... args) {
+        try {
+            this->api->demoTriangle(std::forward<Args>(args)...);
+        } catch (const std::exception& e) {
+            this->api->reportErrors();
+        }};
 
     unsigned int getFlag(const char *string) {
         return string ? this->api->getFlagCode(string) : 0;
