@@ -22,6 +22,14 @@ public:
         this->pointer=(void *) nullptr;
     }
 
+     void basicTexture () {
+        this->size = TINKER_2D;
+        this->type = TINKER_FLOAT;
+        this->normalised = false;
+        this->stride = 2*sizeof (float);
+        this->pointer=(void *) nullptr;
+    }
+
     unsigned int index = 0;    // Location of the vertex attribute
     int size = TINKER_3D;              // Number of components per vertex attribute (1 to 4)
     TinkerDataType type = TINKER_FLOAT;   // Data type of each component
@@ -36,7 +44,5 @@ public:
     GPULayout * setStride(int _stride) {this->stride = _stride; return this;};
 
     GPULayout *applyTo(BufferObject * buffer);
-
-
 
 };

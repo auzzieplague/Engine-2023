@@ -47,6 +47,7 @@ public:
 
     void setIndices(const std::vector<unsigned int> &mIndices);
     void setIndices(const unsigned int *intArray, std::size_t arraySize);
+    void setUVs(const float *floatArray, size_t arraySize);
 
     void setupGPUBuffers();
 

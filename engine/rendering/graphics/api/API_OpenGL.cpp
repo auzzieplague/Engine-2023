@@ -133,7 +133,11 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
                                  "static"))->generate()->bind();
     auto EBO = (new IndexBuffer(meshData->m_indices.data(), meshData->m_indices.size(), "static"))->generate()->bind();
 
-    auto layout1 = new GPULayout(0);
+    auto layout0 = new GPULayout(0); // positions
+    auto layout1 = new GPULayout(1);        // textures
+    layout1->basicTexture();
+
+    layout0->applyTo(VAO);
     layout1->applyTo(VAO);
 
     // todo - better store pointers for cleanup - some general internal mechanic

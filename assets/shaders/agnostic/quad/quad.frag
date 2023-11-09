@@ -1,9 +1,10 @@
 #version 330 core
 out vec4 FragColor;
-
+in vec2 TexCoords;
 
 void main() {
-    FragColor = vec4(1.0f, 0.0f, 0.0f, 1.0f);
+    FragColor = vec4(TexCoords.x,TexCoords.y, 0.0f, 1.0f);
+//    FragColor = vec4(0,1,1,0);
 }
 
 //#version 330 core
@@ -16,6 +17,7 @@ void main() {
 //void main() {
 //    FragColor = texture(screenTexture, TexCoords);
 //}
+
 
 //#version 330 core
 //

@@ -285,4 +285,19 @@ void MeshData::setIndices(const unsigned int *intArray, std::size_t arraySize) {
     }
 }
 
+void MeshData::setUVs(const float *floatArray, std::size_t arraySize) {
+    if (arraySize % 2 != 0) {
+        Debug::show("attempting to set uvs that is not a multiple of 2");
+        return;
+    }
+
+    m_UVs.clear();
+    m_UVs.reserve(arraySize / 2);
+
+    for (std::size_t i = 0; i < arraySize; i += 2) {
+        glm::vec2 uv(floatArray[i], floatArray[i + 1]);
+        m_UVs.push_back(uv);
+    }
+}
+
 

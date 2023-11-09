@@ -65,6 +65,15 @@ MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
             1.0f,  1.0f, 0.0f  // Top-right corner
     };
 
+    // UV texture coordinates
+    float uvs[] = {
+            // UVs
+            0.0f, 1.0f, // Top-left corner
+            0.0f, 0.0f, // Bottom-left corner
+            1.0f, 0.0f, // Bottom-right corner
+            1.0f, 1.0f  // Top-right corner
+    };
+
     // Indices for two triangles that make up the quad
     unsigned int indices[] = {
             0, 1, 2, // First triangle
@@ -74,6 +83,7 @@ MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
     auto meshData = new MeshData();
     meshData->setVertices(vertices, sizeof(vertices));
     meshData->setIndices(indices, sizeof(indices));
+    meshData->setUVs(uvs, sizeof(indices));
 
     return meshData;
 };
