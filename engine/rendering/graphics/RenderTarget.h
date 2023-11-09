@@ -2,12 +2,18 @@
 
 #include <string>
 #include <glm/glm.hpp>
+#include <vector>
 #include "Texture.h"
 
 class GraphicsAPI;
+
 class DepthBuffer;
+
 class StencilBuffer;
+
 class FrameBuffer;
+
+class MeshData;
 
 class RenderTarget {
 public:
@@ -19,33 +25,31 @@ public:
     float clearStencil = 0;
     unsigned int samplesPerPixel = 8;
 
-    unsigned int height = 720; // also stored on framebuffer - might remove here and replace with getters
-    unsigned int width = 1024;
+    int height = 720; // also stored on framebuffer - might remove here and replace with getters
+    int width = 1024;
     FrameBuffer *frameBuffer = nullptr;
-//    Texture * texture; // will be on framebuffer
-
-//    void *target;
 
     static GraphicsAPI *graphicsApi;
+
     static void setGraphicsAPI(GraphicsAPI *api);
 
-    RenderTarget(unsigned int height, unsigned int width);
+    RenderTarget(int height, int width);
 
-    RenderTarget * setClearColour(const glm::vec4 &clearColour);
-    RenderTarget * initialise(int width, int height);
-//    RenderTarget * clearTarget();
+    RenderTarget *setClearColour(const glm::vec4 &clearColour);
+
+    RenderTarget *initialise();
+
+    // doBind allows us to only bind once where necessary
+    RenderTarget *bind();
+
+    RenderTarget *clearDepthBuffer(bool doBind = false);
+
+    RenderTarget *clearColourBuffer(bool doBind = false);
+
+    RenderTarget *renderMeshes(std::vector<MeshData *>, bool doBind = false);
+
+    RenderTarget *finalRender();
 
 
-//    RenderTarget();
-//    ~RenderTarget();
-//
-//    void initialize(int width, int height);
-//    void bind();
-//    void unbind();
-//    void attachColorTexture(const Texture& texture);
-//    void attachDepthTexture(const Texture& texture);
-//    bool isComplete();
-//    void release();
-    RenderTarget * makeCurrent();
 };
 

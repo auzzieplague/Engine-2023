@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "BaseBuffer.h"
 
 class GraphicsAPI;

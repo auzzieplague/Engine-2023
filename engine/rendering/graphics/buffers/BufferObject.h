@@ -6,7 +6,6 @@
 class BufferObject: public BaseBuffer {
 public:
 
-//    std::vector<GPULayout *> layouts;
     std::map<unsigned int, GPULayout *> layouts;
 
     BufferObject(): BaseBuffer(nullptr, 0, nullptr){}
@@ -19,5 +18,11 @@ public:
         layouts[layout->index] = layout;
         return this;
     }
+
+    BufferObject *forMeshData(MeshData * meshData) {
+        meshData->m_gID = this->bufferID; // legacy implementation
+        meshData->bufferObject = this; // new Implementation
+        return this;
+    };
 };
 

@@ -1,6 +1,5 @@
 
 #include "GPULayout.h"
-#include <GraphicsBehaviour.h>
 #include "graphics/buffers/BufferObject.h"
 
 GraphicsAPI *GPULayout::graphicsApi;

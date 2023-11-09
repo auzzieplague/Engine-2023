@@ -2,6 +2,8 @@
 #include <GraphicsAPI.h>
 #include <graphics/buffers/FrameBuffer.h>
 
+#include <utility>
+
 GraphicsAPI *RenderTarget::graphicsApi;
 
 void RenderTarget::setGraphicsAPI(GraphicsAPI *api) {
@@ -13,24 +15,50 @@ RenderTarget *RenderTarget::setClearColour(const glm::vec4 &colour) {
     return this;
 }
 
-RenderTarget *RenderTarget::makeCurrent() {
-    // todo: set this render target to be the current render target for the api
-    return this;
-}
-
-RenderTarget *RenderTarget::initialise(int width, int height) {
-    if (this->frameBuffer) {
+RenderTarget *RenderTarget::initialise() {
+    if (this->frameBuffer != nullptr) {
         delete this->frameBuffer;
     }
 
-    this->frameBuffer = new FrameBuffer(width, height);
-    this->width = width;
-    this->height = height;
-
+    this->frameBuffer = new FrameBuffer(this->width, this->height);
+    this->frameBuffer->generate();
     return this;
 }
 
-RenderTarget::RenderTarget(unsigned int height, unsigned int width) : height(height), width(width) {
-
+RenderTarget::RenderTarget( int height,  int width) : height(height), width(width) {
+    this->initialise();
 }
 
+RenderTarget *RenderTarget::finalRender() {
+    RenderTarget::graphicsApi->finalRender(this);
+    return this;
+}
+
+RenderTarget *RenderTarget::bind() {
+    RenderTarget::graphicsApi->renderTargetBind(this);
+    return this;
+}
+
+RenderTarget *RenderTarget::clearDepthBuffer(bool doBind) {
+    if (doBind) {
+        this->bind();
+    }
+    RenderTarget::graphicsApi->renderTargetClearDepthBuffer(this);
+    return this;
+}
+
+RenderTarget *RenderTarget::clearColourBuffer(bool doBind) {
+    if (doBind) {
+        this->bind();
+    }
+    RenderTarget::graphicsApi->renderTargetClearColourBuffer(this);
+    return this;
+}
+
+RenderTarget *RenderTarget::renderMeshes(std::vector<MeshData *> meshData, bool doBind) {
+    if (doBind) {
+        this->bind();
+    }
+    RenderTarget::graphicsApi->renderTargetDrawMeshData(this, std::move(meshData));
+    return this;
+}

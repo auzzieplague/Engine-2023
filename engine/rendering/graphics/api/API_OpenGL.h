@@ -17,7 +17,6 @@ public:
 
     void demoTriangle(...) override;
 
-
     unsigned int getFlagCode(const char *string) override;
 
     unsigned int createVertexBuffer(VertexBuffer *) override;
@@ -32,6 +31,8 @@ public:
 
     void bindBufferObject(BufferObject *bo) override;
 
+    MeshData * allocateMeshData(MeshData *) override;
+
     unsigned int createFrameBuffer(FrameBuffer *fbo) override;
 
     void createTexture(Texture *texture) override;
@@ -44,5 +45,12 @@ public:
 
     void applyLayout(GPULayout *layout) override;
 
+    void finalRender(RenderTarget *renderTarget) override;
+    void renderTargetBind(RenderTarget *renderTarget) override;
+    void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData) override;
+    void renderTargetClearDepthBuffer(RenderTarget *renderTarget) override;
+    void renderTargetClearColourBuffer(RenderTarget *renderTarget) override;
+
+    void cleanupResources() override;
 };
 

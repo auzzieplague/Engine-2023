@@ -1,6 +1,6 @@
 
 #include "Engine.h"
-#include "graphics/buffers/VertexBuffer.h"
+//#include "graphics/buffers/VertexBuffer.h"
 
 Engine *Engine::instance;
 
@@ -15,6 +15,9 @@ Engine::Engine(uint32_t width, uint32_t height, const std::string &title, Scene 
 void Engine::start() {
 //    AssetManager::initialise();
     Window::onWindowUpdate = &Engine::onWindowUpdate;
+    if (this->graphicsAPI){
+        this->graphicsAPI->initialise();
+    }
     this->initLayers();
     this->loopLayers();
 }
@@ -128,8 +131,24 @@ Engine *Engine::getInstance() {
 void Engine::setGraphicsApi(GraphicsBehaviour *behaviour) {
     auto *api = new GraphicsAPI( behaviour);
     Engine::graphicsAPI = api;
+    // set all api references now
+
+    // let any graphics objects that contain their own setup methods know which API to call.
+    Material::setGraphicsAPI(api);
+    VertexBuffer::setGraphicsAPI(api);
+    IndexBuffer::setGraphicsAPI(api);
+    FrameBuffer::setGraphicsAPI(api);
+    BufferObject::setGraphicsAPI(api);
+    GPULayout::setGraphicsAPI(api);
+    ShaderProgram::setGraphicsAPI(api);
+    Shader::setGraphicsAPI(api);
+    Mesh::setGraphicsAPI(api);
+    RenderTarget::setGraphicsAPI(api);
+
     // note: the api is passed through to material, mesh, buffers etc by the graphics layer on attach
 }
+
+
 
 void Engine::initFrameTimer() {
     lastTime = std::chrono::high_resolution_clock::now();

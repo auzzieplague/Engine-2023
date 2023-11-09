@@ -6,6 +6,7 @@
 #include "graphics/buffers/VertexBuffer.h"
 #include "graphics/buffers/IndexBuffer.h"
 #include "graphics/buffers/FrameBuffer.h"
+#include "graphics/buffers/BufferObject.h"
 #include "graphics/GPULayout.h"
 #include "graphics/RenderTarget.h"
 class GraphicsLayer : public Layer {
@@ -17,16 +18,6 @@ public:
 
     void setApi(GraphicsAPI *api) override {
         this->api = api;
-        // let any graphics objects that contain their own setup methods know which API to call.
-        Material::setGraphicsAPI(api);
-        VertexBuffer::setGraphicsAPI(api);
-        IndexBuffer::setGraphicsAPI(api);
-        FrameBuffer::setGraphicsAPI(api);
-        GPULayout::setGraphicsAPI(api);
-        ShaderProgram::setGraphicsAPI(api);
-        Shader::setGraphicsAPI(api);
-        Mesh::setGraphicsAPI(api);
-        RenderTarget::setGraphicsAPI(api);
     };
 
     void onAttach(Scene *) override ;
@@ -37,6 +28,12 @@ public:
 
     void update(Scene *) override {
 
+    };
+
+    void init(Scene *) override {
+        api->queryCapabilities();
+//        api->displayCapabilities();
+        api->demoTriangle();
     };
 };
 

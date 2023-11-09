@@ -53,4 +53,27 @@ MeshData *GraphicsBehaviour::getSampleMeshData() {
     meshData->setIndices(indices, sizeof (indices));
 
     return meshData;
+}
+
+MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
+    // Vertices of a full-screen quad in NDC
+    float vertices[] = {
+            // Positions
+            -1.0f,  1.0f, 0.0f, // Top-left corner
+            -1.0f, -1.0f, 0.0f, // Bottom-left corner
+            1.0f, -1.0f, 0.0f, // Bottom-right corner
+            1.0f,  1.0f, 0.0f  // Top-right corner
+    };
+
+    // Indices for two triangles that make up the quad
+    unsigned int indices[] = {
+            0, 1, 2, // First triangle
+            0, 2, 3  // Second triangle
+    };
+
+    auto meshData = new MeshData();
+    meshData->setVertices(vertices, sizeof(vertices));
+    meshData->setIndices(indices, sizeof(indices));
+
+    return meshData;
 };

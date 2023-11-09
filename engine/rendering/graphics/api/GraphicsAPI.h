@@ -51,8 +51,9 @@ public:
     template<typename... Args>
     void bindIndexBuffer(Args &&... args) { this->api->bindIndexBuffer(std::forward<Args>(args)...); };
 
-    template<typename... Args>
-    unsigned int createBufferObject(Args &&... args) {return this->api->createBufferObject(std::forward<Args>(args)...); };
+    unsigned int createBufferObject(BufferObject *buffer) {
+        return this->api->createBufferObject(buffer);
+    };
 
     template<typename... Args>
     void bindBufferObject(Args &&... args) { this->api->bindBufferObject(std::forward<Args>(args)...); };
@@ -70,10 +71,6 @@ public:
     template<typename... Args>
     void bindTexture(Args &&... args) { this->api->bindTexture(std::forward<Args>(args)...); };
 
-
-    template<typename... Args>
-    void bindShaderProgram(Args &&... args) { this->api->bindShaderProgram(std::forward<Args>(args)...); };
-
     template<typename... Args>
     void drawIndexed(Args &&... args) { this->api->drawIndexed(std::forward<Args>(args)...); };
 
@@ -85,7 +82,21 @@ public:
     void setRenderTarget(Args &&... args) { this->api->setRenderTarget(std::forward<Args>(args)...); };
 
     template<typename... Args>
-    void clearRenderTarget(Args &&... args) { this->api->clearRenderTarget(std::forward<Args>(args)...); };
+    void renderTargetBind(RenderTarget *renderTarget){ this->api->renderTargetBind(renderTarget);};
+
+    template<typename... Args>
+    void finalRender(RenderTarget *renderTarget){ this->api->finalRender(renderTarget);};
+
+
+    template<typename... Args>
+    void cleanupResources(){ this->api->cleanupResources();};
+
+    template<typename... Args>
+    void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData){ this->api->renderTargetDrawMeshData(renderTarget, meshData);};
+    template<typename... Args>
+    void renderTargetClearDepthBuffer(RenderTarget *renderTarget){ this->api->renderTargetClearDepthBuffer(renderTarget);};
+    template<typename... Args>
+    void renderTargetClearColourBuffer(RenderTarget *renderTarget){ this->api->renderTargetClearColourBuffer(renderTarget);};
 
     // Viewport and Projection
     template<typename... Args>
@@ -104,6 +115,8 @@ public:
     template<typename... Args>
     void linkShaderProgram(Args &&... args) { this->api->linkShaderProgram(std::forward<Args>(args)...); };
 
+ template<typename... Args>
+    MeshData * allocateMeshData(MeshData * meshData){ this->api->allocateMeshData(meshData);};
     template<typename... Args>
     void useShaderProgram(Args &&... args) { this->api->useShaderProgram(std::forward<Args>(args)...); };
 

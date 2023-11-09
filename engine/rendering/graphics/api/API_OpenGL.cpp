@@ -29,7 +29,7 @@ void API_OpenGL::queryCapabilities(...) {
     gpuInfo->computeShaderSupport = isExtensionSupported("GL_ARB_compute_shader") != 0;
 }
 
-bool API_OpenGL::isExtensionSupported(const char *extensionName){
+bool API_OpenGL::isExtensionSupported(const char *extensionName) {
     if (glfwExtensionSupported(extensionName)) {
         return true;
     } else {
@@ -38,12 +38,18 @@ bool API_OpenGL::isExtensionSupported(const char *extensionName){
 }
 
 bool API_OpenGL::initialise(...) {
-    // initialise opengl context
+    if (this->initialised) {
+        return true;
+    }
+    this->fullScreenQuad = this->getFullScreenQuadMeshData();
+//    this->fullScreenQuad = this->getSampleMeshData();
+    this->allocateMeshData(fullScreenQuad);
+    this->initialised = true;
     return true;
 }
 
 
-unsigned int API_OpenGL::createVertexBuffer( VertexBuffer* vb) {
+unsigned int API_OpenGL::createVertexBuffer(VertexBuffer *vb) {
     glGenBuffers(1, &vb->bufferID); // Generate the OpenGL buffer
     glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID); // Bind the buffer to the GL_ARRAY_BUFFER target
     glBufferData(GL_ARRAY_BUFFER, vb->dataSize, vb->data, vb->usage); // Upload the data to the buffer
@@ -86,14 +92,14 @@ void API_OpenGL::compileShader(Shader *shader) {
     //todo make a type map or method to lookup type
     switch (shader->type) {
         case VERTEX_SHADER:
-        shader->shaderID = glCreateShader(GL_VERTEX_SHADER);
-        break;
+            shader->shaderID = glCreateShader(GL_VERTEX_SHADER);
+            break;
         case FRAGMENT_SHADER:
             shader->shaderID = glCreateShader(GL_FRAGMENT_SHADER);
             break;
     }
 
-    const GLchar* sourceCStr = shader->source.c_str();
+    const GLchar *sourceCStr = shader->source.c_str();
     glShaderSource(shader->shaderID, 1, &sourceCStr, NULL);
     glCompileShader(shader->shaderID);
 
@@ -115,72 +121,119 @@ unsigned int API_OpenGL::linkShaderProgram(ShaderProgram *program) {
         glAttachShader(program->programID, shader->shaderID);
     }
 
-    glLinkProgram (program->programID);
+    glLinkProgram(program->programID);
     return program->programID;
 }
 
-// should be able to be promoted to parent class to render triangle agnostically
-void API_OpenGL::demoTriangle(...) {
-    // Define the vertices for a triangle
-
-    auto meshData = this->getSampleMeshData();
-    auto VAO = (new BufferObject())->generate()->bind();
-    auto VBO = (new VertexBuffer(meshData->m_vertices.data(),meshData->m_vertices.size()*3, "static"))->generate()->bind();
-    auto EBO = (new IndexBuffer (meshData->m_indices.data(),meshData->m_indices.size(),"static"))->generate()->bind();
+MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
+    auto VAO = (new BufferObject());
+            VAO->generate();
+            VAO->forMeshData(meshData);
+            VAO->bind(); // forMeshData binds to mesh
+    auto VBO = (new VertexBuffer(meshData->m_vertices.data(), meshData->m_vertices.size() * 3,
+                                 "static"))->generate()->bind();
+    auto EBO = (new IndexBuffer(meshData->m_indices.data(), meshData->m_indices.size(), "static"))->generate()->bind();
 
     auto layout1 = new GPULayout(0);
     layout1->applyTo(VAO);
 
-    auto * program = new ShaderProgram();
+    // store pointers for cleanup
+    this->bufferObjects.push_back(VAO);
+    this->vertexBuffers.push_back(VBO);
+    this->indexBuffers.push_back(EBO);
+    this->gpuLayouts.push_back(layout1);
 
+    return meshData;
+}
+
+// should be able to be promoted to parent class to render triangle agnostically
+void API_OpenGL::demoTriangle(...) {
+    // todo create an allocateMeshData function that does this and returns the setup mesh
+    auto meshData = this->getSampleMeshData();
+//    auto meshData = this->getFullScreenQuadMeshData();
+    this->allocateMeshData(meshData);
     // todo load from source, shader program might also load all source with the same name
-    auto * vertexShader = new Shader(VERTEX_SHADER);
-    vertexShader->loadFromSource("general");
+    auto vertexShader = (new Shader(VERTEX_SHADER))->loadFromSource("general");
+    auto fragmentShader = (new Shader(FRAGMENT_SHADER))->loadFromSource("general");
+    auto lightingShade = (new ShaderProgram())->addShader(fragmentShader)->addShader(
+            vertexShader)->compileAndLink()->use();
+    auto quadShader = (new ShaderProgram())->addShader(fragmentShader)->addShader(
+            vertexShader)->compileAndLink()->use();
+    // ^ in reality quad shader is much simpler than rendering shader
 
-    auto fragmentShader = new Shader(FRAGMENT_SHADER);
-    fragmentShader->loadFromSource("general");
-    program->addShader(fragmentShader)->addShader(vertexShader)->compileAndLink()->use();
+    auto target = (new RenderTarget(800, 800))->setClearColour({0, 0, 0, 0});
 
-
-    auto target = new RenderTarget(800,800);
-    target->makeCurrent();
-    target->setClearColour({0,0,0,0});
-    // create render target
-    // apply to window
-    // add -> clear method
-    // will have to initialise with GL_TEXTURE_2D for opengl
-    // might be starting with rendering to texture :D
-
-    //^ need to implement texture first
-    // texture is used as render target.
     auto window = Window::getCurrentWindow();
+    std::vector<MeshData *> meshDataList;
+//    meshDataList.push_back(meshData);
+    meshDataList.push_back(fullScreenQuad);
+//    initFullScreenQuad(); //
 
-    // Rendering loop
+    // Rendering things to current target
     while (!glfwWindowShouldClose(window)) {
-        // Clear the screens
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        lightingShade->use();
+//        target->bind();
+        target->clearColourBuffer();
+        // would actually take a list of meshes not mesh data so it can pass transforms, materials etc to shader etc
+        target->renderMeshes(meshDataList);
 
-        // Draw the triangle using indices
-        program->use();
-        VAO->bind();
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        target->finalRender();
 
-        // Swap buffers and poll for events
+        // render quad to screen, draw current render target texture on quad
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
-    // Cleanup (release resources) should be done when you're done with the OpenGL context
-    glDeleteVertexArrays(1, &VAO->bufferID);
-    glDeleteBuffers(1, &VBO->bufferID); // make cleanup method / destructor
-    glDeleteBuffers(1, &EBO->bufferID);
-    glDeleteShader(vertexShader->shaderID);
-    glDeleteShader(fragmentShader->shaderID);
-    glDeleteProgram(program->programID);
+    //cleanup
+    {
+
+        //todo add shaders to cleanup
+        glDeleteShader(vertexShader->shaderID);
+        glDeleteShader(fragmentShader->shaderID);
+        glDeleteProgram(lightingShade->programID);
+    }
 
     // Terminate GLFW
     glfwTerminate();
+}
+
+void API_OpenGL::finalRender(RenderTarget *renderTarget) {
+    // switch back to main buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    // use quad shader to render simple texture
+
+
+    //todo having trouble initialising quad inside initialise method :/
+    // draw full screen quad with texture
+//    this->fullScreenQuad->bufferObject->bind();
+//    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0); // draw object
+}
+
+void API_OpenGL::renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshDataList) {
+    for (auto meshData: meshDataList) {
+        // bind the buffer object containing the vertices / indices etcs and then transport to gfx memory
+        meshData->bufferObject->bind();
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0); // draw object
+    }
+}
+
+void API_OpenGL::renderTargetClearDepthBuffer(RenderTarget *renderTarget) {
+    glClear(GL_DEPTH_BUFFER_BIT);
+}
+
+void API_OpenGL::renderTargetBind(RenderTarget *renderTarget) {
+    glBindFramebuffer(GL_FRAMEBUFFER, renderTarget->frameBuffer->bufferID);
+}
+
+void API_OpenGL::renderTargetClearColourBuffer(RenderTarget *renderTarget) {
+    glClearColor(
+            renderTarget->clearColour.x,
+            renderTarget->clearColour.y,
+            renderTarget->clearColour.z,
+            renderTarget->clearColour.a
+    );
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 unsigned int API_OpenGL::getFlagCode(const char *string) {
@@ -215,38 +268,81 @@ void API_OpenGL::applyLayout(GPULayout *layout) {
 }
 
 unsigned int API_OpenGL::createFrameBuffer(FrameBuffer *fbo) {
-    glGenBuffers(1, &fbo->bufferID);
+    glGenFramebuffers(1, &fbo->bufferID);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo->bufferID);
 
-    // apply framebuffers width and hieght to a new texture
     fbo->texture = new Texture(fbo->width, fbo->height, GL_RGB);
     fbo->texture->generate();
 
-    // Attach the texture to the FBO
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fbo->texture->textureId, 0);
 
-    // Unbind the FBO for now
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+        return 0;
+    }
+
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    return GraphicsBehaviour::createFrameBuffer(fbo);
+    return fbo->bufferID;
 }
 
 void API_OpenGL::createTexture(Texture *texture) {
+    int format = texture->format ? texture->format : GL_RGB;
+    int width = texture->width ? texture->width : 512;
+    int height = texture->height ? texture->height : 512;
 
-     int format =  texture->format ? texture->format : GL_RGB;
-     int width =  texture->width ? texture->width : 512;
-     int height =  texture->height ? texture->height : 512;
-
-    // Create the texture to render to
     glGenTextures(1, &texture->textureId);
     glBindTexture(GL_TEXTURE_2D, texture->textureId);
     glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, nullptr);
 
-    //todo get filter by type
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+    glBindTexture(GL_TEXTURE_2D, 0); // Unbind the texture
 }
 
+void API_OpenGL::cleanupResources() {
+    // Delete BufferObjects
+    for (auto *bufferObject: bufferObjects) {
+        glDeleteBuffers(1, &bufferObject->bufferID);
+        delete bufferObject;
+    }
+    bufferObjects.clear();
+
+    // Delete IndexBuffers
+    for (auto *indexBuffer: indexBuffers) {
+        glDeleteBuffers(1, &indexBuffer->bufferID);
+        delete indexBuffer;
+    }
+    indexBuffers.clear();
+
+    // Delete VertexBuffers
+    for (auto *vertexBuffer: vertexBuffers) {
+        glDeleteBuffers(1, &vertexBuffer->bufferID);
+        delete vertexBuffer;
+    }
+    vertexBuffers.clear();
+
+    // Delete FrameBuffers
+    for (auto *frameBuffer: frameBuffers) {
+        glDeleteFramebuffers(1, &frameBuffer->bufferID);
+        // If there's a texture attached to the framebuffer, delete it
+        if (frameBuffer->texture && frameBuffer->texture->textureId != 0) {
+            glDeleteTextures(1, &frameBuffer->texture->textureId);
+            delete frameBuffer->texture;
+        }
+        delete frameBuffer;
+    }
+    frameBuffers.clear();
+
+    // Delete GPULayouts
+    // Assuming GPULayouts do not have a direct OpenGL deletion equivalent
+    // and just need to be deleted normally.
+    for (auto *gpuLayout: gpuLayouts) {
+        delete gpuLayout;
+    }
+    gpuLayouts.clear();
+}
 
 

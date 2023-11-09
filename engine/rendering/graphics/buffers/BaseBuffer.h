@@ -27,11 +27,11 @@ public:
 
     virtual BaseBuffer *generate() {
         TINKER_MISSING_OVERRIDE;
-        return nullptr;
+        return this;
     };
 
     virtual BaseBuffer *bind() {
         TINKER_MISSING_OVERRIDE;
-        return nullptr;
+        return this;
     };
 };

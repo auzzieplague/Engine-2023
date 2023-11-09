@@ -16,8 +16,19 @@ class GraphicsBehaviour {
 
 protected:
     GPUInfo *gpuInfo{};
+    MeshData *fullScreenQuad;
+
 public:
+
+    // buffer reference pool for cleanup
+    std::vector<BufferObject *> bufferObjects;
+    std::vector<IndexBuffer *> indexBuffers;
+    std::vector<VertexBuffer *> vertexBuffers;
+    std::vector<FrameBuffer *> frameBuffers;
+    std::vector<GPULayout *> gpuLayouts;
+
     // Initialization
+    bool initialised = false;
     virtual bool initialise(...) { return false; };
     virtual void queryCapabilities(...) {  };
     virtual void displayCapabilities(...);
@@ -45,22 +56,25 @@ public:
     virtual void useShaderProgram(ShaderProgram *) {};
     virtual void applyLayout(GPULayout *layout){};
 
-
     // Framebuffer and Render Target Management
     virtual void createTexture(Texture *texture) {};
     virtual void bindTexture(Texture * texture) {};
     virtual void setRenderTarget(RenderTarget * renderTarget) {};
-    virtual void clearRenderTarget(RenderTarget * renderTarget) {};
 
+
+    virtual void finalRender(RenderTarget *renderTarget){};
+    virtual void renderTargetBind(RenderTarget *renderTarget){};
+    virtual void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData){};
+    virtual void renderTargetClearDepthBuffer(RenderTarget *renderTarget){};
+    virtual void renderTargetClearColourBuffer(RenderTarget *renderTarget){};
+    virtual  MeshData * allocateMeshData(MeshData *){return nullptr;};
     // Rendering
     virtual void bindVertexBuffer(VertexBuffer* vb) {};
     virtual void bindIndexBuffer(IndexBuffer* ib) {};
     virtual void bindBufferObject(BufferObject *bo) {}; // VAO in opengl
 
-    virtual void bindShaderProgram(...) {};
     virtual void drawIndexed(...) {};
     virtual void setUniforms(...) {};
-
 
 
     // Viewport and Projection
@@ -80,10 +94,15 @@ public:
 
     virtual MeshData* getSampleMeshData();
 
-    virtual ~GraphicsBehaviour() {
-        if (gpuInfo) {
-            delete gpuInfo;
-            gpuInfo = nullptr;
-        }
+    virtual void cleanupResources(){};
+
+    ~GraphicsBehaviour() {
+        this->cleanup();
     }
+
+    void cleanup(){
+        this->cleanupResources();
+    };
+
+    MeshData *getFullScreenQuadMeshData();
 };
