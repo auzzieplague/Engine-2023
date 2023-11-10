@@ -49,8 +49,8 @@ MeshData *GraphicsBehaviour::getSampleMeshData() {
     };
 
     auto meshData = new MeshData();
-    meshData->setVertices(vertices, sizeof (vertices));
-    meshData->setIndices(indices, sizeof (indices));
+    meshData->setVertices(vertices, TINKER_ARRAY_SIZE(vertices));
+    meshData->setIndices(indices, TINKER_ARRAY_SIZE (indices));
 
     return meshData;
 }

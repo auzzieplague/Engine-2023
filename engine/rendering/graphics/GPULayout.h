@@ -22,12 +22,14 @@ public:
         this->pointer=(void *) nullptr;
     }
 
-     void basicTexture () {
+    GPULayout * basicTexture () {
         this->size = TINKER_2D;
         this->type = TINKER_FLOAT;
         this->normalised = false;
         this->stride = 2*sizeof (float);
         this->pointer=(void *) nullptr;
+
+        return this;
     }
 
     unsigned int index = 0;    // Location of the vertex attribute

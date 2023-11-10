@@ -10,3 +10,11 @@ IndexBuffer *IndexBuffer::bind() {
     graphicsApi->bindIndexBuffer(this);
     return this;
 }
+
+IndexBuffer::IndexBuffer(MeshData *meshData, const char *usage)  {
+    this->data = meshData->m_indices.data();
+    this->byteCount = meshData->m_indices.size() * sizeof(unsigned int);
+    if (usage) {
+        this->usage = graphicsApi->getFlag(usage);
+    }
+}

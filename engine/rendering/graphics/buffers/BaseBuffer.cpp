@@ -10,7 +10,7 @@ void BaseBuffer::setGraphicsAPI(GraphicsAPI *api) {
 
 BaseBuffer::BaseBuffer(const void *data, size_t dataSize, const char* usage) {
     this->data = data;
-    this->dataSize = dataSize;
+    this->byteCount = dataSize;
     if (usage) {
         this->usage = graphicsApi->getFlag(usage);
     }

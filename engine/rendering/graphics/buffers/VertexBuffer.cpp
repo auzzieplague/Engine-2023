@@ -13,4 +13,12 @@ VertexBuffer* VertexBuffer::bind() {
     return this;
 }
 
+VertexBuffer::VertexBuffer(MeshData *meshData, const char *usage) {
+    this->data=meshData->m_vertices.data();
+    this->byteCount = meshData->m_vertices.size() * 3 * sizeof(float); // bytes
+    if (usage) {
+        this->usage = graphicsApi->getFlag(usage);
+    }
+};
+
 

@@ -52,7 +52,7 @@ bool API_OpenGL::initialise(...) {
 unsigned int API_OpenGL::createVertexBuffer(VertexBuffer *vb) {
     glGenBuffers(1, &vb->bufferID); // Generate the OpenGL buffer
     glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID); // Bind the buffer to the GL_ARRAY_BUFFER target
-    glBufferData(GL_ARRAY_BUFFER, vb->dataSize*( 3 * sizeof (float)), vb->data, vb->usage); // Upload the data to the buffer
+    glBufferData(GL_ARRAY_BUFFER, vb->byteCount * (3 * sizeof (float)), vb->data, vb->usage); // Upload the data to the buffer
 //    glBufferData(GL_ARRAY_BUFFER, vb->dataSize*( 5 * sizeof (float)), vb->data, vb->usage); // Upload the data to the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind the buffer
 
@@ -61,14 +61,14 @@ unsigned int API_OpenGL::createVertexBuffer(VertexBuffer *vb) {
 
 void API_OpenGL::bindVertexBuffer(VertexBuffer *vb) {
     glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID);
-    glBufferData(GL_ARRAY_BUFFER, vb->dataSize, vb->data, vb->usage);
+    glBufferData(GL_ARRAY_BUFFER, vb->byteCount, vb->data, vb->usage);
 }
 
 
 unsigned int API_OpenGL::createIndexBuffer(IndexBuffer *ib) {
     glGenBuffers(1, &ib->bufferID); // Generate the OpenGL buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->bufferID); // Bind the buffer to the GL_ELEMENT_ARRAY_BUFFER target
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->dataSize * sizeof(unsigned int), ib->data, ib->usage); // Upload the data to the buffer
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->byteCount * sizeof(unsigned int), ib->data, ib->usage); // Upload the data to the buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind the buffer
 
     return ib->bufferID; // Return the ID of the created buffer
@@ -76,7 +76,7 @@ unsigned int API_OpenGL::createIndexBuffer(IndexBuffer *ib) {
 
 void API_OpenGL::bindIndexBuffer(IndexBuffer *ib) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->bufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->dataSize, ib->data, ib->usage);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->byteCount, ib->data, ib->usage);
 }
 
 
@@ -131,22 +131,19 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
             VAO->generate();
             VAO->forMeshData(meshData);
             VAO->bind(); // forMeshData binds to mesh
-    auto VBO = (new VertexBuffer(meshData->m_vertices.data(), meshData->m_vertices.size() * 3,
-                                 "static"))->generate()->bind();
-    auto EBO = (new IndexBuffer(meshData->m_indices.data(), meshData->m_indices.size(), "static"))->generate()->bind();
 
-    auto layout0 = new GPULayout(0); // positions
-    auto layout1 = new GPULayout(1);        // textures
+            // todo usage on mesh
+    auto VBO = (new VertexBuffer(meshData,"static"))->generate()->bind();
+    auto EBO = (new IndexBuffer(meshData, "static"))->generate()->bind();
 
-    layout1->basicTexture();
-
-    layout0->applyTo(VAO);
-    layout1->applyTo(VAO);
+    auto layout0 = (new GPULayout(0))->applyTo(VAO);
+    auto layout1 = (new GPULayout(1))->basicTexture()->applyTo(VAO);
 
     // todo - better store pointers for cleanup - some general internal mechanic
     this->bufferObjects.push_back(VAO);
     this->vertexBuffers.push_back(VBO);
     this->indexBuffers.push_back(EBO);
+    this->gpuLayouts.push_back(layout0);
     this->gpuLayouts.push_back(layout1);
 
     return meshData;

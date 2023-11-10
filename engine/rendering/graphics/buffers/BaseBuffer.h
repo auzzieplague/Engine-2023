@@ -11,17 +11,18 @@ public:
     static GraphicsAPI *graphicsApi;
     mutable unsigned int bufferID = 0;
 
-    const void *data;
-    size_t dataSize;
-    unsigned int usage;
+    const void *data{};
+    size_t byteCount{};
+    unsigned int usage{};
 
+    BaseBuffer()= default;;
     BaseBuffer(const void *data, size_t dataSize, const char *usage);
 
     static void setGraphicsAPI(GraphicsAPI *api);
 
-    [[nodiscard]] const void *getData() const { return data; }
+    [[maybe_unused]] [[nodiscard]] const void *getData() const { return data; }
 
-    [[nodiscard]] size_t getDataSize() const { return dataSize; }
+    [[nodiscard]] size_t getDataSize() const { return byteCount; }
 
     [[nodiscard]] unsigned int getUsage() const { return usage; }
 
