@@ -83,7 +83,7 @@ MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
     auto meshData = new MeshData();
     meshData->setVertices(vertices, sizeof(vertices));
     meshData->setIndices(indices, sizeof(indices));
-    meshData->setUVs(uvs, sizeof(indices));
+    meshData->setUVs(uvs, sizeof(uvs));
 
     return meshData;
 };

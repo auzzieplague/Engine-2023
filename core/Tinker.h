@@ -14,6 +14,7 @@
 // Define the TINKER_MISSING_OVERRIDE macro
 #define TINKER_MISSING_OVERRIDE std::cout << TINKER_FUNC_SIG << " has no override function." << std::endl
 
+#define TINKER_ARRAY_SIZE(myArray) (sizeof(myArray) / sizeof((myArray)[0]))
 
 enum TinkerDataType {
     TINKER_BYTE = 0x1400,

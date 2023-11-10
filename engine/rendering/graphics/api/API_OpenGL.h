@@ -54,5 +54,7 @@ public:
 
     void cleanupResources() override;
 
+
+    void updateCurrentTime();
 };
 

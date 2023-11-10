@@ -1,39 +1,14 @@
 #version 330 core
 out vec4 FragColor;
 in vec2 TexCoords;
+uniform sampler2D screenTexture;
+uniform float time; // Uniform variable to pass the time value
+uniform vec3 colour; // Uniform variable to pass the time value
 
 void main() {
-    FragColor = vec4(TexCoords.x,TexCoords.y, 0.0f, 1.0f);
-//    FragColor = vec4(0,1,1,0);
+//    vec4 colour = texture(screenTexture, TexCoords);
+//    FragColor = vec4(colour,0,0,0); // check uniforms functioning
+//    FragColor = vec4(colour.x, colour.y,colour.z,0); // check uniforms functioning
+    FragColor = vec4(TexCoords.x, TexCoords.y,0.25,0); // confirm coords are flowing though
+//    FragColor = vec4(colour.x,0.25,0.25,0);
 }
-
-//#version 330 core
-//out vec4 FragColor;
-//
-//in vec2 TexCoords;
-//
-//uniform sampler2D screenTexture;
-//
-//void main() {
-//    FragColor = texture(screenTexture, TexCoords);
-//}
-
-
-//#version 330 core
-//
-//out vec4 FragColor;
-//
-//in vec2 TexCoords;
-//
-//uniform sampler2D screenTexture;
-//uniform float time; // Uniform variable to pass the time value
-//
-//void main() {
-//    // Calculate wavy effect by modifying texture coordinates
-//    float wave = sin(TexCoords.y * 10.0 + time * 2.0) * 0.01; // Wave magnitude and speed
-//    vec2 wavyTexCoords = vec2(TexCoords.x + wave, TexCoords.y);
-//
-//    // Sample the texture with the wavy texture coordinates
-////    FragColor = texture(screenTexture, wavyTexCoords);
-//    FragColor = vec4(1,1,1,0);
-//}

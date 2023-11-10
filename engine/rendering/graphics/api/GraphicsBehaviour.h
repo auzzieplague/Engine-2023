@@ -18,6 +18,7 @@ protected:
     GPUInfo *gpuInfo{};
     MeshData *fullScreenQuad;
     ShaderProgram *quadShader;
+    int currentTime=1;
 public:
 
     // buffer reference pool for cleanup

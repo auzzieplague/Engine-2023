@@ -140,6 +140,7 @@ void Engine::setGraphicsApi(GraphicsBehaviour *behaviour) {
     FrameBuffer::setGraphicsAPI(api);
     BufferObject::setGraphicsAPI(api);
     GPULayout::setGraphicsAPI(api);
+    Texture::setGraphicsAPI(api);
     ShaderProgram::setGraphicsAPI(api);
     Shader::setGraphicsAPI(api);
     Mesh::setGraphicsAPI(api);

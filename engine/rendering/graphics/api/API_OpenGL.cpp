@@ -2,6 +2,7 @@
 #include "API_OpenGL.h"
 #include <Window.h>
 #include <graphics/GPULayout.h>
+#include <chrono>
 #include "graphics/buffers/VertexBuffer.h"
 #include "graphics/buffers/IndexBuffer.h"
 #include "graphics/buffers/FrameBuffer.h"
@@ -51,7 +52,8 @@ bool API_OpenGL::initialise(...) {
 unsigned int API_OpenGL::createVertexBuffer(VertexBuffer *vb) {
     glGenBuffers(1, &vb->bufferID); // Generate the OpenGL buffer
     glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID); // Bind the buffer to the GL_ARRAY_BUFFER target
-    glBufferData(GL_ARRAY_BUFFER, vb->dataSize, vb->data, vb->usage); // Upload the data to the buffer
+    glBufferData(GL_ARRAY_BUFFER, vb->dataSize*( 3 * sizeof (float)), vb->data, vb->usage); // Upload the data to the buffer
+//    glBufferData(GL_ARRAY_BUFFER, vb->dataSize*( 5 * sizeof (float)), vb->data, vb->usage); // Upload the data to the buffer
     glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind the buffer
 
     return vb->bufferID; // Return the ID of the created buffer
@@ -66,7 +68,7 @@ void API_OpenGL::bindVertexBuffer(VertexBuffer *vb) {
 unsigned int API_OpenGL::createIndexBuffer(IndexBuffer *ib) {
     glGenBuffers(1, &ib->bufferID); // Generate the OpenGL buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->bufferID); // Bind the buffer to the GL_ELEMENT_ARRAY_BUFFER target
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->dataSize, ib->data, ib->usage); // Upload the data to the buffer
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->dataSize * sizeof(unsigned int), ib->data, ib->usage); // Upload the data to the buffer
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind the buffer
 
     return ib->bufferID; // Return the ID of the created buffer
@@ -135,6 +137,7 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
 
     auto layout0 = new GPULayout(0); // positions
     auto layout1 = new GPULayout(1);        // textures
+
     layout1->basicTexture();
 
     layout0->applyTo(VAO);
@@ -149,19 +152,24 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
     return meshData;
 }
 
+void API_OpenGL::updateCurrentTime() {
+    using namespace std::chrono;
+
+    // Get the current time point
+    auto now = high_resolution_clock::now();
+
+    // Get the time since epoch in milliseconds
+    auto timeSinceEpoch = duration_cast<milliseconds>(now.time_since_epoch());
+
+    // Convert to seconds as a float
+    this->currentTime = timeSinceEpoch.count() / 1000.0f;
+
+}
 // should be able to be promoted to parent class to render triangle agnostically
 void API_OpenGL::demoTriangle(...) {
     // todo create an allocateMeshData function that does this and returns the setup mesh
     auto meshData = this->getSampleMeshData();
-//    auto meshData = this->getFullScreenQuadMeshData();
     this->allocateMeshData(meshData);
-    // todo load from source, shader program might also load all source with the same name
-//    auto vertexShader = (new Shader(VERTEX_SHADER))->loadFromSource("general");
-//    auto fragmentShader = (new Shader(FRAGMENT_SHADER))->loadFromSource("general");
-//    auto lightingShader = (new ShaderProgram())->addShader(fragmentShader)->addShader(
-//            vertexShader)->compileAndLink()->use();
-//    auto quadShader = (new ShaderProgram())->addShader(fragmentShader)->addShader(
-//            vertexShader)->compileAndLink()->use();
 
     auto lightingShader = (new ShaderProgram())
             ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("general"))
@@ -175,9 +183,6 @@ void API_OpenGL::demoTriangle(...) {
             ->compileAndLink()
             ->use();
 
-
-    // ^ in reality quad shader is much simpler than rendering shader
-
     auto target = (new RenderTarget(800, 800))->setClearColour({0, 0, 0, 0});
 
     auto window = Window::getCurrentWindow();
@@ -187,15 +192,13 @@ void API_OpenGL::demoTriangle(...) {
     // Rendering things to current target
     while (!glfwWindowShouldClose(window)) {
         lightingShader->use();
-//        target->bind();
-        target->clearColourBuffer();
-        // would actually take a list of meshes not mesh data so it can pass transforms, materials etc to shader etc
+//        target->bind(); // bind and use frame buffer 1 - should be rendering to texture
+//        target->clearColourBuffer();
         target->renderMeshes(meshDataList);
 
-        target->finalRender();
+//        target->finalRender();
 
         // render quad to screen, draw current render target texture on quad
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -215,8 +218,8 @@ void API_OpenGL::demoTriangle(...) {
 void API_OpenGL::finalRender(RenderTarget *renderTarget) {
     quadShader->use(); // switch to quad shader
     // Retrieve the location of the uniform variables
-    GLint screenTextureLocation = glGetUniformLocation(quadShader->programID, "screenTexture");
-    GLint timeLocation = glGetUniformLocation(quadShader->programID, "time");
+    glUniform1i(glGetUniformLocation(quadShader->programID, "screenTexture"), 0); // Set screenTexture uniform to texture unit 0
+    glUniform3f(glGetUniformLocation(quadShader->programID, "colour"), 1,1,0); // Set screenTexture uniform to texture unit 0
 
     // switch back to main buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

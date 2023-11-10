@@ -66,7 +66,7 @@ public:
     void applyLayout(Args &&... args) {return this->api->applyLayout(std::forward<Args>(args)...); };
 
     template<typename... Args>
-    unsigned int createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
+    void createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
 
     template<typename... Args>
     void bindTexture(Args &&... args) { this->api->bindTexture(std::forward<Args>(args)...); };

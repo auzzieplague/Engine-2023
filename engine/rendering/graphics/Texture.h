@@ -2,7 +2,7 @@
 
 #include <Tinker.h>
 
-
+class GraphicsAPI; // forward declare
 
 class Texture {
 public:
@@ -17,7 +17,11 @@ public:
     bool isLoaded;
     const char* debugName;
 
+    static GraphicsAPI *graphicsApi;
+
 public:
+    static void setGraphicsAPI(GraphicsAPI *api);
+
     Texture(int width, int height, int format) : textureId(0), width(width), height(height), format(0), type(TINKER_2D),
                 wrapMode(TextureWrap::Clamp), minFilter(TextureFilter::Linear), magFilter(TextureFilter::Linear),
                 mipMapLevels(1), isLoaded(false), debugName("Unnamed Texture") {
@@ -30,8 +34,7 @@ public:
 //        }
     }
 
-    void generate() {
-    }
+    Texture * generate();
 
     // ... Getter and Setter functions ...
 
@@ -64,4 +67,5 @@ public:
     }
 
     // ... Other utility methods, like for loading from file, updating subregions, etc. ...
+
 };
