@@ -2,7 +2,7 @@
 #include "GraphicsBehaviour.h"
 #include <string>
 #include <iostream>
-#include "graphics/buffers/BufferObject.h"
+#include "graphics/buffers/BufferContainer.h"
 
 
 void GraphicsBehaviour::displayCapabilities(...) {
@@ -81,9 +81,9 @@ MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
     };
 
     auto meshData = new MeshData();
-    meshData->setVertices(vertices, sizeof(vertices));
-    meshData->setIndices(indices, sizeof(indices));
-    meshData->setUVs(uvs, sizeof(uvs));
+    meshData->setVertices(vertices, TINKER_ARRAY_SIZE(vertices));
+    meshData->setIndices(indices, TINKER_ARRAY_SIZE(indices));
+    meshData->setUVs(uvs, TINKER_ARRAY_SIZE(uvs));
 
     return meshData;
 };

@@ -1,14 +1,14 @@
 #pragma once
 
 #include <components/Component.h>
-class BufferObject;
+class BufferContainer;
 
 class MeshData
     : public Component {
     friend class Mesh;
 public:
     unsigned int m_gID = 0;
-    BufferObject * bufferObject;
+    BufferContainer * bufferContainer;
     static GraphicsAPI *m_api;
 
     ObjectType getType() override {

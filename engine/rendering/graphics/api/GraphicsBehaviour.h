@@ -9,8 +9,8 @@
 class VertexBuffer;
 class IndexBuffer;
 class FrameBuffer;
-class BufferObject;
-class GPULayout;
+class BufferContainer;
+class VertexAttribute;
 
 class GraphicsBehaviour {
 
@@ -22,11 +22,11 @@ protected:
 public:
 
     // buffer reference pool for cleanup
-    std::vector<BufferObject *> bufferObjects;
+    std::vector<BufferContainer *> containerObjects;
     std::vector<IndexBuffer *> indexBuffers;
     std::vector<VertexBuffer *> vertexBuffers;
     std::vector<FrameBuffer *> frameBuffers;
-    std::vector<GPULayout *> gpuLayouts;
+    std::vector<VertexAttribute *> gpuLayouts;
 
     // Initialization
     bool initialised = false;
@@ -49,13 +49,13 @@ public:
     // Resource Management
     virtual unsigned int createVertexBuffer(VertexBuffer* vb) {return 0;};
     virtual unsigned int createIndexBuffer(IndexBuffer *ib) {return 0;};
-    virtual unsigned int createBufferObject(BufferObject *bo) {return 0;}; // VAO in opengl
+    virtual unsigned int createContainerObject(BufferContainer *bo) {return 0;}; // VAO in opengl
     virtual unsigned int createFrameBuffer(FrameBuffer *fbo) {return 0;};
 
     virtual void compileShader(Shader *shader) {};
     virtual unsigned int linkShaderProgram(ShaderProgram *) {return 0;};
     virtual void useShaderProgram(ShaderProgram *) {};
-    virtual void applyLayout(GPULayout *layout){};
+    virtual void applyAttribute(VertexAttribute *layout){};
 
     // Framebuffer and Render Target Management
     virtual void createTexture(Texture *texture) {};
@@ -73,7 +73,7 @@ public:
     // Rendering
     virtual void bindVertexBuffer(VertexBuffer* vb) {};
     virtual void bindIndexBuffer(IndexBuffer* ib) {};
-    virtual void bindBufferObject(BufferObject *bo) {}; // VAO in opengl
+    virtual void bindContainerObject(BufferContainer *bo) {}; // VAO in opengl
 
     virtual void drawIndexed(...) {};
     virtual void setUniforms(...) {};

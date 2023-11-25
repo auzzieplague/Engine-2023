@@ -16,6 +16,7 @@ public:
     void queryCapabilities(...) override;
 
     void demoTriangle(...) override;
+    void demoTriangle2(...);
 
     unsigned int getFlagCode(const char *string) override;
 
@@ -27,9 +28,9 @@ public:
 
     void bindIndexBuffer(IndexBuffer *ib) override;
 
-    unsigned int createBufferObject(BufferObject *bo) override;
+    unsigned int createContainerObject(BufferContainer *bo) override;
 
-    void bindBufferObject(BufferObject *bo) override;
+    void bindContainerObject(BufferContainer *bo) override;
 
     MeshData * allocateMeshData(MeshData *) override;
 
@@ -43,7 +44,7 @@ public:
 
     void  useShaderProgram(ShaderProgram *) override;
 
-    void applyLayout(GPULayout *layout) override;
+    void applyAttribute(VertexAttribute *layout) override;
 
     void reportErrors() override;
     void finalRender(RenderTarget *renderTarget) override;

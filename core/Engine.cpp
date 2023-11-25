@@ -44,7 +44,8 @@ void Engine::loopLayers() {
     PerformanceMeasurer &perf = PerformanceMeasurer::getInstance();
 
     if (Window::getCurrentWindow()) {
-        while (!glfwWindowShouldClose(Window::getCurrentWindow())) {
+        auto glWindow = Window::getCurrentWindow();
+        while (!glfwWindowShouldClose(glWindow)) {
             currentScene->currentFrame++;
 
             for (Layer *layer: this->layers) {
@@ -138,8 +139,8 @@ void Engine::setGraphicsApi(GraphicsBehaviour *behaviour) {
     VertexBuffer::setGraphicsAPI(api);
     IndexBuffer::setGraphicsAPI(api);
     FrameBuffer::setGraphicsAPI(api);
-    BufferObject::setGraphicsAPI(api);
-    GPULayout::setGraphicsAPI(api);
+    BufferContainer::setGraphicsAPI(api);
+    VertexAttribute::setGraphicsAPI(api);
     Texture::setGraphicsAPI(api);
     ShaderProgram::setGraphicsAPI(api);
     Shader::setGraphicsAPI(api);

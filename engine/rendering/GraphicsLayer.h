@@ -6,8 +6,8 @@
 #include "graphics/buffers/VertexBuffer.h"
 #include "graphics/buffers/IndexBuffer.h"
 #include "graphics/buffers/FrameBuffer.h"
-#include "graphics/buffers/BufferObject.h"
-#include "graphics/GPULayout.h"
+#include "graphics/buffers/BufferContainer.h"
+#include "graphics/VertexAttribute.h"
 #include "graphics/RenderTarget.h"
 class GraphicsLayer : public Layer {
 

@@ -8,8 +8,10 @@ class IndexBuffer: public BaseBuffer {
 
 
 public:
-    IndexBuffer(const unsigned int *data, size_t dataSize, const char* usage): BaseBuffer(data,dataSize,usage){};
-    explicit IndexBuffer(MeshData * meshData, const char *usage);
+    IndexBuffer(BufferContainer * VAO, const unsigned int *data, size_t dataSize, const char* usage): BaseBuffer(data, dataSize, usage){
+        this->containerObject = VAO;
+    };
+    explicit IndexBuffer(BufferContainer * VAO, MeshData * meshData, const char *usage);
 
     IndexBuffer* generate() override;
     IndexBuffer* bind() override;

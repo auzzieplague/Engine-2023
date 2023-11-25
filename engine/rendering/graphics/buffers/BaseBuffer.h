@@ -8,6 +8,7 @@ class GraphicsAPI; // forward declare
 class BaseBuffer {
 public:
 
+    BufferContainer * containerObject{}; //associated container buffer object (VAO)
     static GraphicsAPI *graphicsApi;
     mutable unsigned int bufferID = 0;
 

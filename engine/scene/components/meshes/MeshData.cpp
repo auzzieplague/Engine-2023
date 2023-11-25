@@ -6,7 +6,7 @@
 #include <glm/gtc/matrix_inverse.hpp>
 #include <unordered_map>
 #include <algorithm>
-#include <graphics/buffers/BufferObject.h>
+#include <graphics/buffers/BufferContainer.h>
 #include <graphics/buffers/VertexBuffer.h>
 #include <graphics/buffers/IndexBuffer.h>
 

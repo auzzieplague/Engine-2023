@@ -26,7 +26,7 @@ enum TinkerDataType {
     TINKER_FLOAT = 0x1406,
 };
 
-enum TinkerDataSize {
+enum TinkerVertexType {
     TINKER_1D [[maybe_unused]] = 1, //  for scalar data
     TINKER_2D [[maybe_unused]] = 2, //  for 2D data e.g. texture u,v
     TINKER_3D [[maybe_unused]] = 3, //  for 3D data e.g. vertex positions

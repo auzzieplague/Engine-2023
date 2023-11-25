@@ -51,19 +51,19 @@ public:
     template<typename... Args>
     void bindIndexBuffer(Args &&... args) { this->api->bindIndexBuffer(std::forward<Args>(args)...); };
 
-    unsigned int createBufferObject(BufferObject *buffer) {
-        return this->api->createBufferObject(buffer);
+    unsigned int createContainerObject(BufferContainer *buffer) {
+        return this->api->createContainerObject(buffer);
     };
 
     template<typename... Args>
-    void bindBufferObject(Args &&... args) { this->api->bindBufferObject(std::forward<Args>(args)...); };
+    void bindContainerObject(Args &&... args) { this->api->bindContainerObject(std::forward<Args>(args)...); };
 
     template<typename... Args>
     void createFrameBuffer(Args &&... args) { this->api->createFrameBuffer(std::forward<Args>(args)...); };
 
 
     template<typename... Args>
-    void applyLayout(Args &&... args) {return this->api->applyLayout(std::forward<Args>(args)...); };
+    void applyAttribute(Args &&... args) {return this->api->applyAttribute(std::forward<Args>(args)...); };
 
     template<typename... Args>
     void createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
