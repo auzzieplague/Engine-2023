@@ -37,11 +37,18 @@ unsigned int GraphicsBehaviour::getFlagCode(const char *string) {
 MeshData *GraphicsBehaviour::getSampleMeshData() {
 
     float vertices[] = {
-            -0.5f, -0.5f, 0.0f, // Bottom-left corner
-            0.5f, -0.5f, 0.0f, // Bottom-right corner
-            0.5f, 0.5f, 0.0f, // Top-right corner
-            -0.5f, 0.5f, 0.0f  // Top-left corner
+            -1.0f, -1.0f, 0.0f, // Bottom-left corner
+            1.0f, -1.0f, 0.0f, // Bottom-right corner
+            1.0f, 1.0f, 0.0f, // Top-right corner
+            -1.0f, 1.0f, 0.0f  // Top-left corner
     };
+
+//    float vertices[] = {
+//            0.0f, 0.0f, 0.0f, // Bottom-left corner
+//            0.9f, 0.0f, 0.0f, // Bottom-right corner
+//            0.9f, 0.9f, 0.0f, // Top-right corner
+//            0.0f, 0.9f, 0.0f  // Top-left corner
+//    };
 
     unsigned int indices[] = {
             0, 1, 2, // First triangle
@@ -59,10 +66,10 @@ MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
 
 //             Positions
     float vertices[] = {
-            -0.9f,  0.9f, 0.0f, // Top-left corner
-            -0.9f, -0.9f, 0.0f, // Bottom-left corner
-            0.9f, -0.9f, 0.0f, // Bottom-right corner
-            0.9f,  0.9f, 0.0f  // Top-right corner
+            -0.5f,  0.5f, 0.0f, // Top-left corner
+            -0.5f, -0.5f, 0.0f, // Bottom-left corner
+            0.5f, -0.5f, 0.0f, // Bottom-right corner
+            0.5f,  0.5f, 0.0f  // Top-right corner
     };
 
     // UV texture coordinates

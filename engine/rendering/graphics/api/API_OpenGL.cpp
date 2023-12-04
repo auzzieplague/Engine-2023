@@ -251,8 +251,9 @@ void API_OpenGL::demoTriangle(...) {
     this->allocateMeshData(meshData);
 
     auto window = Window::getCurrentWindow();
-
-    auto target = new RenderTarget(800, 800);
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+    auto target = new RenderTarget(512, 512);
     target->setClearColour({0, 0, 0, 0});
 
 
@@ -266,14 +267,14 @@ void API_OpenGL::demoTriangle(...) {
 
         glBindFramebuffer(GL_FRAMEBUFFER,target->frameBuffer->bufferID); // bind target
         glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(meshData->giro)->VAO);
-        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glUseProgram(0);
 
 
         quadShader->use(); ///testing - output full screen quad using demo quad with uvs
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // clear colour order doesn't matter
-        glClear(GL_COLOR_BUFFER_BIT);
+//        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // clear colour order doesn't matter
+//        glClear(GL_COLOR_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, target->frameBuffer->texture->textureId);

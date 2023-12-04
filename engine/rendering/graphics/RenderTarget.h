@@ -25,8 +25,8 @@ public:
     float clearStencil = 0;
     unsigned int samplesPerPixel = 8;
 
-    int height = 720; // also stored on framebuffer - might remove here and replace with getters
-    int width = 1024;
+    int height = 1920; // also stored on framebuffer - might remove here and replace with getters
+    int width = 1080;
     FrameBuffer *frameBuffer = nullptr;
 
     static GraphicsAPI *graphicsApi;
