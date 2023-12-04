@@ -7,6 +7,7 @@
 #include "graphics/buffers/IndexBuffer.h"
 #include "graphics/buffers/FrameBuffer.h"
 #include "graphics/buffers/BufferContainer.h"
+#include "OpenGLReferenceObject.h"
 
 
 void API_OpenGL::queryCapabilities(...) {
@@ -49,66 +50,49 @@ bool API_OpenGL::initialise(...) {
 }
 
 
+unsigned int API_OpenGL::createContainerForMesh(Mesh *mesh) {
+//    auto bo = mesh->
+//    glGenVertexArrays(1, &bo->bufferID); // Generate the Vertex Array Object
+//    glBindVertexArray(bo->bufferID); // Bind the VAO
+
+    return GraphicsBehaviour::createContainerForMesh(mesh);
+}
+
 
 unsigned int API_OpenGL::createContainerObject(BufferContainer *bo) {
-    glGenVertexArrays(1, &bo->bufferID); // Generate the Vertex Array Object
-    glBindVertexArray(bo->bufferID); // Bind the VAO
-
-    // todo need to order by index - setAsPositions etc needs to set a type
-    for (auto &attributePair : bo->attributes) {
-        VertexAttribute *attribute = attributePair.second;
-        unsigned int vbo;
-
-        glGenBuffers(1, &vbo); // Generate a new VBO
-        glBindBuffer(GL_ARRAY_BUFFER, vbo); // Bind the VBOS
-        glBufferData(GL_ARRAY_BUFFER, attribute->vertexType * attribute->byteSize, attribute->pointer, GL_STATIC_DRAW ); // Upload the data to the VBO
-
-        glEnableVertexAttribArray(attribute->index); // Enable the vertex attribute array
-        glVertexAttribPointer(
-                attribute->index,           // Attribute index
-                attribute->vertexType,        // Number of components per vertex attribute
-                attribute->dataType,            // Data type of each component
-                attribute->normalised,      // Normalization flag
-                0,                       // Stride (0 for tightly packed data)
-                reinterpret_cast<void*>(0) // Offset (0 for the start of the buffer)
-        );
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0); // Unbind the VBO // todo - move outside loop ?
-    }
-
-    glBindVertexArray(0); // Unbind the VAO
 
     return bo->bufferID; // Return the ID of the created VAO
 }
 
 
 MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
-    auto VAO = (new BufferContainer());
+    auto giro = new OpenGLReferenceObject();
 
-    // todo apply layout options before creating VBO - VBO will need to contain all attribs
-    // todo ^ GPU layout populated with data to use for VBO in vertex array creation
+    meshData->giro = giro;
+    glGenVertexArrays(1, &giro->VAO); // Generate the Vertex Array Object
+    glBindVertexArray(giro->VAO); // Bind the VAO
 
-    auto layout0 = (new VertexAttribute(0))->setAsPositions3D(meshData->m_vertices.data())->applyTo(VAO);
-    auto layout1 = (new VertexAttribute(1))->setAsTexture2D(meshData->m_UVs.data())->applyTo(VAO);
+    unsigned int vbo;
+    glGenBuffers(1, &vbo); // Generate a new VBO
+    glBindBuffer(GL_ARRAY_BUFFER, vbo); // Bind the VBOS
 
-    VAO->generate();
-    VAO->forMeshData(meshData);
-    VAO->bind();
+    auto size = meshData->m_vertices.size() * sizeof(meshData->m_vertices[0]); // itemcount x 3 for vector x sizeof (float) for total bytes
+    glBufferData(GL_ARRAY_BUFFER, size, meshData->m_vertices.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
-//    auto VBO = (new VertexBuffer(VAO,meshData,"static"))->generate()->bind();
-// todo maybe the IndexBuffer should just be another vertex attribute, although we treat it different under the hood.
+    // if we have an indices generate an index buffer - set the flags accordingly
+    unsigned int ebo;
+    glGenBuffers(1,&ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    size = meshData->m_indices.size() * sizeof(meshData->m_indices[0]);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, meshData->m_indices.data(), GL_STATIC_DRAW);
 
-    auto EBO = (new IndexBuffer(VAO, meshData,"static"))->generate()->bind();
 
-//    auto layout0 = (new GPULayout(0))->applyTo(VAO);
-//    auto layout1 = (new GPULayout(1))->basicTexture()->applyTo(VAO);
+    //todo set flags based on presence of items, then we can use the bitmask to select the correct shader (or subroutines)
 
-    // todo - better store pointers for cleanup - some general internal mechanic
-    this->containerObjects.push_back(VAO);
-//    this->vertexBuffers.push_back(VBO);
-    this->indexBuffers.push_back(EBO);
-    this->gpuLayouts.push_back(layout0);
-    this->gpuLayouts.push_back(layout1);
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
 
     return meshData;
 }
@@ -166,17 +150,35 @@ void API_OpenGL::useShaderProgram(ShaderProgram *program) {
 
 unsigned int API_OpenGL::linkShaderProgram(ShaderProgram *program) {
 
+    GLint success;
+    GLchar infoLog[512];
     program->programID = glCreateProgram();
 
     for (auto shader: program->shaders) {
         if (!shader->compiled) {
             shader->compile();
+            // Check shader compilation
+            glGetShaderiv(shader->shaderID, GL_COMPILE_STATUS, &success);
+            if (!success) {
+                glGetShaderInfoLog(shader->shaderID, 512, NULL, infoLog);
+                std::cerr << "Shader compilation failed: " << infoLog << std::endl;
+                return 0;
+            }
+
         }
 
         glAttachShader(program->programID, shader->shaderID);
     }
 
     glLinkProgram(program->programID);
+
+    glGetProgramiv(program->programID, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(program->programID, 512, NULL, infoLog);
+        std::cerr << "Shader program linking failed: " << infoLog << std::endl;
+        return 0;
+    }
+
     return program->programID;
 }
 
@@ -217,94 +219,42 @@ void API_OpenGL::updateCurrentTime() {
 
 // should be able to be promoted to parent class to render triangle agnostically
 void API_OpenGL::demoTriangle(...) {
-    // Define the vertices for a triangle
-    float vertices[] = {
-            -0.5f, -0.5f, 0.0f, // Bottom-left corner
-            0.5f, -0.5f, 0.0f, // Bottom-right corner
-            0.0f,  0.5f, 0.0f  // Top center
-    };
 
-    GLuint VAO;
-    glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
+    auto lightingShader = (new ShaderProgram())
+            ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("general"))
+            ->addShader( (new Shader(VERTEX_SHADER))->loadFromSource("general"))
+            ->compileAndLink()
+            ->use();
 
-    // Create and bind a vertex buffer object (VBO)
-    GLuint VBO;
+    auto meshData = this->getSampleMeshData();
+    this->allocateMeshData(meshData);
 
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Create and compile vertex and fragment shaders
-    const char* vertexShaderSource = "#version 330 core\n"
-                                     "layout (location = 0) in vec3 aPos;\n"
-                                     "void main()\n"
-                                     "{\n"
-                                     "    gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                     "}\0";
-    GLuint vertexShader;
-    vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
-
-    // Check for shader compilation errors (you should add error checking here)
-
-    const char* fragmentShaderSource = "#version 330 core\n"
-                                       "out vec4 FragColor;\n"
-                                       "void main()\n"
-                                       "{\n"
-                                       "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                       "}\n\0";
-    GLuint fragmentShader;
-    fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-    glCompileShader(fragmentShader);
-
-    // Check for shader compilation errors (you should add error checking here)
-
-    // Create and link a shader program
-    GLuint shaderProgram;
-    shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    // Check for shader program linking errors (you should add error checking here)
-
-    // Use the shader program
-    glUseProgram(shaderProgram);
-
-    // Specify the layout of the vertex data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
 
     auto window = Window::getCurrentWindow();
 
     // Rendering loop
     while (!glfwWindowShouldClose(window)) {
-        // Clear the screen
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+
+        lightingShader->use(); // shader is good!
+
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // clear color order doesn't matter
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // Draw the triangle
-        glUseProgram(shaderProgram);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
+        glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(meshData->giro)->VAO);
+//        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // Swap buffers and poll for events
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
     // Cleanup (release resources) should be done when you're done with the OpenGL context
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-    glDeleteProgram(shaderProgram);
+//    glDeleteVertexArrays(1, &VAO);
+//    glDeleteBuffers(1, &VBO);
 
     // Terminate GLFW
     glfwTerminate();
+    exit(0);
 }
 
 // should be able to be promoted to parent class to render triangle agnostically
@@ -341,6 +291,7 @@ void API_OpenGL::demoTriangle2(...) {
         target->clearColourBuffer();
         target->renderMeshes(meshDataList);
 
+
 //        target->finalRender();
 // switch back to main buffer
 
@@ -350,16 +301,13 @@ void API_OpenGL::demoTriangle2(...) {
         checkGlErrors();
     }
 
-    //cleanup
-    {
+
         //todo add shaders to cleanup - will have to internally add something to manage the pointers
-//        glDeleteShader(vertexShader->shaderID);
-//        glDeleteShader(fragmentShader->shaderID);
-//        glDeleteProgram(lightingShade->programID);
-    }
+
 
     // Terminate GLFW
     glfwTerminate();
+    exit(0);
 }
 
 void API_OpenGL::finalRender(RenderTarget *renderTarget) {
@@ -376,7 +324,7 @@ void API_OpenGL::finalRender(RenderTarget *renderTarget) {
     glBindTexture(GL_TEXTURE_2D, renderTarget->frameBuffer->texture->textureId);
 
 
-    this->fullScreenQuad->bufferContainer->bind();
+//    this->fullScreenQuad->bufferContainer->bind();
     glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
 //    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -388,7 +336,7 @@ void API_OpenGL::renderTargetDrawMeshData(RenderTarget *renderTarget, std::vecto
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     for (auto meshData: meshDataList) {
         // bind the buffer object containing the vertices / indices etcs and then transport to gfx memory
-        meshData->bufferContainer->bind();
+//        meshData->bufferContainer->bind();
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0); // draw object
     }
 }
@@ -428,9 +376,6 @@ unsigned int API_OpenGL::getFlagCode(const char *string) {
     }
 }
 
-void API_OpenGL::applyAttribute(VertexAttribute *layout) {
-    layout->applyToBuffer->addLayout(layout);
-}
 
 unsigned int API_OpenGL::createFrameBuffer(FrameBuffer *fbo) {
     glGenFramebuffers(1, &fbo->bufferID);
@@ -469,47 +414,6 @@ void API_OpenGL::createTexture(Texture *texture) {
 
 void API_OpenGL::cleanupResources() {
 
-    // todo actually can put all the pointers into a single list - at least most of them
-
-    for (auto *containerObject: containerObjects) {
-        glDeleteBuffers(1, &containerObject->bufferID);
-        delete containerObject;
-    }
-    containerObjects.clear();
-
-    // Delete IndexBuffers
-    for (auto *indexBuffer: indexBuffers) {
-        glDeleteBuffers(1, &indexBuffer->bufferID);
-        delete indexBuffer;
-    }
-    indexBuffers.clear();
-
-    // Delete VertexBuffers
-    for (auto *vertexBuffer: vertexBuffers) {
-        glDeleteBuffers(1, &vertexBuffer->bufferID);
-        delete vertexBuffer;
-    }
-    vertexBuffers.clear();
-
-    // Delete FrameBuffers
-    for (auto *frameBuffer: frameBuffers) {
-        glDeleteFramebuffers(1, &frameBuffer->bufferID);
-        // If there's a texture attached to the framebuffer, delete it
-        if (frameBuffer->texture && frameBuffer->texture->textureId != 0) {
-            glDeleteTextures(1, &frameBuffer->texture->textureId);
-            delete frameBuffer->texture;
-        }
-        delete frameBuffer;
-    }
-    frameBuffers.clear();
-
-    // Delete GPULayouts
-    // Assuming GPULayouts do not have a direct OpenGL deletion equivalent
-    // and just need to be deleted normally.
-    for (auto *gpuLayout: gpuLayouts) {
-        delete gpuLayout;
-    }
-    gpuLayouts.clear();
 }
 
 std::string getGLErrorString(GLenum err) {

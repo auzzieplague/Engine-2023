@@ -58,12 +58,18 @@ MeshData *GraphicsBehaviour::getSampleMeshData() {
 MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
     // Vertices of a full-screen quad in NDC
     float vertices[] = {
-            // Positions
-            -1.0f,  1.0f, 0.0f, // Top-left corner
-            -1.0f, -1.0f, 0.0f, // Bottom-left corner
-            1.0f, -1.0f, 0.0f, // Bottom-right corner
-            1.0f,  1.0f, 0.0f  // Top-right corner
+            -0.5f, -0.5f, 0.0f, // Bottom-left corner
+            0.5f, -0.5f, 0.0f, // Bottom-right corner
+            0.0f,  0.5f, 0.0f  // Top center
     };
+
+//    float vertices[] = {
+//             Positions
+//            -1.0f,  1.0f, 0.0f, // Top-left corner
+//            -1.0f, -1.0f, 0.0f, // Bottom-left corner
+//            1.0f, -1.0f, 0.0f, // Bottom-right corner
+//            1.0f,  1.0f, 0.0f  // Top-right corner
+//    };
 
     // UV texture coordinates
     float uvs[] = {
@@ -86,4 +92,8 @@ MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
     meshData->setUVs(uvs, TINKER_ARRAY_SIZE(uvs));
 
     return meshData;
+}
+
+unsigned int GraphicsBehaviour::createContainerForMesh(Mesh *pMesh) {
+    return 0;
 };

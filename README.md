@@ -35,7 +35,7 @@ couple of things need building and/or including
 - cmake 3.26
 - vcpkg 
 - After failing to link from compiled source due to all kinds of errors I used vcpkg to install physx then copied the dlls, libs from debug folder
-  - pay attention to build byteSize and mechine byteSize e.g. debug/release 86/64 nit versions of libs
+  - pay attention to build dataCount and mechine dataCount e.g. debug/release 86/64 nit versions of libs
   - don't forget to include both dlls and the .lib file for dynamic libs (both are required)
   - don't forget to include dlls in the exe folder
 ---

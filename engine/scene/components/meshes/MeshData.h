@@ -1,19 +1,24 @@
 #pragma once
 
 #include <components/Component.h>
-class BufferContainer;
 
+class GraphicsInterfaceReferenceObject;
 class MeshData
     : public Component {
     friend class Mesh;
 public:
-    unsigned int m_gID = 0;
-    BufferContainer * bufferContainer;
+    GraphicsInterfaceReferenceObject * giro;
     static GraphicsAPI *m_api;
+
+    unsigned int m_gID = 0; // todo: remove - move these types of references to giro
 
     ObjectType getType() override {
         return ObjectType::OT_MeshData;
     };
+
+    // once this data has been transferred to the graphics card - should we clean it up ?
+    // depends on whether we will need to reload it again
+    // needs a flag so we can reload on demand from hdd, retain in memory or retain on gfx card.
 
     std::vector<glm::vec3> m_vertices;
     std::vector<glm::vec2> m_UVs;

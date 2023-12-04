@@ -16,6 +16,7 @@
 
 class Mesh;
 
+
 class GraphicsAPI {
     GraphicsBehaviour *api;
 public:
@@ -51,6 +52,9 @@ public:
     template<typename... Args>
     void bindIndexBuffer(Args &&... args) { this->api->bindIndexBuffer(std::forward<Args>(args)...); };
 
+    unsigned int createContainerForMesh(Mesh *mesh) {
+        return this->api->createContainerForMesh(mesh);
+    };
     unsigned int createContainerObject(BufferContainer *buffer) {
         return this->api->createContainerObject(buffer);
     };
@@ -60,10 +64,6 @@ public:
 
     template<typename... Args>
     void createFrameBuffer(Args &&... args) { this->api->createFrameBuffer(std::forward<Args>(args)...); };
-
-
-    template<typename... Args>
-    void applyAttribute(Args &&... args) {return this->api->applyAttribute(std::forward<Args>(args)...); };
 
     template<typename... Args>
     void createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };

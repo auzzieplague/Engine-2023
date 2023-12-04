@@ -29,6 +29,7 @@ public:
     void bindIndexBuffer(IndexBuffer *ib) override;
 
     unsigned int createContainerObject(BufferContainer *bo) override;
+    unsigned int createContainerForMesh(Mesh *mesh) override;
 
     void bindContainerObject(BufferContainer *bo) override;
 
@@ -43,8 +44,6 @@ public:
     unsigned int linkShaderProgram(ShaderProgram *) override;
 
     void  useShaderProgram(ShaderProgram *) override;
-
-    void applyAttribute(VertexAttribute *layout) override;
 
     void reportErrors() override;
     void finalRender(RenderTarget *renderTarget) override;

@@ -10,18 +10,18 @@ public:
 
     BufferContainer(): BaseBuffer(nullptr, 0, nullptr){}
 
-    BufferContainer *generate() override;
+    BufferContainer *generate() override; // allocates resources on GPU
 
     BufferContainer *bind() override;
 
-    BufferContainer * addLayout(VertexAttribute * attribute) {
+    BufferContainer * addAttribute(VertexAttribute * attribute) {
         attributes[attribute->index] = attribute;
         return this;
     }
 
-    BufferContainer *forMeshData(MeshData * meshData) {
+    BufferContainer *linkToMeshData(MeshData * meshData) {
         meshData->m_gID = this->bufferID; // legacy implementation
-        meshData->bufferContainer = this; // new Implementation
+//        meshData->bufferContainer = this; // new Implementation
         return this;
     };
 };

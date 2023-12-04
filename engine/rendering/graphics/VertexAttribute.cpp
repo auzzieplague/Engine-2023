@@ -6,7 +6,7 @@ GraphicsAPI *VertexAttribute::graphicsApi;
 
 VertexAttribute *VertexAttribute::applyTo(BufferContainer *buffer) {
     this->applyToBuffer = buffer;
-    graphicsApi->applyAttribute(this);
+    buffer->addAttribute(this);
     return this;
 }
 

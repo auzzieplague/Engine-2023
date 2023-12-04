@@ -5,6 +5,7 @@
 #include <GPUInfo.h>
 #include <cstdio>
 #include <components/meshes/MeshData.h>
+#include <components/meshes/Mesh.h>
 
 class VertexBuffer;
 class IndexBuffer;
@@ -51,11 +52,11 @@ public:
     virtual unsigned int createIndexBuffer(IndexBuffer *ib) {return 0;};
     virtual unsigned int createContainerObject(BufferContainer *bo) {return 0;}; // VAO in opengl
     virtual unsigned int createFrameBuffer(FrameBuffer *fbo) {return 0;};
+    virtual unsigned int createContainerForMesh(Mesh *pMesh);
 
     virtual void compileShader(Shader *shader) {};
     virtual unsigned int linkShaderProgram(ShaderProgram *) {return 0;};
     virtual void useShaderProgram(ShaderProgram *) {};
-    virtual void applyAttribute(VertexAttribute *layout){};
 
     // Framebuffer and Render Target Management
     virtual void createTexture(Texture *texture) {};
@@ -107,4 +108,6 @@ public:
     };
 
     MeshData *getFullScreenQuadMeshData();
+
+
 };
