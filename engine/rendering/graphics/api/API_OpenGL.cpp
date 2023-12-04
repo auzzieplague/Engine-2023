@@ -43,8 +43,8 @@ bool API_OpenGL::initialise(...) {
     if (this->initialised) {
         return true;
     }
-//    this->fullScreenQuad = this->getFullScreenQuadMeshData();
-//    this->allocateMeshData(fullScreenQuad);
+    this->fullScreenQuad = this->getFullScreenQuadMeshData();
+    this->allocateMeshData(fullScreenQuad);
     this->initialised = true;
     return true;
 }
@@ -76,9 +76,20 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
     glGenBuffers(1, &vbo); // Generate a new VBO
     glBindBuffer(GL_ARRAY_BUFFER, vbo); // Bind the VBOS
 
+    // positions
     auto size = meshData->m_vertices.size() * sizeof(meshData->m_vertices[0]); // itemcount x 3 for vector x sizeof (float) for total bytes
     glBufferData(GL_ARRAY_BUFFER, size, meshData->m_vertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+    // uvs
+    if (meshData->m_UVs.size()>0){
+        unsigned int vbo2;
+        glGenBuffers(1, &vbo2); // Generate a new VBO
+        glBindBuffer(GL_ARRAY_BUFFER, vbo2); // Bind the VBOS
+        auto sizeUV = meshData->m_UVs.size() * sizeof(meshData->m_UVs[0]); // itemcount x 2 for vector x sizeof (float) for total bytes
+        glBufferData(GL_ARRAY_BUFFER, sizeUV, meshData->m_UVs.data(), GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    }
 
     // if we have an indices generate an index buffer - set the flags accordingly
     unsigned int ebo;
@@ -90,7 +101,10 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
 
     //todo set flags based on presence of items, then we can use the bitmask to select the correct shader (or subroutines)
 
-    glEnableVertexAttribArray(0);
+    // Enable vertex attribute arrays
+    glEnableVertexAttribArray(0); // position
+    glEnableVertexAttribArray(1); // UVs
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
@@ -226,24 +240,48 @@ void API_OpenGL::demoTriangle(...) {
             ->compileAndLink()
             ->use();
 
+    this->quadShader = (new ShaderProgram())
+            ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("quad"))
+            ->addShader( (new Shader(VERTEX_SHADER))->loadFromSource("quad"))
+            ->compileAndLink()
+            ->use();
+
     auto meshData = this->getSampleMeshData();
     this->allocateMeshData(meshData);
 
-
     auto window = Window::getCurrentWindow();
+
+    auto target = new RenderTarget(800, 800);
+    target->setClearColour({0, 0, 0, 0});
+
 
     // Rendering loop
     while (!glfwWindowShouldClose(window)) {
 
-        lightingShader->use(); // shader is good!
-
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // clear color order doesn't matter
+//        lightingShader->use(); // shader is good!
+        quadShader->use(); ///testing - output full screen quad using demo quad with uvs
+        // before
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // clear colour order doesn't matter
         glClear(GL_COLOR_BUFFER_BIT);
+        //target->clear();
 
-        glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(meshData->giro)->VAO);
+//        target->renderMeshData(meshData);
+//        glBindFramebuffer(GL_FRAMEBUFFER,target->frameBuffer->bufferID); // bind target
+
+        glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(this->fullScreenQuad->giro)->VAO); // todo remove quad data
+//        glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(meshData->giro)->VAO);
 //        glDrawArrays(GL_TRIANGLES, 0, 6);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        // Swap buffers and poll for events
+
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, target->frameBuffer->texture->textureId);
+        //todo render target to screen
+
+        // switching back to main screen
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
