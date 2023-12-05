@@ -66,10 +66,10 @@ MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
 
 //             Positions
     float vertices[] = {
-            -0.5f,  0.5f, 0.0f, // Top-left corner
-            -0.5f, -0.5f, 0.0f, // Bottom-left corner
-            0.5f, -0.5f, 0.0f, // Bottom-right corner
-            0.5f,  0.5f, 0.0f  // Top-right corner
+            -1.0f,  1.0f, 0.0f, // Top-left corner
+            -1.0f, -1.0f, 0.0f, // Bottom-left corner
+            1.0f, -1.0f, 0.0f, // Bottom-right corner
+            1.0f,  1.0f, 0.0f  // Top-right corner
     };
 
     // UV texture coordinates

@@ -15,8 +15,11 @@ public:
 
     void queryCapabilities(...) override;
 
+
     void demoTriangle(...) override;
     void demoTriangle2(...);
+
+    void resizeViewport(int width, int height, ...) override;
 
     unsigned int getFlagCode(const char *string) override;
 
@@ -56,5 +59,7 @@ public:
 
 
     void updateCurrentTime();
+
+    void resetFrameBuffer(FrameBuffer *fbo, int width, int height) override;
 };
 

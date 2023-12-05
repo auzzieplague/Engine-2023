@@ -33,7 +33,7 @@ public:
 
     static void setGraphicsAPI(GraphicsAPI *api);
 
-    RenderTarget(int height, int width);
+    RenderTarget(int width,int height);
 
     RenderTarget *setClearColour(const glm::vec4 &clearColour);
 
@@ -49,6 +49,8 @@ public:
     RenderTarget *renderMeshes(std::vector<MeshData *>, bool doBind = false);
 
     RenderTarget *finalRender();
+
+    RenderTarget *resetFrameBuffer(int width, int height);
 
 
 };

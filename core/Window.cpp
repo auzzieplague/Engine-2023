@@ -53,7 +53,7 @@ void Window::framebufferSizeCallback(GLFWwindow *window, int width, int height) 
     }
 
     // update API stuff e.g. glViewPort
-    m_api->resizeViewport(window, width, height);
+    m_api->resizeViewport(width, height, window);
 }
 
 Window::Window(GraphicsAPI *graphicsAPI, uint32_t width, uint32_t height, const std::string &title) {

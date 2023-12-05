@@ -25,7 +25,7 @@ RenderTarget *RenderTarget::initialise() {
     return this;
 }
 
-RenderTarget::RenderTarget( int height,  int width) : height(height), width(width) {
+RenderTarget::RenderTarget( int width,  int height) : height(height), width(width) {
     this->initialise();
 }
 
@@ -60,5 +60,10 @@ RenderTarget *RenderTarget::renderMeshes(std::vector<MeshData *> meshData, bool 
         this->bind();
     }
     RenderTarget::graphicsApi->renderTargetDrawMeshData(this, std::move(meshData));
+    return this;
+}
+
+RenderTarget *RenderTarget::resetFrameBuffer(int width, int height) {
+    RenderTarget::graphicsApi->resetFrameBuffer(this->frameBuffer, width, height);
     return this;
 }

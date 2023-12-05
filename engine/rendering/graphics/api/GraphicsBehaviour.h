@@ -19,6 +19,7 @@ protected:
     GPUInfo *gpuInfo{};
     MeshData *fullScreenQuad;
     ShaderProgram *quadShader;
+    RenderTarget * mainRenderTarget;
     int currentTime=1;
 public:
 
@@ -31,7 +32,12 @@ public:
 
     // Initialization
     bool initialised = false;
-    virtual bool initialise(...) { return false; };
+
+    virtual bool initialise(...) {
+        // todo create method at this level to setup default render target, quad and shader
+        mainRenderTarget = new RenderTarget(1, 1);
+        return false;
+    };
     virtual void queryCapabilities(...) {  };
     virtual void displayCapabilities(...);
 
@@ -52,6 +58,7 @@ public:
     virtual unsigned int createIndexBuffer(IndexBuffer *ib) {return 0;};
     virtual unsigned int createContainerObject(BufferContainer *bo) {return 0;}; // VAO in opengl
     virtual unsigned int createFrameBuffer(FrameBuffer *fbo) {return 0;};
+    virtual void resetFrameBuffer(FrameBuffer * buffer, int width, int height) {}
     virtual unsigned int createContainerForMesh(Mesh *pMesh);
 
     virtual void compileShader(Shader *shader) {};
@@ -83,7 +90,7 @@ public:
     // Viewport and Projection
     virtual void setViewport(...) {};
     virtual void setProjectionMatrix(...) {};
-    virtual void resizeViewport(...) {};
+    virtual void resizeViewport(int width, int height, ...) {};
 
     // Shader Management
     virtual void compileShader(...) {};

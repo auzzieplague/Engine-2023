@@ -45,6 +45,20 @@ bool API_OpenGL::initialise(...) {
     }
     this->fullScreenQuad = this->getFullScreenQuadMeshData();
     this->allocateMeshData(fullScreenQuad);
+
+    /// set initial size to current window size
+    auto window = Window::getCurrentWindow();
+    int width, height;
+    glfwGetWindowSize(window, &width, &height);
+
+    mainRenderTarget = new RenderTarget(width, height);
+
+    this->quadShader = (new ShaderProgram())
+            ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("quad"))
+            ->addShader((new Shader(VERTEX_SHADER))->loadFromSource("quad"))
+            ->compileAndLink()
+            ->use();
+
     this->initialised = true;
     return true;
 }
@@ -77,9 +91,10 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
     glBindBuffer(GL_ARRAY_BUFFER, vbo); // Bind the VBOS
 
     // positions
-    auto size = meshData->m_vertices.size() * sizeof(meshData->m_vertices[0]); // itemcount x 3 for vector x sizeof (float) for total bytes
+    auto size = meshData->m_vertices.size() *
+                sizeof(meshData->m_vertices[0]); // itemcount x 3 for vector x sizeof (float) for total bytes
     glBufferData(GL_ARRAY_BUFFER, size, meshData->m_vertices.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *) 0);
 
     // uvs
     if (meshData->m_UVs.size() > 0) {
@@ -94,7 +109,7 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
 
     // if we have an indices generate an index buffer - set the flags accordingly
     unsigned int ebo;
-    glGenBuffers(1,&ebo);
+    glGenBuffers(1, &ebo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     size = meshData->m_indices.size() * sizeof(meshData->m_indices[0]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, meshData->m_indices.data(), GL_STATIC_DRAW);
@@ -113,7 +128,7 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
 }
 
 unsigned int API_OpenGL::createVertexBuffer(VertexBuffer *vb) {
-return 0;
+    return 0;
 }
 
 void API_OpenGL::bindVertexBuffer(VertexBuffer *vb) {
@@ -135,7 +150,6 @@ void API_OpenGL::bindIndexBuffer(IndexBuffer *ib) {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->bufferID);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->byteCount, ib->data, ib->usage);
 }
-
 
 
 void API_OpenGL::bindContainerObject(BufferContainer *bo) {
@@ -212,20 +226,36 @@ void API_OpenGL::updateCurrentTime() {
 
 }
 
- void checkGlErrors() {
+void checkGlErrors() {
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
         std::string error;
 
         switch (err) {
-            case GL_INVALID_ENUM:                  error = "INVALID_ENUM"; break;
-            case GL_INVALID_VALUE:                 error = "INVALID_VALUE"; break;
-            case GL_INVALID_OPERATION:             error = "INVALID_OPERATION"; break;
-            case GL_STACK_OVERFLOW:                error = "STACK_OVERFLOW"; break;
-            case GL_STACK_UNDERFLOW:               error = "STACK_UNDERFLOW"; break;
-            case GL_OUT_OF_MEMORY:                 error = "OUT_OF_MEMORY"; break;
-            case GL_INVALID_FRAMEBUFFER_OPERATION: error = "INVALID_FRAMEBUFFER_OPERATION"; break;
-            default:                               error = "UNKNOWN_ERROR"; break;
+            case GL_INVALID_ENUM:
+                error = "INVALID_ENUM";
+                break;
+            case GL_INVALID_VALUE:
+                error = "INVALID_VALUE";
+                break;
+            case GL_INVALID_OPERATION:
+                error = "INVALID_OPERATION";
+                break;
+            case GL_STACK_OVERFLOW:
+                error = "STACK_OVERFLOW";
+                break;
+            case GL_STACK_UNDERFLOW:
+                error = "STACK_UNDERFLOW";
+                break;
+            case GL_OUT_OF_MEMORY:
+                error = "OUT_OF_MEMORY";
+                break;
+            case GL_INVALID_FRAMEBUFFER_OPERATION:
+                error = "INVALID_FRAMEBUFFER_OPERATION";
+                break;
+            default:
+                error = "UNKNOWN_ERROR";
+                break;
         }
 
         std::cerr << "GL_" << error << std::endl;
@@ -237,13 +267,7 @@ void API_OpenGL::demoTriangle(...) {
 
     auto lightingShader = (new ShaderProgram())
             ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("general"))
-            ->addShader( (new Shader(VERTEX_SHADER))->loadFromSource("general"))
-            ->compileAndLink()
-            ->use();
-
-    this->quadShader = (new ShaderProgram())
-            ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("quad"))
-            ->addShader( (new Shader(VERTEX_SHADER))->loadFromSource("quad"))
+            ->addShader((new Shader(VERTEX_SHADER))->loadFromSource("general"))
             ->compileAndLink()
             ->use();
 
@@ -253,8 +277,9 @@ void API_OpenGL::demoTriangle(...) {
     auto window = Window::getCurrentWindow();
     int width, height;
     glfwGetWindowSize(window, &width, &height);
-    auto target = new RenderTarget(512, 512);
-    target->setClearColour({0, 0, 0, 0});
+
+//    auto target = new RenderTarget(512, 512);
+//    target->setClearColour({0, 0, 0, 0});
 
 
     // Rendering loop
@@ -265,7 +290,7 @@ void API_OpenGL::demoTriangle(...) {
         glClear(GL_COLOR_BUFFER_BIT);
         //target->clear();
 
-        glBindFramebuffer(GL_FRAMEBUFFER,target->frameBuffer->bufferID); // bind target
+        glBindFramebuffer(GL_FRAMEBUFFER, mainRenderTarget->frameBuffer->bufferID); // bind target
         glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(meshData->giro)->VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glUseProgram(0);
@@ -277,11 +302,12 @@ void API_OpenGL::demoTriangle(...) {
 //        glClear(GL_COLOR_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, target->frameBuffer->texture->textureId);
+        glBindTexture(GL_TEXTURE_2D, mainRenderTarget->frameBuffer->texture->textureId);
         glUniform1i(glGetUniformLocation(quadShader->programID, "screenTexture"), 0);
 
 
-        glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(this->fullScreenQuad->giro)->VAO); // todo remove quad data
+        glBindVertexArray(
+                dynamic_cast<OpenGLReferenceObject *>(this->fullScreenQuad->giro)->VAO); // todo remove quad data
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
@@ -301,7 +327,7 @@ void API_OpenGL::demoTriangle(...) {
 void API_OpenGL::demoTriangle2(...) {
     auto lightingShader = (new ShaderProgram())
             ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("general"))
-            ->addShader( (new Shader(VERTEX_SHADER))->loadFromSource("general"))
+            ->addShader((new Shader(VERTEX_SHADER))->loadFromSource("general"))
             ->compileAndLink()
             ->use();
 
@@ -342,7 +368,7 @@ void API_OpenGL::demoTriangle2(...) {
     }
 
 
-        //todo add shaders to cleanup - will have to internally add something to manage the pointers
+    //todo add shaders to cleanup - will have to internally add something to manage the pointers
 
 
     // Terminate GLFW
@@ -353,8 +379,10 @@ void API_OpenGL::demoTriangle2(...) {
 void API_OpenGL::finalRender(RenderTarget *renderTarget) {
     quadShader->use(); // switch to quad shader
     // Retrieve the location of the uniform variables
-    glUniform1i(glGetUniformLocation(quadShader->programID, "screenTexture"), 0); // Set screenTexture uniform to texture unit 0
-    glUniform3f(glGetUniformLocation(quadShader->programID, "colour"), 1,1,0); // Set screenTexture uniform to texture unit 0
+    glUniform1i(glGetUniformLocation(quadShader->programID, "screenTexture"),
+                0); // Set screenTexture uniform to texture unit 0
+    glUniform3f(glGetUniformLocation(quadShader->programID, "colour"), 1, 1,
+                0); // Set screenTexture uniform to texture unit 0
 
     // switch back to main buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -416,6 +444,14 @@ unsigned int API_OpenGL::getFlagCode(const char *string) {
     }
 }
 
+void API_OpenGL::resetFrameBuffer(FrameBuffer *fbo, int width, int height) {
+    // Delete existing texture and framebuffer
+    glDeleteTextures(1, &fbo->texture->textureId); // need to get framebuffer
+    glDeleteFramebuffers(1, &fbo->bufferID);
+    fbo->width = width;
+    fbo->height = height;
+    createFrameBuffer(fbo);
+}
 
 unsigned int API_OpenGL::createFrameBuffer(FrameBuffer *fbo) {
     glGenFramebuffers(1, &fbo->bufferID);
@@ -458,15 +494,24 @@ void API_OpenGL::cleanupResources() {
 
 std::string getGLErrorString(GLenum err) {
     switch (err) {
-        case GL_NO_ERROR: return "No error";
-        case GL_INVALID_ENUM: return "Invalid enum";
-        case GL_INVALID_VALUE: return "Invalid value";
-        case GL_INVALID_OPERATION: return "Invalid operation";
-        case GL_STACK_OVERFLOW: return "Stack overflow";
-        case GL_STACK_UNDERFLOW: return "Stack underflow";
-        case GL_OUT_OF_MEMORY: return "Out of memory";
-        case GL_INVALID_FRAMEBUFFER_OPERATION: return "Invalid framebuffer operation";
-        default: return "Unknown error";
+        case GL_NO_ERROR:
+            return "No error";
+        case GL_INVALID_ENUM:
+            return "Invalid enum";
+        case GL_INVALID_VALUE:
+            return "Invalid value";
+        case GL_INVALID_OPERATION:
+            return "Invalid operation";
+        case GL_STACK_OVERFLOW:
+            return "Stack overflow";
+        case GL_STACK_UNDERFLOW:
+            return "Stack underflow";
+        case GL_OUT_OF_MEMORY:
+            return "Out of memory";
+        case GL_INVALID_FRAMEBUFFER_OPERATION:
+            return "Invalid framebuffer operation";
+        default:
+            return "Unknown error";
     }
 }
 
@@ -479,6 +524,28 @@ void API_OpenGL::reportErrors() {
         errString = getGLErrorString(errCode);
         std::cerr << "OpenGL Error: " << errString << " (0x" << std::hex << errCode << ")" << std::endl;
     }
+}
+
+void API_OpenGL::resizeViewport(int width, int height, ...) {
+    va_list args;
+    va_start(args, height);
+    GLFWwindow* window = va_arg(args,GLFWwindow *);
+    va_end(args);
+
+
+    glViewport(0, 0, width, height);
+
+    // resize framebuffer
+
+    mainRenderTarget->resetFrameBuffer(width,height);
+    // todo make a resetFrameBufferMethod on renderTarget
+    // Delete existing texture and framebuffer
+//    glDeleteTextures(1, &mainRenderTarget->frameBuffer->texture->textureId); // need to get framebuffer
+//    glDeleteFramebuffers(1, &mainRenderTarget->frameBuffer->bufferID);
+//    mainRenderTarget->frameBuffer->width = width;
+//    mainRenderTarget->frameBuffer->height = height;
+//    createFrameBuffer(mainRenderTarget->frameBuffer);
+
 }
 
 

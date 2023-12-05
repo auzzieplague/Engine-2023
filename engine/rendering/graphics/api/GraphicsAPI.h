@@ -20,6 +20,7 @@ class Mesh;
 class GraphicsAPI {
     GraphicsBehaviour *api;
 public:
+
     explicit GraphicsAPI(GraphicsBehaviour *api){
         this->api = api;
 //        this->queryCapabilities();
@@ -65,6 +66,8 @@ public:
     template<typename... Args>
     void createFrameBuffer(Args &&... args) { this->api->createFrameBuffer(std::forward<Args>(args)...); };
 
+    void resetFrameBuffer(FrameBuffer * buffer, int width, int height) { return this->api->resetFrameBuffer(buffer, width, height);}
+
     template<typename... Args>
     void createTexture(Args &&... args) {return this->api->createTexture(std::forward<Args>(args)...); };
 
@@ -109,7 +112,7 @@ public:
     void setProjectionMatrix(Args &&... args) { this->api->setProjectionMatrix(std::forward<Args>(args)...); };
 
     template<typename... Args>
-    void resizeViewport(Args &&... args) { this->api->resizeViewport(std::forward<Args>(args)...); };
+    void resizeViewport(int width,int height,Args &&... args) { this->api->resizeViewport(width,height,std::forward<Args>(args)...); };
 
     // Shader Management
     template<typename... Args>
@@ -139,6 +142,8 @@ public:
     unsigned int getFlag(const char *string) {
         return string ? this->api->getFlagCode(string) : 0;
     }
+
+
 };
 
 
