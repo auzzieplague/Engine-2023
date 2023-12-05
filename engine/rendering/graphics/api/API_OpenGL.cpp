@@ -1,10 +1,8 @@
 #include <glad/glad.h>
 #include "API_OpenGL.h"
 #include <Window.h>
-#include <graphics/VertexAttribute.h>
 #include <chrono>
 #include "graphics/buffers/FrameBuffer.h"
-#include "graphics/buffers/BufferContainer.h"
 #include "OpenGLReferenceObject.h"
 
 
@@ -62,21 +60,6 @@ bool API_OpenGL::initialise(...) {
 }
 
 
-unsigned int API_OpenGL::createContainerForMesh(Mesh *mesh) {
-//    auto bo = mesh->
-//    glGenVertexArrays(1, &bo->bufferID); // Generate the Vertex Array Object
-//    glBindVertexArray(bo->bufferID); // Bind the VAO
-
-    return GraphicsBehaviour::createContainerForMesh(mesh);
-}
-
-
-unsigned int API_OpenGL::createContainerObject(BufferContainer *bo) {
-
-    return bo->bufferID; // Return the ID of the created VAO
-}
-
-
 MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
     auto giro = new OpenGLReferenceObject();
 
@@ -123,10 +106,6 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
     glBindVertexArray(0);
 
     return meshData;
-}
-
-void API_OpenGL::bindContainerObject(BufferContainer *bo) {
-    glBindVertexArray(bo->bufferID);
 }
 
 void API_OpenGL::compileShader(Shader *shader) {
@@ -296,58 +275,6 @@ void API_OpenGL::demoTriangle(...) {
     exit(0);
 }
 
-// should be able to be promoted to parent class to render triangle agnostically
-void API_OpenGL::demoTriangle2(...) {
-    auto lightingShader = (new ShaderProgram())
-            ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("general"))
-            ->addShader((new Shader(VERTEX_SHADER))->loadFromSource("general"))
-            ->compileAndLink()
-            ->use();
-
-//    this->quadShader = (new ShaderProgram())
-//            ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("quad"))
-//            ->addShader( (new Shader(VERTEX_SHADER))->loadFromSource("quad"))
-//            ->compileAndLink()
-//            ->use();
-
-    auto target = (new RenderTarget(800, 800))->setClearColour({0, 0, 0, 0});
-    auto window = Window::getCurrentWindow();
-
-    // todo create an allocateMeshData function that does this and returns the setup mesh
-    auto meshData = this->getSampleMeshData();
-
-    this->allocateMeshData(meshData);
-    std::vector<MeshData *> meshDataList;
-
-
-    meshDataList.push_back(meshData);
-
-    // Rendering things to current target
-    while (!glfwWindowShouldClose(window)) {
-
-        lightingShader->use();
-//        target->bind(); // bind and use frame buffer 1 - should be rendering to texture
-        target->clearColourBuffer();
-        target->renderMeshes(meshDataList);
-
-
-//        target->finalRender();
-// switch back to main buffer
-
-        // render quad to screen, draw current render target texture on quad
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-        checkGlErrors();
-    }
-
-
-    //todo add shaders to cleanup - will have to internally add something to manage the pointers
-
-
-    // Terminate GLFW
-    glfwTerminate();
-    exit(0);
-}
 
 void API_OpenGL::finalRender(RenderTarget *renderTarget) {
     quadShader->use(); // switch to quad shader

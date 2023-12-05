@@ -23,12 +23,6 @@ public:
 
     unsigned int getFlagCode(const char *string) override;
 
-
-    unsigned int createContainerObject(BufferContainer *bo) override;
-    unsigned int createContainerForMesh(Mesh *mesh) override;
-
-    void bindContainerObject(BufferContainer *bo) override;
-
     MeshData * allocateMeshData(MeshData *) override;
 
     unsigned int createFrameBuffer(FrameBuffer *fbo) override;

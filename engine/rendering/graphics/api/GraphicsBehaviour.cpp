@@ -2,7 +2,6 @@
 #include "GraphicsBehaviour.h"
 #include <string>
 #include <iostream>
-#include "graphics/buffers/BufferContainer.h"
 
 
 void GraphicsBehaviour::displayCapabilities(...) {
@@ -95,6 +94,3 @@ MeshData *GraphicsBehaviour::getFullScreenQuadMeshData() {
     return meshData;
 }
 
-unsigned int GraphicsBehaviour::createContainerForMesh(Mesh *pMesh) {
-    return 0;
-};

@@ -4,8 +4,6 @@
 #include "Layer.h"
 #include "graphics/GraphicsFlag.h"
 #include "graphics/buffers/FrameBuffer.h"
-#include "graphics/buffers/BufferContainer.h"
-#include "graphics/VertexAttribute.h"
 #include "graphics/RenderTarget.h"
 class GraphicsLayer : public Layer {
 

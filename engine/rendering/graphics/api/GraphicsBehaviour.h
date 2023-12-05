@@ -9,7 +9,6 @@
 
 class FrameBuffer;
 class BufferContainer;
-class VertexAttribute;
 
 class GraphicsBehaviour {
 
@@ -24,7 +23,6 @@ public:
     // buffer reference pool for cleanup
     std::vector<BufferContainer *> containerObjects;
     std::vector<FrameBuffer *> frameBuffers;
-    std::vector<VertexAttribute *> gpuLayouts;
 
     // Initialization
     bool initialised = false;
@@ -50,10 +48,8 @@ public:
      */
 
     // Resource Management
-    virtual unsigned int createContainerObject(BufferContainer *bo) {return 0;}; // VAO in opengl
     virtual unsigned int createFrameBuffer(FrameBuffer *fbo) {return 0;};
     virtual void resetFrameBuffer(FrameBuffer * buffer, int width, int height) {}
-    virtual unsigned int createContainerForMesh(Mesh *pMesh);
 
     virtual void compileShader(Shader *shader) {};
     virtual unsigned int linkShaderProgram(ShaderProgram *) {return 0;};
@@ -64,7 +60,6 @@ public:
     virtual void bindTexture(Texture * texture) {};
     virtual void setRenderTarget(RenderTarget * renderTarget) {};
 
-
     virtual void reportErrors(){};
     virtual void finalRender(RenderTarget *renderTarget){};
     virtual void renderTargetBind(RenderTarget *renderTarget){};
@@ -73,8 +68,6 @@ public:
     virtual void renderTargetClearColourBuffer(RenderTarget *renderTarget){};
     virtual  MeshData * allocateMeshData(MeshData *){return nullptr;};
     // Rendering
-    virtual void bindContainerObject(BufferContainer *bo) {}; // VAO in opengl
-
     virtual void drawIndexed(...) {};
     virtual void setUniforms(...) {};
 

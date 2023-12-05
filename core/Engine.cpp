@@ -136,8 +136,6 @@ void Engine::setGraphicsApi(GraphicsBehaviour *behaviour) {
     // let any graphics objects that contain their own setup methods know which API to call.
     Material::setGraphicsAPI(api);
     FrameBuffer::setGraphicsAPI(api);
-    BufferContainer::setGraphicsAPI(api);
-    VertexAttribute::setGraphicsAPI(api);
     Texture::setGraphicsAPI(api);
     ShaderProgram::setGraphicsAPI(api);
     Shader::setGraphicsAPI(api);

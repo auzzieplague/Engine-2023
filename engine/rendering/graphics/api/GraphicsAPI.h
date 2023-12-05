@@ -42,16 +42,6 @@ public:
 
     // Resource Management
 
-    unsigned int createContainerForMesh(Mesh *mesh) {
-        return this->api->createContainerForMesh(mesh);
-    };
-    unsigned int createContainerObject(BufferContainer *buffer) {
-        return this->api->createContainerObject(buffer);
-    };
-
-    template<typename... Args>
-    void bindContainerObject(Args &&... args) { this->api->bindContainerObject(std::forward<Args>(args)...); };
-
     template<typename... Args>
     void createFrameBuffer(Args &&... args) { this->api->createFrameBuffer(std::forward<Args>(args)...); };
 
