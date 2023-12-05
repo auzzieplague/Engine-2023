@@ -37,10 +37,10 @@ unsigned int GraphicsBehaviour::getFlagCode(const char *string) {
 MeshData *GraphicsBehaviour::getSampleMeshData() {
 
     float vertices[] = {
-            -1.0f, -1.0f, 0.0f, // Bottom-left corner
-            1.0f, -1.0f, 0.0f, // Bottom-right corner
-            1.0f, 1.0f, 0.0f, // Top-right corner
-            -1.0f, 1.0f, 0.0f  // Top-left corner
+            -0.5f, -0.5f, 0.0f, // Bottom-left corner
+            0.5f, -0.5f, 0.0f, // Bottom-right corner
+            0.5f, 0.5f, 0.0f, // Top-right corner
+            -0.5f, 0.5f, 0.0f  // Top-left corner
     };
 
 //    float vertices[] = {

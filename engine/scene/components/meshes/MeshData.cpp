@@ -7,8 +7,6 @@
 #include <unordered_map>
 #include <algorithm>
 #include <graphics/buffers/BufferContainer.h>
-#include <graphics/buffers/VertexBuffer.h>
-#include <graphics/buffers/IndexBuffer.h>
 
 
 GraphicsAPI *MeshData::m_api;

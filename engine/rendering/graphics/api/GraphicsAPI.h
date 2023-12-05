@@ -41,17 +41,6 @@ public:
 
 
     // Resource Management
-    template<typename... Args>
-    unsigned int createVertexBuffer(Args &&... args) {return this->api->createVertexBuffer(std::forward<Args>(args)...); };
-
-    template<typename... Args>
-    void bindVertexBuffer(Args &&... args) { this->api->bindVertexBuffer(std::forward<Args>(args)...); };
-
-    template<typename... Args>
-    unsigned int createIndexBuffer(Args &&... args) {return this->api->createIndexBuffer(std::forward<Args>(args)...); };
-
-    template<typename... Args>
-    void bindIndexBuffer(Args &&... args) { this->api->bindIndexBuffer(std::forward<Args>(args)...); };
 
     unsigned int createContainerForMesh(Mesh *mesh) {
         return this->api->createContainerForMesh(mesh);

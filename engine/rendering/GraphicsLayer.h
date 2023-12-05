@@ -3,8 +3,6 @@
 #include "../../core/Window.h"
 #include "Layer.h"
 #include "graphics/GraphicsFlag.h"
-#include "graphics/buffers/VertexBuffer.h"
-#include "graphics/buffers/IndexBuffer.h"
 #include "graphics/buffers/FrameBuffer.h"
 #include "graphics/buffers/BufferContainer.h"
 #include "graphics/VertexAttribute.h"

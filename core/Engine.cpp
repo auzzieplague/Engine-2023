@@ -1,6 +1,5 @@
 
 #include "Engine.h"
-//#include "graphics/buffers/VertexBuffer.h"
 
 Engine *Engine::instance;
 
@@ -136,8 +135,6 @@ void Engine::setGraphicsApi(GraphicsBehaviour *behaviour) {
 
     // let any graphics objects that contain their own setup methods know which API to call.
     Material::setGraphicsAPI(api);
-    VertexBuffer::setGraphicsAPI(api);
-    IndexBuffer::setGraphicsAPI(api);
     FrameBuffer::setGraphicsAPI(api);
     BufferContainer::setGraphicsAPI(api);
     VertexAttribute::setGraphicsAPI(api);

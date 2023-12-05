@@ -7,8 +7,6 @@
 #include <components/meshes/MeshData.h>
 #include <components/meshes/Mesh.h>
 
-class VertexBuffer;
-class IndexBuffer;
 class FrameBuffer;
 class BufferContainer;
 class VertexAttribute;
@@ -25,8 +23,6 @@ public:
 
     // buffer reference pool for cleanup
     std::vector<BufferContainer *> containerObjects;
-    std::vector<IndexBuffer *> indexBuffers;
-    std::vector<VertexBuffer *> vertexBuffers;
     std::vector<FrameBuffer *> frameBuffers;
     std::vector<VertexAttribute *> gpuLayouts;
 
@@ -54,8 +50,6 @@ public:
      */
 
     // Resource Management
-    virtual unsigned int createVertexBuffer(VertexBuffer* vb) {return 0;};
-    virtual unsigned int createIndexBuffer(IndexBuffer *ib) {return 0;};
     virtual unsigned int createContainerObject(BufferContainer *bo) {return 0;}; // VAO in opengl
     virtual unsigned int createFrameBuffer(FrameBuffer *fbo) {return 0;};
     virtual void resetFrameBuffer(FrameBuffer * buffer, int width, int height) {}
@@ -79,8 +73,6 @@ public:
     virtual void renderTargetClearColourBuffer(RenderTarget *renderTarget){};
     virtual  MeshData * allocateMeshData(MeshData *){return nullptr;};
     // Rendering
-    virtual void bindVertexBuffer(VertexBuffer* vb) {};
-    virtual void bindIndexBuffer(IndexBuffer* ib) {};
     virtual void bindContainerObject(BufferContainer *bo) {}; // VAO in opengl
 
     virtual void drawIndexed(...) {};

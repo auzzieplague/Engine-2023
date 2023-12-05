@@ -3,8 +3,6 @@
 #include <Window.h>
 #include <graphics/VertexAttribute.h>
 #include <chrono>
-#include "graphics/buffers/VertexBuffer.h"
-#include "graphics/buffers/IndexBuffer.h"
 #include "graphics/buffers/FrameBuffer.h"
 #include "graphics/buffers/BufferContainer.h"
 #include "OpenGLReferenceObject.h"
@@ -126,31 +124,6 @@ MeshData *API_OpenGL::allocateMeshData(MeshData *meshData) {
 
     return meshData;
 }
-
-unsigned int API_OpenGL::createVertexBuffer(VertexBuffer *vb) {
-    return 0;
-}
-
-void API_OpenGL::bindVertexBuffer(VertexBuffer *vb) {
-    glBindBuffer(GL_ARRAY_BUFFER, vb->bufferID);
-    glBufferData(GL_ARRAY_BUFFER, vb->byteCount, vb->data, vb->usage);
-}
-
-
-unsigned int API_OpenGL::createIndexBuffer(IndexBuffer *ib) {
-    glGenBuffers(1, &ib->bufferID); // Generate the OpenGL buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->bufferID); // Bind the buffer to the GL_ELEMENT_ARRAY_BUFFER target
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->byteCount, ib->data, ib->usage); // Upload the data to the buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); // Unbind the buffer
-
-    return ib->bufferID; // Return the ID of the created buffer
-}
-
-void API_OpenGL::bindIndexBuffer(IndexBuffer *ib) {
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib->bufferID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, ib->byteCount, ib->data, ib->usage);
-}
-
 
 void API_OpenGL::bindContainerObject(BufferContainer *bo) {
     glBindVertexArray(bo->bufferID);
@@ -292,7 +265,7 @@ void API_OpenGL::demoTriangle(...) {
 
         glBindFramebuffer(GL_FRAMEBUFFER, mainRenderTarget->frameBuffer->bufferID); // bind target
         glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(meshData->giro)->VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         glUseProgram(0);
 
 
