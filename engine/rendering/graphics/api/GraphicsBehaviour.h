@@ -37,6 +37,7 @@ public:
     virtual void resetFrameBuffer(FrameBuffer * buffer, int width, int height) {}
     virtual void setRenderTarget(RenderTarget * renderTarget) {this->currentRenderTarget = renderTarget;};
     virtual void renderTargetBind(RenderTarget *renderTarget){};
+    virtual void resizeViewport(int width, int height, ...) {};
 
     virtual void createTexture(Texture *texture) {};
     virtual void bindTexture(Texture * texture) {};
@@ -45,30 +46,19 @@ public:
     virtual MeshData* getSampleMeshData();
     MeshData *getFullScreenQuadMeshData();
 
+    virtual void demoTriangle() {};
+
     virtual void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData){};
     virtual void renderTargetClearDepthBuffer(RenderTarget *renderTarget){};
     virtual void renderTargetClearColourBuffer(RenderTarget *renderTarget){};
 
-    virtual void resizeViewport(int width, int height, ...) {};
     virtual void setProjectionMatrix(...) {};
-
-    // Cleanup and Shutdown
-    virtual void shutdown(...) {};
-    virtual void demoTriangle() {};
 
     virtual void reportErrors(){};
 
-
+    // can't call virtual functions from constructor so cleanup is just a level of abstraction
+    ~GraphicsBehaviour() { this->cleanup();}
+    void cleanup(){this->cleanupResources();};
     virtual void cleanupResources(){};
-
-    ~GraphicsBehaviour() {
-        this->cleanup();
-    }
-
-    void cleanup(){
-        this->cleanupResources();
-    };
-
-
-
+    virtual void shutdown(...) {};
 };

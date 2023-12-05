@@ -175,7 +175,6 @@ void API_OpenGL::updateCurrentTime() {
 
     // Convert to seconds as a float
     this->currentTime = timeSinceEpoch.count() / 1000.0f;
-
 }
 
 void checkGlErrors() {
