@@ -21,10 +21,10 @@ public:
     D3D_FEATURE_LEVEL featureLevel;
 
 
-    bool initialise(...) override;
-        void queryCapabilities(...) override;
+    bool initialise() override;
+        void queryCapabilities() override;
         void shutdown(...) override;
-        void demoTriangle(...);
+        void demoTriangle();
 //        Shader createShader(...) override;
 //        VertexBuffer createVertexBuffer(...) override;
 //        IndexBuffer createIndexBuffer(...) override;

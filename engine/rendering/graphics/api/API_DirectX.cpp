@@ -4,7 +4,7 @@
 #include <codecvt>
 #include <dxgiformat.h>
 #include <iostream>
-void API_DirectX::queryCapabilities(...) {
+void API_DirectX::queryCapabilities() {
     if (this->gpuInfo == nullptr) {
         this->gpuInfo = new GPUInfo();
     }
@@ -47,7 +47,7 @@ void API_DirectX::queryCapabilities(...) {
     CoUninitialize();
 }
 
-bool API_DirectX::initialise(...) {
+bool API_DirectX::initialise() {
     HRESULT result;
 
     // Create a Direct3D device and device context
@@ -104,7 +104,7 @@ void API_DirectX::shutdown(...) {
     }
 }
 
-void API_DirectX::demoTriangle(...) {
+void API_DirectX::demoTriangle() {
 //    // Check if necessary DirectX objects are valid
 //    if (!d3dDevice || !d3dContext) {
 //        std::cerr << "DirectX device or context is not valid." << std::endl;

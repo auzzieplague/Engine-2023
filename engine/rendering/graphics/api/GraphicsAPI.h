@@ -30,20 +30,13 @@ public:
         this->api = behavior;
     }
 
-    template<typename... Args>
-    bool initialise(Args &&... args) { return this->api->initialise(std::forward<Args>(args)...); };
-
-    template<typename... Args>
-    void queryCapabilities(Args &&... args) { this->api->queryCapabilities(std::forward<Args>(args)...); };
-
-    template<typename... Args>
-    void displayCapabilities(Args &&... args) { this->api->displayCapabilities(std::forward<Args>(args)...); };
+    bool initialise() { return this->api->initialise(); };
+    void queryCapabilities() { this->api->queryCapabilities(); };
+    void displayCapabilities() { this->api->displayCapabilities(); };
 
 
     // Resource Management
-
-    template<typename... Args>
-    void createFrameBuffer(Args &&... args) { this->api->createFrameBuffer(std::forward<Args>(args)...); };
+    void createFrameBuffer(FrameBuffer *fbo) { this->api->createFrameBuffer(fbo); };
 
     void resetFrameBuffer(FrameBuffer * buffer, int width, int height) { return this->api->resetFrameBuffer(buffer, width, height);}
 
@@ -67,9 +60,6 @@ public:
     void renderTargetBind(RenderTarget *renderTarget){ this->api->renderTargetBind(renderTarget);};
 
     template<typename... Args>
-    void finalRender(RenderTarget *renderTarget){ this->api->finalRender(renderTarget);};
-
-    template<typename... Args>
     void reportErrors(){ this->api->reportErrors();};
 
 
@@ -78,9 +68,9 @@ public:
 
     template<typename... Args>
     void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData){ this->api->renderTargetDrawMeshData(renderTarget, meshData);};
-    template<typename... Args>
+
     void renderTargetClearDepthBuffer(RenderTarget *renderTarget){ this->api->renderTargetClearDepthBuffer(renderTarget);};
-    template<typename... Args>
+
     void renderTargetClearColourBuffer(RenderTarget *renderTarget){ this->api->renderTargetClearColourBuffer(renderTarget);};
 
     // Viewport and Projection
@@ -111,9 +101,9 @@ public:
     void shutdown(Args &&... args) { this->api->shutdown(std::forward<Args>(args)...); };
 
     template<typename... Args>
-    void demoTriangle(Args &&... args) {
+    void demoTriangle() {
         try {
-            this->api->demoTriangle(std::forward<Args>(args)...);
+            this->api->demoTriangle();
         } catch (const std::exception& e) {
             this->api->reportErrors();
         }};

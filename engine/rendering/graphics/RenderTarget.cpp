@@ -29,10 +29,6 @@ RenderTarget::RenderTarget( int width,  int height) : height(height), width(widt
     this->initialise();
 }
 
-RenderTarget *RenderTarget::finalRender() {
-    RenderTarget::graphicsApi->finalRender(this);
-    return this;
-}
 
 RenderTarget *RenderTarget::bind() {
     RenderTarget::graphicsApi->renderTargetBind(this);
@@ -65,5 +61,12 @@ RenderTarget *RenderTarget::renderMeshes(std::vector<MeshData *> meshData, bool 
 
 RenderTarget *RenderTarget::resetFrameBuffer(int width, int height) {
     RenderTarget::graphicsApi->resetFrameBuffer(this->frameBuffer, width, height);
+    return this;
+}
+
+RenderTarget * RenderTarget::clear() {
+    // do checks on flags
+//    clear colour buffer and depth buffer and any other buffers based on flags
+    RenderTarget::graphicsApi->renderTargetClearColourBuffer(this);
     return this;
 }

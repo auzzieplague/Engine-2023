@@ -48,10 +48,9 @@ public:
 
     RenderTarget *renderMeshes(std::vector<MeshData *>, bool doBind = false);
 
-    RenderTarget *finalRender();
-
     RenderTarget *resetFrameBuffer(int width, int height);
 
 
+    RenderTarget * clear();
 };
 

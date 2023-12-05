@@ -6,7 +6,7 @@
 #include "OpenGLReferenceObject.h"
 
 
-void API_OpenGL::queryCapabilities(...) {
+void API_OpenGL::queryCapabilities() {
     if (this->gpuInfo == nullptr) {
         this->gpuInfo = new GPUInfo();
     }
@@ -35,7 +35,7 @@ bool API_OpenGL::isExtensionSupported(const char *extensionName) {
     }
 }
 
-bool API_OpenGL::initialise(...) {
+bool API_OpenGL::initialise() {
     if (this->initialised) {
         return true;
     }
@@ -47,7 +47,7 @@ bool API_OpenGL::initialise(...) {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
 
-    mainRenderTarget = new RenderTarget(width, height);
+    currentRenderTarget = new RenderTarget(width, height);
 
     this->quadShader = (new ShaderProgram())
             ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("quad"))
@@ -215,7 +215,7 @@ void checkGlErrors() {
 }
 
 // should be able to be promoted to parent class to render triangle agnostically
-void API_OpenGL::demoTriangle(...) {
+void API_OpenGL::demoTriangle() {
 
     auto lightingShader = (new ShaderProgram())
             ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("general"))
@@ -230,19 +230,17 @@ void API_OpenGL::demoTriangle(...) {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
 
-//    auto target = new RenderTarget(512, 512);
-//    target->setClearColour({0, 0, 0, 0});
+    currentRenderTarget->setClearColour({1, 0, 0, 0});
 
 
     // Rendering loop
     while (!glfwWindowShouldClose(window)) {
 
-        lightingShader->use(); // shader is good!
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // clear colour order doesn't matter
-        glClear(GL_COLOR_BUFFER_BIT);
-        //target->clear();
+        lightingShader->use();
 
-        glBindFramebuffer(GL_FRAMEBUFFER, mainRenderTarget->frameBuffer->bufferID); // bind target
+        currentRenderTarget->clear();
+
+        glBindFramebuffer(GL_FRAMEBUFFER, currentRenderTarget->frameBuffer->bufferID); // bind target
         glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(meshData->giro)->VAO);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         glUseProgram(0);
@@ -250,11 +248,9 @@ void API_OpenGL::demoTriangle(...) {
 
         quadShader->use(); ///testing - output full screen quad using demo quad with uvs
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-//        glClearColor(0.2f, 0.3f, 0.3f, 1.0f); // clear colour order doesn't matter
-//        glClear(GL_COLOR_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, mainRenderTarget->frameBuffer->texture->textureId);
+        glBindTexture(GL_TEXTURE_2D, currentRenderTarget->frameBuffer->texture->textureId);
         glUniform1i(glGetUniformLocation(quadShader->programID, "screenTexture"), 0);
 
 
@@ -275,30 +271,6 @@ void API_OpenGL::demoTriangle(...) {
     exit(0);
 }
 
-
-void API_OpenGL::finalRender(RenderTarget *renderTarget) {
-    quadShader->use(); // switch to quad shader
-    // Retrieve the location of the uniform variables
-    glUniform1i(glGetUniformLocation(quadShader->programID, "screenTexture"),
-                0); // Set screenTexture uniform to texture unit 0
-    glUniform3f(glGetUniformLocation(quadShader->programID, "colour"), 1, 1,
-                0); // Set screenTexture uniform to texture unit 0
-
-    // switch back to main buffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    // Bind the texture to texture unit 0
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, renderTarget->frameBuffer->texture->textureId);
-
-
-//    this->fullScreenQuad->bufferContainer->bind();
-    glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    glBindTexture(GL_TEXTURE_2D, 0);
-
-}
 
 void API_OpenGL::renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshDataList) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -437,7 +409,7 @@ void API_OpenGL::resizeViewport(int width, int height, ...) {
 
     // resize framebuffer
 
-    mainRenderTarget->resetFrameBuffer(width,height);
+    currentRenderTarget->resetFrameBuffer(width, height);
     // todo make a resetFrameBufferMethod on renderTarget
     // Delete existing texture and framebuffer
 //    glDeleteTextures(1, &mainRenderTarget->frameBuffer->texture->textureId); // need to get framebuffer

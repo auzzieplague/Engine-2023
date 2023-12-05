@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-void GraphicsBehaviour::displayCapabilities(...) {
+void GraphicsBehaviour::displayCapabilities() {
     std::cout << "GPU Model: " << gpuInfo->model << std::endl;
     std::cout << "VRAM Size (MB): " << gpuInfo->VRAMSize << std::endl;
     std::cout << "Driver Version: " << gpuInfo->driverVersion << std::endl;

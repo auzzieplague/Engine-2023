@@ -11,13 +11,12 @@ private:
     static bool isExtensionSupported(const char *extensionName);
 
 public:
-    bool initialise(...) override;
+    bool initialise() override;
 
-    void queryCapabilities(...) override;
+    void queryCapabilities() override;
 
 
-    void demoTriangle(...) override;
-    void demoTriangle2(...);
+    void demoTriangle() override;
 
     void resizeViewport(int width, int height, ...) override;
 
@@ -36,7 +35,6 @@ public:
     void  useShaderProgram(ShaderProgram *) override;
 
     void reportErrors() override;
-    void finalRender(RenderTarget *renderTarget) override;
     void renderTargetBind(RenderTarget *renderTarget) override;
     void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData) override;
     void renderTargetClearDepthBuffer(RenderTarget *renderTarget) override;
