@@ -299,23 +299,6 @@ void API_OpenGL::renderTargetClearColourBuffer(RenderTarget *renderTarget) {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-unsigned int API_OpenGL::getFlagCode(const char *string) {
-    static std::map<std::string, unsigned int> flagMap = {
-            {"static",  GL_STATIC_DRAW},
-            {"dynamic", GL_DYNAMIC_DRAW},
-            {"stream",  GL_STREAM_DRAW},
-            // Add more mappings here
-    };
-
-    // todo return flagmap[string] ?? null - trap exception or something.
-    auto it = flagMap.find(string);
-    if (it != flagMap.end()) {
-        return it->second;
-    } else {
-        return 0;
-    }
-}
-
 void API_OpenGL::resetFrameBuffer(FrameBuffer *fbo, int width, int height) {
     // Delete existing texture and framebuffer
     glDeleteTextures(1, &fbo->texture->textureId); // need to get framebuffer

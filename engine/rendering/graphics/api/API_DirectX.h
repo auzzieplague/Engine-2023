@@ -25,24 +25,7 @@ public:
         void queryCapabilities() override;
         void shutdown(...) override;
         void demoTriangle();
-//        Shader createShader(...) override;
-//        VertexBuffer createVertexBuffer(...) override;
-//        IndexBuffer createIndexBuffer(...) override;
-//        Texture loadTexture(...) override;
-//        Mesh loadMesh(...) override;
-//        void setShader(Shader shader) override;
-//        void setUniform(...) override;
-//        void bindTextureToShader(Texture texture, int textureUnit, const std::string& uniformName) override;
-//        void setShaderParameters(...) override;
-//        void renderMesh(Mesh mesh, ...) override;
-//        void setRenderTarget(RenderTarget target) override;
-//        void clearRenderTarget(...) override;
-//        void beginFrame() override;
-//        void endFrame() override;
-//        void resizeViewport(...) override;
-//
-//        std::string getError() override;
-//
+
 
     std::string getShaderFromFeature();
 

@@ -36,38 +36,28 @@ public:
     virtual unsigned int createFrameBuffer(FrameBuffer *fbo) {return 0;};
     virtual void resetFrameBuffer(FrameBuffer * buffer, int width, int height) {}
     virtual void setRenderTarget(RenderTarget * renderTarget) {this->currentRenderTarget = renderTarget;};
+    virtual void renderTargetBind(RenderTarget *renderTarget){};
 
     virtual void createTexture(Texture *texture) {};
     virtual void bindTexture(Texture * texture) {};
 
+    virtual  MeshData * allocateMeshData(MeshData *){return nullptr;};
+    virtual MeshData* getSampleMeshData();
+    MeshData *getFullScreenQuadMeshData();
 
-    virtual void reportErrors(){};
-    virtual void renderTargetBind(RenderTarget *renderTarget){};
     virtual void renderTargetDrawMeshData(RenderTarget *renderTarget, std::vector<MeshData *> meshData){};
     virtual void renderTargetClearDepthBuffer(RenderTarget *renderTarget){};
     virtual void renderTargetClearColourBuffer(RenderTarget *renderTarget){};
-    virtual  MeshData * allocateMeshData(MeshData *){return nullptr;};
-    // Rendering
-    virtual void drawIndexed(...) {};
-    virtual void setUniforms(...) {};
 
-
-    // Viewport and Projection
-    virtual void setViewport(...) {};
-    virtual void setProjectionMatrix(...) {};
     virtual void resizeViewport(int width, int height, ...) {};
-
-    // Shader Management
-    virtual void compileShader(...) {};
-    virtual void linkProgram(...) {};
+    virtual void setProjectionMatrix(...) {};
 
     // Cleanup and Shutdown
     virtual void shutdown(...) {};
     virtual void demoTriangle() {};
 
-    virtual unsigned int getFlagCode(const char *string);
+    virtual void reportErrors(){};
 
-    virtual MeshData* getSampleMeshData();
 
     virtual void cleanupResources(){};
 
@@ -79,7 +69,6 @@ public:
         this->cleanupResources();
     };
 
-    MeshData *getFullScreenQuadMeshData();
 
 
 };

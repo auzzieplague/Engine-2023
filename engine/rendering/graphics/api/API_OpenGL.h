@@ -20,8 +20,6 @@ public:
 
     void resizeViewport(int width, int height, ...) override;
 
-    unsigned int getFlagCode(const char *string) override;
-
     MeshData * allocateMeshData(MeshData *) override;
 
     unsigned int createFrameBuffer(FrameBuffer *fbo) override;
