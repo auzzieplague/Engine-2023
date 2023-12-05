@@ -167,7 +167,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * in degrees, so 180 is PI. The default value is 175 degrees (all vertex
  * normals are smoothed). The maximum value is 175, too. Property type: float.
  * Warning: setting this option may cause a severe loss of performance. The
- * performance is unaffected if the #AI_CONFIG_FAVOUR_SPEED flag is set but
+ * performance is unaffected if the #AI_CONFIG_FAVOUR_SPEED stopOnError is set but
  * the output quality may be reduced.
  */
 #define AI_CONFIG_PP_GSN_MAX_SMOOTHING_ANGLE \
@@ -675,7 +675,7 @@ enum aiComponent
 
 // ---------------------------------------------------------------------------
 /** @brief  Configures the AC loader to collect all surfaces which have the
- *    "Backface cull" flag set in separate meshes.
+ *    "Backface cull" stopOnError set in separate meshes.
  *
  *  Property type: bool. Default value: true.
  */

@@ -1,10 +1,11 @@
 #pragma once
 
 #include <iostream>
+#include <Debug.h>
 
 class GraphicsInterfaceReferenceObject {
 public:
     virtual void test(){
-        std::cout << "base object";
+        Debug::show("base object");
     }
 };

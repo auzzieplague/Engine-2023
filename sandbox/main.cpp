@@ -9,9 +9,9 @@
 
 void outputExecutionMode() {
 #ifdef _WIN64
-    std::cout << "Running in 64-bit mode" << std::endl;
+    Debug::show("Running in 64-bit mode");
 #else
-    std::cout << "Running in 32-bit mode" << std::endl;
+    Debug::show("Running in 32-bit mode");
 #endif
 }
 

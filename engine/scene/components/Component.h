@@ -133,7 +133,7 @@ public:
      *  as well as any other relevant information such as the object's mPosition, mRotation, and scale.
      */
     virtual void init() {
-        std::cout << "render not implemented for component\n";
+        Debug::error("render not implemented for component\n");
     }
 
     /**
@@ -141,14 +141,14 @@ public:
      *  This may involve setting m_up the camera, setting shader parameters, and sending the mRootMesh data to the GPU.
      */
     virtual void render() {
-        std::cout << "render not implemented for component\n";
+        Debug::error("render not implemented for component\n");
     };
 
     /**
      * update the game object's position, rotation, and scale based on any changes in the game world or user input
      */
     virtual void update() {
-        std::cout << "update not implemented for component\n";
+        Debug::error("update not implemented for component\n");
     };
 
 };

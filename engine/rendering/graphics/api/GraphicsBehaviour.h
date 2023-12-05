@@ -16,7 +16,6 @@ protected:
     MeshData *fullScreenQuad;
     ShaderProgram *quadShader;
     RenderTarget * currentRenderTarget;
-    int currentTime=1;
 public:
 
     // buffer reference pool for cleanup

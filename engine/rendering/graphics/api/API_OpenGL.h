@@ -31,10 +31,9 @@ public:
     void renderTargetClearDepthBuffer(RenderTarget *renderTarget) override;
     void renderTargetClearColourBuffer(RenderTarget *renderTarget) override;
 
-    void updateCurrentTime();
     void reportErrors() override;
 
     void cleanupResources() override;
-
+    ~API_OpenGL() { this->cleanupResources();}
 };
 

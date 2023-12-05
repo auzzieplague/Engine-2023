@@ -4,6 +4,7 @@
 #include <map>
 #include <chrono>
 #include <string>
+#include "Debug.h"
 
 class PerformanceMeasurer {
 private:
@@ -83,7 +84,7 @@ public:
             double duration = getDuration(title);
 
             if (duration >= 0) {
-                std::cout << "Title: " << title << ", Duration: " << duration << " ms" << std::endl;
+                Debug::show( "Title: " + title + ", Duration: " + std::to_string(duration) + " ms");
             }
         }
     }

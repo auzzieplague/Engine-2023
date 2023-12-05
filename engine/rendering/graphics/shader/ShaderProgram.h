@@ -19,8 +19,6 @@ public:
 
     ShaderProgram* addShader(Shader * shader);
 
-
-
     // add shader
 //    Shader();
 //    ~Shader();

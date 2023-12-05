@@ -1,7 +1,6 @@
 #include <glad/glad.h>
 #include "API_OpenGL.h"
 #include <Window.h>
-#include <chrono>
 #include "graphics/buffers/FrameBuffer.h"
 #include "OpenGLReferenceObject.h"
 
@@ -163,20 +162,6 @@ unsigned int API_OpenGL::linkShaderProgram(ShaderProgram *program) {
     return program->programID;
 }
 
-
-void API_OpenGL::updateCurrentTime() {
-    using namespace std::chrono;
-
-    // Get the current time point
-    auto now = high_resolution_clock::now();
-
-    // Get the time since epoch in milliseconds
-    auto timeSinceEpoch = duration_cast<milliseconds>(now.time_since_epoch());
-
-    // Convert to seconds as a float
-    this->currentTime = timeSinceEpoch.count() / 1000.0f;
-}
-
 void checkGlErrors() {
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
@@ -260,10 +245,6 @@ void API_OpenGL::demoTriangle() {
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-
-    // Cleanup (release resources) should be done when you're done with the OpenGL context
-//    glDeleteVertexArrays(1, &VAO);
-//    glDeleteBuffers(1, &VBO);
 
     // Terminate GLFW
     glfwTerminate();
@@ -385,21 +366,9 @@ void API_OpenGL::resizeViewport(int width, int height, ...) {
     va_start(args, height);
     GLFWwindow* window = va_arg(args,GLFWwindow *);
     va_end(args);
-
-
     glViewport(0, 0, width, height);
 
-    // resize framebuffer
-
     currentRenderTarget->resetFrameBuffer(width, height);
-    // todo make a resetFrameBufferMethod on renderTarget
-    // Delete existing texture and framebuffer
-//    glDeleteTextures(1, &mainRenderTarget->frameBuffer->texture->textureId); // need to get framebuffer
-//    glDeleteFramebuffers(1, &mainRenderTarget->frameBuffer->bufferID);
-//    mainRenderTarget->frameBuffer->width = width;
-//    mainRenderTarget->frameBuffer->height = height;
-//    createFrameBuffer(mainRenderTarget->frameBuffer);
-
 }
 
 

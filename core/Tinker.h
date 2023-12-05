@@ -16,22 +16,6 @@
 
 #define TINKER_ARRAY_SIZE(myArray) (sizeof(myArray) / sizeof((myArray)[0]))
 
-enum TinkerDataType {
-    TINKER_BYTE = 0x1400,
-    TINKER_UNSIGNED_BYTE = 0x1401,
-    TINKER_SHORT = 0x1402,
-    TINKER_UNSIGNED_SHORT = 0x1403,
-    TINKER_INT = 0x1404,
-    TINKER_UNSIGNED_INT = 0x1405,
-    TINKER_FLOAT = 0x1406,
-};
-
-enum TinkerVertexType {
-    TINKER_1D [[maybe_unused]] = 1, //  for scalar data
-    TINKER_2D [[maybe_unused]] = 2, //  for 2D data e.g. texture u,v
-    TINKER_3D [[maybe_unused]] = 3, //  for 3D data e.g. vertex positions
-    TINKER_4D [[maybe_unused]] = 4, //  for 4D data
-};
 
 enum class TextureFilter {
     Nearest,  // Nearest-neighbor filtering

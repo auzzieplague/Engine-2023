@@ -7,11 +7,22 @@ class Debug {
 private:
     static int m_iteration;
 public:
-    static bool flag;
+    static bool stopOnError;
+    static bool showDebugMessages;
 
     template<typename T>
     static void show(T value) {
+        if (showDebugMessages) {
+            std::cout << value << std::endl;
+        }
+    }
+
+    template<typename T>
+    static void error(T value) {
         std::cout << value << std::endl;
+        if (stopOnError) {
+            throw std::runtime_error(value);
+        }
     }
 
     static void nextIteration() {
@@ -30,12 +41,12 @@ public:
         m_iteration = 0;
     };
 
-    static void throwFileNotFound(const std::string& fileName) {
-        throw std::runtime_error("Missing file "+fileName);
+    static void throwFileNotFound(const std::string &fileName) {
+        throw std::runtime_error("Missing file " + fileName);
     }
 
-    static void throwMissingItem( const std::string& item,const std::string& context ) {
-        throw std::runtime_error("expecting item"+item+" in "+context);
+    static void throwMissingItem(const std::string &item, const std::string &context) {
+        throw std::runtime_error("expecting item" + item + " in " + context);
     }
 
     static void FatalError(const char *string);

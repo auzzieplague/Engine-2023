@@ -5,26 +5,26 @@
 
 
 void GraphicsBehaviour::displayCapabilities() {
-    std::cout << "GPU Model: " << gpuInfo->model << std::endl;
-    std::cout << "VRAM Size (MB): " << gpuInfo->VRAMSize << std::endl;
-    std::cout << "Driver Version: " << gpuInfo->driverVersion << std::endl;
-    std::cout << "Shader ModelVersion Support: " << gpuInfo->shaderModelVersionSupport << std::endl;
-    std::cout << "ShaderLanguageSupport: " << gpuInfo->shaderLanguageSupport << std::endl;
-    std::cout << "Texture Compression Formats: " << gpuInfo->textureCompressionFormats << std::endl;
-    std::cout << "OpenGL Version Support: " << gpuInfo->openGLVersionSupport << std::endl;
-    std::cout << "Max Texture Size: " << gpuInfo->maxTextureSize << std::endl;
-    std::cout << "Max Render Target Size: " << gpuInfo->maxRenderSize << std::endl;
-    std::cout << "Max Anisotropic Filtering: " << gpuInfo->maxAnisotropicFiltering << std::endl;
-    std::cout << "Max MSAA Level: " << gpuInfo->maxMSAA << std::endl;
-    std::cout << "Max Texture Units: " << gpuInfo->maxTextureUnits << std::endl;
-    std::cout << "Max Vertex Attributes: " << gpuInfo->maxVertexAttributes << std::endl;
-    std::cout << "Max Uniform Buffer Bindings: " << gpuInfo->maxUniformBindings << std::endl;
-    std::cout << "Max Texture Image Units: " << gpuInfo->maxTextureImageUnits << std::endl;
-    std::cout << "Max Geometry Output Vertices: " << gpuInfo->maxGeometryOutputVertices << std::endl;
-    std::cout << "Max Geometry Output Components: " << gpuInfo->maxGeometryOutputComponents << std::endl;
-    std::cout << "Tessellation Support: " << (gpuInfo->tessellationSupport ? "Yes" : "No") << std::endl;
-    std::cout << "Compute Shader Support: " << (gpuInfo->computeShaderSupport ? "Yes" : "No") << std::endl;
-    std::cout << "Ray Tracing Support: " << (gpuInfo->rayTracingSupport ? "Yes" : "No") << std::endl;
+    Debug::show("GPU Model: " + gpuInfo->model);
+    Debug::show("VRAM Size (MB): " + std::to_string(gpuInfo->VRAMSize));
+    Debug::show("Driver Version: " +  gpuInfo->driverVersion);
+    Debug::show("Shader ModelVersion Support: " +  gpuInfo->shaderModelVersionSupport);
+    Debug::show("ShaderLanguageSupport: " +  gpuInfo->shaderLanguageSupport);
+    Debug::show("Texture Compression Formats: " +  gpuInfo->textureCompressionFormats);
+    Debug::show("OpenGL Version Support: " +  gpuInfo->openGLVersionSupport);
+    Debug::show("Max Texture Size: " + std::to_string( gpuInfo->maxTextureSize));
+    Debug::show("Max Render Target Size: " + std::to_string( gpuInfo->maxRenderSize));
+    Debug::show("Max Anisotropic Filtering: " + std::to_string( gpuInfo->maxAnisotropicFiltering));
+    Debug::show("Max MSAA Level: " + std::to_string( gpuInfo->maxMSAA));
+    Debug::show("Max Texture Units: " + std::to_string( gpuInfo->maxTextureUnits));
+    Debug::show("Max Vertex Attributes: " + std::to_string( gpuInfo->maxVertexAttributes));
+    Debug::show("Max Uniform Buffer Bindings: " + std::to_string( gpuInfo->maxUniformBindings));
+    Debug::show("Max Texture Image Units: " + std::to_string( gpuInfo->maxTextureImageUnits));
+    Debug::show("Max Geometry Output Vertices: " + std::to_string( gpuInfo->maxGeometryOutputVertices));
+    Debug::show("Max Geometry Output Components: " + std::to_string( gpuInfo->maxGeometryOutputComponents));
+    Debug::show(gpuInfo->tessellationSupport ? "Tessellation Support: Yes" : "Tessellation Support: No");
+    Debug::show(gpuInfo->computeShaderSupport ? "Compute Shader Support: Yes" : "Compute Shader Support: No");
+    Debug::show(gpuInfo->rayTracingSupport ? "Ray Tracing Support: Yes" : "Ray Tracing Support: No");
 
     // Display other GPUInfo details as needed
 }

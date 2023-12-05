@@ -21,7 +21,7 @@ GLFWwindow *Window::setupWindow(uint32_t width, uint32_t height, const std::stri
     glfwMakeContextCurrent(window);
 
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        Debug::error("Failed to initialize GLAD");
         return nullptr;
     }
 

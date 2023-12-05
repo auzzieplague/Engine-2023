@@ -22,7 +22,7 @@ public:
 public:
     static void setGraphicsAPI(GraphicsAPI *api);
 
-    Texture(int width, int height, int format) : textureId(0), width(width), height(height), format(0), type(TINKER_2D),
+    Texture(int width, int height, int format) : textureId(0), width(width), height(height), format(0),
                 wrapMode(TextureWrap::Clamp), minFilter(TextureFilter::Linear), magFilter(TextureFilter::Linear),
                 mipMapLevels(1), isLoaded(false), debugName("Unnamed Texture") {
 //        glGenTextures(1, &textureId);

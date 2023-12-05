@@ -8,6 +8,6 @@ public:
     unsigned int VAO=0;
 
     void test() override{
-        std::cout << "child class";
+        Debug::show("child object");
     }
 };

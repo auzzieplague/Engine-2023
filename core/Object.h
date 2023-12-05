@@ -54,8 +54,8 @@ public:
     }
 
     virtual void print()  {
-        std::cout << "Object properties:\n";
-        std::cout << "Name: " << this->getName() << "\n";
+       Debug::show("Object properties:");
+       Debug::show("Name: " + this->getName());
     }
 
 };
