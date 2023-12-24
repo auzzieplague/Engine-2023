@@ -70,3 +70,8 @@ RenderTarget * RenderTarget::clear() {
     RenderTarget::graphicsApi->renderTargetClearColourBuffer(this);
     return this;
 }
+
+RenderTarget *RenderTarget::use() {
+    RenderTarget::graphicsApi->setRenderTarget(this);
+    return this;
+}

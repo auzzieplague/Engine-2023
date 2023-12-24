@@ -46,7 +46,7 @@ bool API_OpenGL::initialise() {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
 
-    currentRenderTarget = new RenderTarget(width, height);
+    finalRenderTarget = new RenderTarget(width, height);
 
     this->quadShader = (new ShaderProgram())
             ->addShader((new Shader(FRAGMENT_SHADER))->loadFromSource("quad"))
@@ -214,7 +214,7 @@ void API_OpenGL::demoTriangle() {
     int width, height;
     glfwGetWindowSize(window, &width, &height);
 
-    currentRenderTarget->setClearColour({1, 0, 0, 0});
+    finalRenderTarget->setClearColour({1, 0, 0, 0});
 
 
     // Rendering loop
@@ -222,9 +222,9 @@ void API_OpenGL::demoTriangle() {
 
         lightingShader->use();
 
-        currentRenderTarget->clear();
+        finalRenderTarget->clear();
 
-        glBindFramebuffer(GL_FRAMEBUFFER, currentRenderTarget->frameBuffer->bufferID); // bind target
+        glBindFramebuffer(GL_FRAMEBUFFER, finalRenderTarget->frameBuffer->bufferID); // bind target
         glBindVertexArray(dynamic_cast<OpenGLReferenceObject *>(meshData->giro)->VAO);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         glUseProgram(0);
@@ -234,7 +234,7 @@ void API_OpenGL::demoTriangle() {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, currentRenderTarget->frameBuffer->texture->textureId);
+        glBindTexture(GL_TEXTURE_2D, finalRenderTarget->frameBuffer->texture->textureId);
         glUniform1i(glGetUniformLocation(quadShader->programID, "screenTexture"), 0);
 
 
@@ -368,7 +368,7 @@ void API_OpenGL::resizeViewport(int width, int height, ...) {
     va_end(args);
     glViewport(0, 0, width, height);
 
-    currentRenderTarget->resetFrameBuffer(width, height);
+    finalRenderTarget->resetFrameBuffer(width, height);
 }
 
 

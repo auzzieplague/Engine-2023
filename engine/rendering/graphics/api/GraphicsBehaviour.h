@@ -15,7 +15,8 @@ protected:
     GPUInfo *gpuInfo{};
     MeshData *fullScreenQuad;
     ShaderProgram *quadShader;
-    RenderTarget * currentRenderTarget;
+    RenderTarget * currentRenderTarget; // set by use()
+    RenderTarget * finalRenderTarget; // maintained by viewport changes for final output
 public:
 
     // buffer reference pool for cleanup

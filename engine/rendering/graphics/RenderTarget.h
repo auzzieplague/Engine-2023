@@ -50,7 +50,7 @@ public:
 
     RenderTarget *resetFrameBuffer(int width, int height);
 
-
     RenderTarget * clear();
+    RenderTarget * use();
 };
 
